@@ -17,7 +17,7 @@ const routes = {
             component: CustomerPage
         },
         {
-            path: '/dashboard/profile-page',
+            path: '/dashboard/profile',
             name: 'Profile Page',
             component: ProfilePage
         }

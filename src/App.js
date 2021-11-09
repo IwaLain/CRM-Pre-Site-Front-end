@@ -8,14 +8,14 @@ const App = () => {
     <Router>
       <Switch>
         <Route exact path="/"><Redirect to="/login"/></Route>
-        {routes.auth.map(({ path, component }) => {
-          return <Route path={path} component={component}/>
+        {routes.auth.map(({ path, component }, index) => {
+          return <Route key={index} path={path} component={component}/>
         })} 
         <Route path='/dashboard/:path?' exact>
         <DashboardLayout>
           <Switch>
-            {routes.dashboard.map(({ path, component }) => {
-              return <Route path={path} component={component}/>
+            {routes.dashboard.map(({ path, component }, index) => {
+              return <Route key={index} path={path} component={component}/>
             })}
           </Switch>
         </DashboardLayout>
