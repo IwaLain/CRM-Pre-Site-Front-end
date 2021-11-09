@@ -1,17 +1,25 @@
 @import "../scss-variables.scss";
 
-.dashboard .row {
-  height: 100vh;
-  margin: 0;
-}
+/* Dashboard */
 
 .dashboard.container-fluid {
   padding: 0;
 }
 
+.dashboard .row {
+  height: 100vh;
+  margin: 0;
+}
+
+/* Sidebar */
+
 .dashboard aside {
   background-color: $secondary;
   padding: 15px;
+}
+
+.dashboard .logo {
+  margin-bottom: 35px;
 }
 
 .dashboard .logo img {
@@ -21,4 +29,55 @@
 
 .dashboard aside nav ul {
   list-style-image: url('../../assets/img/star.svg');
+  padding-left: 1.5em;
+}
+
+.dashboard aside nav > ul > li > a {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Right section */
+.dashboard section {
+  padding: 0;
+}
+
+/* Header */
+.dashboard header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: $primary;
+  height: 60px;
+  padding: 0 15px;
+}
+
+.dashboard header .profile-badge {
+  position: relative;
+  background: transparent;
+  border: 0;
+}
+
+.dashboard header .profile-badge:active, .dashboard header .profile-badge:focus{
+  box-shadow: none;
+}
+
+.dashboard header .profile-badge img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Content */
+.dashboard main {
+  padding: 15px;
+}
+
+.dashboard main .breadcrumb-item+.breadcrumb-item::before {
+  content: var(--bs-breadcrumb-divider, "-");
+}
+
+.dashboard main .breadcrumb-item:last-child {
+  font-weight: 700;
 }

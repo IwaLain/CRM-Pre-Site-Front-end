@@ -1,23 +1,26 @@
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import DashboardLayout from './layouts/DashboardLayout'
-import LoginPage from './views/LoginPage'
-import CustomerPage from './views/CustomerPage'
-import ProfilePage from './views/ProfilePage'
+import NotFoundPage from './views/NotFoundPage'
+import routes from './routes'
 
 const App = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/"><Redirect to="/login"/></Route> 
-        <Route path='/login' component={LoginPage}/>
+        <Route exact path="/"><Redirect to="/login"/></Route>
+        {routes.auth.map(({ path, component }) => {
+          return <Route path={path} component={component}/>
+        })} 
         <Route path='/dashboard/:path?' exact>
         <DashboardLayout>
           <Switch>
-            <Route path='/dashboard/customer-page' component={CustomerPage}/>
-            <Route path='/dashboard/profile-page' component={ProfilePage}/>
+            {routes.dashboard.map(({ path, component }) => {
+              return <Route path={path} component={component}/>
+            })}
           </Switch>
         </DashboardLayout>
         </Route>
+        <Route component={NotFoundPage}/>
       </Switch>
     </Router>
   );

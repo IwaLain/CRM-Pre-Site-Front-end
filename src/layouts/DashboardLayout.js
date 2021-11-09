@@ -1,7 +1,35 @@
 import '../scss/components/dashboard.scss'
 import logo from '../assets/img/company.png'
+import star from '../assets/img/star.svg'
+import { useEffect, useState } from 'react'
+import { Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap'
 
 const DashboardLayout = ({ children }) => {
+    const [links, setLinks] = useState([])
+    const [dropdownOpen, setDropdownOpen] = useState(false)
+
+    const toggle = () => {
+        setDropdownOpen(!dropdownOpen)
+    }
+
+    const toLinks = (pathname) => {
+        let value, titles = [], links = []
+        pathname.split('/').slice(1).forEach((sentence) => {
+            value = ''
+            links.push(sentence)
+            sentence.split('-').forEach((word) => {
+                value += word[0].toUpperCase() + word.slice(1) + ' '
+            })
+            titles.push(value.slice(0, -1))
+        })
+
+        return titles
+    }
+
+    useEffect(() => {
+        setLinks(toLinks(document.location.pathname))
+    }, [])
+
     return (
         <div className="dashboard container-fluid">
             <div className="row">
@@ -21,15 +49,35 @@ const DashboardLayout = ({ children }) => {
                     </div>
                     <nav>
                         <ul>
-                            <li>Link</li>
+                            <li><a href="/dashboard">Link</a></li>
                         </ul>
                     </nav>
                 </aside>
                 <section className="col-10">
                     <header>
-                        Header
+                    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                    <DropdownToggle className="profile-badge">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="20" fill="black"/>
+                        </svg>
+                        <img src={star} alt="star"/>
+                    </DropdownToggle>
+                    <DropdownMenu end>
+                        <DropdownItem>Profile</DropdownItem>
+                        <DropdownItem>Users</DropdownItem>
+                        <DropdownItem divider/>
+                        <DropdownItem>Logout</DropdownItem>
+                    </DropdownMenu>
+                    </Dropdown>
                     </header>
                     <main>
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb">
+                            {links && links.map((link) => {
+                                return <li key={link} className="breadcrumb-item">{link}</li>
+                            })}
+                            </ol>
+                        </nav>
                         {children}
                     </main>
                 </section>
