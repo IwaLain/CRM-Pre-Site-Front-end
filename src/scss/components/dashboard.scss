@@ -1,0 +1,24 @@
+@import "../scss-variables.scss";
+
+.dashboard .row {
+  height: 100vh;
+  margin: 0;
+}
+
+.dashboard.container-fluid {
+  padding: 0;
+}
+
+.dashboard aside {
+  background-color: $secondary;
+  padding: 15px;
+}
+
+.dashboard .logo img {
+  width: 15%;
+  margin-right: 15px;
+}
+
+.dashboard aside nav ul {
+  list-style-image: url('../../assets/img/star.svg');
+}
