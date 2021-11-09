@@ -1,6 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../scss/components/loginpage.scss';
+import logo from '../assets/img/company.png'
 import { Button, Card, Col, Container, Form, FormGroup, Input, Row, CardImg, CardBody, CardTitle } from 'reactstrap'
 import { alert } from '../js/methods/alert';
 
@@ -23,14 +25,16 @@ const LoginPage = () => {
         <Container fluid className='bg_login'>
           <Row className="vh-100 justify-content-sm-center align-items-center">
             <Col className="col-sm-8 col-md-6 col-lg-4">
-                <Card className='p-2'>
+                <Card>
                     <CardBody>
-                        <CardImg
-                            alt="Logo"
-                            src="https://s.dou.ua/CACHE/images/img/static/companies/waites-block-logo-yellow-background/11350f844328a8a1bd46c1d2d2c54bd3.png"
-                            top
-                        />
-                        <Form onSubmit={handleSubmit(onSubmit)} className='p-3'>
+                        <div className='text-center mb-3'>
+                            <CardImg
+                                alt="Logo"
+                                src={logo}
+                                className='login_img'
+                            />
+                        </div>
+                        <Form onSubmit={handleSubmit(onSubmit)}>
                             <FormGroup>
                             <input
                                 type="text"

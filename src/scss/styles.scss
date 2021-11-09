@@ -1,13 +1,6 @@
-@import '~bootstrap/scss/bootstrap';
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-$primary: #E3BB31;
-$secondary: black;
-
-* {
-    margin: 0;
-}
-
-.bg_login {
-    background-image: url('./../assets/img/login-bg.jpg');
-    background-size: cover;
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
 }
