@@ -1,3 +1,13 @@
+@import '~bootstrap/scss/bootstrap';
+
 $primary: #E3BB31;
 $secondary: black;
 
+* {
+    margin: 0;
+}
+
+.bg_login {
+    background-image: url('./../assets/img/login-bg.jpg');
+    background-size: cover;
+}
