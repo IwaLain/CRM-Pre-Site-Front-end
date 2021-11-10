@@ -3,7 +3,15 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../scss/components/loginpage.scss';
 import logo from '../assets/img/company.png'
-import { Button, Card, Col, Container, Form, FormGroup, Row, CardImg, CardBody } from 'reactstrap'
+import { Button,
+         Card,
+         Col,
+         Container,
+         Form,
+         FormGroup,
+         Row,
+         CardImg,
+         CardBody } from 'reactstrap'
 import { alert } from '../js/methods/alert';
 
 const LoginPage = () => {
@@ -14,14 +22,14 @@ const LoginPage = () => {
         reset,
         trigger,
       } = useForm();
-    
+
       const onSubmit = (data) => {
         console.log(data);
 
         alert('success', 'Complete Login')
         reset();
       };
-    
+
       return (
         <Container fluid className='bg_login'>
           <Row className="vh-100 justify-content-sm-center align-items-center">
@@ -41,7 +49,7 @@ const LoginPage = () => {
                                 type="text"
                                 placeholder='User Name ...'
                                 className={`form-control ${errors.name && "invalid"}`}
-                                {...register("username", { 
+                                {...register("username", {
                                     required: "UserName is Required",
                                     min: {
                                         value: 3,
@@ -85,7 +93,7 @@ const LoginPage = () => {
                             )}
                             </FormGroup>
                             <FormGroup className='d-flex justify-content-sm-end pt-1'>
-                                <Button 
+                                <Button
                                     color="primary"
                                 >
                                     Login

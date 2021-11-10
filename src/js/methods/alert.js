@@ -15,6 +15,8 @@ export const alert = (type, message) => {
             case 'info':
                 toast.info(message)
                 break
+            default:
+                break
         }
     }
     return notify()
