@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../scss/components/loginpage.scss';
 import logo from '../assets/img/company.png'
-import { Button, Card, Col, Container, Form, FormGroup, Input, Row, CardImg, CardBody, CardTitle } from 'reactstrap'
+import { Button, Card, Col, Container, Form, FormGroup, Row, CardImg, CardBody } from 'reactstrap'
 import { alert } from '../js/methods/alert';
 
 const LoginPage = () => {
@@ -17,6 +17,7 @@ const LoginPage = () => {
     
       const onSubmit = (data) => {
         console.log(data);
+
         alert('success', 'Complete Login')
         reset();
       };

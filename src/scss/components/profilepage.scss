@@ -1,0 +1,34 @@
+ul {
+    list-style: none;
+}
+
+.profile__item {
+    padding-top: 10px;
+}
+
+.form-label {
+    margin-bottom: 0 !important;
+}
+
+.profile__label {
+    padding-bottom: 0;
+}
+
+.profile__text {
+    width: 100%;
+    text-align: center;
+    background: #DEDEDE;
+    border-radius: 5px;
+    padding-bottom: 0;
+}
+
+.profile__img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    color: #000;
+    background: #E3BB31;
+}
