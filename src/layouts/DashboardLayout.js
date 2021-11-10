@@ -1,17 +1,36 @@
 import '../scss/components/dashboard.scss'
-import logo from '../assets/img/company.png'
 import star from '../assets/img/star.svg'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap'
+import logo from '../assets/img/company.png'
+import Close from '../components/Close'
 
 const DashboardLayout = ({ children }) => {
+    const MOBILE_SIZE = 1024
+
     const [links, setLinks] = useState([])
     const [dropdownOpen, setDropdownOpen] = useState(false)
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= MOBILE_SIZE)
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth <= MOBILE_SIZE)
     const location = useLocation()
+
+    const handleResize = () => {
+        if (window.innerWidth <= MOBILE_SIZE) {
+            setIsMobile(true)
+            setSidebarCollapsed(true)
+        } else {
+            setIsMobile(false)
+            setSidebarCollapsed(false)
+        }
+    }
 
     const toggle = () => {
         setDropdownOpen(!dropdownOpen)
+    }
+
+    const toggleSidebar = () => {
+        setSidebarCollapsed(!sidebarCollapsed)
     }
 
     const toLinks = (pathname) => {
@@ -29,13 +48,18 @@ const DashboardLayout = ({ children }) => {
     }
 
     useEffect(() => {
+        window.addEventListener('resize', handleResize);
+    }, [])
+
+    useEffect(() => {
         setLinks(toLinks(location.pathname))
     }, [location])
 
     return (
         <div className="dashboard container-fluid">
             <div className="row">
-                <aside className="col-2">
+                {!sidebarCollapsed &&
+                <aside className={isMobile ? 'col-12': 'col-2'}>
                     <div className="logo">
                         <a href="/">
                             <img src={logo} alt="logo"/>
@@ -48,6 +72,7 @@ const DashboardLayout = ({ children }) => {
                             <path d="M41.0953 1.14108H31.5841L26.6111 20.1513H33.0976L33.7904 17.1354H38.8657L39.5841 20.1513H46.0695L41.0953 1.14108ZM34.918 12.2932L36.1746 6.97056H36.5083L37.7381 12.2932H34.918Z" fill="white"/>
                             </svg>
                         </a>
+                        {isMobile && <Close toggle={toggleSidebar}/>}
                     </div>
                     <nav>
                         <ul>
@@ -55,8 +80,17 @@ const DashboardLayout = ({ children }) => {
                         </ul>
                     </nav>
                 </aside>
-                <section className="col-10">
+                }
+                <section className={isMobile ? 'col-12': 'col-10'}>
                     <header>
+                    <button className={isMobile ? 'burger-btn': 'burger-btn hidden'} onClick={toggleSidebar}>
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="4" fill="black"/>
+                    <path d="M7 11H25" stroke="white"/>
+                    <path d="M7 16L25 16" stroke="white"/>
+                    <path d="M7 21L25 21" stroke="white"/>
+                    </svg>
+                    </button>
                     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
                         <DropdownToggle className="profile-badge">
                             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
