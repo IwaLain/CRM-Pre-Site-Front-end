@@ -47,7 +47,7 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                 </Col>
-            </Row>           
+            </Row>
         </Container>
     )
 }

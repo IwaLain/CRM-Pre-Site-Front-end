@@ -2,11 +2,13 @@ import '../scss/components/dashboard.scss'
 import logo from '../assets/img/company.png'
 import star from '../assets/img/star.svg'
 import { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap'
 
 const DashboardLayout = ({ children }) => {
     const [links, setLinks] = useState([])
     const [dropdownOpen, setDropdownOpen] = useState(false)
+    const location = useLocation()
 
     const toggle = () => {
         setDropdownOpen(!dropdownOpen)
@@ -27,8 +29,8 @@ const DashboardLayout = ({ children }) => {
     }
 
     useEffect(() => {
-        setLinks(toLinks(document.location.pathname))
-    }, [])
+        setLinks(toLinks(location.pathname))
+    }, [location])
 
     return (
         <div className="dashboard container-fluid">
@@ -56,18 +58,18 @@ const DashboardLayout = ({ children }) => {
                 <section className="col-10">
                     <header>
                     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-                    <DropdownToggle className="profile-badge">
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="20" cy="20" r="20" fill="black"/>
-                        </svg>
-                        <img src={star} alt="star"/>
-                    </DropdownToggle>
-                    <DropdownMenu end>
-                        <DropdownItem>Profile</DropdownItem>
-                        <DropdownItem>Users</DropdownItem>
-                        <DropdownItem divider/>
-                        <DropdownItem>Logout</DropdownItem>
-                    </DropdownMenu>
+                        <DropdownToggle className="profile-badge">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="20" fill="black"/>
+                            </svg>
+                            <img src={star} alt="star"/>
+                        </DropdownToggle>
+                        <DropdownMenu end>
+                            <DropdownItem><Link to="/dashboard/profile">Profile</Link></DropdownItem>
+                            <DropdownItem><Link to="/dashboard/users">Users</Link></DropdownItem>
+                            <DropdownItem divider/>
+                            <DropdownItem><Link to="/">Logout</Link></DropdownItem>
+                        </DropdownMenu>
                     </Dropdown>
                     </header>
                     <main>
