@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row, Table } from 'reactstrap'
 import star from '../assets/img/star.svg'
 import edite from '../assets/img/edite.svg'
-import '../scss/components/userpage.scss'
+import '../scss/components/users-page.scss'
+import { NavLink } from 'react-router-dom'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
@@ -16,16 +17,18 @@ const UsersPage = () => {
 
     return (
         <Container>
-            <Row>
-                <Col md={3}>
-                    <h3 className='users__title'>Customers Table</h3>
+            <Row className='align-items-center justify-content-xs-between'>
+                <Col md={2} sm={2} xs={6}>
+                    <h3 className='users__title'>Users</h3>
                 </Col>
-                <Col>
-                    <Button>Add User<img className='users__title-img' src={star} alt="star"/></Button>
+                <Col md={6} sm={6} xs={6}>
+                    <NavLink to='/dashboard/add-user-page'>
+                        <Button>Add User<img className='users__title-img' src={star} alt="star"/></Button>
+                    </NavLink>
                 </Col>
             </Row>
             <Row className='mt-5'>
-                <Col md={8}>
+                <Col lg={9} md={12} sm={12}>
                     <Table hover responsive striped>
                         <thead>
                             <tr>
@@ -42,7 +45,7 @@ const UsersPage = () => {
                                     <th>{user.username}</th>
                                     <th>{user.email}</th>
                                     <th>{user.phone}</th>
-                                    <th>{user.role}</th>
+                                    <th>Admin</th>
                                     <th>
                                         <img className='users__table-img' src={edite} alt="edite" />
                                     </th>

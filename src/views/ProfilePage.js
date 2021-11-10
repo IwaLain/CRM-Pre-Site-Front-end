@@ -1,5 +1,5 @@
 import { Col, Container, Label, Row } from "reactstrap"
-import '../scss/components/profilepage.scss'
+import '../scss/components/profile-page.scss'
 const ProfilePage = () => {
     return(
         <Container>
