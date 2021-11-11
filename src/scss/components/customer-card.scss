@@ -1,0 +1,33 @@
+.col.customer-card--col {
+  max-width: 500px;
+}
+.customer--card-body .view-btn {
+  margin-top: auto;
+}
+.progress.customer-card--progress {
+  margin-top: auto;
+  // margin-bottom: 5px;
+}
+.img-fluid.customer-card--img {
+  width: 100%;
+  height: 100%;
+}
+.card-body.customer--card-body {
+  height: 100%;
+  padding: 5px;
+}
+@media screen and (min-width: 768px) {
+  .card-body.customer--card-body {
+    height: 80px;
+  }
+  .progress.customer-card--progress {
+    height: 7px;
+  }
+  .row .customer-card--row {
+    width: 180px;
+  }
+}
+.btn.view-btn {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}

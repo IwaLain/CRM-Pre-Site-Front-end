@@ -1,16 +1,7 @@
-import {
-  Button,
-  List,
-  ListInlineItem,
-  CardBody,
-  CardGroup,
-  Card,
-  CardImg,
-  CardTitle,
-  Progress,
-} from "reactstrap";
+import { List, ListInlineItem, Col } from "reactstrap";
 import logo from "../assets/img/company.png";
 import "../scss/components/customer-page.scss";
+import CustomerCard from "../components/CustomerCard";
 const CustomerPage = () => {
   return (
     <>
@@ -19,7 +10,7 @@ const CustomerPage = () => {
         <div className="img-container">
           <img
             src={logo}
-            alt="company img"
+            alt="company img "
             className="customer-page--img"
           ></img>
         </div>
@@ -41,62 +32,24 @@ const CustomerPage = () => {
       <div className="customer-page--factories">
         {" "}
         <h2 className="page-subtitle">Factories Customer</h2>
-        <CardGroup>
-          <Card className="flex-row factory-card">
-            <CardImg
-              className="customer-page--img"
-              alt="Card image cap"
-              src={logo}
-              width="100%"
-              height="auto"
+        <div className="row row-cols-1 row-cols-md-auto g-4">
+          <Col className="customer-card--col">
+            <CustomerCard
+              title="Title"
+              progress={67}
+              image="//placehold.it/100"
             />
-            <CardBody className="card-body--custom">
-              <CardTitle>Card title</CardTitle>
-              <Progress
-                className="progress--custom"
-                color="success"
-                value={63}
-              />
-              <Button className="view-btn">Button</Button>
-            </CardBody>
-          </Card>{" "}
-          <Card className="flex-row factory-card">
-            <CardImg
-              className="customer-page--img"
-              alt="Card image cap"
-              src={logo}
-              width="100%"
-              height="auto"
-            />
-            <CardBody className="card-body--custom">
-              <CardTitle>Card title</CardTitle>
-              <Progress
-                className="progress--custom"
-                color="success"
-                value={63}
-              />
-              <Button className="view-btn">Button</Button>
-            </CardBody>
-          </Card>{" "}
-          <Card className="flex-row factory-card">
-            <CardImg
-              className="customer-page--img"
-              alt="Card image cap"
-              src={logo}
-              width="100%"
-              height="auto"
-            />
-            <CardBody className="card-body--custom">
-              <CardTitle>Card title</CardTitle>
-              <Progress
-                className="progress--custom"
-                color="success"
-                value={63}
-              />
-              <Button className="view-btn">Button</Button>
-            </CardBody>
-          </Card>
-        </CardGroup>
+          </Col>{" "}
+          <Col className="customer-card--col">
+            <CustomerCard title="Title" />
+          </Col>{" "}
+          <Col className="customer-card--col">
+            <CustomerCard title="Title" progress={50} />
+          </Col>{" "}
+          <Col className="customer-card--col">
+            <CustomerCard title="Title" />
+          </Col>
+        </div>
       </div>
     </>
   );
