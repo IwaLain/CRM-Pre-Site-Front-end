@@ -23,7 +23,7 @@ const LoginPage = () => {
         trigger,
     } = useForm();
 
-    const onSubmit = (data) => {
+    const onSubmit = () => {
         alert('success', 'Complete Login')
         reset();
     };

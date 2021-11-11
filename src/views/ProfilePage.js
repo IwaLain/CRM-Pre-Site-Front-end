@@ -7,7 +7,7 @@ const ProfilePage = () => {
             <Row>
                 <Col lg={12} className='p-5 pt-4'>
                     <Row className='profile__item'>
-                        <Col className='align-self-center' sm={6} lg={3}>
+                        <Col sm={6} lg={3}>
                             <Label className='profile__label'>Avatar</Label>
                         </Col>
                         <Col sm={6} lg={4} className='d-flex justify-content-center'>
@@ -19,7 +19,9 @@ const ProfilePage = () => {
                             <Label className='profile__label'>Username</Label>
                         </Col>
                         <Col lg={4}>
-                            <p className='profile__text'>Alakey123</p>
+                            <p className='profile__text form-control'>
+                                Alakey123
+                            </p>
                         </Col>
                     </Row>
                     <Row className='profile__item'>
@@ -27,7 +29,7 @@ const ProfilePage = () => {
                             <Label className='profile__label'>First Name</Label>
                         </Col>
                         <Col lg={4}>
-                            <p className='profile__text'>Alex</p>
+                            <p className='profile__text form-control'>Alex</p>
                         </Col>
                     </Row>
                     <Row className='profile__item'>
@@ -35,7 +37,7 @@ const ProfilePage = () => {
                             <Label className='profile__label'>Last Name</Label>
                         </Col>
                         <Col lg={4}>
-                            <p className='profile__text'>Shatailov</p>
+                            <p className='profile__text form-control'>Shatailov</p>
                         </Col>
                     </Row>
                     <Row className='profile__item'>
@@ -43,7 +45,7 @@ const ProfilePage = () => {
                             <Label className='profile__label'>Email Adress</Label>
                         </Col>
                         <Col lg={4}>
-                            <p className='profile__text'>samoran232@gmail.com</p>
+                            <p className='profile__text form-control'>samoran232@gmail.com</p>
                         </Col>
                     </Row>
                 </Col>

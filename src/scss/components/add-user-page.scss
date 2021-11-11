@@ -1,3 +1,5 @@
+@import "../scss-variables.scss";
+
 .addUser {
     padding: 20px;
 }
@@ -19,4 +21,14 @@
 
 .invalid {
     box-shadow: 0 0 1px 0 #F95B5B;
+}
+
+.addUser__submit {
+    background-color: $success !important;
+    border: none !important;
+}
+
+.addUser__cancel {
+    background-color: $default !important;
+    border: none !important;
 }

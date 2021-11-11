@@ -122,6 +122,9 @@ const AddUserPage = () => {
                                     <select
                                         className='form-control'
                                     >
+                                        <option value='' defaultChecked disabled>
+                                            Select role
+                                        </option>
                                         <option value='User'>
                                             User
                                         </option>
