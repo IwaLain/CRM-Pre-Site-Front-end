@@ -1,3 +1,4 @@
+import React from "react";
 import { Form, FormGroup, Label, Button, Col } from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "../scss/components/create-customer.scss";
@@ -22,7 +23,7 @@ const CreateCustomer = () => {
   };
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)} className="form--create-customer">
         <h1 className="page-title">Create Customer</h1>
         <FormGroup row>
           <Label for="customerTitle" sm={2}>
