@@ -21,7 +21,7 @@
   z-index: 50;
 }
 
-.dashboard .logo {
+.dashboard .logo-sidebar {
   margin-bottom: 35px;
 }
 
@@ -64,16 +64,12 @@
   position: relative;
   background: transparent;
   border: 0;
+  padding: 0;
+  border-radius: 50px;
 }
 
-.dashboard header .dropdown-menu a {
-  display: block;
-  text-decoration: none;
-  color: black;
-}
-
-.dashboard header .dropdown-menu a:active {
-  color: white;
+.dashboard header .profile-badge:hover {
+  box-shadow: 0 0 5px black;
 }
 
 .dashboard header .profile-badge:active, .dashboard header .profile-badge:focus{
@@ -86,6 +82,16 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.dashboard header .dropdown-menu a {
+    display: block;
+    text-decoration: none;
+    color: black;
+  }
+
+  .dashboard header .dropdown-menu a:active {
+    color: white;
+  }
 
 .dashboard header .burger-btn {
   border: 0;
