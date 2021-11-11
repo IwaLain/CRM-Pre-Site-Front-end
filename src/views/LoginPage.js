@@ -1,9 +1,17 @@
 import { useForm } from 'react-hook-form'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../scss/components/loginpage.scss';
+import '../scss/components/login-page.scss';
 import logo from '../assets/img/company.png'
-import { Button, Card, Col, Container, Form, FormGroup, Row, CardImg, CardBody } from 'reactstrap'
+import { Button,
+         Card,
+         Col,
+         Container,
+         Form,
+         FormGroup,
+         Row,
+         CardImg,
+         CardBody } from 'reactstrap'
 import { alert } from '../js/methods/alert';
 
 const LoginPage = () => {
@@ -14,14 +22,14 @@ const LoginPage = () => {
         reset,
         trigger,
       } = useForm();
-    
+
       const onSubmit = (data) => {
         console.log(data);
 
         alert('success', 'Complete Login')
         reset();
       };
-    
+
       return (
         <Container fluid className='bg_login'>
           <Row className="vh-100 justify-content-sm-center align-items-center">
@@ -40,8 +48,8 @@ const LoginPage = () => {
                             <input
                                 type="text"
                                 placeholder='User Name ...'
-                                className={`form-control ${errors.name && "invalid"}`}
-                                {...register("username", { 
+                                className={`form-control ${errors.username && "invalid"}`}
+                                {...register("username", {
                                     required: "UserName is Required",
                                     min: {
                                         value: 3,
@@ -62,19 +70,19 @@ const LoginPage = () => {
                                 placeholder='Password ...'
                                 className={`form-control ${errors.password && "invalid"}`}
                                 {...register("password", {
-                                required: "Password is Required",
-                                min: {
-                                    value: 4,
-                                    message: "Minimum 6 simvols",
-                                },
-                                max: {
-                                    value: 16,
-                                    message: "Maximum 16 simvols",
-                                },
-                                pattern: {
-                                    value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
-                                    message: "Password should contain atleast one number and one special character",
-                                }
+                                    required: "Password is Required",
+                                    min: {
+                                        value: 4,
+                                        message: "Minimum 6 simvols",
+                                    },
+                                    max: {
+                                        value: 16,
+                                        message: "Maximum 16 simvols",
+                                    },
+                                    pattern: {
+                                        value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+                                        message: "Password should contain atleast one number and one special character",
+                                    }
                                 })}
                                 onKeyUp={() => {
                                     trigger("password");
@@ -85,7 +93,7 @@ const LoginPage = () => {
                             )}
                             </FormGroup>
                             <FormGroup className='d-flex justify-content-sm-end pt-1'>
-                                <Button 
+                                <Button
                                     color="primary"
                                 >
                                     Login

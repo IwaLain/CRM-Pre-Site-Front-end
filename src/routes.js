@@ -1,6 +1,8 @@
 import CustomerPage from "./views/CustomerPage";
 import ProfilePage from "./views/ProfilePage";
 import LoginPage from "./views/LoginPage";
+import UsersPage from "./views/UsersPage";
+import AddUserPage from "./views/AddUserPage";
 
 const routes = {
     auth: [
@@ -20,6 +22,16 @@ const routes = {
             path: '/dashboard/profile',
             name: 'Profile Page',
             component: ProfilePage
+        },
+        {
+            path: '/dashboard/users',
+            name: 'Users Page',
+            component: UsersPage
+        },
+        {
+            path: '/dashboard/add-user-page',
+            name: 'Add User',
+            component: AddUserPage
         }
     ]
 }
