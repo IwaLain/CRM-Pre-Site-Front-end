@@ -4,6 +4,8 @@ import LoginPage from "./views/LoginPage";
 import UsersPage from "./views/UsersPage";
 import AddUserPage from "./views/AddUserPage";
 import CreateCustomer from "./views/CreateCustomer";
+import Customers from "./views/Customers";
+
 const routes = {
   auth: [
     {
@@ -14,7 +16,7 @@ const routes = {
   ],
   dashboard: [
     {
-      path: "/dashboard/customer-page",
+      path: "/dashboard/customer",
       name: "Customer Page",
       component: CustomerPage,
     },
@@ -29,7 +31,7 @@ const routes = {
       component: UsersPage,
     },
     {
-      path: "/dashboard/add-user-page",
+      path: "/dashboard/add-user",
       name: "Add User",
       component: AddUserPage,
     },
@@ -38,6 +40,11 @@ const routes = {
       name: "Customer Create",
       component: CreateCustomer,
     },
+    {
+        path: "/dashboard/customers",
+        name: "Customers",
+        component: Customers,
+      }
   ],
 };
 
