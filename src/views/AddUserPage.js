@@ -1,9 +1,8 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import { Button, Col, Container, Form, small, Label, Row } from "reactstrap"
+import { Button, Col, Container, Form, Label, Row } from "reactstrap"
 import '../scss/components/add-user-page.scss'
 import { alert } from '../js/methods/alert';
-import { ToastContainer } from 'react-toastify';
 
 const AddUserPage = () => {
     const {
@@ -154,7 +153,6 @@ const AddUserPage = () => {
                         </Form>
                     </Col>
                 </Row>
-                <ToastContainer position='bottom-right'/>
             </Container>
         </div>
     )
