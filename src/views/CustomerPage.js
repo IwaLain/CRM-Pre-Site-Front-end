@@ -17,7 +17,11 @@ const CustomerPage = () => {
       <div className="customer-page--container"></div>
       <div className="d-flex align-items-center customer-page--header">
         <div className="img-container">
-          <img src={logo} alt="company img"></img>
+          <img
+            src={logo}
+            alt="company img"
+            className="customer-page--img"
+          ></img>
         </div>
         <h1 className="page-title">Customer Page Title</h1>
       </div>
@@ -40,7 +44,7 @@ const CustomerPage = () => {
         <CardGroup>
           <Card className="flex-row factory-card">
             <CardImg
-              className=" custom"
+              className="customer-page--img"
               alt="Card image cap"
               src={logo}
               width="100%"
@@ -58,7 +62,7 @@ const CustomerPage = () => {
           </Card>{" "}
           <Card className="flex-row factory-card">
             <CardImg
-              className=" custom"
+              className="customer-page--img"
               alt="Card image cap"
               src={logo}
               width="100%"
@@ -76,7 +80,7 @@ const CustomerPage = () => {
           </Card>{" "}
           <Card className="flex-row factory-card">
             <CardImg
-              className=" custom"
+              className="customer-page--img"
               alt="Card image cap"
               src={logo}
               width="100%"
