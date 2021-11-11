@@ -3,7 +3,6 @@ import { Form, FormGroup, Label, Button, Col } from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "../scss/components/create-customer.scss";
 import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
 import { alert } from "../js/methods/alert";
 
 const CreateCustomer = () => {
@@ -151,7 +150,6 @@ const CreateCustomer = () => {
           </Col>
         </FormGroup>
       </Form>{" "}
-      <ToastContainer position="bottom-right" />
     </>
   );
 };

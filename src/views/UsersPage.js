@@ -22,7 +22,7 @@ const UsersPage = () => {
                     <h3 className='users__title'>Users</h3>
                 </Col>
                 <Col md={6} sm={6} xs={6}>
-                    <NavLink to='/dashboard/add-user-page'>
+                    <NavLink to='/dashboard/add-user'>
                         <Button>Add User<img className='users__title-img' src={star} alt="star"/></Button>
                     </NavLink>
                 </Col>

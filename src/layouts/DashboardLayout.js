@@ -1,6 +1,7 @@
 import '../scss/components/dashboard.scss'
 import star from '../assets/img/star.svg'
 import { useContext, useEffect, useState } from 'react'
+import { ToastContainer } from 'react-toastify'
 import { Link, useLocation } from 'react-router-dom'
 import { Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap'
 import logo from '../assets/img/company.png'
@@ -139,6 +140,7 @@ const DashboardLayout = ({ children }) => {
                         </nav>
                         {children}
                     </main>
+                    <ToastContainer position='bottom-right'/>
                 </section>
             </div>
         </div>
