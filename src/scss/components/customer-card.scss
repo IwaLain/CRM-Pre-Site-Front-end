@@ -1,33 +1,75 @@
-.col.customer-card--col {
-  max-width: 500px;
+@import "../scss-variables.scss";
+
+.customer-card_group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 10px;
 }
-.customer--card-body .view-btn {
-  margin-top: auto;
+
+.customer-card {
+  display: flex;
+  border: 1px solid black;
+  min-width: 400px;
 }
-.progress.customer-card--progress {
-  margin-top: auto;
-  // margin-bottom: 5px;
+
+.customer-card > img {
+  height: 120px;
 }
-.img-fluid.customer-card--img {
+
+.customer-card__body {
+  display: flex;
+  flex-direction: column;
+  padding: 9px;
+  width: 100%;
+}
+
+.customer-card__body > * {
+  margin-bottom: 20px;
+}
+
+.customer-card__body > .progress {
+  width: 100%;
+  height: 7px;
+}
+
+.customer-card__body > .progress > .progress-bar {
+  background-color: $success;
+}
+
+.customer-card__body > a {
+  display: block;
+  margin-bottom: 0;
+  text-decoration: none;
+  color: black;
+  background-color: $default;
+  border: 1px solid $default;
+  text-align: center;
+  font-weight: 700;
+  width: 100%;
+}
+
+.customer-card__body > a:hover {
+  border: 1px solid black;
+  color: black;
+}
+
+/* Dense style */
+.customer-card_group.dense {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  justify-items: center;
+}
+
+.customer-card_group.dense > .customer-card {
+  flex-direction: column;
+  min-width: 0;
+  width: 200px;
+}
+
+.customer-card_group.dense > .customer-card > img {
   width: 100%;
   height: 100%;
 }
-.card-body.customer--card-body {
-  height: 100%;
-  padding: 5px;
-}
-@media screen and (min-width: 768px) {
-  .card-body.customer--card-body {
-    height: 80px;
-  }
-  .progress.customer-card--progress {
-    height: 7px;
-  }
-  .row .customer-card--row {
-    width: 180px;
-  }
-}
-.btn.view-btn {
-  padding-top: 1px;
-  padding-bottom: 1px;
+
+.customer-card_group.dense > .customer-card > .customer-card__body > h4 {
+  height: 54px;
 }

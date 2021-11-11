@@ -1,37 +1,19 @@
-import { Button, CardBody, Card, Progress, Col } from "reactstrap";
-import React from "react";
-import "../scss/components/customer-card.scss";
-const CustomerCard = (props) => {
-  const { title, image, progress } = props;
-  return (
-    <>
-      {" "}
-      <Card className="customer-card">
-        <div className="row g-0 customer-card--row">
-          {" "}
-          <Col className="col-4">
-            <img
-              src={image ? image : "//placehold.it/100"}
-              className="img-fluid  customer-card--img "
-              alt="..."
-            />
-          </Col>
-          <Col className="col-8">
-            <CardBody className="customer--card-body d-flex flex-column">
-              <h5 className="">{title}</h5>{" "}
-              {progress && (
-                <Progress
-                  className="customer-card--progress"
-                  color="success"
-                  value={progress}
-                />
-              )}{" "}
-              <Button className="view-btn btn-sm ">View</Button>
-            </CardBody>
-          </Col>{" "}
+import placeholder from '../assets/img/company.png'
+import { Progress } from 'reactstrap'
+import { Link } from 'react-router-dom'
+import '../scss/components/customer-card.scss'
+
+const CustomerCard = ({ image, title, progress, id }) => {
+    return(
+        <div className='customer-card'>
+            <img src={image ? image : placeholder} alt="customer"/>
+            <div className="customer-card__body">
+                <h4>{title}</h4>
+                    <Progress style={!progress ? { visibility: 'hidden' } : {}} value={progress}/>
+                <Link to={`/dashboard/customer/${id}`}>View</Link>
+            </div>
         </div>
-      </Card>
-    </>
-  );
-};
-export default CustomerCard;
+    )
+}
+
+export default CustomerCard

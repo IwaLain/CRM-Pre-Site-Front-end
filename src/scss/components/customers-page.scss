@@ -4,6 +4,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .customers__options {
@@ -26,7 +27,7 @@
 }
 
 .customers__options_btns > .customers__add-btn {
-  background-color: $success;
+  background-color: $btn-primary;
   color: white;
 }
 
@@ -43,8 +44,23 @@
   box-shadow: 0 0 5px black;
 }
 
-.customers .progress {
-  max-width: 200px;
+.customers table .progress > .progress-bar {
+  background-color: $success;
+}
+
+.customers table a {
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+  padding: 5px 20px;
+  background-color: $default;
+  border: 1px solid $default;
+  border-radius: 4px;
+}
+
+.customers table a:hover {
+  border: 1px solid black;
 }
 
 @media (max-width: 440px) {
@@ -55,6 +71,10 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+.customers table td {
+  padding: 2px;
 }
 }
 

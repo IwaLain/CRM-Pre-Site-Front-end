@@ -1,34 +1,24 @@
 import '../scss/components/dashboard.scss'
 import star from '../assets/img/star.svg'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap'
 import logo from '../assets/img/company.png'
 import Close from '../components/Close'
+import { SizeContext } from '../context'
 
 const DashboardLayout = ({ children }) => {
-    const MOBILE_SIZE = 1024
+    const MOBILE_SIZE = 1074
+
+    const { size } = useContext(SizeContext)
 
     const [links, setLinks] = useState([])
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [isMobile, setIsMobile] = useState(window.innerWidth <= MOBILE_SIZE)
     const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth <= MOBILE_SIZE)
     const [sidebarNeeded, setSidebarNeeded] = useState(true)
+
     const location = useLocation()
-
-    const handleResize = () => {
-        if (window.innerWidth <= MOBILE_SIZE) {
-            setIsMobile(true)
-            setSidebarCollapsed(true)
-        } else {
-            setIsMobile(false)
-            setSidebarCollapsed(false)
-        }
-    }
-
-    const sidebarNeededToggle = () => {
-        setSidebarNeeded(!sidebarNeeded)
-    }
 
     const toggle = () => {
         setDropdownOpen(!dropdownOpen)
@@ -53,10 +43,6 @@ const DashboardLayout = ({ children }) => {
     }
 
     useEffect(() => {
-        window.addEventListener('resize', handleResize);
-    }, [])
-
-    useEffect(() => {
         setLinks(toLinks(location.pathname))
         if(location.pathname === '/dashboard/customers') {
             setSidebarNeeded(false)
@@ -65,6 +51,16 @@ const DashboardLayout = ({ children }) => {
             setSidebarNeeded(true)
         }
     }, [location])
+
+    useEffect(() => {
+        if (size <= MOBILE_SIZE) {
+            setIsMobile(true)
+            setSidebarCollapsed(true)
+        } else {
+            setIsMobile(false)
+            setSidebarCollapsed(false)
+        }
+    }, [size])
 
     return (
         <div className="dashboard container-fluid">

@@ -4,7 +4,7 @@ import LoginPage from "./views/LoginPage";
 import UsersPage from "./views/UsersPage";
 import AddUserPage from "./views/AddUserPage";
 import CreateCustomer from "./views/CreateCustomer";
-import Customers from "./views/Customers";
+import CustomersPage from "./views/CustomersPage";
 
 const routes = {
   auth: [
@@ -43,7 +43,7 @@ const routes = {
     {
         path: "/dashboard/customers",
         name: "Customers",
-        component: Customers,
+        component: CustomersPage,
       }
   ],
 };
