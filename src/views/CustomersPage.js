@@ -1,17 +1,14 @@
 import '../scss/components/customers-page.scss'
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { Table, Progress } from 'reactstrap'
 import CustomerCard from '../components/CustomerCard'
 import { Link, useHistory } from 'react-router-dom'
-import { SizeContext } from '../context'
 
 const CustomersPage = () => {
     const [view, setView] = useState(true)
     const [customers, setCustomers] = useState([])
 
     const history = useHistory()
-
-    const { size } = useContext(SizeContext)
 
     const toggleView = () => {
         setView(!view)
@@ -74,7 +71,7 @@ const CustomersPage = () => {
                         }
                     </tbody>
                     </Table> :
-                    <div className={size > 440 ? 'customer-card_group' : 'customer-card_group dense'}>
+                    <div className={window.innerWidth > 440 ? 'customer-card_group' : 'customer-card_group dense'}>
                         {customers.length > 0 ? customers.map((customer) => (
                             <CustomerCard key={customer.id} title={customer.name} id={customer.id} progress="5"/>
                         )) :
