@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Container, Row, Table } from 'reactstrap'
+import {
+        Button,
+        Col,
+        Container,
+        Row,
+        Table
+    } from 'reactstrap'
 import star from '../assets/img/star.svg'
 import edite from '../assets/img/edite.svg'
 import '../scss/components/users-page.scss'
@@ -16,7 +22,7 @@ const UsersPage = () => {
     }, [])
 
     return (
-        <Container>
+        <>
             <Row className='align-items-center justify-content-xs-between'>
                 <Col md={2} sm={2} xs={6}>
                     <h3 className='users__title'>Users</h3>
@@ -47,7 +53,12 @@ const UsersPage = () => {
                                     <th>{user.phone}</th>
                                     <th>Admin</th>
                                     <th>
-                                        <img className='users__table-img' src={edite} alt="edite" />
+                                        <img
+                                            className='users__table-img'
+                                            src={edite}
+                                            alt="edite"
+
+                                        />
                                     </th>
                                 </tr>
                             ))}
@@ -55,7 +66,7 @@ const UsersPage = () => {
                     </Table>
                 </Col>
             </Row>
-        </Container>
+        </>
     )
 }
 

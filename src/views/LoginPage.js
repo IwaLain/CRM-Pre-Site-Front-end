@@ -11,6 +11,7 @@ import { Card,
          CardImg,
          CardBody } from 'reactstrap'
 import { alert } from '../js/methods/alert';
+import { ToastContainer } from 'react-toastify';
 
 const LoginPage = () => {
     const {
@@ -27,7 +28,7 @@ const LoginPage = () => {
     };
 
     return (
-        <Container fluid className='bg__login'>
+        <Container fluid className='login__bg'>
             <Row className="vh-100 justify-content-sm-center align-items-center">
                 <Col sm={8} md={6} lg={4}>
                     <Card className='px-3'>
@@ -105,6 +106,7 @@ const LoginPage = () => {
                     </Card>
                 </Col>
             </Row>
+            <ToastContainer position='bottom-right'/>
         </Container>
     );
 }
