@@ -5,6 +5,7 @@ import UsersPage from "./views/UsersPage";
 import AddUserPage from "./views/AddUserPage";
 import CreateCustomer from "./views/CreateCustomer";
 import CustomersPage from "./views/CustomersPage";
+import CustomerFactoryPage from "./views/CustomerFactoryPage";
 
 const routes = {
   auth: [
@@ -41,10 +42,15 @@ const routes = {
       component: CreateCustomer,
     },
     {
-        path: "/dashboard/customers",
-        name: "Customers",
-        component: CustomersPage,
-      }
+      path: "/dashboard/customers",
+      name: "Customers",
+      component: CustomersPage,
+    },
+    {
+      path: "/dashboard/customer-factory",
+      name: "Customer Page Factory",
+      component: CustomerFactoryPage,
+    },
   ],
 };
 
