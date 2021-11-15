@@ -28,7 +28,7 @@ const AddUserPage = () => {
                         onSubmit={handleSubmit(onSubmit)}
                     >
                         <Row className='addUser__item mt-3'>
-                            <Col md={2}>
+                            <Col md={2} lg={1}>
                                 <Label className='addUser__label'>Username</Label>
                             </Col>
                             <Col md={4}>
@@ -53,7 +53,7 @@ const AddUserPage = () => {
                             </Col>
                         </Row>
                         <Row className='addUser__item'>
-                            <Col md={2}>
+                            <Col md={2} lg={1}>
                                 <Label className='addUser__label'>Email</Label>
                             </Col>
                             <Col md={4}>
@@ -83,7 +83,7 @@ const AddUserPage = () => {
                             </Col>
                         </Row>
                         <Row className='addUser__item'>
-                            <Col md={2}>
+                            <Col md={2} lg={1}>
                                 <Label className='addUser__label'>Phone</Label>
                             </Col>
                             <Col md={4}>
@@ -113,7 +113,7 @@ const AddUserPage = () => {
                             </Col>
                         </Row>
                         <Row className='addUser__item'>
-                            <Col md={2}>
+                            <Col md={2} lg={1}>
                                 <Label className='addUser__label'>Role</Label>
                             </Col>
                             <Col md={4}>
@@ -134,7 +134,7 @@ const AddUserPage = () => {
                             </Col>
                         </Row>
                         <FormGroup className='addUser__item mt-5'>
-                            <Col md={{offset: 2, size: 2}}>
+                            <Col md={{offset: 2, size: 2}} lg={{offset: 1, size: 2}}>
                                 <Button className='addUser__submit'>Submit</Button>
                             </Col>
                             <Col md={3}>

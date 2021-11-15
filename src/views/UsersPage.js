@@ -10,15 +10,21 @@ import star from '../assets/img/star.svg'
 import edite from '../assets/img/edite.svg'
 import '../scss/components/users-page.scss'
 import { NavLink } from 'react-router-dom'
+import { api } from '../api'
+
+const token = 'VkYrrFC-Ha8SU2YqfOrj1ug5iBH7MujnnaubuYJYNe79ePtz4Exswc7PJdZxQXYG'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-        const getUsers = () => fetch('https://jsonplaceholder.typicode.com/users')
-        .then(res => res.json())
-        .then(data => setUsers(data))
-        getUsers()
+        const configs = {
+            method: 'GET',
+            url: 'http://crm.local',
+            token: 'VkYrrFC-Ha8SU2YqfOrj1ug5iBH7MujnnaubuYJYNe79ePtz4Exswc7PJdZxQXYG',
+            path: '/api/customer?access-token='
+        }
+        api(configs).then(data => setUsers(data.customers))
     }, [])
 
     return (
@@ -48,7 +54,7 @@ const UsersPage = () => {
                         <tbody className='customerTable'>
                             {users.map(user => (
                                 <tr key={user.id}>
-                                    <th>{user.username}</th>
+                                    <th>{user.name}</th>
                                     <th>{user.email}</th>
                                     <th>{user.phone}</th>
                                     <th>Admin</th>
@@ -57,7 +63,7 @@ const UsersPage = () => {
                                             className='users__table-img'
                                             src={edite}
                                             alt="edite"
-
+                                            onClick={() => alert('Ok')}
                                         />
                                     </th>
                                 </tr>
