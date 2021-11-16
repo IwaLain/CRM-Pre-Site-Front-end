@@ -36,12 +36,25 @@ const CustomerFactoryPage = () => {
   return (
     <>
       <div className="d-flex align-items-center customer-page--header">
-        <div className="main-img--container">
+        <div className="img-container">
           <img
-            src={logo}
+            src={factoryImage}
             alt="company img "
             className="customer-page--img"
-          ></img>
+          ></img>{" "}
+          <div className="image-upload">
+            <label htmlFor="factoryImg">
+              {" "}
+              <span className="remove-img"></span>
+            </label>
+            <input
+              id="factoryImg"
+              type="file"
+              name="myfile"
+              accept="image/*"
+              onInput={editImage}
+            />
+          </div>
         </div>
         <h1 className="page-title">Customer Page Title</h1>
       </div>
