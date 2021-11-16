@@ -1,14 +1,19 @@
-import "../scss/components/customers-page.scss";
+import "./customers-page.scss";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import CustomerCard from "../components/CustomerCard";
-import CustomersTable from "../components/CustomersTable";
+import CustomerCard from "../../CustomerCard/CustomerCard";
+import CustomersTable from "../../CustomersTable/CustomersTable";
 
 const CustomersPage = () => {
   const [view, setView] = useState(true);
   const [customers, setCustomers] = useState([]);
+  const [screenSize, SetScreenSize] = useState(window.innerWidth);
 
   const history = useHistory();
+
+  const handleResize = () => {
+    SetScreenSize(window.innerWidth);
+  };
 
   const toggleView = () => {
     setView(!view);
@@ -18,6 +23,8 @@ const CustomersPage = () => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((res) => res.json())
       .then((data) => setCustomers(data));
+
+    window.addEventListener("resize", handleResize);
   }, []);
 
   return (
@@ -76,7 +83,7 @@ const CustomersPage = () => {
         ) : (
           <div
             className={
-              window.innerWidth > 440
+              screenSize > 440
                 ? "customer-card_group"
                 : "customer-card_group dense"
             }

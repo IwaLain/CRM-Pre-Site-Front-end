@@ -1,7 +1,7 @@
 import { List, ListInlineItem, Col } from "reactstrap";
 import logo from "../assets/img/company.png";
 import "../scss/components/customer-page.scss";
-import CustomerCard from "../components/CustomerCard";
+import CustomerCard from "../components/CustomerCard/CustomerCard";
 const CustomerPage = () => {
   return (
     <>

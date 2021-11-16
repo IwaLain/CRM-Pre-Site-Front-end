@@ -1,5 +1,5 @@
-import logo from "../assets/img/company.png";
-import closeBtnStyles from "../scss/components/close-btn.module.scss";
+import logo from "../../assets/img/company.png";
+import closeBtnStyles from "./close-btn.module.scss";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({ isMobile, sidebarNeeded, toggleSidebar }) => {

@@ -1,7 +1,7 @@
-import placeholder from "../assets/img/company.png";
+import placeholder from "../../assets/img/company.png";
 import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
-import "../scss/components/customer-card.scss";
+import "./customer-card.scss";
 
 const CustomerCard = ({ image, title, progress, id }) => {
   return (

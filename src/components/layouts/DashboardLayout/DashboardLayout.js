@@ -1,10 +1,10 @@
 import React from "react";
-import "../scss/components/dashboard.scss";
+import "./dashboard.scss";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import Header from "../../Header/Header";
+import Sidebar from "../../Sidebar/Sidebar";
 
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 1074;

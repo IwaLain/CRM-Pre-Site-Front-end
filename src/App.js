@@ -1,44 +1,39 @@
-import { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
-import DashboardLayout from './layouts/DashboardLayout'
-import NotFoundPage from './views/NotFoundPage'
-import routes from './routes'
-import { SizeContext } from './context'
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
+import DashboardLayout from "./components/layouts/DashboardLayout/DashboardLayout";
+import NotFoundPage from "./views/NotFoundPage";
+import routes from "./routes";
 
 const App = () => {
-  const [size, setSize] = useState(window.innerWidth)
-
-  const handleResize = () => {
-    setSize(window.innerWidth)
-  }
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize)
-  }, [])
-
   return (
-    <SizeContext.Provider value={{ size }}>
-        <Router>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Redirect to="/login" />
+        </Route>
+        {routes.auth.map(({ path, component }, index) => {
+          return <Route key={index} path={path} component={component} />;
+        })}
+        <Route path="/dashboard/:path?" exact>
+          <DashboardLayout>
             <Switch>
-                <Route exact path="/"><Redirect to="/login"/></Route>
-                {routes.auth.map(({ path, component }, index) => {
-                return <Route key={index} path={path} component={component}/>
-                })}
-                <Route path='/dashboard/:path?' exact>
-                <DashboardLayout>
-                <Switch>
-                    <Route exact path='/dashboard'><Redirect to="/dashboard/customers"/></Route>
-                    {routes.dashboard.map(({ path, component }, index) => {
-                    return <Route key={index} path={path} component={component}/>
-                    })}
-                </Switch>
-                </DashboardLayout>
-                </Route>
-                <Route component={NotFoundPage}/>
+              <Route exact path="/dashboard">
+                <Redirect to="/dashboard/customers" />
+              </Route>
+              {routes.dashboard.map(({ path, component }, index) => {
+                return <Route key={index} path={path} component={component} />;
+              })}
             </Switch>
-        </Router>
-    </SizeContext.Provider>
+          </DashboardLayout>
+        </Route>
+        <Route component={NotFoundPage} />
+      </Switch>
+    </Router>
   );
-}
+};
 
 export default App;

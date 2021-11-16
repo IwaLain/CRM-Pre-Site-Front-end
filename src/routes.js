@@ -4,8 +4,8 @@ import LoginPage from "./views/LoginPage";
 import UsersPage from "./views/UsersPage";
 import AddUserPage from "./views/AddUserPage";
 import CreateCustomer from "./views/CreateCustomer";
-import CustomersPage from "./views/CustomersPage";
 import CustomerFactoryPage from "./views/CustomerFactoryPage";
+import CustomersPage from "./components/pages/CustomersPage/CustomersPage";
 
 const routes = {
   auth: [
