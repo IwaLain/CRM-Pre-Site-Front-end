@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import {
         Button,
         Col,
-        Container,
         Row,
         Table
     } from 'reactstrap'
@@ -10,21 +9,13 @@ import star from '../assets/img/star.svg'
 import edite from '../assets/img/edite.svg'
 import '../scss/components/users-page.scss'
 import { NavLink } from 'react-router-dom'
-import { api } from '../api'
-
-const token = 'VkYrrFC-Ha8SU2YqfOrj1ug5iBH7MujnnaubuYJYNe79ePtz4Exswc7PJdZxQXYG'
+import { getUsersAPI } from '../js/api/api'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-        const configs = {
-            method: 'GET',
-            url: 'http://crm.local',
-            token: 'VkYrrFC-Ha8SU2YqfOrj1ug5iBH7MujnnaubuYJYNe79ePtz4Exswc7PJdZxQXYG',
-            path: '/api/customer?access-token='
-        }
-        api(configs).then(data => setUsers(data.customers))
+        getUsersAPI().then(data => setUsers(data))
     }, [])
 
     return (

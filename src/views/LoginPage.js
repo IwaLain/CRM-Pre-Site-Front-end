@@ -12,7 +12,7 @@ import { Card,
          CardBody } from 'reactstrap'
 import { alert } from '../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
-
+import { loginAPI } from '../js/api/api';
 const LoginPage = () => {
     const {
         register,
@@ -22,9 +22,15 @@ const LoginPage = () => {
         trigger,
     } = useForm();
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+
+        let data = {
+            'username': e.username,
+            'password': e.password
+        }
+        
+        loginAPI(data).then(data => console.log(data))
         alert('success', 'Complete Login')
-        reset();
     };
 
     return (
@@ -40,13 +46,14 @@ const LoginPage = () => {
                                     className='login__img'
                                 />
                             </div>
-                            <Form onSubmit={handleSubmit(onSubmit)}>
+                            <Form onClick={handleSubmit(onSubmit)}>
                                 <Row>
                                     <FormGroup>
                                         <input
                                             type="text"
                                             placeholder='User Name ...'
-                                            autocomplete="off"
+                                            autoComplete="off" 
+                                            name='username'
                                             className={`form-control ${errors.username && "invalid"}`}
                                             {...register("username", {
                                                 required: "UserName is Required",
@@ -56,7 +63,8 @@ const LoginPage = () => {
                                                 }
                                             })}
                                             onKeyUp={() => {
-                                                trigger("username");
+                                                trigger("username")
+
                                             }}
                                         />
                                         {errors.username && (
@@ -69,6 +77,7 @@ const LoginPage = () => {
                                         <input
                                             type="password"
                                             placeholder='Password ...'
+                                            name='password'
                                             className={`form-control ${errors.password && "invalid"}`}
                                             {...register("password", {
                                                 required: "Password is Required",
@@ -96,7 +105,8 @@ const LoginPage = () => {
                                 </Row>
                                 <Row>
                                     <FormGroup className='d-flex justify-content-end'>
-                                        <button className='login__btn'>
+                                        <button
+                                         className='login__btn'>
                                             Login
                                         </button>
                                     </FormGroup>
