@@ -13,6 +13,7 @@ const CreateCustomer = () => {
       formFields={formFields}
       formName="Create Customer"
       addFieldBtn={true}
+      attachedImages={true}
     ></FormComponent>
   );
 };
