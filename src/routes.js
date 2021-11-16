@@ -6,6 +6,8 @@ import AddUserPage from "./views/AddUserPage";
 import CreateCustomer from "./views/CreateCustomer";
 import CustomerFactoryPage from "./views/CustomerFactoryPage";
 import CustomersPage from "./components/pages/CustomersPage/CustomersPage";
+import FacilitiesPage from "./components/pages/FacilitiesPage/FacilitiesPage";
+import EquipmentPage from "./components/pages/EquipmentPage/EquipmentPage";
 
 const routes = {
   auth: [
@@ -50,6 +52,16 @@ const routes = {
       path: "/dashboard/customer-factory",
       name: "Customer Page Factory",
       component: CustomerFactoryPage,
+    },
+    {
+      path: "/dashboard/facilities",
+      name: "Facilities",
+      component: FacilitiesPage,
+    },
+    {
+      path: "/dashboard/equipment",
+      name: "equipment",
+      component: EquipmentPage,
     },
   ],
 };

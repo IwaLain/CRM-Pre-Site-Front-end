@@ -114,11 +114,3 @@
 .dashboard main {
   padding: 15px;
 }
-
-.dashboard main .breadcrumb-item + .breadcrumb-item::before {
-  content: var(--bs-breadcrumb-divider, "-");
-}
-
-.dashboard main .breadcrumb-item:last-child {
-  font-weight: 700;
-}

@@ -48,10 +48,10 @@ const Sidebar = ({ isMobile, sidebarNeeded, toggleSidebar }) => {
       <nav>
         <ul>
           <li>
-            <Link to="/dashboard">Facilities</Link>
+            <Link to="/dashboard/facilities">Facilities</Link>
           </li>
           <li>
-            <Link to="/dashboard">Equipment</Link>
+            <Link to="/dashboard/equipment">Equipment</Link>
           </li>
         </ul>
       </nav>

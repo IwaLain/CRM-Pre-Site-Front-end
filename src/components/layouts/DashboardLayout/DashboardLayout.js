@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import Header from "../../Header/Header";
 import Sidebar from "../../Sidebar/Sidebar";
+import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 1074;
@@ -81,18 +82,7 @@ const DashboardLayout = ({ children }) => {
             toggleSidebar={toggleSidebar}
           />
           <main>
-            <nav aria-label="breadcrumb">
-              <ol className="breadcrumb">
-                {links &&
-                  links.map((link) => {
-                    return (
-                      <li key={link} className="breadcrumb-item">
-                        {link}
-                      </li>
-                    );
-                  })}
-              </ol>
-            </nav>
+            <Breadcrumbs />
             {children}
           </main>
           <ToastContainer position="bottom-right" />
