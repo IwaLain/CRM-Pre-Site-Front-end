@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, FormGroup, Label, Button, Col } from "reactstrap";
 import { useForm } from "react-hook-form";
 import FieldComponent from "./FieldComponent";
 import { alert } from "../js/methods/alert";
 import "react-toastify/dist/ReactToastify.css";
-const FormComponent = (props) => {
-  const formProps = [
-    { name: "title", type: "text", defaultValue: "default", id: "id-1" },
-  ];
+import "../scss/components/form-component.scss";
+const FormComponent = ({ formFields, formName, addFieldBtn }) => {
+  const [inputFields, setInputFields] = useState(formFields);
   const {
     register,
     handleSubmit,
@@ -19,12 +18,27 @@ const FormComponent = (props) => {
     alert("success", "Success save");
     reset();
   };
+  const addFieldHandler = () => {
+    setInputFields((oldArray) => {
+      const newElement = {
+        id: oldArray.length + 1,
+        name: "Label title",
+        type: "text",
+        register: register,
+        trigger: trigger,
+        errors: errors,
+      };
+
+      return [...oldArray, newElement];
+    });
+  };
   return (
     <>
-      <h1>Form</h1>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        {formProps.map((field, i) => (
+      <h1>{formName}</h1>
+      <Form onSubmit={handleSubmit(onSubmit)} className="form--create-customer">
+        {inputFields.map((field, i) => (
           <FieldComponent
+            key={i}
             name={field.name}
             id={field.id}
             type={field.type}
@@ -34,6 +48,15 @@ const FormComponent = (props) => {
             errors={errors}
           />
         ))}{" "}
+        {addFieldBtn && (
+          <FormGroup row>
+            <Col sm={2}>
+              <Button color="primary" onClick={addFieldHandler}>
+                Add field
+              </Button>
+            </Col>
+          </FormGroup>
+        )}
         <FormGroup row>
           {" "}
           <Col sm={10}>
