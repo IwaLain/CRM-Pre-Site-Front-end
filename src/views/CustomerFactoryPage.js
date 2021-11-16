@@ -19,6 +19,8 @@ const CustomerFactoryPage = () => {
     { id: "1", src: logo },
     { id: "2", src: logo },
   ];
+  const [factoryImage, setFactoryImage] = useState(logo);
+
   const [inputFields, setInputFields] = useState(inputsArray);
   const [attachedImages, setAttachedImages] = useState(initialImages);
   const {
@@ -46,19 +48,23 @@ const CustomerFactoryPage = () => {
   };
   const removeImageHandler = (e) => {
     const imgContainer = e.target.parentNode;
-    const img = imgContainer.querySelector(".factory-img");
+    const img = imgContainer.querySelector("img");
 
     const id = img.id;
+    console.log(id);
     setAttachedImages(attachedImages.filter((item) => item.id !== id));
   };
+  const editImage = (e) => {
+    const src = e.target.value;
+    setFactoryImage(src);
+  };
   const addImageHandler = (e) => {
-    setAttachedImages((oldArray) => {
-      const newElement = {
-        id: oldArray.length + 1,
-        src: e.target.value,
-      };
-      return [...oldArray, newElement];
-    });
+    const newElement = {
+      id: `${attachedImages.length + 1}`,
+      src: e.target.value,
+    };
+    e.target.value = "";
+    setAttachedImages((attachedImages) => [...attachedImages, newElement]);
   };
 
   return (
@@ -67,10 +73,23 @@ const CustomerFactoryPage = () => {
       <div className="d-flex align-items-center customer-page--header">
         <div className="img-container">
           <img
-            src={logo}
+            src={factoryImage}
             alt="company img "
             className="customer-page--img"
-          ></img>
+          ></img>{" "}
+          <div className="image-upload">
+            <label htmlFor="factoryImg">
+              {" "}
+              <span className="remove-img"></span>
+            </label>
+            <input
+              id="factoryImg"
+              type="file"
+              name="myfile"
+              accept="image/*"
+              onInput={editImage}
+            />
+          </div>
         </div>
         <h1 className="page-title">Customer Page Title</h1>
       </div>
@@ -98,7 +117,7 @@ const CustomerFactoryPage = () => {
           className="form--create-customer"
         >
           {inputFields &&
-            inputFields.map((field) => (
+            inputFields.map((field, i) => (
               <FormGroup row>
                 {" "}
                 <Label for={"field" + field.id} sm={2}>
@@ -108,7 +127,12 @@ const CustomerFactoryPage = () => {
                   <input
                     id={"field" + field.id}
                     name={"field" + field.id}
-                    type="text"
+                    key={i}
+                    defaultValue={field.value}
+                    onChange={(e) => {
+                      inputFields[i].value = e.target.value;
+                      setInputFields([...inputFields]);
+                    }}
                     {...register(`field${field.id}`, {
                       required: `${field.title} is Required`,
                     })}
@@ -125,79 +149,6 @@ const CustomerFactoryPage = () => {
                 </Col>
               </FormGroup>
             ))}
-          {/* <FormGroup row>
-            <Label for="customerTitle" sm={2}>
-              Customer Title
-            </Label>
-            <Col sm={8}>
-              <input
-                id="customerTitle"
-                name="customerTitle"
-                type="text"
-                {...register("customerTitle", {
-                  required: "customer title is Required",
-                })}
-                onKeyUp={() => {
-                  trigger("customerTitle");
-                }}
-                className="form-control"
-              />{" "}
-              {errors.customerTitle && (
-                <small className="text-danger">
-                  {errors.customerTitle.message}
-                </small>
-              )}
-            </Col>
-          </FormGroup>{" "}
-          <FormGroup row>
-            <Label for="locationTitle" sm={2}>
-              Location Title
-            </Label>
-            <Col sm={8}>
-              {" "}
-              <input
-                id="locationTitle"
-                name="locationTitle"
-                type="text"
-                {...register("locationTitle", {
-                  required: "location title is Required",
-                })}
-                onKeyUp={() => {
-                  trigger("locationTitle");
-                }}
-                className="form-control"
-              />{" "}
-              {errors.locationTitle && (
-                <small className="text-danger">
-                  {errors.locationTitle.message}
-                </small>
-              )}
-            </Col>
-          </FormGroup>{" "}
-          <FormGroup row>
-            <Label for="labelTitle1" sm={2}>
-              Label Title
-            </Label>
-            <Col sm={8}>
-              <input
-                id="labelTitle1"
-                name="labelTitle1"
-                type="text"
-                {...register("labelTitle1", {
-                  required: "label title is Required",
-                })}
-                onKeyUp={() => {
-                  trigger("labelTitle1");
-                }}
-                className="form-control"
-              />{" "}
-              {errors.labelTitle1 && (
-                <small className="text-danger">
-                  {errors.labelTitle1.message}
-                </small>
-              )}
-            </Col>
-          </FormGroup> */}
           <FormGroup row>
             <Col sm={2}>
               <Button color="primary" onClick={addFieldHandler}>
@@ -205,22 +156,6 @@ const CustomerFactoryPage = () => {
               </Button>
             </Col>
           </FormGroup>{" "}
-          {/* <FormGroup row>
-            <Label for="customerImg" sm={2}>
-              Attached Image
-            </Label>
-            <Col sm={10}>
-              <div class="upload-btn-wrapper">
-                <button class="btn btn-secondary">add image</button>
-                <input
-                  id="customerImg"
-                  type="file"
-                  name="myfile"
-                  accept="image/*"
-                />
-              </div>
-            </Col>{" "}
-          </FormGroup>{" "} */}
           <FormGroup row>
             {" "}
             <Col sm={10}>
@@ -264,7 +199,7 @@ const CustomerFactoryPage = () => {
               type="file"
               name="myfile"
               accept="image/*"
-              onInput={addImageHandler}
+              onChange={addImageHandler}
             />
           </div>
         </div>
