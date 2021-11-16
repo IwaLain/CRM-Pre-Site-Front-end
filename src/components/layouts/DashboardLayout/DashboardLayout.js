@@ -10,7 +10,6 @@ import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 1074;
 
-  const [links, setLinks] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= MOBILE_SIZE);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     window.innerWidth <= MOBILE_SIZE
@@ -33,27 +32,7 @@ const DashboardLayout = ({ children }) => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  const toLinks = (pathname) => {
-    let value,
-      titles = [],
-      links = [];
-    pathname
-      .split("/")
-      .slice(1)
-      .forEach((sentence) => {
-        value = "";
-        links.push(sentence);
-        sentence.split("-").forEach((word) => {
-          value += word[0].toUpperCase() + word.slice(1) + " ";
-        });
-        titles.push(value.slice(0, -1));
-      });
-
-    return titles;
-  };
-
   useEffect(() => {
-    setLinks(toLinks(location.pathname));
     if (location.pathname === "/dashboard/customers") {
       setSidebarNeeded(false);
     } else {
