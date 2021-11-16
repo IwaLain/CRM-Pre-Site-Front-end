@@ -23,14 +23,36 @@ const LoginPage = () => {
     } = useForm();
 
     const onSubmit = (e) => {
+        // let form = new FormData
+        // form.append('username', 'Olakey')
+        // form.append('password', 'Qwerty123!')
+        // fetch('http://crm.local/api/login', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json; charset=utf-8'
+        //     },
+        //     body: JSON.stringify(form)
+        // })
 
-        let data = {
-            'username': e.username,
-            'password': e.password
-        }
+        const formData = new FormData();
+
+        formData.append("username", "Olakey");
+        formData.append("password", "Qwerty123!");
+
+        fetch("http://crm.local/api/login", {
+            method: "POST",
+            body: formData,
+        })
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+
+        // let data = {
+        //     'username': e.username,
+        //     'password': e.password
+        // }
         
-        loginAPI(data).then(data => console.log(data))
-        alert('success', 'Complete Login')
+        // loginAPI(data).then(data => console.log(data))
+        // alert('success', 'Complete Login')
     };
 
     return (
