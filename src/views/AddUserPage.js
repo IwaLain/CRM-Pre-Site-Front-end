@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap"
 import '../scss/components/add-user-page.scss'
 import { alert } from '../js/methods/alert';
+import { endpoints } from '../js/api/endpoint';
 
 const AddUserPage = () => {
     const {
@@ -13,7 +14,12 @@ const AddUserPage = () => {
         trigger,
     } = useForm();
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        const form = new FormData
+        form.append('', e.username)
+        form.append('', e.email)
+        form.append('', e.phone)
+        endpoints.addUserAPI()
         alert('success', 'Complete Add User')
         reset();
     };

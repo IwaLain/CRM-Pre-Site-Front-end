@@ -9,13 +9,13 @@ import star from '../assets/img/star.svg'
 import edite from '../assets/img/edite.svg'
 import '../scss/components/users-page.scss'
 import { NavLink } from 'react-router-dom'
-import { getUsersAPI } from '../js/api/api'
+import { endpoints } from '../js/api/endpoint'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-        getUsersAPI().then(data => setUsers(data))
+        endpoints.getUsersAPI().then(data => setUsers(data))
     }, [])
 
     return (

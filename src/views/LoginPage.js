@@ -52,7 +52,7 @@ const LoginPage = () => {
         // }
         
         // loginAPI(data).then(data => console.log(data))
-        // alert('success', 'Complete Login')
+        alert('success', 'Complete Login')
     };
 
     return (
@@ -74,8 +74,7 @@ const LoginPage = () => {
                                         <input
                                             type="text"
                                             placeholder='User Name ...'
-                                            autoComplete="off" 
-                                            name='username'
+                                            autoComplete="off"
                                             className={`form-control ${errors.username && "invalid"}`}
                                             {...register("username", {
                                                 required: "UserName is Required",
@@ -86,7 +85,6 @@ const LoginPage = () => {
                                             })}
                                             onKeyUp={() => {
                                                 trigger("username")
-
                                             }}
                                         />
                                         {errors.username && (
@@ -99,7 +97,6 @@ const LoginPage = () => {
                                         <input
                                             type="password"
                                             placeholder='Password ...'
-                                            name='password'
                                             className={`form-control ${errors.password && "invalid"}`}
                                             {...register("password", {
                                                 required: "Password is Required",
@@ -127,8 +124,7 @@ const LoginPage = () => {
                                 </Row>
                                 <Row>
                                     <FormGroup className='d-flex justify-content-end'>
-                                        <button
-                                         className='login__btn'>
+                                        <button className='login__btn'>
                                             Login
                                         </button>
                                     </FormGroup>
