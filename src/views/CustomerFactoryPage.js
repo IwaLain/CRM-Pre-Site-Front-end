@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 
-import { Col, Form, FormGroup, Label, Button } from "reactstrap";
 import logo from "../assets/img/company.png";
-import "../scss/components/customer-page.scss";
-import "react-toastify/dist/ReactToastify.css";
-import "../scss/components/create-customer.scss";
-import "../scss/components/factory-page.scss";
 
+import "react-toastify/dist/ReactToastify.css";
+import "../scss/components/factory-page.scss";
 import InformationComponent from "../components/InformationComponent";
 import FormComponent from "../components/FormComponent";
 const CustomerFactoryPage = () => {
@@ -35,12 +32,12 @@ const CustomerFactoryPage = () => {
 
   return (
     <>
-      <div className="d-flex align-items-center customer-page--header">
+      <div className="d-flex align-items-center factory-page--header">
         <div className="img-container">
           <img
             src={factoryImage}
             alt="company img "
-            className="customer-page--img"
+            className="factory-img"
           ></img>{" "}
           <div className="image-upload">
             <label htmlFor="factoryImg">
