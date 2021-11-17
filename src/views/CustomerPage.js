@@ -1,9 +1,12 @@
 import logo from "../assets/img/company.png";
 import "../scss/components/customer-page.scss";
-import CustomerCard from "../components/CustomerCard";
+
 import InformationComponent from "../components/InformationComponent/InformationComponent";
 import { useContext } from "react";
 import { SizeContext } from "../context";
+
+
+import CustomerCard from "../components/CustomerCard/CustomerCard";
 
 const CustomerPage = () => {
   const factories = [
