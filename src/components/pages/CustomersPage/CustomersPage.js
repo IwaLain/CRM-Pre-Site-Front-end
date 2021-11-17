@@ -1,15 +1,42 @@
 import "./customers-page.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import CustomerCard from "../../CustomerCard/CustomerCard";
 import CustomersTable from "../../CustomersTable/CustomersTable";
+import Pagination from "../../widgets/Pagination/Pagination";
+import { PageTitleContext } from "../../../context";
 
 const CustomersPage = () => {
   const [view, setView] = useState(true);
   const [customers, setCustomers] = useState([]);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [page, setPage] = useState(1);
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
 
   const history = useHistory();
+
+  const customersPerPage = 12;
+
+  const { pageTitle } = useContext(PageTitleContext);
+
+  const totalPages = Math.ceil(totalCustomers / customersPerPage);
+
+  const handleSearch = (e) => {
+    const searchQuery = e.target.value;
+    fetch(
+      `http://crm.loc/api/customer?access-token=test&limit=${customersPerPage}&s=${searchQuery}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setCustomers(data.customers);
+        setTotalCustomers(data.total);
+      });
+  };
+
+  const handlePageChange = (e) => {
+    const page = e.selected + 1;
+    setPage(page);
+  };
 
   const handleResize = () => {
     SetScreenSize(window.innerWidth);
@@ -20,22 +47,38 @@ const CustomersPage = () => {
   };
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
+    fetch(
+      `http://crm.loc/api/customer?access-token=test&limit=${customersPerPage}`
+    )
       .then((res) => res.json())
-      .then((data) => setCustomers(data));
+      .then((data) => {
+        setCustomers(data.customers);
+        setTotalCustomers(data.total);
+      });
 
     window.addEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    fetch(
+      `http://crm.loc/api/customer?access-token=test&limit=${customersPerPage}&page=${page}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setCustomers(data.customers);
+      });
+  }, [page]);
+
   return (
     <div className="customers">
       <div className="customers__header">
-        <h3>Customers</h3>
+        <h3>{pageTitle ? pageTitle : "err"}</h3>
         <div className="customers__options">
           <input
             className="customers__search"
             type="text"
             placeholder="Search..."
+            onInput={handleSearch}
           />
           <div className="customers__options_btns">
             <button
@@ -94,7 +137,8 @@ const CustomersPage = () => {
                   key={customer.id}
                   title={customer.name}
                   id={customer.id}
-                  progress="5"
+                  progress={customer.status * 100}
+                  image={`http://crm.loc/${customer.img}`}
                 />
               ))
             ) : (
@@ -103,6 +147,14 @@ const CustomersPage = () => {
           </div>
         )}
       </div>
+      <Pagination
+        previousLabel={"<"}
+        nextLabel={">"}
+        pageCount={totalPages}
+        onPageChange={handlePageChange}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
+      />
     </div>
   );
 };

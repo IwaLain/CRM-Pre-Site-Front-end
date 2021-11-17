@@ -1,4 +1,4 @@
-import logo from "../../assets/img/company.png";
+import logo from "../../../assets/img/company.png";
 import closeBtnStyles from "./close-btn.module.scss";
 import { Link } from "react-router-dom";
 

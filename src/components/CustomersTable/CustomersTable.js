@@ -6,7 +6,7 @@ const CustomersTable = ({ customers }) => {
     <Table style={{ width: "100%", verticalAlign: "middle" }}>
       <thead>
         <tr>
-          <th style={{ width: "45%" }}>Title</th>
+          <th style={{ width: "45%" }}>Name</th>
           <th style={{ width: "45%" }}>Progress</th>
         </tr>
       </thead>
@@ -16,7 +16,7 @@ const CustomersTable = ({ customers }) => {
             <tr key={customer.id}>
               <td>{customer.name}</td>
               <td>
-                <Progress value={customer.progress} />
+                <Progress value={customer.status * 100} />
               </td>
               <td>
                 <Link to={`/dashboard/customer/${customer.id}`}>View</Link>

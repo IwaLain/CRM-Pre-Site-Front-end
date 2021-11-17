@@ -6,8 +6,8 @@ import {
 } from "reactstrap";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import star from "../../assets/img/star.svg";
-import logo from "../../assets/img/company.png";
+import star from "../../../assets/img/star.svg";
+import logo from "../../../assets/img/company.png";
 
 const Header = ({ sidebarNeeded, isMobile, toggleSidebar }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
