@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import logo from "../assets/img/company.png";
-import "../scss/components/customer-page.scss";
 
-import InformationComponent from "../components/InformationComponent/InformationComponent";
+import logo from "../../../assets/img/company.png";
+import "./customer-page.scss";
 
-import CustomerCard from "../components/CustomerCard/CustomerCard";
+import InformationComponent from "../../InformationComponent/InformationComponent";
+
+import CustomerCard from "../../CustomerCard/CustomerCard";
 
 const CustomerPage = () => {
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
