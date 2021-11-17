@@ -12,7 +12,7 @@ const InformationComponent = ({ items }) => {
           {items &&
             items.map((item, i) => (
               <div key={i} className="information--item">
-                {item.name}
+                {item.fieldTitle} : {item.value}
               </div>
             ))}
         </div>

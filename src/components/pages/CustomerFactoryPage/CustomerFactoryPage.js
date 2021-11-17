@@ -15,9 +15,9 @@ const CustomerFactoryPage = () => {
   ];
 
   const items = [
-    { name: "address" },
-    { name: "contact user/success manager" },
-    { name: "contact phone" },
+    { fieldTitle: "address", value: "customer.address" },
+    { fieldTitle: "email", value: "customer.email" },
+    { fieldTitle: "phone", value: "customer.phone" },
   ];
   const initialImages = [
     { id: "1", src: logo },

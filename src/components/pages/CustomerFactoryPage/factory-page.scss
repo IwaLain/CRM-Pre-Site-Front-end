@@ -1,8 +1,6 @@
 .img-container {
   position: relative;
-
-  margin-right: 1rem;
-  margin-bottom: 1rem;
+  margin-right: 10px;
   width: 105px;
   height: 90px;
 }
@@ -26,6 +24,7 @@
 
 .factory-page--header {
   width: 100%;
+  padding-top: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid;
 }
