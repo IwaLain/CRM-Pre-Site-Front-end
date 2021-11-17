@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Button, Col } from "reactstrap";
 import { useForm } from "react-hook-form";
-import FieldComponent from "./FieldComponent";
-import { alert } from "../js/methods/alert";
+import FieldComponent from "./FieldComponent/FieldComponent";
+import { alert } from "../../js/methods/alert";
 import "react-toastify/dist/ReactToastify.css";
-import "../scss/components/form-component.scss";
-import AttachedImages from "./AttachedImages";
-import AddFieldModal from "./AddFieldModal";
+import "./form-component.scss";
+import AttachedImages from "./AttachedImages/AttachedImages";
+import AddFieldModal from "../AddFieldModal/AddFieldModal";
 
 const FormComponent = ({
   formFields,

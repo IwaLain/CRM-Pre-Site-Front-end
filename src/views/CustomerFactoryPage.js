@@ -4,8 +4,8 @@ import logo from "../assets/img/company.png";
 
 import "react-toastify/dist/ReactToastify.css";
 import "../scss/components/factory-page.scss";
-import InformationComponent from "../components/InformationComponent";
-import FormComponent from "../components/FormComponent";
+import InformationComponent from "../components/InformationComponent/InformationComponent";
+import FormComponent from "../components/FormComponent/FormComponent";
 const CustomerFactoryPage = () => {
   const formFields = [
     { name: "title", type: "text", defaultValue: "default", id: "id-1" },
@@ -58,7 +58,7 @@ const CustomerFactoryPage = () => {
       <InformationComponent items={items}></InformationComponent>
       <FormComponent
         formFields={formFields}
-        formName="Create Customer"
+        formName="Factories Customer Locations Form"
         addFieldBtn={true}
         attachedImages={true}
         images={initialImages}

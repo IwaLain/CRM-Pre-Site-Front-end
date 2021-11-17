@@ -1,6 +1,6 @@
 .img-container {
   position: relative;
-  z-index: -1;
+
   margin-right: 1rem;
   margin-bottom: 1rem;
   width: 105px;
@@ -12,10 +12,7 @@
   height: 100%;
   max-width: 100%;
 }
-.factory--upload-btn {
-  width: 105px;
-  height: 90px;
-}
+
 .remove-img {
   width: 21px;
   height: 21px;
@@ -26,24 +23,9 @@
   right: 0;
   transform: translate(50%, -50%);
 }
-.image-upload > input {
-  display: none;
-}
+
 .factory-page--header {
   width: 100%;
   padding-bottom: 20px;
   border-bottom: 1px solid;
-}
-.upload-btn-wrapper {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-}
-
-.upload-btn-wrapper input[type="file"] {
-  font-size: 100px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
 }

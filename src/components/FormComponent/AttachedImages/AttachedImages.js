@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, FormGroup, Col, Label } from "reactstrap";
-import "../scss/components/attached-images.scss";
+import "./attached-images.scss";
 
 const AttachedImages = ({ images }) => {
   //   const initialImages = [

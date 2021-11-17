@@ -1,6 +1,6 @@
 import React from "react";
 
-import "../scss/components/information-component.scss";
+import "./information-component.scss";
 const InformationComponent = ({ items }) => {
   return (
     <>
