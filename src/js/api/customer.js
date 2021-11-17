@@ -11,6 +11,16 @@ const getCustomersAPI = async () => {
     return response.customers
 }
 
+const getCustomerAPI = async (customerId) => {
+    let config = {
+        method: 'GET',
+        url: `/api/customer/:${customerId}?access-token=`
+    }
+
+    const response = await api(config)
+    return response.customer
+}
+
 const addCustomerAPI = async (data) => {
     let config = {
         method: 'POST',
@@ -24,5 +34,6 @@ const addCustomerAPI = async (data) => {
 
 export const customer = {
     getCustomersAPI,
+    getCustomerAPI,
     addCustomerAPI
 }
