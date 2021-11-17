@@ -33,24 +33,24 @@ const AttachedImages = ({ images }) => {
         <Col sm={10}>
           <div className="d-flex flex-wrap">
             {attachedImages &&
-              attachedImages.map((img) => (
-                <div className="img-container">
+              attachedImages.map((img, i) => (
+                <div className="attached--img-container" key={i}>
                   <img
                     src={img.src}
                     alt="..."
-                    className="factory-img"
+                    className="attached-img"
                     id={img.id}
                   ></img>{" "}
                   <span
-                    className="remove-img"
+                    className="attached--remove-img"
                     onClick={removeImageHandler}
                   ></span>
                 </div>
               ))}
 
-            <div className="upload-btn-wrapper factory--upload-btn-wrapper">
+            <div className="upload-btn-wrapper attached--upload-btn-wrapper">
               {" "}
-              <Button color="secondary" className="factory--upload-btn ">
+              <Button color="secondary" className="attached--upload-btn">
                 Add image
               </Button>
               <input

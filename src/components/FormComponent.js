@@ -6,6 +6,8 @@ import { alert } from "../js/methods/alert";
 import "react-toastify/dist/ReactToastify.css";
 import "../scss/components/form-component.scss";
 import AttachedImages from "./AttachedImages";
+import AddFieldModal from "./AddFieldModal";
+
 const FormComponent = ({
   formFields,
   formName,
@@ -13,7 +15,9 @@ const FormComponent = ({
   attachedImages,
   images,
 }) => {
+  const [modal, setModal] = useState(false);
   const [inputFields, setInputFields] = useState(formFields);
+
   const {
     register,
     handleSubmit,
@@ -25,24 +29,29 @@ const FormComponent = ({
     alert("success", "Success save");
     reset();
   };
-  const addFieldHandler = () => {
-    setInputFields((oldArray) => {
-      const newElement = {
-        id: oldArray.length + 1,
-        name: "Label title",
-        type: "text",
-        register: register,
-        trigger: trigger,
-        errors: errors,
-      };
 
-      return [...oldArray, newElement];
-    });
+  const addFieldHandler = (newField) => {
+    if (newField.trim() !== "") {
+      setInputFields((oldArray) => {
+        const newElement = {
+          id: oldArray.length + 1,
+          name: newField,
+          type: "text",
+          register: register,
+          trigger: trigger,
+          errors: errors,
+        };
+
+        return [...oldArray, newElement];
+      });
+    }
   };
+
+  const toggle = () => setModal(!modal);
   return (
     <>
       <div>
-        <h1>{formName}</h1>
+        <h2 className="page-subtitle">{formName}</h2>
         <Form onSubmit={handleSubmit(onSubmit)} className="form--custom">
           {inputFields.map((field, i) => (
             <FieldComponent
@@ -59,7 +68,7 @@ const FormComponent = ({
           {addFieldBtn && (
             <FormGroup row>
               <Col sm={2} className="offset-md-2">
-                <Button color="primary" onClick={addFieldHandler}>
+                <Button color="primary" onClick={toggle}>
                   Add field
                 </Button>
               </Col>
@@ -78,6 +87,12 @@ const FormComponent = ({
             </Col>
           </FormGroup>
         </Form>
+        <AddFieldModal
+          modal={modal}
+          setModal={setModal}
+          toggle={toggle}
+          addFieldHandler={addFieldHandler}
+        ></AddFieldModal>
       </div>
     </>
   );

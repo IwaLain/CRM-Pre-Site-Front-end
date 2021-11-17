@@ -1,5 +1,5 @@
 import React from "react";
-import { Col } from "reactstrap";
+
 import "../scss/components/information-component.scss";
 const InformationComponent = ({ items }) => {
   return (
@@ -10,8 +10,10 @@ const InformationComponent = ({ items }) => {
 
         <div className="d-flex flex-wrap">
           {items &&
-            items.map((item) => (
-              <div className="information--item">{item.name}</div>
+            items.map((item, i) => (
+              <div key={i} className="information--item">
+                {item.name}
+              </div>
             ))}
         </div>
       </div>{" "}

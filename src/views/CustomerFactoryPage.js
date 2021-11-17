@@ -53,7 +53,7 @@ const CustomerFactoryPage = () => {
             />
           </div>
         </div>
-        <h1 className="page-title">Customer Page Title</h1>
+        <h1 className="page-title">Customer Page Factory Title</h1>
       </div>
       <InformationComponent items={items}></InformationComponent>
       <FormComponent
