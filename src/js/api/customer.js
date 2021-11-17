@@ -1,28 +1,28 @@
 import { api } from "./api"
 import { endpoints } from "./endpoint"
 
-const getUsersAPI = async () => {
+const getCustomersAPI = async () => {
     let config = {
         method: 'GET',
-        url: endpoints.getUsers
+        url: endpoints.getCustomers
     }
 
     const response = await api(config)
-    return response[0]
+    return response.customers
 }
 
-const addUserAPI = async (data) => {
+const addCustomerAPI = async (data) => {
     let config = {
         method: 'POST',
-        url: endpoints.addUser,
+        url: endpoints.addCustomer,
         data: data
     }
 
     const response = await api(config)
     return response
-}
+} 
 
-export const user = {
-    getUsersAPI,
-    addUserAPI
+export const customer = {
+    getCustomersAPI,
+    addCustomerAPI
 }

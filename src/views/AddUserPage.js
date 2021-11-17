@@ -2,8 +2,9 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap"
 import '../scss/components/add-user-page.scss'
+import { user } from '../js/api/user';
 import { alert } from '../js/methods/alert';
-import { getAPI } from '../js/api/remastered';
+import { ToastContainer } from 'react-toastify';
 
 const AddUserPage = () => {
     const {
@@ -21,8 +22,20 @@ const AddUserPage = () => {
             'phone': e.phone,
             'password': e.password
         }
-        getAPI.addUserAPI(data).then(data => console.log(data))
-        reset();
+
+        user.addUserAPI(data)
+        .then(data => {
+            if(data.errors) {
+                console.log(data.errors)
+                for (let key in data.errors) {
+                    alert('error', data.errors[key])
+                }
+                
+            } else {
+                alert('success', 'Add User successful')
+                reset()
+            }
+        })
     };
 
     return (
@@ -193,6 +206,7 @@ const AddUserPage = () => {
                         </FormGroup>
                     </Form>
                 </Col>
+                <ToastContainer position='bottom-right'/>
             </Row>
         </div>
     )

@@ -12,8 +12,7 @@ import { Card,
          CardBody } from 'reactstrap'
 import { alert } from '../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
-import { getAPI } from '../js/api/remastered';
-import { Redirect } from 'react-router';
+import { loginAPI } from '../js/api/login';
 
 const LoginPage = () => {
     const {
@@ -29,12 +28,11 @@ const LoginPage = () => {
             'password': e.password
         }
 
-        getAPI.loginAPI(data)
+        loginAPI(data)
         .then(data => {
             if(data.errors) {
                 alert('error', data.errors)
             } else {
-                console.log(data.token)
                 localStorage.setItem('token', data.token);
                 alert('success', 'Login success');
                 
