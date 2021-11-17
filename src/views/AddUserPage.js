@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap"
 import '../scss/components/add-user-page.scss'
 import { alert } from '../js/methods/alert';
-import { endpoints } from '../js/api/endpoint';
+import { getAPI } from '../js/api/remastered';
 
 const AddUserPage = () => {
     const {
@@ -15,12 +15,13 @@ const AddUserPage = () => {
     } = useForm();
 
     const onSubmit = (e) => {
-        const form = new FormData
-        form.append('', e.username)
-        form.append('', e.email)
-        form.append('', e.phone)
-        endpoints.addUserAPI()
-        alert('success', 'Complete Add User')
+        const data = {
+            'username': e.username,
+            'email': e.email,
+            'phone': e.phone,
+            'password': e.password
+        }
+        getAPI.addUserAPI(data).then(data => console.log(data))
         reset();
     };
 
@@ -120,11 +121,46 @@ const AddUserPage = () => {
                         </Row>
                         <Row className='addUser__item'>
                             <Col md={2} lg={1}>
+                                <Label className='addUser__label'>Password</Label>
+                            </Col>
+                            <Col md={4}>
+                                <input
+                                    type="password"
+                                    placeholder='Password ...'
+                                    className={`form-control ${errors.password && "invalid"}`}
+                                    {...register("password", {
+                                        required: "Password is Required",
+                                        minLength: {
+                                            value: 4,
+                                            message: "Minimum 6 simvols",
+                                        },
+                                        maxLength: {
+                                            value: 16,
+                                            message: "Maximum 16 simvols",
+                                        },
+                                        pattern: {
+                                            value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+                                            message: "Password should contain atleast one number and one special character",
+                                        }
+                                    })}
+                                    onKeyUp={() => {
+                                        trigger("password");
+                                    }}
+                                />
+                                {errors.password
+                                    ? (<small className="addUser__desc text-danger">{errors.password.message}</small>)
+                                    : (<small className='addUser__desc text-muted'>Password should contain special character</small>)
+                                }
+                            </Col>
+                        </Row>
+                        {/* <Row className='addUser__item'>
+                            <Col md={2} lg={1}>
                                 <Label className='addUser__label'>Role</Label>
                             </Col>
                             <Col md={4}>
                                 <select
                                     className='form-control'
+                                    name='role'
                                 >
                                     <option value='' defaultChecked disabled>
                                         Select role
@@ -138,7 +174,7 @@ const AddUserPage = () => {
                                 </select>
                                 <small className='addUser__desc text-muted'>Select role</small>
                             </Col>
-                        </Row>
+                        </Row> */}
                         <FormGroup className='addUser__item mt-5'>
                             <Col md={{offset: 2, size: 2}} lg={{offset: 1, size: 2}}>
                                 <Button className='addUser__submit'>Submit</Button>

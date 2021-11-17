@@ -1,18 +1,35 @@
+const baseURL = 'http://crm.local'
+let response = []
+
 export const api = async (configs) => {
-    const token = 'RpmMkezH3ZwSJd_cECci8gyyqzNfVw8QvkR6yvOfWHUEeRtKEdoZrwPB_VQkFGfP'
-    const baseURL = 'http://crm.local'
+    const token = localStorage.getItem('token')
     if (configs.method === 'GET') {
         const path = `${baseURL + configs.url + token}`
-        const response = await fetch(path, {
+        
+        response = await fetch(path, {
             method: configs.method
-        })
-        return await response.json()   
+        }) 
     } else if (configs.method === 'POST') {
-        const path = `${baseURL + configs.url}`
-        const response = await fetch(path, {
+        const path = `${baseURL + configs.url + token}`
+
+        response = await fetch(path, {
             method: configs.method,
-            body: configs.data
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(configs.data)
         })
-        return await response.json()
     }
+
+    return await response.json()
+}
+
+export const login = async (configs) => {
+    const path = `${baseURL + configs.url}`
+
+    response = await fetch(path, {
+        method: configs.method,
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(configs.data)
+    })
+
+    return await response.json()
 }

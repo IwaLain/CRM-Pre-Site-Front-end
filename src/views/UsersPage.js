@@ -9,14 +9,14 @@ import star from '../assets/img/star.svg'
 import edite from '../assets/img/edite.svg'
 import '../scss/components/users-page.scss'
 import { NavLink } from 'react-router-dom'
-import { endpoints } from '../js/api/endpoint'
+import { getAPI } from '../js/api/remastered'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
 
-    useEffect(() => {
-        endpoints.getUsersAPI().then(data => setUsers(data))
-    }, [])
+    
+    getAPI.getUsersAPI().then(data => setUsers(data))
+    
 
     return (
         <>
@@ -45,7 +45,7 @@ const UsersPage = () => {
                         <tbody className='customerTable'>
                             {users.map(user => (
                                 <tr key={user.id}>
-                                    <th>{user.name}</th>
+                                    <th>{user.username}</th>
                                     <th>{user.email}</th>
                                     <th>{user.phone}</th>
                                     <th>Admin</th>
