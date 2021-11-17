@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-import logo from "../assets/img/company.png";
+import logo from "../../../assets/img/company.png";
 
 import "react-toastify/dist/ReactToastify.css";
-import "../scss/components/factory-page.scss";
-import InformationComponent from "../components/InformationComponent/InformationComponent";
-import FormComponent from "../components/FormComponent/FormComponent";
+import "./factory-page.scss";
+import InformationComponent from "../../InformationComponent/InformationComponent";
+import FormComponent from "../../FormComponent/FormComponent";
 const CustomerFactoryPage = () => {
   const formFields = [
     { name: "title", type: "text", defaultValue: "default", id: "id-1" },
