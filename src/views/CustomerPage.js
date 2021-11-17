@@ -1,14 +1,20 @@
+import React, { useState, useEffect } from "react";
 import logo from "../assets/img/company.png";
 import "../scss/components/customer-page.scss";
 
 import InformationComponent from "../components/InformationComponent/InformationComponent";
-import { useContext } from "react";
-import { SizeContext } from "../context";
-
 
 import CustomerCard from "../components/CustomerCard/CustomerCard";
 
 const CustomerPage = () => {
+  const [screenSize, SetScreenSize] = useState(window.innerWidth);
+
+  const handleResize = () => {
+    SetScreenSize(window.innerWidth);
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  }, []);
   const factories = [
     { id: "id-1", name: "Title", progress: "5" },
     { id: "id-2", name: "Title", progress: "5" },
@@ -19,7 +25,7 @@ const CustomerPage = () => {
     { name: "contact user/success manager" },
     { name: "contact phone" },
   ];
-  const { size } = useContext(SizeContext);
+
   return (
     <>
       <div className="d-flex align-items-center customer-page--header">
@@ -39,16 +45,18 @@ const CustomerPage = () => {
         <h2 className="page-subtitle">Factories Customer</h2>
         <div
           className={
-            size > 440 ? "customer-card_group" : "customer-card_group dense"
+            screenSize > 440
+              ? "customer-card_group"
+              : "customer-card_group dense"
           }
         >
           {factories.length > 0 ? (
-            factories.map((factory) => (
+            factories.map((customer) => (
               <CustomerCard
-                key={factory.id}
-                title={factory.name}
-                id={factory.id}
-                progress={factory.progress}
+                key={customer.id}
+                title={customer.name}
+                id={customer.id}
+                progress="5"
               />
             ))
           ) : (
