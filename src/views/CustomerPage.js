@@ -1,13 +1,29 @@
-import { List, ListInlineItem, Col } from "reactstrap";
 import logo from "../assets/img/company.png";
 import "../scss/components/customer-page.scss";
+
+import InformationComponent from "../components/InformationComponent/InformationComponent";
+import { useContext } from "react";
+import { SizeContext } from "../context";
+
+
 import CustomerCard from "../components/CustomerCard/CustomerCard";
+
 const CustomerPage = () => {
+  const factories = [
+    { id: "id-1", name: "Title", progress: "5" },
+    { id: "id-2", name: "Title", progress: "5" },
+    { id: "id-2", name: "Title", progress: "5" },
+  ];
+  const items = [
+    { name: "address" },
+    { name: "contact user/success manager" },
+    { name: "contact phone" },
+  ];
+  const { size } = useContext(SizeContext);
   return (
     <>
-      <div className="customer-page--container"></div>
       <div className="d-flex align-items-center customer-page--header">
-        <div className="img-container">
+        <div className="main-img--container">
           <img
             src={logo}
             alt="company img "
@@ -16,39 +32,28 @@ const CustomerPage = () => {
         </div>
         <h1 className="page-title">Customer Page Title</h1>
       </div>
-      <div className="customer-page--information">
-        <h2 className="page-subtitle">Information Customer</h2>
+      <InformationComponent items={items}></InformationComponent>
 
-        <List className="information--list" type="inline">
-          <ListInlineItem className="information--item">address</ListInlineItem>
-          <ListInlineItem className="information--item">
-            contact user/success manager
-          </ListInlineItem>
-          <ListInlineItem className="information--item">
-            contact phone
-          </ListInlineItem>
-        </List>
-      </div>
       <div className="customer-page--factories">
         {" "}
         <h2 className="page-subtitle">Factories Customer</h2>
-        <div className="row row-cols-1 row-cols-md-auto g-4">
-          <Col className="customer-card--col">
-            <CustomerCard
-              title="Title"
-              progress={67}
-              image="//placehold.it/100"
-            />
-          </Col>{" "}
-          <Col className="customer-card--col">
-            <CustomerCard title="Title" />
-          </Col>{" "}
-          <Col className="customer-card--col">
-            <CustomerCard title="Title" progress={50} />
-          </Col>{" "}
-          <Col className="customer-card--col">
-            <CustomerCard title="Title" />
-          </Col>
+        <div
+          className={
+            size > 440 ? "customer-card_group" : "customer-card_group dense"
+          }
+        >
+          {factories.length > 0 ? (
+            factories.map((factory) => (
+              <CustomerCard
+                key={factory.id}
+                title={factory.name}
+                id={factory.id}
+                progress={factory.progress}
+              />
+            ))
+          ) : (
+            <p>No customers found.</p>
+          )}
         </div>
       </div>
     </>
