@@ -14,10 +14,10 @@ import { user } from '../js/api/user'
 const UsersPage = () => {
     const [users, setUsers] = useState([])
 
+    useEffect(() => {
+        user.getUsersAPI().then(data => setUsers(data))
+    }, [])
     
-    user.getUsersAPI().then(data => setUsers(data))
-    
-
     return (
         <>
             <Row className='align-items-center justify-content-xs-between'>
@@ -48,7 +48,7 @@ const UsersPage = () => {
                                     <th>{user.username}</th>
                                     <th>{user.email}</th>
                                     <th>{user.phone}</th>
-                                    <th>Admin</th>
+                                    <th>{}</th>
                                     <th>
                                         <img
                                             className='users__table-img'
