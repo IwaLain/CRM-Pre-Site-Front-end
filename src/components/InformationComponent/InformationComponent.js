@@ -1,12 +1,12 @@
 import React from "react";
 
 import "./information-component.scss";
-const InformationComponent = ({ items }) => {
+const InformationComponent = ({ items, title }) => {
   return (
     <>
       {" "}
       <div className="page--information">
-        <h2 className="page-subtitle">Information Customer</h2>
+        <h2 className="page-subtitle">{title}</h2>
 
         <div className="d-flex flex-wrap">
           {items &&

@@ -49,7 +49,7 @@ const routes = {
       component: CustomersPage,
     },
     {
-      path: "/dashboard/customer-factory",
+      path: "/dashboard/customer-factory/:id",
       name: "Customer Page Factory",
       component: CustomerFactoryPage,
     },

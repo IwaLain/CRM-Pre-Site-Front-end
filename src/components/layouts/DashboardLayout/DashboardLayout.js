@@ -36,21 +36,21 @@ const DashboardLayout = ({ children }) => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  useEffect(() => {
-    setPageTitle(
-      routes.dashboard.filter((route) => {
-        return route.path === location.pathname;
-      })[0].name
-    );
+  // useEffect(() => {
+  //   setPageTitle(
+  //     routes.dashboard.filter((route) => {
+  //       return route.path === location.pathname;
+  //     })[0].name
+  //   );
 
-    switch (location.pathname) {
-      case "/dashboard/customers":
-        setSidebarNeeded(false);
-        break;
-      default:
-        setSidebarNeeded(true);
-    }
-  }, [location]);
+  //   switch (location.pathname) {
+  //     case "/dashboard/customers":
+  //       setSidebarNeeded(false);
+  //       break;
+  //     default:
+  //       setSidebarNeeded(true);
+  //   }
+  // }, [location]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);

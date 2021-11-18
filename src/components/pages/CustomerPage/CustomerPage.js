@@ -1,39 +1,35 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import logo from "../../../assets/img/company.png";
 import "./customer-page.scss";
-
+import { getCustomerAPI } from "../../../js/api/customer";
 import InformationComponent from "../../InformationComponent/InformationComponent";
 
 import CustomerCard from "../../CustomerCard/CustomerCard";
-import { PageTitleContext } from "../../../context";
+
 const CustomerPage = () => {
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
   const { id } = useParams();
   const [customer, setCustomer] = useState();
-  const { pageTitle } = useContext(PageTitleContext);
+
   const handleResize = () => {
     SetScreenSize(window.innerWidth);
   };
   useEffect(() => {
-    fetch(`http://crm.loc/api/customer/${id}?access-token=test`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCustomer(data.customer);
-      });
-    console.log(customer);
+    async function getCustomer() {
+      const customerData = await getCustomerAPI(id);
+      setCustomer(customerData);
+    }
+    getCustomer();
+    // fetch(`http://crm.loc/api/customer/${id}?access-token=test`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setCustomer(data.customer);
+    //   })
+    //   .then(() => {});
+
     window.addEventListener("resize", handleResize);
   }, []);
-  const factories = [
-    { id: "id-1", name: "Title", progress: "5" },
-    { id: "id-2", name: "Title", progress: "5" },
-    { id: "id-3", name: "Title", progress: "5" },
-  ];
-  const items = [
-    { name: "address" },
-    { name: "contact user/success manager" },
-    { name: "contact phone" },
-  ];
 
   return (
     <>
@@ -60,6 +56,7 @@ const CustomerPage = () => {
             { fieldTitle: "email", value: customer.email },
             { fieldTitle: "phone", value: customer.phone },
           ]}
+          title="Information Customer"
         ></InformationComponent>
       )}
 
@@ -72,12 +69,13 @@ const CustomerPage = () => {
               : "customer-card_group dense"
           }
         >
-          {factories.length > 0 ? (
-            factories.map((customer) => (
+          {customer && customer.facilities.length > 0 ? (
+            customer.facilities.map((facility) => (
               <CustomerCard
-                key={customer.id}
-                title={customer.name}
-                id={customer.id}
+                key={facility.id}
+                title={facility.name}
+                id={facility.id}
+                image={`http://crm.loc/${facility.img}`}
                 progress="5"
               />
             ))
