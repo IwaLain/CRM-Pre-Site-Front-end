@@ -1,7 +1,7 @@
 import "./customers-page.scss";
 import { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import CustomerCard from "../../CustomerCard/CustomerCard";
+import InfoCard from "../../InfoCard/InfoCard";
 import CustomersTable from "../../CustomersTable/CustomersTable";
 import Pagination from "../../widgets/Pagination/Pagination";
 import { PageTitleContext } from "../../../context";
@@ -141,7 +141,11 @@ const CustomersPage = () => {
               >
                 {customers ? (
                   customers.map((customer) => (
-                    <CustomerCard key={customer.id} customer={customer} />
+                    <InfoCard
+                      key={customer.id}
+                      data={customer}
+                      type="customers"
+                    />
                   ))
                 ) : (
                   <p>No customers found.</p>

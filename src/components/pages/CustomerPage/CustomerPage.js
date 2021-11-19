@@ -5,7 +5,7 @@ import "./customer-page.scss";
 import { getCustomerAPI } from "../../../js/api/customer";
 import InformationComponent from "../../InformationComponent/InformationComponent";
 
-import CustomerCard from "../../CustomerCard/CustomerCard";
+import InfoCard from "../../InfoCard/InfoCard";
 
 const CustomerPage = () => {
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
@@ -71,13 +71,7 @@ const CustomerPage = () => {
         >
           {customer && customer.facilities.length > 0 ? (
             customer.facilities.map((facility) => (
-              <CustomerCard
-                key={facility.id}
-                title={facility.name}
-                id={facility.id}
-                image={`http://crm.loc/${facility.img}`}
-                progress="5"
-              />
+              <InfoCard data={facility} type="facilities" />
             ))
           ) : (
             <p>No customers found.</p>

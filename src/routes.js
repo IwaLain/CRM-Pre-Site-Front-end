@@ -18,7 +18,7 @@ const routes = {
   ],
   dashboard: [
     {
-      path: "/dashboard/customer/:id",
+      path: "/dashboard/customers/:id",
       name: "Customer Page",
       component: CustomerPage,
     },
