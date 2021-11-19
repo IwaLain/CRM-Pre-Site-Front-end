@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 import {
         Button,
         Col,
-        Container,
+        Modal,
+        ModalBody,
+        ModalFooter,
+        ModalHeader,
         Row,
         Table
     } from 'reactstrap'
@@ -10,17 +13,26 @@ import star from '../assets/img/star.svg'
 import edite from '../assets/img/edite.svg'
 import '../scss/components/users-page.scss'
 import { NavLink } from 'react-router-dom'
+import { user } from '../js/api/user'
+import { EditeUserModal } from '../js/methods/EditeUserModal'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
+    const [modal, setModal] = useState(false)
+    const [currentUser, setCurrentUser] = useState([])
+
+    const toggle = () => {
+        setModal(!modal)
+    }
+
+    const editeUser = (userId, dataUser) => {
+        setUsers(users.map(data => data.id === userId ? {...data, data: dataUser} : data))
+    }
 
     useEffect(() => {
-        const getUsers = () => fetch('https://jsonplaceholder.typicode.com/users')
-        .then(res => res.json())
-        .then(data => setUsers(data))
-        getUsers()
+        user.getUsersAPI().then(data => setUsers(data))
     }, [])
-
+    
     return (
         <>
             <Row className='align-items-center justify-content-xs-between'>
@@ -51,13 +63,17 @@ const UsersPage = () => {
                                     <th>{user.username}</th>
                                     <th>{user.email}</th>
                                     <th>{user.phone}</th>
-                                    <th>Admin</th>
+                                    <th>{user.role}</th>
                                     <th>
                                         <img
                                             className='users__table-img'
                                             src={edite}
                                             alt="edite"
-
+                                            onClick={() => {
+                                                    setModal(true)
+                                                    setCurrentUser(user)
+                                                }
+                                            }
                                         />
                                     </th>
                                 </tr>
@@ -66,6 +82,13 @@ const UsersPage = () => {
                     </Table>
                 </Col>
             </Row>
+            
+            <Modal isOpen={modal} toggle={toggle}>
+                <ModalHeader toggle={toggle}>Edite User: '{currentUser.username}'</ModalHeader>
+                <ModalBody>
+                    <EditeUserModal currentUser={currentUser} editeUser={editeUser}/>
+                </ModalBody>
+            </Modal>
         </>
     )
 }

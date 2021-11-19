@@ -2,7 +2,9 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap"
 import '../scss/components/add-user-page.scss'
+import { user } from '../js/api/user';
 import { alert } from '../js/methods/alert';
+import { ToastContainer } from 'react-toastify';
 
 const AddUserPage = () => {
     const {
@@ -13,9 +15,27 @@ const AddUserPage = () => {
         trigger,
     } = useForm();
 
-    const onSubmit = () => {
-        alert('success', 'Complete Add User')
-        reset();
+    const onSubmit = (e) => {
+        const data = {
+            'username': e.username,
+            'email': e.email,
+            'phone': e.phone,
+            'password': e.password
+        }
+
+        user.addUserAPI(data)
+        .then(data => {
+            if(data.errors) {
+                console.log(data.errors)
+                for (let key in data.errors) {
+                    alert('error', data.errors[key])
+                }
+                
+            } else {
+                alert('success', 'Add User successful')
+                reset()
+            }
+        })
     };
 
     return (
@@ -28,7 +48,7 @@ const AddUserPage = () => {
                         onSubmit={handleSubmit(onSubmit)}
                     >
                         <Row className='addUser__item mt-3'>
-                            <Col md={2}>
+                            <Col md={2} lg={1}>
                                 <Label className='addUser__label'>Username</Label>
                             </Col>
                             <Col md={4}>
@@ -53,7 +73,7 @@ const AddUserPage = () => {
                             </Col>
                         </Row>
                         <Row className='addUser__item'>
-                            <Col md={2}>
+                            <Col md={2} lg={1}>
                                 <Label className='addUser__label'>Email</Label>
                             </Col>
                             <Col md={4}>
@@ -83,7 +103,7 @@ const AddUserPage = () => {
                             </Col>
                         </Row>
                         <Row className='addUser__item'>
-                            <Col md={2}>
+                            <Col md={2} lg={1}>
                                 <Label className='addUser__label'>Phone</Label>
                             </Col>
                             <Col md={4}>
@@ -113,28 +133,41 @@ const AddUserPage = () => {
                             </Col>
                         </Row>
                         <Row className='addUser__item'>
-                            <Col md={2}>
-                                <Label className='addUser__label'>Role</Label>
+                            <Col md={2} lg={1}>
+                                <Label className='addUser__label'>Password</Label>
                             </Col>
                             <Col md={4}>
-                                <select
-                                    className='form-control'
-                                >
-                                    <option value='' defaultChecked disabled>
-                                        Select role
-                                    </option>
-                                    <option value='User'>
-                                        User
-                                    </option>
-                                    <option value='Admin'>
-                                        Admin
-                                    </option>
-                                </select>
-                                <small className='addUser__desc text-muted'>Select role</small>
+                                <input
+                                    type="password"
+                                    placeholder='Password ...'
+                                    className={`form-control ${errors.password && "invalid"}`}
+                                    {...register("password", {
+                                        required: "Password is Required",
+                                        minLength: {
+                                            value: 4,
+                                            message: "Minimum 6 simvols",
+                                        },
+                                        maxLength: {
+                                            value: 16,
+                                            message: "Maximum 16 simvols",
+                                        },
+                                        pattern: {
+                                            value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+                                            message: "Password should contain atleast one number and one special character",
+                                        }
+                                    })}
+                                    onKeyUp={() => {
+                                        trigger("password");
+                                    }}
+                                />
+                                {errors.password
+                                    ? (<small className="addUser__desc text-danger">{errors.password.message}</small>)
+                                    : (<small className='addUser__desc text-muted'>Password should contain special character</small>)
+                                }
                             </Col>
                         </Row>
                         <FormGroup className='addUser__item mt-5'>
-                            <Col md={{offset: 2, size: 2}}>
+                            <Col md={{offset: 2, size: 2}} lg={{offset: 1, size: 2}}>
                                 <Button className='addUser__submit'>Submit</Button>
                             </Col>
                             <Col md={3}>
@@ -151,6 +184,7 @@ const AddUserPage = () => {
                         </FormGroup>
                     </Form>
                 </Col>
+                <ToastContainer position='bottom-right'/>
             </Row>
         </div>
     )

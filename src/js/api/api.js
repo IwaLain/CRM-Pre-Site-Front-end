@@ -1,27 +1,35 @@
-const baseURL = "http://crm.loc";
-let response = [];
+const baseURL = 'http://crm.local'
+let response = []
 
 export const api = async (configs) => {
-  const path = `${baseURL + configs.url}`;
-  switch (configs.method) {
-    case "GET":
-    case "DELETE":
-      response = await fetch(path, {
-        method: configs.method,
-      });
-      break;
-    case "POST":
-      response = await fetch(path, {
-        method: configs.method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(configs.data),
-      });
-      break;
-    case "PUT":
-      break;
-    default:
-      break;
-  }
+    const path = `${baseURL + configs.url}`
+    switch (configs.method) {
 
-  return await response.json();
-};
+        case 'GET':
+        case 'DELETE':
+            response = await fetch(path, {
+                method: configs.method
+            }) 
+            break
+        case 'POST':
+            response = await fetch(path, {
+                method: configs.method,
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify(configs.data)
+            })  
+            break
+        case 'PUT':
+            console.log(path)
+            console.log(configs)
+            response = await fetch(path, {
+                method: configs.method,
+                headers: {'Content-type': 'application/json'},
+                body: JSON.stringify(configs.data)
+            })  
+            break
+        default:
+            break
+    }
+
+    return await response.json()
+}

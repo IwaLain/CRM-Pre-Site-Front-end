@@ -1,6 +1,6 @@
 import { api } from "./api";
 
-const token = "test";
+const token = localStorage.getItem('token');
 
 const getCustomersAPI = async (limit, search, page) => {
   let url = `/api/customer?access-token=${token}`;

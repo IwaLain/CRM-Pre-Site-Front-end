@@ -12,19 +12,31 @@ import { Card,
          CardBody } from 'reactstrap'
 import { alert } from '../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
+import { loginAPI } from '../js/api/login';
 
 const LoginPage = () => {
     const {
         register,
         handleSubmit,
         formState: { errors },
-        reset,
         trigger,
     } = useForm();
 
-    const onSubmit = () => {
-        alert('success', 'Complete Login')
-        reset();
+    const onSubmit = (e) => {
+        const data = {
+            'username': e.username,
+            'password': e.password
+        }
+
+        loginAPI(data)
+        .then(data => {
+            if(data.errors) {
+                alert('error', data.errors)
+            } else {
+                localStorage.setItem('token', data.token);
+                alert('success', 'Login success');
+            }
+        })
     };
 
     return (
@@ -46,7 +58,7 @@ const LoginPage = () => {
                                         <input
                                             type="text"
                                             placeholder='User Name ...'
-                                            autocomplete="off"
+                                            autoComplete="off"
                                             className={`form-control ${errors.username && "invalid"}`}
                                             {...register("username", {
                                                 required: "UserName is Required",

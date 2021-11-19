@@ -24,3 +24,14 @@ export const loginAPI = async (data) => {
     const response = await login(config)
     return response
 }
+
+export const logout = async (userId) => {
+    const path = `${baseURL + endpoints.logout + userId + '?access-token=' + localStorage.getItem('token')}`
+
+    response = await fetch(path, {
+        method: 'POST',
+    })
+
+    return await response.json()
+    
+}
