@@ -48,7 +48,7 @@ const UsersPage = () => {
                                     <th>{user.username}</th>
                                     <th>{user.email}</th>
                                     <th>{user.phone}</th>
-                                    <th>{}</th>
+                                    <th>{user.role}</th>
                                     <th>
                                         <img
                                             className='users__table-img'

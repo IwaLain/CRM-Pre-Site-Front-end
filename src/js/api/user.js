@@ -8,7 +8,7 @@ const getUsersAPI = async () => {
     }
 
     const response = await api(config)
-    return response[0]
+    return response.user
 }
 
 const getUserRoleAPI = async (userId) => {
