@@ -5,12 +5,16 @@ import CustomerCard from "../../CustomerCard/CustomerCard";
 import CustomersTable from "../../CustomersTable/CustomersTable";
 import Pagination from "../../widgets/Pagination/Pagination";
 import { PageTitleContext } from "../../../context";
+import { Spinner } from "reactstrap";
+import { getCustomersAPI } from "../../../js/api/customer";
 
 const CustomersPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [view, setView] = useState(true);
   const [customers, setCustomers] = useState([]);
   const [totalCustomers, setTotalCustomers] = useState(0);
   const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
 
   const history = useHistory();
@@ -21,16 +25,13 @@ const CustomersPage = () => {
 
   const totalPages = Math.ceil(totalCustomers / customersPerPage);
 
-  const handleSearch = (e) => {
-    const searchQuery = e.target.value;
-    fetch(
-      `http://crm.loc/api/customer?access-token=test&limit=${customersPerPage}&s=${searchQuery}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setCustomers(data.customers);
-        setTotalCustomers(data.total);
-      });
+  const formatCustomers = (customers) => {
+    const formattedCustomers = [];
+    for (let i = 0; i < Object.keys(customers).length; i++) {
+      formattedCustomers.push(customers[Object.keys(customers)[i]]);
+    }
+
+    return formattedCustomers;
   };
 
   const handlePageChange = (e) => {
@@ -46,33 +47,38 @@ const CustomersPage = () => {
     setView(!view);
   };
 
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+
+    setIsLoading(true);
+    getCustomersAPI(customersPerPage, e.target.value).then((data) => {
+      setCustomers(formatCustomers(data.customers));
+      setTotalCustomers(data.total);
+      setIsLoading(false);
+    });
+  };
+
   useEffect(() => {
-    fetch(
-      `http://crm.loc/api/customer?access-token=test&limit=${customersPerPage}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setCustomers(data.customers);
-        setTotalCustomers(data.total);
-      });
+    setIsLoading(true);
+    getCustomersAPI(customersPerPage).then((data) => {
+      setCustomers(formatCustomers(data.customers));
+      setTotalCustomers(data.total);
+      setIsLoading(false);
+    });
 
     window.addEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    fetch(
-      `http://crm.loc/api/customer?access-token=test&limit=${customersPerPage}&page=${page}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setCustomers(data.customers);
-      });
+    getCustomersAPI(customersPerPage, searchQuery, page).then((data) => {
+      setCustomers(formatCustomers(data.customers));
+    });
   }, [page]);
 
   return (
     <div className="customers">
       <div className="customers__header">
-        <h3>{pageTitle ? pageTitle : "err"}</h3>
+        <h3>{pageTitle}</h3>
         <div className="customers__options">
           <input
             className="customers__search"
@@ -121,40 +127,40 @@ const CustomersPage = () => {
         </div>
       </div>
       <div className="customers__content">
-        {view ? (
-          <CustomersTable customers={customers} />
-        ) : (
-          <div
-            className={
-              screenSize > 440
-                ? "customer-card_group"
-                : "customer-card_group dense"
-            }
-          >
-            {customers.length > 0 ? (
-              customers.map((customer) => (
-                <CustomerCard
-                  key={customer.id}
-                  title={customer.name}
-                  id={customer.id}
-                  progress={customer.status * 100}
-                  image={`http://crm.loc/${customer.img}`}
-                />
-              ))
+        {!isLoading ? (
+          <>
+            {view ? (
+              <CustomersTable customers={customers} />
             ) : (
-              <p>No customers found.</p>
+              <div
+                className={
+                  screenSize > 440
+                    ? "customer-card_group"
+                    : "customer-card_group dense"
+                }
+              >
+                {customers ? (
+                  customers.map((customer) => (
+                    <CustomerCard key={customer.id} customer={customer} />
+                  ))
+                ) : (
+                  <p>No customers found.</p>
+                )}
+              </div>
             )}
-          </div>
+            <Pagination
+              previousLabel={"<"}
+              nextLabel={">"}
+              pageCount={totalPages}
+              onPageChange={handlePageChange}
+              containerClassName={"pagination"}
+              activeClassName={"active"}
+            />
+          </>
+        ) : (
+          <Spinner />
         )}
       </div>
-      <Pagination
-        previousLabel={"<"}
-        nextLabel={">"}
-        pageCount={totalPages}
-        onPageChange={handlePageChange}
-        containerClassName={"pagination"}
-        activeClassName={"active"}
-      />
     </div>
   );
 };

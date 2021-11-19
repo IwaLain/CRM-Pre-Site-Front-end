@@ -3,17 +3,29 @@ import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./customer-card.scss";
 
-const CustomerCard = ({ image, title, progress, id }) => {
+const CustomerCard = ({ customer }) => {
+  let progress = 0;
+  if (customer.name) progress += 33.3;
+  if (customer.facilities && customer.facilities.length > 0) progress += 33.3;
+  if (customer.equipments && customer.equipments.length > 0) progress += 33.3;
+
   return (
     <div className="customer-card">
-      <img src={image ? image : placeholder} alt="customer" />
+      <img
+        src={
+          customer.image
+            ? process.env.REACT_APP_SERVER_URL + "/" + customer.image
+            : placeholder
+        }
+        alt="customer"
+      />
       <div className="customer-card__body">
-        <h4>{title}</h4>
+        <h4>{customer.name}</h4>
         <Progress
           style={!progress ? { visibility: "hidden" } : {}}
           value={progress}
         />
-        <Link to={`/dashboard/customer/${id}`}>View</Link>
+        <Link to={`/dashboard/customers/${customer.id}`}>View</Link>
       </div>
     </div>
   );

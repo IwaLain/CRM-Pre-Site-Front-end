@@ -13,7 +13,7 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/dashboard/:path?" exact>
+        <Route path="/dashboard/:path?">
           <DashboardLayout>
             <Switch>
               <Route exact path="/dashboard">

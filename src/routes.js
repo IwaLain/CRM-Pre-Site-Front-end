@@ -6,7 +6,6 @@ import AddUserPage from "./views/AddUserPage";
 import CreateCustomer from "./components/pages/CreateCustomerPage/CreateCustomer";
 import CustomerFactoryPage from "./components/pages/CustomerFactoryPage/CustomerFactoryPage";
 import CustomersPage from "./components/pages/CustomersPage/CustomersPage";
-import FacilitiesPage from "./components/pages/FacilitiesPage/FacilitiesPage";
 import EquipmentPage from "./components/pages/EquipmentPage/EquipmentPage";
 
 const routes = {
@@ -49,18 +48,13 @@ const routes = {
       component: CustomersPage,
     },
     {
-      path: "/dashboard/customer-factory",
-      name: "Customer Page Factory",
+      path: "/dashboard/facilities/:id",
+      name: "Customer Factory",
       component: CustomerFactoryPage,
     },
     {
-      path: "/dashboard/facilities",
-      name: "Facilities",
-      component: FacilitiesPage,
-    },
-    {
-      path: "/dashboard/equipment",
-      name: "equipment",
+      path: "/dashboard/equipment/:id",
+      name: "Location Equipment",
       component: EquipmentPage,
     },
   ],
