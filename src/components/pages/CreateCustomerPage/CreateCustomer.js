@@ -14,7 +14,7 @@ const CreateCustomer = () => {
       <FormComponent
         formFields={formFields}
         formName="Create Customer"
-        addFieldBtn={true}
+        addFieldBtn={false}
         attachedImages={true}
       ></FormComponent>
     </div>

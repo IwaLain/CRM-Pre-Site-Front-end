@@ -5,7 +5,7 @@ import FieldComponent from "./FieldComponent/FieldComponent";
 import { alert } from "../../js/methods/alert";
 import "react-toastify/dist/ReactToastify.css";
 import "./form-component.scss";
-import AttachedImages from "./AttachedImages/AttachedImages";
+import AttachedImages from "../AttachedImages/AttachedImages";
 import AddFieldModal from "../AddFieldModal/AddFieldModal";
 
 const FormComponent = ({

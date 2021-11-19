@@ -1,21 +1,26 @@
 .attached--img-container {
   position: relative;
+  height: 100%;
+}
+
+.attached--list {
+  padding: 0;
+}
+.attached--item {
   margin-right: 1rem;
   margin-bottom: 1rem;
   width: 105px;
   height: 90px;
 }
-
 .attached-img {
   width: 100%;
   height: 100%;
-  max-width: 100%;
 }
-.attached--upload-btn {
-  width: 105px;
-  height: 90px;
-}
+
 .attached--remove-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 21px;
   height: 21px;
   border-radius: 50%;
@@ -25,6 +30,12 @@
   right: 0;
   transform: translate(50%, -50%);
 }
+.attached--remove-img::before {
+  content: " ";
+  height: 3px;
+  width: 10px;
+  background-color: white;
+}
 .image-upload > input {
   display: none;
 }
@@ -32,6 +43,7 @@
   position: relative;
   overflow: hidden;
   display: inline-block;
+  height: 100%;
 }
 
 .upload-btn-wrapper input[type="file"] {
@@ -40,4 +52,17 @@
   left: 0;
   top: 0;
   opacity: 0;
+}
+.attached-images--container {
+  padding-top: 10px;
+}
+.btn.attached--upload-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+.attached--page-subtitle {
+  margin-bottom: 20px;
 }

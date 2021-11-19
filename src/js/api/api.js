@@ -5,6 +5,7 @@ export const api = async (configs) => {
   const path = `${baseURL + configs.url}`;
   switch (configs.method) {
     case "GET":
+    case "DELETE":
       response = await fetch(path, {
         method: configs.method,
       });

@@ -1,12 +1,31 @@
-import React, { useState } from "react";
-
-import logo from "../../../assets/img/company.png";
-
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router";
+import star from "../../../assets/img/star.svg";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+} from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "./factory-page.scss";
 import InformationComponent from "../../InformationComponent/InformationComponent";
 import FormComponent from "../../FormComponent/FormComponent";
+import AttachedImages from "../../AttachedImages/AttachedImages";
+import { getFacilityApi } from "../../../js/api/facilities";
+
 const CustomerFactoryPage = () => {
+  const { id } = useParams();
+  const [facility, setFacility] = useState();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    getFacilityApi(id).then((data) => {
+      setFacility(data);
+      setFactoryImage(`http://crm.loc/${data.img}`);
+    });
+  }, []);
+
   const formFields = [
     { name: "title", type: "text", defaultValue: "default", id: "id-1" },
     { name: "title", type: "text", defaultValue: "default", id: "id-2" },
@@ -14,20 +33,14 @@ const CustomerFactoryPage = () => {
     { name: "title", type: "text", defaultValue: "default", id: "id-4" },
   ];
 
-  const items = [
-    { name: "address" },
-    { name: "contact user/success manager" },
-    { name: "contact phone" },
-  ];
-  const initialImages = [
-    { id: "1", src: logo },
-    { id: "2", src: logo },
-  ];
-  const [factoryImage, setFactoryImage] = useState(logo);
+  const [factoryImage, setFactoryImage] = useState();
 
-  const editImage = (e) => {
-    const src = e.target.value;
-    setFactoryImage(src);
+  const editImage = (img) => {
+    setFactoryImage(`http://crm.loc/${img}`);
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
   return (
@@ -38,31 +51,55 @@ const CustomerFactoryPage = () => {
             src={factoryImage}
             alt="company img "
             className="factory-img"
-          ></img>{" "}
+          ></img>
           <div className="image-upload">
             <label htmlFor="factoryImg">
-              {" "}
-              <span className="remove-img"></span>
+              <span className="edit-img">
+                <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+                  <DropdownToggle className="edit-img__btn">
+                    <img src={star} alt="star" />
+                  </DropdownToggle>
+                  <DropdownMenu className="edit-img__menu">
+                    {facility && facility.facilityImages.length > 0 ? (
+                      facility.facilityImages.map(({ img }) => (
+                        <DropdownItem key={img} onClick={() => editImage(img)}>
+                          <img src={`http://crm.loc/${img}`} />
+                        </DropdownItem>
+                      ))
+                    ) : (
+                      <DropdownItem>
+                        <p>No images.</p>
+                      </DropdownItem>
+                    )}
+                  </DropdownMenu>
+                </Dropdown>
+              </span>
             </label>
-            <input
-              id="factoryImg"
-              type="file"
-              name="myfile"
-              accept="image/*"
-              onInput={editImage}
-            />
           </div>
         </div>
-        <h1 className="page-title">Customer Page Factory Title</h1>
+        <h1 className="page-title">{facility && facility.name}</h1>
       </div>
-      <InformationComponent items={items}></InformationComponent>
+      {facility && (
+        <InformationComponent
+          items={[{ fieldTitle: "address", value: facility.address }]}
+          title="Information Facility"
+        ></InformationComponent>
+      )}
+
       <FormComponent
         formFields={formFields}
-        formName="Factories Customer Locations Form"
+        formName="Facility Locations Form"
         addFieldBtn={true}
-        attachedImages={true}
-        images={initialImages}
+        attachedImages={false}
       ></FormComponent>
+      <AttachedImages
+        images={
+          facility && facility.facilityImages.length > 0
+            ? facility.facilityImages
+            : []
+        }
+        title="Attached images"
+      ></AttachedImages>
     </>
   );
 };
