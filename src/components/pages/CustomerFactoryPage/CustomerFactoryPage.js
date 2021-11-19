@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import star from "../../../assets/img/star.svg";
-
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+} from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "./factory-page.scss";
 import InformationComponent from "../../InformationComponent/InformationComponent";
@@ -12,25 +17,15 @@ import { getFacilityApi } from "../../../js/api/facilities";
 const CustomerFactoryPage = () => {
   const { id } = useParams();
   const [facility, setFacility] = useState();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   useEffect(() => {
-    async function getFacility() {
-      const facilityData = await getFacilityApi(id);
-      await setFacility(facilityData);
-      setFactoryImage(`http://crm.loc/${facilityData.img}`);
-    }
-
-    getFacility();
-
-    // fetch(`http://crm.loc/api/facilities/${id}?access-token=test`)
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setFacility(data.facility);
-    //     return data.facility;
-    //   })
-    //   .then((facility) => {
-    //     setFactoryImage(`http://crm.loc/${facility.img}`);
-    //   });
+    getFacilityApi(id).then((data) => {
+      setFacility(data);
+      setFactoryImage(`http://crm.loc/${data.img}`);
+    });
   }, []);
+
   const formFields = [
     { name: "title", type: "text", defaultValue: "default", id: "id-1" },
     { name: "title", type: "text", defaultValue: "default", id: "id-2" },
@@ -40,11 +35,12 @@ const CustomerFactoryPage = () => {
 
   const [factoryImage, setFactoryImage] = useState();
 
-  const editImage = (e) => {
-    const file = e.target.files[0];
-    const url = URL.createObjectURL(file);
+  const editImage = (img) => {
+    setFactoryImage(`http://crm.loc/${img}`);
+  };
 
-    setFactoryImage(url);
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
   return (
@@ -59,34 +55,40 @@ const CustomerFactoryPage = () => {
           <div className="image-upload">
             <label htmlFor="factoryImg">
               <span className="edit-img">
-                <img src={star} alt="star" />
+                <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+                  <DropdownToggle className="edit-img__btn">
+                    <img src={star} alt="star" />
+                  </DropdownToggle>
+                  <DropdownMenu className="edit-img__menu">
+                    {facility && facility.facilityImages.length > 0 ? (
+                      facility.facilityImages.map(({ img }) => (
+                        <DropdownItem key={img} onClick={() => editImage(img)}>
+                          <img src={`http://crm.loc/${img}`} />
+                        </DropdownItem>
+                      ))
+                    ) : (
+                      <DropdownItem>
+                        <p>No images.</p>
+                      </DropdownItem>
+                    )}
+                  </DropdownMenu>
+                </Dropdown>
               </span>
             </label>
-            <input
-              id="factoryImg"
-              type="file"
-              name="myfile"
-              accept="image/*"
-              onInput={editImage}
-            />
           </div>
         </div>
         <h1 className="page-title">{facility && facility.name}</h1>
       </div>
       {facility && (
         <InformationComponent
-          items={[
-            { fieldTitle: "address", value: facility.address },
-            // { fieldTitle: "email", value: facility.email },
-            // { fieldTitle: "phone", value: facility.phone },
-          ]}
-          title="Information Factory"
+          items={[{ fieldTitle: "address", value: facility.address }]}
+          title="Information Facility"
         ></InformationComponent>
       )}
 
       <FormComponent
         formFields={formFields}
-        formName="Factories Customer Locations Form"
+        formName="Facility Locations Form"
         addFieldBtn={true}
         attachedImages={false}
       ></FormComponent>

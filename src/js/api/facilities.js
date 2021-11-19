@@ -41,4 +41,31 @@ const getFacilityApi = async (facilityId) => {
 
   return response.facility;
 };
-export { getUsersAPI, getUserRoleAPI, addUserAPI, getFacilityApi };
+const addFacilityImageApi = async (facilityId, dataImg) => {
+  let config = {
+    method: "POST",
+    url: `/api/facilities/${facilityId}/image/create?access-token=`,
+    data: dataImg,
+  };
+
+  const response = await api(config);
+  return response;
+};
+const deleteFacilityImageAPI = async (imageId) => {
+  let config = {
+    method: "DELETE",
+    url: `/api/facilities/image/delete/${imageId}?access-token=`,
+  };
+
+  const response = await api(config);
+
+  return response;
+};
+export {
+  getUsersAPI,
+  getUserRoleAPI,
+  addUserAPI,
+  getFacilityApi,
+  addFacilityImageApi,
+  deleteFacilityImageAPI,
+};
