@@ -32,8 +32,20 @@ const addUserAPI = async (data) => {
     return response
 }
 
+const editeUserAPI = async (userId, data) => {
+    let config = {
+        method: 'PUT',
+        url: endpoints.editeUser + userId + '?',
+        data: data
+    }
+
+    const response = await api(config)
+    return response
+}
+
 export const user = {
     getUsersAPI,
     getUserRoleAPI,
-    addUserAPI
+    addUserAPI,
+    editeUserAPI
 }

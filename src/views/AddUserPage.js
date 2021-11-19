@@ -166,28 +166,6 @@ const AddUserPage = () => {
                                 }
                             </Col>
                         </Row>
-                        {/* <Row className='addUser__item'>
-                            <Col md={2} lg={1}>
-                                <Label className='addUser__label'>Role</Label>
-                            </Col>
-                            <Col md={4}>
-                                <select
-                                    className='form-control'
-                                    name='role'
-                                >
-                                    <option value='' defaultChecked disabled>
-                                        Select role
-                                    </option>
-                                    <option value='User'>
-                                        User
-                                    </option>
-                                    <option value='Admin'>
-                                        Admin
-                                    </option>
-                                </select>
-                                <small className='addUser__desc text-muted'>Select role</small>
-                            </Col>
-                        </Row> */}
                         <FormGroup className='addUser__item mt-5'>
                             <Col md={{offset: 2, size: 2}} lg={{offset: 1, size: 2}}>
                                 <Button className='addUser__submit'>Submit</Button>

@@ -3,7 +3,7 @@ let response = []
 
 export const api = async (configs) => {
     const token = localStorage.getItem('token')
-    const path = `${baseURL + configs.url + token}`
+    const path = `${baseURL + configs.url + 'access-token=' + token}`
     switch (configs.method) {
 
         case 'GET':
@@ -16,10 +16,16 @@ export const api = async (configs) => {
                 method: configs.method,
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(configs.data)
-            })
+            })  
             break
         case 'PUT':
-            
+            console.log(path)
+            console.log(configs)
+            response = await fetch(path, {
+                method: configs.method,
+                headers: {'Content-type': 'application/json'},
+                body: JSON.stringify(configs.data)
+            })  
             break
         default:
             break

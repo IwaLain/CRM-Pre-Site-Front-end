@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react'
 import {
         Button,
         Col,
+        Modal,
+        ModalBody,
+        ModalFooter,
+        ModalHeader,
         Row,
         Table
     } from 'reactstrap'
@@ -10,9 +14,21 @@ import edite from '../assets/img/edite.svg'
 import '../scss/components/users-page.scss'
 import { NavLink } from 'react-router-dom'
 import { user } from '../js/api/user'
+import { EditeUserModal } from '../js/methods/EditeUserModal'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
+    const [modal, setModal] = useState(false)
+    const [currentUser, setCurrentUser] = useState([])
+
+    const toggle = () => {
+        setModal(!modal)
+    }
+
+    const editeUser = (userId, dataUser) => {
+        setUsers(users.map(data => data.id === userId ? {...data, data: dataUser} : data))
+        users.map(data => console.log(data))
+    }
 
     useEffect(() => {
         user.getUsersAPI().then(data => setUsers(data))
@@ -54,7 +70,11 @@ const UsersPage = () => {
                                             className='users__table-img'
                                             src={edite}
                                             alt="edite"
-                                            onClick={() => alert('Ok')}
+                                            onClick={() => {
+                                                    setModal(true)
+                                                    setCurrentUser(user)
+                                                }
+                                            }
                                         />
                                     </th>
                                 </tr>
@@ -63,6 +83,13 @@ const UsersPage = () => {
                     </Table>
                 </Col>
             </Row>
+            
+            <Modal isOpen={modal} toggle={toggle}>
+                <ModalHeader toggle={toggle}>Edite User: '{currentUser.username}'</ModalHeader>
+                <ModalBody>
+                    <EditeUserModal currentUser={currentUser} editeUser={editeUser}/>
+                </ModalBody>
+            </Modal>
         </>
     )
 }

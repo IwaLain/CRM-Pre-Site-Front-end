@@ -1,8 +1,10 @@
 export const endpoints = {
     login: '/api/login',
-    getUsers: '/api/user?access-token=',
-    addUser: '/api/user/create?access-token=',
-    getEquipment: '/api/equipment?access-token=',
-    getCustomers: '/api/customer?access-token=',
-    addCustomer: '/api/customer/create?access-token=',
+    logout: '/api/logout/',
+    getUsers: '/api/user?',
+    addUser: '/api/user/create?',
+    editeUser: '/api/user/update/',
+    getEquipment: '/api/equipment?',
+    getCustomers: '/api/customer?',
+    addCustomer: '/api/customer/create?',
 }

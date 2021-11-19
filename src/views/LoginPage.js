@@ -35,7 +35,6 @@ const LoginPage = () => {
             } else {
                 localStorage.setItem('token', data.token);
                 alert('success', 'Login success');
-                
             }
         })
     };
