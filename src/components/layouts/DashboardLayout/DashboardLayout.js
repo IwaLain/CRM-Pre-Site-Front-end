@@ -2,7 +2,7 @@ import React from "react";
 import "./dashboard.scss";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { useLocation } from "react-router-dom";
+import { useRouteMatch, useLocation } from "react-router-dom";
 import Header from "../../widgets/Header/Header";
 import Sidebar from "../../widgets/Sidebar/Sidebar";
 import Breadcrumbs from "../../widgets/Breadcrumbs/Breadcrumbs";
@@ -17,6 +17,8 @@ const DashboardLayout = ({ children }) => {
     window.innerWidth <= MOBILE_SIZE
   );
   const [sidebarNeeded, setSidebarNeeded] = useState(true);
+
+  const match = useRouteMatch();
 
   const location = useLocation();
 
@@ -37,35 +39,30 @@ const DashboardLayout = ({ children }) => {
   };
 
   useEffect(() => {
-    setPageTitle(
-      routes.dashboard.filter((route) => {
-        return route.path === location.pathname;
-      })[0].name
-    );
+    let filtered = routes.dashboard.filter((route) => {
+      return route.path === match.url;
+    })[0];
+    filtered && setPageTitle(filtered.name);
+  }, [match.url]);
 
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     switch (location.pathname) {
       case "/dashboard/customers":
+      case "/dashboard/profile":
+      case "/dashboard/users":
+      case "/dashboard/create-customer":
+      case "/dashboard/add-user":
         setSidebarNeeded(false);
         break;
       default:
         setSidebarNeeded(true);
+        break;
     }
   }, [location]);
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-
-    // fetch("http://crm.loc/api/login", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     username: "Kendall.Pfannerstill55",
-    //     password: "qwez123!",
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data));
-  }, []);
 
   return (
     <PageTitleContext.Provider value={{ pageTitle }}>

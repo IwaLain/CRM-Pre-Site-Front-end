@@ -17,7 +17,7 @@ const Header = ({ sidebarNeeded, isMobile, toggleSidebar }) => {
   };
 
   return (
-    <header>
+    <header style={{ zIndex: 10 }}>
       {!sidebarNeeded && (
         <div className="logo">
           <Link to="/">
