@@ -53,10 +53,10 @@ const addFacilityImageApi = async (facilityId, dataImg) => {
   const response = await api(config);
   return response;
 };
-const deleteFacilityImageAPI = async (imageId) => {
+const deleteFacilityImageAPI = async (facilityId, imageId) => {
   let config = {
     method: "DELETE",
-    url: `/api/facilities/image/delete/${imageId}?access-token=${token}`,
+    url: `/api/facilities/${facilityId}/image/delete/${imageId}?access-token=${token}`,
   };
 
   const response = await api(config);

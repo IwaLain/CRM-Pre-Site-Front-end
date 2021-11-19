@@ -1,28 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import star from "../../../assets/img/star.svg";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-} from "reactstrap";
+import logo from "../../../assets/img/company.png";
 import "react-toastify/dist/ReactToastify.css";
 import "./factory-page.scss";
 import InformationComponent from "../../InformationComponent/InformationComponent";
 import FormComponent from "../../FormComponent/FormComponent";
 import AttachedImages from "../../AttachedImages/AttachedImages";
-import { getFacilityApi } from "../../../js/api/facilities";
-
+import {
+  getFacilityApi,
+  deleteFacilityImageAPI,
+  addFacilityImageApi,
+} from "../../../js/api/facilities";
+import DropdownImageEdit from "../../widgets/DropdownImageEdit/DropdownImageEdit";
 const CustomerFactoryPage = () => {
   const { id } = useParams();
   const [facility, setFacility] = useState();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const [attachedImages, setAttachedImages] = useState();
+  const [mainImage, setMainImage] = useState();
+  const getMainImage = (images) => {
+    let mainImage = images.find((x) => x.main_image === "1");
+    if (!mainImage) {
+      mainImage = images[0];
+    }
+    return mainImage;
+  };
   useEffect(() => {
     getFacilityApi(id).then((data) => {
       setFacility(data);
-      setFactoryImage(`http://crm.loc/${data.img}`);
+      setAttachedImages(data.facilityImages);
+      const mainImage = getMainImage(data.facilityImages);
+      setMainImage(mainImage);
     });
   }, []);
 
@@ -33,49 +41,64 @@ const CustomerFactoryPage = () => {
     { name: "title", type: "text", defaultValue: "default", id: "id-4" },
   ];
 
-  const [factoryImage, setFactoryImage] = useState();
-
-  const editImage = (img) => {
-    setFactoryImage(`http://crm.loc/${img}`);
+  const setMainFacilityImage = (imageId) => {
+    setMainImage(id, imageId);
   };
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+  // const editImage = (img) => {
+  //   setFactoryImage(`http://crm.loc/${img}`);
+  // };
+  const addFacilityImage = (data) => {
+    console.log(id);
+    addFacilityImageApi(id, data).then((res) => {
+      console.log(res.facilityImages);
+      setAttachedImages(res.facilityImages);
+    });
   };
-
+  const deleteFacilityImage = (img) => {
+    deleteFacilityImageAPI(img.facility_id, img.id).then((res) => {
+      console.log(res.facilityImages);
+      setAttachedImages(res.facilityImages);
+    });
+  };
   return (
     <>
       <div className="d-flex align-items-center factory-page--header">
         <div className="img-container">
           <img
-            src={factoryImage}
+            src={
+              mainImage && mainImage.img
+                ? `http://crm.loc/${mainImage.img}`
+                : logo
+            }
             alt="company img "
             className="factory-img"
           ></img>
-          <div className="image-upload">
-            <label htmlFor="factoryImg">
-              <span className="edit-img">
-                <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-                  <DropdownToggle className="edit-img__btn">
-                    <img src={star} alt="star" />
-                  </DropdownToggle>
-                  <DropdownMenu className="edit-img__menu">
-                    {facility && facility.facilityImages.length > 0 ? (
-                      facility.facilityImages.map(({ img }) => (
-                        <DropdownItem key={img} onClick={() => editImage(img)}>
-                          <img src={`http://crm.loc/${img}`} />
-                        </DropdownItem>
-                      ))
-                    ) : (
-                      <DropdownItem>
-                        <p>No images.</p>
-                      </DropdownItem>
-                    )}
-                  </DropdownMenu>
-                </Dropdown>
-              </span>
-            </label>
-          </div>
+          <DropdownImageEdit
+            images={
+              attachedImages && attachedImages.length > 0 ? attachedImages : []
+            }
+            setMainImage={setMainFacilityImage}
+          ></DropdownImageEdit>
+          {/* <span className="edit-img">
+            <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+              <DropdownToggle className="edit-img__btn">
+                <img src={star} alt="star" />
+              </DropdownToggle>
+              <DropdownMenu className="edit-img__menu">
+                {facility && facility.facilityImages.length > 0 ? (
+                  facility.facilityImages.map(({ img }) => (
+                    <DropdownItem key={img} onClick={() => editImage(img)}>
+                      <img src={`http://crm.loc/${img}`} />
+                    </DropdownItem>
+                  ))
+                ) : (
+                  <DropdownItem>
+                    <p>No images.</p>
+                  </DropdownItem>
+                )}
+              </DropdownMenu>
+            </Dropdown>
+          </span> */}
         </div>
         <h1 className="page-title">{facility && facility.name}</h1>
       </div>
@@ -93,11 +116,9 @@ const CustomerFactoryPage = () => {
         attachedImages={false}
       ></FormComponent>
       <AttachedImages
-        images={
-          facility && facility.facilityImages.length > 0
-            ? facility.facilityImages
-            : []
-        }
+        images={attachedImages}
+        addImage={addFacilityImage}
+        deleteImage={deleteFacilityImage}
         title="Attached images"
       ></AttachedImages>
     </>

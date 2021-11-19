@@ -10,6 +10,7 @@ export const api = async (configs) => {
         method: configs.method,
       });
       break;
+    case "PUT":
     case "POST":
       response = await fetch(path, {
         method: configs.method,
@@ -17,8 +18,7 @@ export const api = async (configs) => {
         body: JSON.stringify(configs.data),
       });
       break;
-    case "PUT":
-      break;
+
     default:
       break;
   }
