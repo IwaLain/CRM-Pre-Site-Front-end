@@ -1,9 +1,9 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap"
-import '../scss/components/add-user-page.scss'
-import { user } from '../js/api/user';
-import { alert } from '../js/methods/alert';
+import './AddUserPage.module.scss'
+import { user } from '../../../../js/api/user';
+import { alert } from '../../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
 
 const AddUserPage = () => {

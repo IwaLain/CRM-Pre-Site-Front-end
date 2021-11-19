@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import 'react-toastify/dist/ReactToastify.css';
-import '../scss/components/login-page.scss';
-import logo from '../assets/img/company.png'
+import './LoginPage.modele.scss';
+import logo from '../../../assets/img/company.png'
 import { Card,
          Col,
          Container,
@@ -10,9 +10,9 @@ import { Card,
          Row,
          CardImg,
          CardBody } from 'reactstrap'
-import { alert } from '../js/methods/alert';
+import { alert } from '../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
-import { loginAPI } from '../js/api/login';
+import { loginAPI } from '../../../js/api/login';
 
 const LoginPage = () => {
     const {

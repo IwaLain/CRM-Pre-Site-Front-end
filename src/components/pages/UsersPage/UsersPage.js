@@ -4,17 +4,16 @@ import {
         Col,
         Modal,
         ModalBody,
-        ModalFooter,
         ModalHeader,
         Row,
         Table
     } from 'reactstrap'
-import star from '../assets/img/star.svg'
-import edite from '../assets/img/edite.svg'
-import '../scss/components/users-page.scss'
+import star from '../../../assets/img/star.svg'
+import edite from '../../../assets/img/edite.svg'
+import './UsersPage.module.scss'
 import { NavLink } from 'react-router-dom'
-import { user } from '../js/api/user'
-import { EditeUserModal } from '../js/methods/EditeUserModal'
+import { user } from '../../../js/api/user'
+import { EditeUserModal } from './EditUser/EditeUserModal'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])

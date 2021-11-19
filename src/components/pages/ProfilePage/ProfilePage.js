@@ -1,6 +1,6 @@
 import { Col, Label, Row } from "reactstrap"
-import '../scss/components/profile-page.scss'
-import placeholder from '../assets/img/company.png'
+import './ProfilePage.scss'
+import placeholder from '../../../assets/img/company.png'
 const ProfilePage = () => {
     return(
         <>

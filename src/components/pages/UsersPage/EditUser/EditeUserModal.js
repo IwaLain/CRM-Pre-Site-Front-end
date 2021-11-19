@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import { useForm } from 'react-hook-form';
-import { alert } from './alert';
-import { user } from '../api/user';
+import { alert } from '../../../../js/methods/alert';
+import { user } from '../../../../js/api/user';
 
 export const EditeUserModal = ({currentUser, editeUser}) => {
     const [inputs, setInputs] = useState({
