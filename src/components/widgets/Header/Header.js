@@ -20,7 +20,7 @@ const Header = ({ sidebarNeeded, isMobile, toggleSidebar }) => {
   };
 
   const handleLogout = () => {
-    logout(8).then((res) => {
+    logout().then((res) => {
       console.log(res);
       history.push("/");
     });

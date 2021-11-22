@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Col, Label } from "reactstrap";
 import "./attached-images.scss";
 import star from "../../assets/img/star.svg";
-import { uploadImage } from "../../js/methods/convertImage";
+import uploadImage from "../../js/methods/convertImage";
 import {
   addFacilityImageApi,
   deleteFacilityImageAPI,
