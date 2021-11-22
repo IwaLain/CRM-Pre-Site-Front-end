@@ -89,7 +89,7 @@ const CustomersPage = () => {
           <div className="customers__options_btns">
             <button
               className="customers__add-btn"
-              onClick={() => history.push("/dashboard/create-customer")}
+              onClick={() => history.push("/dashboard/customer-create")}
             >
               +
             </button>

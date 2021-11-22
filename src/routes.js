@@ -3,7 +3,7 @@ import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
 import LoginPage from "./components/pages/LoginPage/LoginPage";
 import UsersPage from "./components/pages/UsersPage/UsersPage";
 import AddUserPage from "./components/pages/UsersPage/AddUserPage/AddUserPage";
-import CreateCustomer from "./components/pages/CreateCustomerPage/CreateCustomer";
+import CustomerCreatePage from "./components/pages/CustomerCreatePage/CustomerCreatePage";
 import CustomerFactoryPage from "./components/pages/CustomerFactoryPage/CustomerFactoryPage";
 import CustomersPage from "./components/pages/CustomersPage/CustomersPage";
 import EquipmentPage from "./components/pages/EquipmentPage/EquipmentPage";
@@ -38,9 +38,9 @@ const routes = {
       component: AddUserPage,
     },
     {
-      path: "/dashboard/create-customer",
+      path: "/dashboard/customer-create",
       name: "Customer Create",
-      component: CreateCustomer,
+      component: CustomerCreatePage,
     },
     {
       path: "/dashboard/customers",
