@@ -10,7 +10,7 @@ import {
     } from 'reactstrap'
 import star from '../../../assets/img/star.svg'
 import edite from '../../../assets/img/edite.svg'
-import './UsersPage.module.scss'
+import './UsersPage.scss'
 import { NavLink } from 'react-router-dom'
 import { user } from '../../../js/api/user'
 import { EditeUserModal } from './EditUser/EditeUserModal'
@@ -19,18 +19,17 @@ const UsersPage = () => {
     const [users, setUsers] = useState([])
     const [modal, setModal] = useState(false)
     const [currentUser, setCurrentUser] = useState([])
+    const [loading, setLoading] = useState([])
 
-    const toggle = () => {
-        setModal(!modal)
-    }
-
-    const editeUser = (userId, dataUser) => {
-        setUsers(users.map(data => data.id === userId ? {...data, data: dataUser} : data))
-    }
+    const toggle = () => setModal(!modal)
 
     useEffect(() => {
         user.getUsersAPI().then(data => setUsers(data))
-    }, [])
+    }, []) 
+
+    const editeUser = (userId, dataUser) => {
+        setUsers(users.map(data => data.id === userId ? {...data, data: dataUser.id} : data))
+    }
     
     return (
         <>

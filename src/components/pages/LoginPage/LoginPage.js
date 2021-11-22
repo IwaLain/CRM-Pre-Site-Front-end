@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import 'react-toastify/dist/ReactToastify.css';
-import './LoginPage.modele.scss';
+import './LoginPage.scss';
 import logo from '../../../assets/img/company.png'
 import { Card,
          Col,

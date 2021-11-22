@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap"
-import './AddUserPage.module.scss'
+import './AddUserPage.scss'
 import { user } from '../../../../js/api/user';
 import { alert } from '../../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
@@ -118,7 +118,7 @@ const AddUserPage = () => {
                                             message: "Minimum 9 simvols",
                                         },
                                         pattern: {
-                                            value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+                                            value: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
                                             message: "Phone must be like 555-555-5555",
                                         }
                                     })}
