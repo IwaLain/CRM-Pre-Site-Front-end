@@ -22,7 +22,7 @@ const InfoCard = ({ data, type }) => {
   }
 
   return (
-    <div className="customer-card">
+    <div className="info-card">
       <img
         src={
           data.image
@@ -31,7 +31,7 @@ const InfoCard = ({ data, type }) => {
         }
         alt="customer"
       />
-      <div className="customer-card__body">
+      <div className="info-card__body">
         <h4>{data.name}</h4>
         <Progress
           style={!progress ? { visibility: "hidden" } : {}}

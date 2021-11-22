@@ -2,7 +2,7 @@ import logo from "../../../assets/img/company.png";
 import closeBtnStyles from "./close-btn.module.scss";
 import { Link } from "react-router-dom";
 
-const Sidebar = ({ isMobile, sidebarNeeded, toggleSidebar }) => {
+const Sidebar = ({ isMobile, sidebarNeeded, toggleSidebar, id, type }) => {
   return (
     <aside className={isMobile ? "col-12" : "col-2"}>
       <div className={sidebarNeeded ? "logo sidebar" : "logo"}>
@@ -48,10 +48,10 @@ const Sidebar = ({ isMobile, sidebarNeeded, toggleSidebar }) => {
       <nav>
         <ul>
           <li>
-            <Link to="/dashboard/facilities">Facilities</Link>
+            <Link to={`/dashboard/${type}/facilities/${id}`}>Facilities</Link>
           </li>
           <li>
-            <Link to="/dashboard/equipment">Equipment</Link>
+            <Link to={`/dashboard/${type}/equipment/${id}`}>Equipment</Link>
           </li>
         </ul>
       </nav>

@@ -14,7 +14,7 @@ import {
   setMainFacilityImageAPI,
 } from "../../../js/api/facilities";
 import DropdownImageEdit from "../../widgets/DropdownImageEdit/DropdownImageEdit";
-const CustomerFactoryPage = () => {
+const Factory = () => {
   const { id } = useParams();
   const [facility, setFacility] = useState();
   const [attachedImages, setAttachedImages] = useState();
@@ -128,4 +128,4 @@ const CustomerFactoryPage = () => {
   );
 };
 
-export default CustomerFactoryPage;
+export default Factory;

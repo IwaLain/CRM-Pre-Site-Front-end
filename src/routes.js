@@ -1,12 +1,19 @@
-import CustomerPage from "./components/pages/CustomerPage/CustomerPage";
-import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
 import LoginPage from "./components/pages/LoginPage/LoginPage";
 import UsersPage from "./components/pages/UsersPage/UsersPage";
+import Profile from "./components/pages/Profile/Profile";
 import AddUserPage from "./components/pages/UsersPage/AddUserPage/AddUserPage";
-import CustomerCreatePage from "./components/pages/CustomerCreatePage/CustomerCreatePage";
-import CustomerFactoryPage from "./components/pages/CustomerFactoryPage/CustomerFactoryPage";
-import CustomersPage from "./components/pages/CustomersPage/CustomersPage";
-import EquipmentPage from "./components/pages/EquipmentPage/EquipmentPage";
+import Customers from "./components/pages/Customers/Customers";
+import Customer from "./components/pages/Customer/Customer";
+import CustomerCreate from "./components/pages/CustomerCreate/CustomerCreate";
+import CustomerFactories from "./components/pages/CustomerFactories/CustomerFactories";
+import CustomerLocations from "./components/pages/CustomerLocations/CustomerLocations";
+import CustomerEquipment from "./components/pages/CustomerEquipment/CustomerEquipment";
+import Factory from "./components/pages/Factory/Factory";
+import FactoryLocations from "./components/pages/FactoryLocations/FactoryLocations";
+import FactoryEquipment from "./components/pages/FactoryEquipment/FactoryEquipment";
+import Location from "./components/pages/Location/Location";
+import LocationEquipment from "./components/pages/LocationEquipment/LocationEquipment";
+import Equipment from "./components/pages/Equipment/Equipment";
 
 const routes = {
   auth: [
@@ -18,19 +25,14 @@ const routes = {
   ],
   dashboard: [
     {
-      path: "/dashboard/customers/:id",
-      name: "Customer Page",
-      component: CustomerPage,
+      path: "/dashboard/users",
+      name: "Users Page",
+      component: UsersPage,
     },
     {
       path: "/dashboard/profile",
       name: "Profile Page",
-      component: ProfilePage,
-    },
-    {
-      path: "/dashboard/users",
-      name: "Users Page",
-      component: UsersPage,
+      component: Profile,
     },
     {
       path: "/dashboard/add-user",
@@ -38,24 +40,64 @@ const routes = {
       component: AddUserPage,
     },
     {
-      path: "/dashboard/customer-create",
-      name: "Customer Create",
-      component: CustomerCreatePage,
+      path: "/dashboard/customers/:id",
+      name: "Customer",
+      component: Customer,
     },
     {
       path: "/dashboard/customers",
       name: "Customers",
-      component: CustomersPage,
+      component: Customers,
+    },
+    {
+      path: "/dashboard/customers/create",
+      name: "Customer Create",
+      component: CustomerCreate,
+    },
+    {
+      path: "/dashboard/customers/:id/facilities",
+      name: "Customer Factories",
+      component: CustomerFactories,
+    },
+    {
+      path: "/dashboard/customers/:id/locations",
+      name: "Customer Locations",
+      component: CustomerLocations,
+    },
+    {
+      path: "/dsahboard/customers/:id/equipment",
+      name: "Customer Equipment",
+      component: CustomerEquipment,
+    },
+    {
+      path: "/dashboard/facilities/:id/equipment",
+      name: "Factory Equipment",
+      component: FactoryEquipment,
+    },
+    {
+      path: "/dashboard/facilities/:id/locations",
+      name: "Factory Locations",
+      component: FactoryLocations,
     },
     {
       path: "/dashboard/facilities/:id",
-      name: "Customer Factory",
-      component: CustomerFactoryPage,
+      name: "Factory",
+      component: Factory,
+    },
+    {
+      path: "/dashboard/locations/:id/equipment",
+      name: "Location Equipment",
+      component: LocationEquipment,
+    },
+    {
+      path: "/dashboard/locations/:id",
+      name: "Location",
+      component: Location,
     },
     {
       path: "/dashboard/equipment/:id",
-      name: "Location Equipment",
-      component: EquipmentPage,
+      name: "Equipment",
+      component: Equipment,
     },
   ],
 };

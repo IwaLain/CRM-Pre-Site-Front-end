@@ -5,7 +5,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import DashboardLayout from "./components/layouts/DashboardLayout/DashboardLayout";
-import NotFoundPage from "./components/pages/NotFoundPage/NotFoundPage";
+import NotFound from "./components/pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
 
@@ -34,7 +34,7 @@ const App = () => {
               {routes.auth.map(({ path, component }, index) => {
                 return <Route key={index} path={path} component={component} />;
               })}
-              <Route component={NotFoundPage} />
+              <Route component={NotFound} />
             </Switch>
           </AuthLayout>
         </Route>

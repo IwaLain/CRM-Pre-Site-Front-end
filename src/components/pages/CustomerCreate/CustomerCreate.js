@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import "./customer-create-page.scss";
-import { Button, Form, FormGroup, Input, Label, Col } from "reactstrap";
+import { Button, Form, FormGroup, Label, Col } from "reactstrap";
 import star from "../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/methods/alert";
 import { addCustomerAPI } from "../../../js/api/customer";
 import convertToBase64 from "../../../js/methods/convertImage";
 
-const CustomerCreatePage = () => {
+const CustomerCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();
   const [img, setImg] = useState();
@@ -92,7 +92,7 @@ const CustomerCreatePage = () => {
                   message: "Email is required.",
                 },
                 pattern: {
-                  value: /^[\w-\.]+@([\w-]+\.)+[\w-]{1,10}$/,
+                  value: /^[\w-.]+@([\w-]+.)+[\w-]{1,10}$/,
                   message: "Email is not valid. Example: alex@gmail.com",
                 },
               })}
@@ -114,7 +114,7 @@ const CustomerCreatePage = () => {
                   message: "Phone is required.",
                 },
                 pattern: {
-                  value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,
+                  value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
                   message: "Phone is not valid. Example: +123456789098",
                 },
               })}
@@ -219,4 +219,4 @@ const CustomerCreatePage = () => {
     </div>
   );
 };
-export default CustomerCreatePage;
+export default CustomerCreate;

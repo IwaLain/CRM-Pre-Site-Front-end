@@ -13,7 +13,7 @@ import DropdownImageEdit from "../../widgets/DropdownImageEdit/DropdownImageEdit
 import InfoCard from "../../InfoCard/InfoCard";
 import AttachedImages from "../../AttachedImages/AttachedImages";
 
-const CustomerPage = () => {
+const Customer = () => {
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
   const { id } = useParams();
   const [customer, setCustomer] = useState();
@@ -123,4 +123,4 @@ const CustomerPage = () => {
   );
 };
 
-export default CustomerPage;
+export default Customer;
