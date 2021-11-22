@@ -54,7 +54,7 @@ const DashboardLayout = ({ children }) => {
       case "/dashboard/customers":
       case "/dashboard/profile":
       case "/dashboard/users":
-      case "/dashboard/create-customer":
+      case "/dashboard/customer-create":
       case "/dashboard/add-user":
         setSidebarNeeded(false);
         break;

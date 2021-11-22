@@ -5,15 +5,25 @@ import {
   DropdownMenu,
 } from "reactstrap";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import star from "../../../assets/img/star.svg";
 import logo from "../../../assets/img/company.png";
+import { logout } from "../../../js/api/login";
 
 const Header = ({ sidebarNeeded, isMobile, toggleSidebar }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const history = useHistory();
+
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleLogout = () => {
+    logout(8).then((res) => {
+      console.log(res);
+      history.push("/");
+    });
   };
 
   return (
@@ -98,7 +108,7 @@ const Header = ({ sidebarNeeded, isMobile, toggleSidebar }) => {
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem>
-            <Link to="/">Logout</Link>
+            <a onClick={handleLogout}>Logout</a>
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
