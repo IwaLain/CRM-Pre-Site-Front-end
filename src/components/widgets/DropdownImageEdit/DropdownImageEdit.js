@@ -19,6 +19,7 @@ const DropdownImageEdit = ({ images, setMainImage }) => {
         <DropdownToggle className="edit-img__btn">
           <img src={star} alt="star" />
         </DropdownToggle>
+
         <DropdownMenu className="edit-img__menu">
           {images && images.length > 0 ? (
             images.map((image) => (

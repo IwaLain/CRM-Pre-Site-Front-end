@@ -61,7 +61,7 @@ const deleteCustomerImageAPI = async (customerId, imageId) => {
 const setMainCustomerImageAPI = async (customerId, imageId) => {
   let config = {
     method: "PUT",
-    url: `/api/customer/${customerId}/image/set-main-image/${imageId}?access-token=${token}`,
+    url: `/api/customer/${customerId}/set-main-image/${imageId}?access-token=${token}`,
   };
 
   const response = await api(config);

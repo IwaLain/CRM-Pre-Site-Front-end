@@ -63,6 +63,15 @@ const deleteFacilityImageAPI = async (facilityId, imageId) => {
 
   return response;
 };
+const setMainFacilityImageAPI = async (facilityId, imageId) => {
+  let config = {
+    method: "PUT",
+    url: `/api/facilities/${facilityId}/set-main-image/${imageId}?access-token=${token}`,
+  };
+  const response = await api(config);
+
+  return response;
+};
 export {
   getUsersAPI,
   getUserRoleAPI,
@@ -70,4 +79,5 @@ export {
   getFacilityApi,
   addFacilityImageApi,
   deleteFacilityImageAPI,
+  setMainFacilityImageAPI,
 };

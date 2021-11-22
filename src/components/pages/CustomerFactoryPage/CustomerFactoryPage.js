@@ -11,6 +11,7 @@ import {
   getFacilityApi,
   deleteFacilityImageAPI,
   addFacilityImageApi,
+  setMainFacilityImageAPI,
 } from "../../../js/api/facilities";
 import DropdownImageEdit from "../../widgets/DropdownImageEdit/DropdownImageEdit";
 const CustomerFactoryPage = () => {
@@ -41,23 +42,25 @@ const CustomerFactoryPage = () => {
     { name: "title", type: "text", defaultValue: "default", id: "id-4" },
   ];
 
-  const setMainFacilityImage = (imageId) => {
-    setMainImage(id, imageId);
-  };
+  // const setMainFacilityImage = (imageId) => {
+  //   setMainImage(id, imageId);
+  // };
   // const editImage = (img) => {
   //   setFactoryImage(`http://crm.loc/${img}`);
   // };
   const addFacilityImage = (data) => {
-    console.log(id);
     addFacilityImageApi(id, data).then((res) => {
-      console.log(res.facilityImages);
       setAttachedImages(res.facilityImages);
     });
   };
   const deleteFacilityImage = (img) => {
     deleteFacilityImageAPI(img.facility_id, img.id).then((res) => {
-      console.log(res.facilityImages);
       setAttachedImages(res.facilityImages);
+    });
+  };
+  const setMainFacilityImage = (imageId) => {
+    setMainFacilityImageAPI(id, imageId).then((res) => {
+      setMainImage(res["main-image"]);
     });
   };
   return (
@@ -116,7 +119,7 @@ const CustomerFactoryPage = () => {
         attachedImages={false}
       ></FormComponent>
       <AttachedImages
-        images={attachedImages}
+        attachedImages={attachedImages ? attachedImages : []}
         addImage={addFacilityImage}
         deleteImage={deleteFacilityImage}
         title="Attached images"

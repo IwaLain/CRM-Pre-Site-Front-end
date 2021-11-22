@@ -21,14 +21,11 @@ const CustomerPage = () => {
   const [mainImage, setMainImage] = useState();
   const deleteCustomerImage = (img) => {
     deleteCustomerImageAPI(img.customer_id, img.id).then((res) => {
-      console.log(res.customerImages);
       setAttachedImages(res.customerImages);
     });
   };
   const addCustomerImage = (data) => {
-    console.log(id);
     addCustomerImageAPI(id, data).then((res) => {
-      console.log(res.customerImages);
       setAttachedImages(res.customerImages);
     });
   };
@@ -43,7 +40,9 @@ const CustomerPage = () => {
     return mainImage;
   };
   const setMainCustomerImage = (imageId) => {
-    setMainCustomerImageAPI(id, imageId);
+    setMainCustomerImageAPI(id, imageId).then((res) => {
+      setMainImage(res["main-image"]);
+    });
   };
   useEffect(() => {
     getCustomerAPI(id).then((data) => {
@@ -114,11 +113,6 @@ const CustomerPage = () => {
       </div>
       <div>
         <AttachedImages
-          images={
-            customer && customer.customerImages.length > 0
-              ? customer.customerImages
-              : []
-          }
           title="Attached images"
           addImage={addCustomerImage}
           deleteImage={deleteCustomerImage}
