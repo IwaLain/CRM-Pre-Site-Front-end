@@ -4,6 +4,7 @@ import { Button, Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 import { alert } from '../../../../js/methods/alert';
 import { user } from '../../../../js/api/user';
+import { errorsValidation, validation } from '../../../../js/methods/validation';
 
 export const EditeUserModal = ({currentUser, editeUser}) => {
 
@@ -62,20 +63,12 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                         type='text'
                         placeholder='...'
                         className={`form-control ${errors.username && "invalid"}`}
-                        {...register("username", {
-                            required: "UserName is Required",
-                            minLength: {
-                                value: 3,
-                                message: "Minimum 3 simvols",
-                            }
-                        })}
+                        {...register("username", validation('username') )}
                         onKeyUp={(e) => {
                             trigger("username");
                         }}
                     />
-                    {errors.username
-                        ? (<small className="editUser__desc text-danger">{errors.username.message}</small>)
-                        : (<small className='editUser__desc text-muted'>Include any simvols</small>)}
+                    {errorsValidation(errors.username, 'Include any simvols')}
                 </Col>
             </Row>
             <Row className='editUser__item'>
@@ -87,25 +80,12 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                         type="email"
                         placeholder='...'
                         className={`form-control ${errors.email && "invalid"}`}
-                        {...register("email", {
-                            required: "Email is Required",
-                            minLength: {
-                                value: 5,
-                                message: "Minimum 5 simvols",
-                            },
-                            pattern: {
-                                value: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
-                                message: "Email must be like exampl@mail.com",
-                            }
-                        })}
+                        {...register("email", validation('email') )}
                         onKeyUp={() => {
                             trigger("email");
                         }}
                     />
-                    {errors.email
-                        ? (<small className="editUser__desc text-danger">{errors.email.message}</small>)
-                        : (<small className='editUser__desc text-muted'>Don't forget "@"</small>)
-                    }
+                    {errorsValidation(errors.email, 'Dont forget "@"')}
                 </Col>
             </Row>
             <Row className='editUser__item'>
@@ -117,25 +97,12 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                         type="text"
                         placeholder='...'
                         className={`form-control ${errors.phone && "invalid"}`}
-                        {...register("phone", {
-                            required: "Phone is Required",
-                            minLength: {
-                                value: 9,
-                                message: "Minimum 9 simvols",
-                            },
-                            pattern: {
-                                value: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
-                                message: "Phone must be like 555-555-5555",
-                            }
-                        })}
+                        {...register("phone", validation('phone'))}
                         onKeyUp={() => {
                             trigger("phone");
                         }}
                     />
-                    {errors.phone
-                        ? (<small className="editUser__desc text-danger">{errors.phone.message}</small>)
-                        : (<small className='editUser__desc text-muted'>Begin with "+" and split "-", "/" or "."</small>)
-                    }
+                    {errorsValidation(errors.phone, 'Begin with "+" and split "-", "/" or "."')}
                 </Col>
             </Row>
             <Row className='editUser__item'>
@@ -146,7 +113,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                     <select
                         className='form-control'
                         name='role'
-                        {...register("role")}
+                        {...register("role", validation('role'))}
                     >
                         <option value='' defaultChecked disabled>
                             Select role
@@ -161,7 +128,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                             manager
                         </option>
                     </select>
-                    <small className='editUser__desc text-muted'>Select role</small>
+                    {errorsValidation(errors.role, 'Select role')}
                 </Col>
             </Row>
             <FormGroup className='editUser__item mt-5 d-flex justify-content-md-between'>

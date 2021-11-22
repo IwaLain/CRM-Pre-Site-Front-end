@@ -13,8 +13,11 @@ import { Card,
 import { alert } from '../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
 import { loginAPI } from '../../../js/api/login';
+import { useHistory } from 'react-router';
 
 const LoginPage = () => {
+    let history = useHistory();
+
     const {
         register,
         handleSubmit,
@@ -37,6 +40,7 @@ const LoginPage = () => {
                 alert('success', 'Login success');
             }
         })
+        .then(data => history.push('/dashboard'))
     };
 
     return (

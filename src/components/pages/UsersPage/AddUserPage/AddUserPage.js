@@ -5,6 +5,7 @@ import './AddUserPage.scss'
 import { user } from '../../../../js/api/user';
 import { alert } from '../../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
+import { errorsValidation, validation } from '../../../../js/methods/validation';
 
 const AddUserPage = () => {
     const {
@@ -30,7 +31,6 @@ const AddUserPage = () => {
                 for (let key in data.errors) {
                     alert('error', data.errors[key])
                 }
-                
             } else {
                 alert('success', 'Add User successful')
                 reset()
@@ -56,20 +56,12 @@ const AddUserPage = () => {
                                     type='text'
                                     placeholder='...'
                                     className={`form-control ${errors.username && "invalid"}`}
-                                    {...register("username", {
-                                        required: "UserName is Required",
-                                        minLength: {
-                                            value: 3,
-                                            message: "Minimum 3 simvols",
-                                        }
-                                    })}
+                                    {...register("username", validation('username') )}
                                     onKeyUp={() => {
                                         trigger("username");
                                     }}
                                 />
-                                {errors.username
-                                    ? (<small className="addUser__desc text-danger">{errors.username.message}</small>)
-                                    : (<small className='addUser__desc text-muted'>Include any simvols</small>)}
+                                {errorsValidation(errors.username, 'Include any simvols')}
                             </Col>
                         </Row>
                         <Row className='addUser__item'>
@@ -81,25 +73,12 @@ const AddUserPage = () => {
                                     type="email"
                                     placeholder='...'
                                     className={`form-control ${errors.email && "invalid"}`}
-                                    {...register("email", {
-                                        required: "Email is Required",
-                                        minLength: {
-                                            value: 5,
-                                            message: "Minimum 5 simvols",
-                                        },
-                                        pattern: {
-                                            value: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
-                                            message: "Email must be like exampl@mail.com",
-                                        }
-                                    })}
+                                    {...register("email", validation('email') )}
                                     onKeyUp={() => {
                                         trigger("email");
                                     }}
                                 />
-                                {errors.email
-                                    ? (<small className="addUser__desc text-danger">{errors.email.message}</small>)
-                                    : (<small className='addUser__desc text-muted'>Don't forget "@"</small>)
-                                }
+                                {errorsValidation(errors.email, 'Dont forget "@"')}
                             </Col>
                         </Row>
                         <Row className='addUser__item'>
@@ -111,25 +90,12 @@ const AddUserPage = () => {
                                     type="text"
                                     placeholder='...'
                                     className={`form-control ${errors.phone && "invalid"}`}
-                                    {...register("phone", {
-                                        required: "Phone is Required",
-                                        minLength: {
-                                            value: 9,
-                                            message: "Minimum 9 simvols",
-                                        },
-                                        pattern: {
-                                            value: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
-                                            message: "Phone must be like 555-555-5555",
-                                        }
-                                    })}
+                                    {...register("phone", validation('phone') )}
                                     onKeyUp={() => {
                                         trigger("phone");
                                     }}
                                 />
-                                {errors.phone
-                                    ? (<small className="addUser__desc text-danger">{errors.phone.message}</small>)
-                                    : (<small className='addUser__desc text-muted'>Begin with "+" and split "-", "/" or "."</small>)
-                                }
+                                {errorsValidation(errors.phone, 'Begin with "+" and split "-", "/" or "."')}
                             </Col>
                         </Row>
                         <Row className='addUser__item'>
@@ -141,29 +107,12 @@ const AddUserPage = () => {
                                     type="password"
                                     placeholder='Password ...'
                                     className={`form-control ${errors.password && "invalid"}`}
-                                    {...register("password", {
-                                        required: "Password is Required",
-                                        minLength: {
-                                            value: 4,
-                                            message: "Minimum 6 simvols",
-                                        },
-                                        maxLength: {
-                                            value: 16,
-                                            message: "Maximum 16 simvols",
-                                        },
-                                        pattern: {
-                                            value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
-                                            message: "Password should contain atleast one number and one special character",
-                                        }
-                                    })}
+                                    {...register("password", validation('password') )}
                                     onKeyUp={() => {
                                         trigger("password");
                                     }}
                                 />
-                                {errors.password
-                                    ? (<small className="addUser__desc text-danger">{errors.password.message}</small>)
-                                    : (<small className='addUser__desc text-muted'>Password should contain special character</small>)
-                                }
+                                {errorsValidation(errors.password, 'Password should contain special character')}
                             </Col>
                         </Row>
                         <FormGroup className='addUser__item mt-5'>
