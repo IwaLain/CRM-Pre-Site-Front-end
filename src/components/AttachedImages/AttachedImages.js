@@ -3,49 +3,49 @@ import { Button, Col, Label } from "reactstrap";
 import "./attached-images.scss";
 import star from "../../assets/img/star.svg";
 import uploadImage from "../../js/methods/convertImage";
-import {
-  addFacilityImageApi,
-  deleteFacilityImageAPI,
-} from "../../js/api/facilities";
 
-const AttachedImages = ({ images, title }) => {
-  const [attachedImages, setAttachedImages] = useState();
-  useEffect(() => {
-    setAttachedImages(
-      images.map((image) => {
-        return { ...image, img: `http://crm.loc/${image.img}` };
-      })
-    );
-  }, [images]);
-
+const AttachedImages = ({ attachedImages, title, addImage, deleteImage }) => {
+  // const [attachedImages, setAttachedImages] = useState();
+  // useEffect(() => {
+  //   setAttachedImages(
+  //     attachedImages.map((image) => {
+  //       return { ...image, img: `http://crm.loc/${image.img}` };
+  //     })
+  //   );
+  // }, []);
+  const getImageById = (id) => {
+    let image = attachedImages.find((x) => x.id == id);
+    return image;
+  };
   const removeImageHandler = (e) => {
     const imgContainer = e.target.parentNode;
     const img = imgContainer.querySelector("img");
 
-    const id = img.id;
+    const image = getImageById(img.id);
 
-    deleteFacilityImageAPI(id);
+    deleteImage(image);
+    // deleteFacilityImageAPI(id);
 
-    setAttachedImages(attachedImages.filter((item) => item.id !== id));
+    // setAttachedImages(attachedImages.filter((item) => item.id !== img.id));
   };
 
   const addImageHandler = (e) => {
     const file = e.target.files[0];
-    const url = URL.createObjectURL(file);
+    // const url = URL.createObjectURL(file);
     uploadImage(file).then((file) => {
       const data = { img: file };
-      const body = JSON.stringify(data);
-      console.log(body);
-      addFacilityImageApi(12, data);
+
+      addImage(data);
+      // addFacilityImageApi(12, data);
     });
 
     // console.log(base64);
-    const newElement = {
-      id: `${attachedImages.length + 1}`,
-      img: url,
-    };
+    // const newElement = {
+    //   id: `${attachedImages.length + 1}`,
+    //   img: url,
+    // };
     e.target.value = "";
-    setAttachedImages((attachedImages) => [...attachedImages, newElement]);
+    // setAttachedImages((attachedImages) => [...attachedImages, newElement]);
   };
 
   return (
@@ -64,7 +64,7 @@ const AttachedImages = ({ images, title }) => {
                 <div className="attached--item" key={image.id}>
                   <div className="attached--img-container">
                     <img
-                      src={image.img}
+                      src={process.env.REACT_APP_SERVER_URL + "/" + image.img}
                       alt="..."
                       className="attached-img"
                       id={image.id}

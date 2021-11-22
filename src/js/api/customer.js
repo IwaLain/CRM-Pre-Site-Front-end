@@ -38,4 +38,41 @@ const addCustomerAPI = async (data) => {
   return response;
 };
 
-export { getCustomersAPI, getCustomerAPI, addCustomerAPI };
+const addCustomerImageAPI = async (customerId, dataImg) => {
+  let config = {
+    method: "POST",
+    url: `/api/customer/${customerId}/image/create?access-token=${token}`,
+    data: dataImg,
+  };
+
+  const response = await api(config);
+  return response;
+};
+const deleteCustomerImageAPI = async (customerId, imageId) => {
+  let config = {
+    method: "DELETE",
+    url: `/api/customer/${customerId}/image/delete/${imageId}?access-token=${token}`,
+  };
+
+  const response = await api(config);
+
+  return response;
+};
+const setMainCustomerImageAPI = async (customerId, imageId) => {
+  let config = {
+    method: "PUT",
+    url: `/api/customer/${customerId}/set-main-image/${imageId}?access-token=${token}`,
+  };
+
+  const response = await api(config);
+
+  return response;
+};
+export {
+  getCustomersAPI,
+  getCustomerAPI,
+  addCustomerAPI,
+  addCustomerImageAPI,
+  deleteCustomerImageAPI,
+  setMainCustomerImageAPI,
+};

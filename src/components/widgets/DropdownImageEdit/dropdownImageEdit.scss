@@ -1,0 +1,51 @@
+.edit-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.edit-img button {
+  background: transparent;
+  border: 0;
+}
+
+.edit-img button:hover,
+.edit-img button:active,
+.edit-img button:focus,
+.edit-img button:active:focus {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.edit-img__btn img {
+  padding: 4px;
+  background-color: black;
+  border-radius: 25px;
+}
+
+.edit-img__menu img {
+  width: 150px;
+  height: 150px;
+}
+
+.edit-img__menu p {
+  margin-bottom: 0;
+}
+
+.edit-img__menu.show {
+  display: flex !important;
+}
+
+@media (max-width: 400px) {
+  .edit-img__menu {
+    flex-direction: column;
+  }
+}
