@@ -1,29 +1,24 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 import { alert } from './alert';
 import { user } from '../api/user';
 
 export const EditeUserModal = ({currentUser, editeUser}) => {
-    const [inputs, setInputs] = useState({
-        username: currentUser.username,
-        email: currentUser.email,
-        phone: currentUser.phone,
-        role: currentUser.role,
-    })
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         trigger,
-    } = useForm();
-
-    const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values => ({...values, [name]: value}))
-    }
+    } = useForm( {
+        defaultValues: {
+            username: currentUser.username,
+            email: currentUser.email,
+            phone: currentUser.phone,
+            role: currentUser.role
+        }
+    });
 
     const onSubmit = (e) => {
         const data = { 
@@ -43,6 +38,8 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                 alert('success', 'Add User successful')
             }
         })
+
+        user.editUserRoleAPI(currentUser.id, data.role)
     };
 
     return (
@@ -52,15 +49,13 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
             onSubmit={handleSubmit(onSubmit)}
         >
             <Row className='addUser__item mt-3'>
-                <Col md={2} lg={1}>
+                <Col md={2}>
                     <Label className='addUser__label'>Username</Label>
                 </Col>
                 <Col md={10}>
                     <input
                         type='text'
                         placeholder='...'
-                        value={inputs.username}
-                        onChange={handleChange}
                         className={`form-control ${errors.username && "invalid"}`}
                         {...register("username", {
                             required: "UserName is Required",
@@ -79,7 +74,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                 </Col>
             </Row>
             <Row className='addUser__item'>
-                <Col md={2} lg={1}>
+                <Col md={2}>
                     <Label className='addUser__label'>Email</Label>
                 </Col>
                 <Col md={10}>
@@ -109,7 +104,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                 </Col>
             </Row>
             <Row className='addUser__item'>
-                <Col md={2} lg={1}>
+                <Col md={2}>
                     <Label className='addUser__label'>Phone</Label>
                 </Col>
                 <Col md={10}>
@@ -124,7 +119,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                                 message: "Minimum 9 simvols",
                             },
                             pattern: {
-                                value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+                                value: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
                                 message: "Phone must be like 555-555-5555",
                             }
                         })}
@@ -139,7 +134,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                 </Col>
             </Row>
             <Row className='addUser__item'>
-                <Col md={2} lg={1}>
+                <Col md={2}>
                     <Label className='addUser__label'>Role</Label>
                 </Col>
                 <Col md={10}>
@@ -165,7 +160,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                 </Col>
             </Row>
             <FormGroup className='addUser__item mt-5 d-flex justify-content-md-between'>
-                <Col md={2} lg={2}>
+                <Col md={2}>
                     <Button className='addUser__submit'>Submit</Button>
                 </Col>
                 <Col md={2}>

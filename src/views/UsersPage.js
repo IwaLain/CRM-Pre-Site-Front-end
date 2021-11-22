@@ -4,7 +4,6 @@ import {
         Col,
         Modal,
         ModalBody,
-        ModalFooter,
         ModalHeader,
         Row,
         Table
@@ -26,13 +25,13 @@ const UsersPage = () => {
     }
 
     const editeUser = (userId, dataUser) => {
-        setUsers(users.map(data => data.id === userId ? {...data, data: dataUser} : data))
-        users.map(data => console.log(data))
+        setUsers(users.map(data => data.id === userId ? {...data, data: dataUser.id} : data))
+        setUsers(users)
     }
 
     useEffect(() => {
         user.getUsersAPI().then(data => setUsers(data))
-    }, [])
+    }, []) 
     
     return (
         <>

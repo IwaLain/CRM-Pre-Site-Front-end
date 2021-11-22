@@ -11,10 +11,11 @@ const getUsersAPI = async () => {
     return response.user
 }
 
-const getUserRoleAPI = async (userId) => {
+const editUserRoleAPI = async (userId, data) => {
     let config = {
-        method: 'GET',
-        url: `/api/role/user-role/${userId}?access-token=`
+        method: 'POST',
+        url: `/api/role/assign-role/${userId}?access-token=${localStorage.getItem('token')}`,
+        data: data
     }
 
     const response = await api(config)
@@ -35,7 +36,7 @@ const addUserAPI = async (data) => {
 const editeUserAPI = async (userId, data) => {
     let config = {
         method: 'PUT',
-        url: endpoints.editeUser + userId + '?',
+        url: endpoints.editeUser + userId + '?access-token=' + localStorage.getItem('token'),
         data: data
     }
 
@@ -45,7 +46,7 @@ const editeUserAPI = async (userId, data) => {
 
 export const user = {
     getUsersAPI,
-    getUserRoleAPI,
+    editUserRoleAPI,
     addUserAPI,
     editeUserAPI
 }

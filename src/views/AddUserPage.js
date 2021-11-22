@@ -118,7 +118,7 @@ const AddUserPage = () => {
                                             message: "Minimum 9 simvols",
                                         },
                                         pattern: {
-                                            value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+                                            value: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
                                             message: "Phone must be like 555-555-5555",
                                         }
                                     })}
