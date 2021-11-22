@@ -40,7 +40,7 @@ const LoginPage = () => {
         localStorage.setItem("token", data.token);
         alert("success", "Login success");
       }
-    }).then(data => { history.push('/dashboard'); });
+    }).then(history.push('/dashboard'));
   };
 
   return (
