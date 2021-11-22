@@ -1,55 +1,23 @@
-import React from 'react'
-import { useForm } from 'react-hook-form';
-import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap"
-import './AddUserPage.scss'
-import { user } from '../../../../js/api/user';
-import { alert } from '../../../../js/methods/alert';
-import { ToastContainer } from 'react-toastify';
-import { errorsValidation, validation } from '../../../../js/methods/validation';
+import React from 'react';
+import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap";
+import { validation } from '../../../../js/methods/validation';
+import { errorsValidation } from '../../../../js/methods/message';
+import './FormUser.scss'
 
-const AddUserPage = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-        trigger,
-    } = useForm();
-
-    const onSubmit = (e) => {
-        const data = {
-            'username': e.username,
-            'email': e.email,
-            'phone': e.phone,
-            'password': e.password
-        }
-
-        user.addUser(data)
-        .then(data => {
-            if(data.errors) {
-                console.log(data.errors)
-                for (let key in data.errors) {
-                    alert('error', data.errors[key])
-                }
-            } else {
-                alert('success', 'Add User successful')
-                reset()
-            }
-        })
-    };
-
+const FormUser = ({ title, onSubmit, data }) => {
+    const { handleSubmit, register, trigger, formState: { errors }} = data
     return (
         <div>
-            <h3>Add User</h3>
+            <h3>{title}</h3>
             <Row>
-                <Col lg={12} className='addUser'>
+                <Col lg={12} className='formUser'>
                     <Form
-                        id='addUser-form'
+                        id='formUser-form'
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        <Row className='addUser__item mt-3'>
+                        <Row className='formUser__item mt-3'>
                             <Col md={2} lg={1}>
-                                <Label className='addUser__label'>Username</Label>
+                                <Label className='formUser__label'>Username</Label>
                             </Col>
                             <Col md={4}>
                                 <input
@@ -64,9 +32,9 @@ const AddUserPage = () => {
                                 {errorsValidation(errors.username, 'Include any simvols')}
                             </Col>
                         </Row>
-                        <Row className='addUser__item'>
+                        <Row className='formUser__item'>
                             <Col md={2} lg={1}>
-                                <Label className='addUser__label'>Email</Label>
+                                <Label className='formUser__label'>Email</Label>
                             </Col>
                             <Col md={4}>
                                 <input
@@ -81,9 +49,9 @@ const AddUserPage = () => {
                                 {errorsValidation(errors.email, 'Dont forget "@"')}
                             </Col>
                         </Row>
-                        <Row className='addUser__item'>
+                        <Row className='formUser__item'>
                             <Col md={2} lg={1}>
-                                <Label className='addUser__label'>Phone</Label>
+                                <Label className='formUser__label'>Phone</Label>
                             </Col>
                             <Col md={4}>
                                 <input
@@ -98,14 +66,14 @@ const AddUserPage = () => {
                                 {errorsValidation(errors.phone, 'Begin with "+" and split "-", "/" or "."')}
                             </Col>
                         </Row>
-                        <Row className='addUser__item'>
+                        <Row className='formUser__item'>
                             <Col md={2} lg={1}>
-                                <Label className='addUser__label'>Password</Label>
+                                <Label className='formUser__label'>Password</Label>
                             </Col>
                             <Col md={4}>
                                 <input
                                     type="password"
-                                    placeholder='Password ...'
+                                    placeholder='...'
                                     className={`form-control ${errors.password && "invalid"}`}
                                     {...register("password", validation('password') )}
                                     onKeyUp={() => {
@@ -115,16 +83,42 @@ const AddUserPage = () => {
                                 {errorsValidation(errors.password, 'Password should contain special character')}
                             </Col>
                         </Row>
-                        <FormGroup className='addUser__item mt-5'>
+                        <Row className='formUser__item'>
+                            <Col md={2} lg={1}>
+                                <Label className='formUser__label'>Role</Label>
+                            </Col>
+                            <Col md={4}>
+                                <select
+                                    className='form-control'
+                                    name='role'
+                                    {...register("role", validation('role'))}
+                                >
+                                    <option value='' defaultChecked disabled>
+                                        Select role
+                                    </option>
+                                    <option value='member'>
+                                        member
+                                    </option>
+                                    <option value='SuperAdmin'>
+                                        SuperAdmin
+                                    </option>
+                                    <option value='manager'>
+                                        manager
+                                    </option>
+                                </select>
+                                {errorsValidation(errors.role, 'Select role')}
+                            </Col>
+                        </Row>
+                        <FormGroup className='formUser__item mt-5'>
                             <Col md={{offset: 2, size: 2}} lg={{offset: 1, size: 2}}>
-                                <Button className='addUser__submit'>Submit</Button>
+                                <Button className='formUser__submit'>Submit</Button>
                             </Col>
                             <Col md={3}>
                                 <Button
-                                    className='addUser__cancel'
+                                    className='formUser__cancel'
                                     onClick={(e) => {
                                         e.preventDefault()
-                                        document.getElementById("addUser-form").reset();
+                                        document.getElementById("formUser-form").reset();
                                     }}
                                 >
                                     Cancel
@@ -133,10 +127,10 @@ const AddUserPage = () => {
                         </FormGroup>
                     </Form>
                 </Col>
-                <ToastContainer position='bottom-right'/>
+                {/* <ToastContainer position='bottom-right'/> */}
             </Row>
         </div>
     )
 }
 
-export default AddUserPage
+export default FormUser

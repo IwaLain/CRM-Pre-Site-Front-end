@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import 'react-toastify/dist/ReactToastify.css';
-import './LoginPage.scss';
+import './Login.scss';
 import logo from '../../../assets/img/company.png'
 import { Card,
          Col,
@@ -38,9 +38,9 @@ const LoginPage = () => {
             } else {
                 localStorage.setItem('token', data.token);
                 alert('success', 'Login success');
+                history.push('/dashboard');
             }
         })
-        .then(data => history.push('/dashboard'))
     };
 
     return (
