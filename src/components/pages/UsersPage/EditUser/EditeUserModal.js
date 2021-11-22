@@ -39,7 +39,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
             if(data.errors) {
                 alert('error', data.errors)
             } else {
-                alert('success', 'Add User successful')
+                alert('success', 'Edit User successful')
             }
         })
         

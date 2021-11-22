@@ -21,9 +21,9 @@ const Header = ({ sidebarNeeded, isMobile, toggleSidebar }) => {
 
   const handleLogout = () => {
     logout().then((res) => {
-      console.log(res);
-      history.push("/");
-    });
+      localStorage.removeItem('token')
+      
+    }).then(history.push("/"));
   };
 
   return (
