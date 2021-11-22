@@ -24,7 +24,7 @@ const UsersPage = () => {
     const toggle = () => setModal(!modal)
 
     useEffect(() => {
-        user.getUsersAPI().then(data => setUsers(data))
+        user.getUsers().then(data => setUsers(data))
     }, []) 
 
     const editeUser = (userId, dataUser) => {

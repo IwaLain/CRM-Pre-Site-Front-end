@@ -24,7 +24,7 @@ const AddUserPage = () => {
             'password': e.password
         }
 
-        user.addUserAPI(data)
+        user.addUser(data)
         .then(data => {
             if(data.errors) {
                 console.log(data.errors)

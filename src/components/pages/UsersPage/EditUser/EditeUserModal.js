@@ -35,7 +35,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
 
         editeUser(currentUser.id, data)
         
-        user.editeUserAPI(currentUser.id, data)
+        user.editeUser(currentUser.id, data)
         .then(data => {
             if(data.errors) {
                 alert('error', data.errors)

@@ -19,7 +19,7 @@ export const validation = (type) => {
                 required: "Password is Required",
                 minLength: {
                     value: 4,
-                    message: "Minimum 6 simvols",
+                    message: "Minimum 4 simvols",
                 },
                 maxLength: {
                     value: 16,
