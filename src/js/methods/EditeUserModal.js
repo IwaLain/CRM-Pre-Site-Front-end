@@ -25,7 +25,10 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
-            'role': e.role
+        }
+
+        const role = {
+            'roleName': e.role,
         }
 
         editeUser(currentUser.id, data)
@@ -38,8 +41,9 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                 alert('success', 'Add User successful')
             }
         })
-
-        user.editUserRoleAPI(currentUser.id, data.role)
+        
+        user.editUserRoleAPI(currentUser.id, role)
+        .then(data => console.log(data))
     };
 
     return (

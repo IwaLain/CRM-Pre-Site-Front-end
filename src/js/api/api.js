@@ -11,13 +11,14 @@ export const api = async (configs) => {
                 method: configs.method
             }) 
             break
-        case 'POST':
         case 'PUT':
+        case 'POST':
             response = await fetch(path, {
                 method: configs.method,
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(configs.data)
             })  
+            console.log(JSON.stringify(configs.data))
             break
         default:
             break

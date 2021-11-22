@@ -19,19 +19,18 @@ const UsersPage = () => {
     const [users, setUsers] = useState([])
     const [modal, setModal] = useState(false)
     const [currentUser, setCurrentUser] = useState([])
+    const [loading, setLoading] = useState([])
 
-    const toggle = () => {
-        setModal(!modal)
-    }
-
-    const editeUser = (userId, dataUser) => {
-        setUsers(users.map(data => data.id === userId ? {...data, data: dataUser.id} : data))
-        setUsers(users)
-    }
+    const toggle = () => setModal(!modal)
 
     useEffect(() => {
         user.getUsersAPI().then(data => setUsers(data))
     }, []) 
+
+    const editeUser = (userId, dataUser) => {
+        setUsers(users.map(data => data.id === userId ? {...data, data: dataUser.id} : data))
+    }
+
     
     return (
         <>

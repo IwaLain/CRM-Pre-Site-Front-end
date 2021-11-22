@@ -17,9 +17,9 @@ const editUserRoleAPI = async (userId, data) => {
         url: `/api/role/assign-role/${userId}?access-token=${localStorage.getItem('token')}`,
         data: data
     }
-
+    
     const response = await api(config)
-    return response.role
+    return response
 }
 
 const addUserAPI = async (data) => {
