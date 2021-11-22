@@ -1,8 +1,9 @@
 import React from 'react'
+import './EditUser.scss'
 import { Button, Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import { useForm } from 'react-hook-form';
-import { alert } from './alert';
-import { user } from '../api/user';
+import { alert } from '../../../../js/methods/alert';
+import { user } from '../../../../js/api/user';
 
 export const EditeUserModal = ({currentUser, editeUser}) => {
 
@@ -48,13 +49,13 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
 
     return (
         <Form
-            id='addUser-form'
+            id='editUser-form'
             className=''
             onSubmit={handleSubmit(onSubmit)}
         >
-            <Row className='addUser__item mt-3'>
+            <Row className='editUser__item mt-3'>
                 <Col md={2}>
-                    <Label className='addUser__label'>Username</Label>
+                    <Label className='editUser__label'>Username</Label>
                 </Col>
                 <Col md={10}>
                     <input
@@ -73,13 +74,13 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                         }}
                     />
                     {errors.username
-                        ? (<small className="addUser__desc text-danger">{errors.username.message}</small>)
-                        : (<small className='addUser__desc text-muted'>Include any simvols</small>)}
+                        ? (<small className="editUser__desc text-danger">{errors.username.message}</small>)
+                        : (<small className='editUser__desc text-muted'>Include any simvols</small>)}
                 </Col>
             </Row>
-            <Row className='addUser__item'>
+            <Row className='editUser__item'>
                 <Col md={2}>
-                    <Label className='addUser__label'>Email</Label>
+                    <Label className='editUser__label'>Email</Label>
                 </Col>
                 <Col md={10}>
                     <input
@@ -102,14 +103,14 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                         }}
                     />
                     {errors.email
-                        ? (<small className="addUser__desc text-danger">{errors.email.message}</small>)
-                        : (<small className='addUser__desc text-muted'>Don't forget "@"</small>)
+                        ? (<small className="editUser__desc text-danger">{errors.email.message}</small>)
+                        : (<small className='editUser__desc text-muted'>Don't forget "@"</small>)
                     }
                 </Col>
             </Row>
-            <Row className='addUser__item'>
+            <Row className='editUser__item'>
                 <Col md={2}>
-                    <Label className='addUser__label'>Phone</Label>
+                    <Label className='editUser__label'>Phone</Label>
                 </Col>
                 <Col md={10}>
                     <input
@@ -132,14 +133,14 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                         }}
                     />
                     {errors.phone
-                        ? (<small className="addUser__desc text-danger">{errors.phone.message}</small>)
-                        : (<small className='addUser__desc text-muted'>Begin with "+" and split "-", "/" or "."</small>)
+                        ? (<small className="editUser__desc text-danger">{errors.phone.message}</small>)
+                        : (<small className='editUser__desc text-muted'>Begin with "+" and split "-", "/" or "."</small>)
                     }
                 </Col>
             </Row>
-            <Row className='addUser__item'>
+            <Row className='editUser__item'>
                 <Col md={2}>
-                    <Label className='addUser__label'>Role</Label>
+                    <Label className='editUser__label'>Role</Label>
                 </Col>
                 <Col md={10}>
                     <select
@@ -160,19 +161,19 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
                             manager
                         </option>
                     </select>
-                    <small className='addUser__desc text-muted'>Select role</small>
+                    <small className='editUser__desc text-muted'>Select role</small>
                 </Col>
             </Row>
-            <FormGroup className='addUser__item mt-5 d-flex justify-content-md-between'>
+            <FormGroup className='editUser__item mt-5 d-flex justify-content-md-between'>
                 <Col md={2}>
-                    <Button className='addUser__submit'>Submit</Button>
+                    <Button className='editUser__submit'>Submit</Button>
                 </Col>
                 <Col md={2}>
                     <Button
-                        className='addUser__cancel'
+                        className='editUser__cancel'
                         onClick={(e) => {
                             e.preventDefault()
-                            document.getElementById("addUser-form").reset();
+                            document.getElementById("editUser-form").reset();
                         }}
                     >
                         Clear
