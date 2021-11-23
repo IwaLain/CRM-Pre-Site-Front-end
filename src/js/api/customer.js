@@ -1,6 +1,6 @@
 import { api } from "./api";
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem("token");
 
 const getCustomersAPI = async (limit, search, page) => {
   let url = `/api/customer?access-token=${token}`;
@@ -24,7 +24,7 @@ const getCustomerAPI = async (customerId) => {
   };
 
   const response = await api(config);
-  return response.customer;
+  return response.customer[customerId];
 };
 
 const addCustomerAPI = async (data) => {

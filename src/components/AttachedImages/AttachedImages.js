@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Col, Label } from "reactstrap";
 import "./attached-images.scss";
 import star from "../../assets/img/star.svg";
 import uploadImage from "../../js/methods/convertImage";
 
 const AttachedImages = ({ attachedImages, title, addImage, deleteImage }) => {
-  // const [attachedImages, setAttachedImages] = useState();
-  // useEffect(() => {
-  //   setAttachedImages(
-  //     attachedImages.map((image) => {
-  //       return { ...image, img: `http://crm.loc/${image.img}` };
-  //     })
-  //   );
-  // }, []);
   const getImageById = (id) => {
     let image = attachedImages.find((x) => x.id == id);
     return image;
@@ -24,28 +16,17 @@ const AttachedImages = ({ attachedImages, title, addImage, deleteImage }) => {
     const image = getImageById(img.id);
 
     deleteImage(image);
-    // deleteFacilityImageAPI(id);
-
-    // setAttachedImages(attachedImages.filter((item) => item.id !== img.id));
   };
 
   const addImageHandler = (e) => {
     const file = e.target.files[0];
-    // const url = URL.createObjectURL(file);
     uploadImage(file).then((file) => {
       const data = { img: file };
 
       addImage(data);
-      // addFacilityImageApi(12, data);
     });
 
-    // console.log(base64);
-    // const newElement = {
-    //   id: `${attachedImages.length + 1}`,
-    //   img: url,
-    // };
     e.target.value = "";
-    // setAttachedImages((attachedImages) => [...attachedImages, newElement]);
   };
 
   return (

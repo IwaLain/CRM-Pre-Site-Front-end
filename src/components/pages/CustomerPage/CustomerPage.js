@@ -19,6 +19,18 @@ const CustomerPage = () => {
   const [customer, setCustomer] = useState();
   const [attachedImages, setAttachedImages] = useState();
   const [mainImage, setMainImage] = useState();
+
+  useEffect(() => {
+    getCustomerAPI(id).then((data) => {
+      setCustomer(data);
+      setAttachedImages(data.customerImages);
+
+      const mainImage = getMainImage(data.customerImages);
+      setMainImage(mainImage);
+    });
+
+    window.addEventListener("resize", handleResize);
+  }, []);
   const deleteCustomerImage = (img) => {
     deleteCustomerImageAPI(img.customer_id, img.id).then((res) => {
       setAttachedImages(res.customerImages);
@@ -44,22 +56,6 @@ const CustomerPage = () => {
       setMainImage(res["main-image"]);
     });
   };
-  useEffect(() => {
-    getCustomerAPI(id).then((data) => {
-      setCustomer(data);
-      setAttachedImages(data.customerImages);
-      // setAttachedImages(
-      //   data.customerImages.map((image) => {
-      //     return { ...image, img: `http://crm.loc/${image.img}` };
-      //   })
-      // );
-      const mainImage = getMainImage(data.customerImages);
-      setMainImage(mainImage);
-    });
-
-    window.addEventListener("resize", handleResize);
-  }, []);
-
   return (
     <>
       <div className="d-flex align-items-center customer-page--header">
