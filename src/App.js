@@ -19,8 +19,8 @@ const App = () => {
               <Route exact path="/dashboard">
                 <Redirect to="/dashboard/customers" />
               </Route>
-              {routes.dashboard.map(({ path, component }, index) => {
-                return <Route key={index} path={path} component={component} />;
+              {routes.dashboard.map(({ path, children }, index) => {
+                return <Route key={index} path={path} children={children} />;
               })}
             </Switch>
           </DashboardLayout>
@@ -31,8 +31,8 @@ const App = () => {
               <Route exact path="/">
                 <Redirect to="/login" />
               </Route>
-              {routes.auth.map(({ path, component }, index) => {
-                return <Route key={index} path={path} component={component} />;
+              {routes.auth.map(({ path, children }, index) => {
+                return <Route key={index} path={path} children={children} />;
               })}
               <Route component={NotFound} />
             </Switch>

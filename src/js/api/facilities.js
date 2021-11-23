@@ -1,7 +1,7 @@
 import { api } from "./api";
 import { endpoints } from "./endpoint";
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem("token");
 
 const getUsersAPI = async () => {
   let config = {
@@ -43,6 +43,18 @@ const getFacilityApi = async (facilityId) => {
 
   return response.facility;
 };
+
+const createFacility = async (data) => {
+  let config = {
+    method: "POST",
+    url: `/api/facilities/create?access-token=${token}`,
+    data,
+  };
+
+  const response = await api(config);
+  return response;
+};
+
 const addFacilityImageApi = async (facilityId, dataImg) => {
   let config = {
     method: "POST",
@@ -72,11 +84,13 @@ const setMainFacilityImageAPI = async (facilityId, imageId) => {
 
   return response;
 };
+
 export {
   getUsersAPI,
   getUserRoleAPI,
   addUserAPI,
   getFacilityApi,
+  createFacility,
   addFacilityImageApi,
   deleteFacilityImageAPI,
   setMainFacilityImageAPI,

@@ -1,4 +1,4 @@
-import "./customers-page.scss";
+import "../../../scss/list.scss";
 import { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import InfoCard from "../../InfoCard/InfoCard";

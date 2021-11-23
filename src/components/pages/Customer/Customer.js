@@ -12,9 +12,12 @@ import InformationComponent from "../../InformationComponent/InformationComponen
 import DropdownImageEdit from "../../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../../InfoCard/InfoCard";
 import AttachedImages from "../../AttachedImages/AttachedImages";
+import { useContext } from "react";
+import { PageContext } from "../../../context";
 
 const Customer = () => {
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
+  const { setPageType, setId } = useContext(PageContext);
   const { id } = useParams();
   const [customer, setCustomer] = useState();
   const [attachedImages, setAttachedImages] = useState();
@@ -46,16 +49,14 @@ const Customer = () => {
   };
   useEffect(() => {
     getCustomerAPI(id).then((data) => {
-      setCustomer(data);
-      setAttachedImages(data.customerImages);
-      // setAttachedImages(
-      //   data.customerImages.map((image) => {
-      //     return { ...image, img: `http://crm.loc/${image.img}` };
-      //   })
-      // );
-      const mainImage = getMainImage(data.customerImages);
+      setCustomer(data[id]);
+      setAttachedImages(data[id].customerImages);
+      const mainImage = getMainImage(data[id].customerImages);
       setMainImage(mainImage);
     });
+
+    setId(id);
+    setPageType({ ref: "customers" });
 
     window.addEventListener("resize", handleResize);
   }, []);
@@ -97,9 +98,7 @@ const Customer = () => {
         <h2 className="page-subtitle">Factories Customer</h2>
         <div
           className={
-            screenSize > 440
-              ? "customer-card_group"
-              : "customer-card_group dense"
+            screenSize > 440 ? "info-card_group" : "info-card_group dense"
           }
         >
           {customer && customer.facilities.length > 0 ? (

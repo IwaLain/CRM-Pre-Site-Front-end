@@ -1,37 +1,37 @@
-@import "../../../scss/scss-variables.scss";
+@import "./scss-variables.scss";
 
-.customers__header {
+.list__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.customers__options {
+.list__options {
   display: flex;
   width: 400px;
   justify-content: space-between;
 }
 
-.customers__search {
+.list__search {
   border: 1px solid #ced4da;
   border-radius: 4px;
   padding: 9px 15px;
 }
 
-.customers__options_btns {
+.list__options_btns {
   display: flex;
   width: 125px;
   justify-content: space-between;
   align-items: center;
 }
 
-.customers__options_btns > .customers__add-btn {
+.list__options_btns > .list__add-btn {
   background-color: $btn-primary;
   color: white;
 }
 
-.customers__options_btns > button {
+.list__options_btns > button {
   width: 44px;
   height: 44px;
   background: transparent;
@@ -40,15 +40,15 @@
   padding: 0;
 }
 
-.customers__options_btns > button:hover {
+.list__options_btns > button:hover {
   box-shadow: 0 0 5px black;
 }
 
-.customers table .progress > .progress-bar {
+.list table .progress > .progress-bar {
   background-color: $success;
 }
 
-.customers table a {
+.list table a {
   display: inline-block;
   text-decoration: none;
   color: black;
@@ -59,27 +59,27 @@
   border-radius: 4px;
 }
 
-.customers table a:hover {
+.list table a:hover {
   border: 1px solid black;
 }
 
 @media (max-width: 440px) {
-  .customers__search {
+  .list__search {
     margin-bottom: 10px;
   }
-  .customers__options {
+  .list__options {
     flex-direction: column;
     align-items: center;
     width: 100%;
   }
 
-  .customers table td {
+  .list table td {
     padding: 2px;
   }
 }
 
 @media (max-width: 600px) {
-  .customers__header {
+  .list__header {
     flex-direction: column;
   }
 }

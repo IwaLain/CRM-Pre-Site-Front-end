@@ -1,43 +1,136 @@
+import "../../../scss/list.scss";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { parseClassName } from "react-toastify/dist/utils";
-import { PageTitleContext } from "../../../context";
-import { getCustomersAPI, getCustomersAPI } from "../../../js/api/customer";
-import { getFacilityApi } from "../../../js/api/facilities";
+import {
+  useParams,
+  useHistory,
+  useLocation,
+  useRouteMatch,
+} from "react-router";
+import { PageContext } from "../../../context";
+import {
+  getCustomersAPI,
+  getCustomerFacilities,
+  getCustomerEquipment,
+} from "../../../js/api/customer";
+import TableView from "../../TableView/TableView";
+import InfoCard from "../../InfoCard/InfoCard";
+import Pagination from "../../widgets/Pagination/Pagination";
+import { Spinner } from "reactstrap";
 
 const List = ({ type }) => {
   const [data, setData] = useState();
   const [totalRecords, setTotalRecords] = useState();
-  const [request, setRequest] = useState();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [requests, setRequests] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [view, setView] = useState(true);
+  const [page, setPage] = useState(1);
+  const [screenSize, SetScreenSize] = useState(window.innerWidth);
+  const [showCreateBtn, setShowCreateBtn] = useState(false);
+
+  const { pageTitle, setPageType, setId, setPagePath } =
+    useContext(PageContext);
 
   const params = useParams();
+  let id = 0;
+  if (params) {
+    id = params.id;
+  }
+
+  const history = useHistory();
+  const match = useRouteMatch();
 
   const RECORDS_PER_PAGE = 12;
-
-  const { pageTitle } = useContext(PageTitleContext);
-
   const totalPages = Math.ceil(totalRecords / RECORDS_PER_PAGE);
 
-  useEffect(async () => {
-    let data;
+  const formatData = (data) => {
+    const formattedData = [];
+    for (let i = 0; i < Object.keys(data).length; i++) {
+      formattedData.push(data[Object.keys(data)[i]]);
+    }
 
-    switch (type) {
+    return formattedData;
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+
+    setIsLoading(true);
+    requests.list(RECORDS_PER_PAGE, page, e.target.value, id).then((res) => {
+      setData(formatData(res[type.entity]));
+      setTotalRecords(res.total);
+      setIsLoading(false);
+    });
+  };
+
+  const toggleView = () => {
+    setView(!view);
+  };
+
+  const handlePageChange = (e) => {
+    const page = e.selected + 1;
+    setPage(page);
+  };
+
+  const handleResize = () => {
+    SetScreenSize(window.innerWidth);
+  };
+
+  useEffect(() => {
+    switch (JSON.stringify(type)) {
+      case JSON.stringify({ entity: "customers" }):
+        setRequests({ list: getCustomersAPI });
+        break;
+      case JSON.stringify({ entity: "facilities", ref: "customers" }):
+        setRequests({ list: getCustomerFacilities });
+        break;
+      case JSON.stringify({ entity: "equipment", ref: "customers" }):
+        setRequests({ list: getCustomerEquipment });
+        break;
+    }
+
+    setPagePath(match.path);
+    setId(id);
+    setPageType(type);
+
+    console.log(type);
+
+    switch (type.entity) {
       case "customers":
-        data = await getCustomersAPI();
+        if (!type.ref) setShowCreateBtn(true);
+        if (type.ref === "facilities") setShowCreateBtn(true);
         break;
       case "facilities":
-        data = await getFacilityApi(params.id);
+        if (type.ref === "customers") setShowCreateBtn(true);
+        break;
+      case "equipment":
+        if (type.ref === "facilities") setShowCreateBtn(true);
         break;
       default:
         break;
     }
+
+    window.addEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    request.then((res) => {
-      console.log(res);
-    });
-  }, [request]);
+    if (requests.list) {
+      setIsLoading(true);
+      requests.list(RECORDS_PER_PAGE, page, searchQuery, id).then((res) => {
+        setData(formatData(res[type.entity]));
+        setTotalRecords(res.total);
+        setIsLoading(false);
+      });
+    }
+  }, [requests]);
+
+  useEffect(() => {
+    if (requests.list) {
+      requests.list(RECORDS_PER_PAGE, page, searchQuery, id).then((res) => {
+        setData(formatData(res[type.entity]));
+      });
+    }
+  }, [page]);
 
   return (
     <div className="list">
@@ -51,12 +144,18 @@ const List = ({ type }) => {
             onInput={handleSearch}
           />
           <div className="list__options_btns">
-            <button
-              className="list__add-btn"
-              onClick={() => history.push(`/dashboard/${type}/create`)}
-            >
-              +
-            </button>
+            {showCreateBtn && (
+              <button
+                className="list__add-btn"
+                onClick={() =>
+                  history.push(
+                    `/dashboard/${type.ref}/${id}/${type.entity}/create`
+                  )
+                }
+              >
+                +
+              </button>
+            )}
             <button onClick={toggleView} className="list__toggle-btn">
               {view ? (
                 <svg
@@ -94,15 +193,15 @@ const List = ({ type }) => {
         {!isLoading ? (
           <>
             {view ? (
-              <TableView data={customers} type={type} />
+              <TableView data={data} type={type.entity} />
             ) : (
               <div
                 className={
                   screenSize > 440 ? "info-card_group" : "info-card_group dense"
                 }
               >
-                {customers ? (
-                  customers.map((record) => (
+                {data ? (
+                  data.map((record) => (
                     <InfoCard key={record.id} data={record} type={type} />
                   ))
                 ) : (

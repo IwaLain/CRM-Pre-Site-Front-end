@@ -1,4 +1,4 @@
-@import "../../../scss/scss-variables.scss";
+@import "./scss-variables.scss";
 
 /* Dashboard */
 
@@ -36,7 +36,7 @@
 }
 
 .dashboard aside nav ul {
-  list-style-image: url("../../../assets/img/star.svg");
+  list-style-image: url("../assets/img/star.svg");
   padding-left: 1.5em;
 }
 

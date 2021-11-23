@@ -1,8 +1,8 @@
 import { api } from "./api";
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem("token");
 
-const getCustomersAPI = async (limit, search, page) => {
+const getCustomersAPI = async (limit, page, search) => {
   let url = `/api/customer?access-token=${token}`;
   if (limit) url += `&limit=${limit}`;
   if (page) url += `&page=${page}`;
@@ -25,6 +25,36 @@ const getCustomerAPI = async (customerId) => {
 
   const response = await api(config);
   return response.customer;
+};
+
+const getCustomerFacilities = async (limit, page, search, customerId) => {
+  let url = `/api/customer/${customerId}/facilities?access-token=${token}`;
+  if (limit) url += `&limit=${limit}`;
+  if (page) url += `&page=${page}`;
+  if (search) url += `&s=${search}`;
+
+  let config = {
+    method: "GET",
+    url,
+  };
+
+  const response = await api(config);
+  return response;
+};
+
+const getCustomerEquipment = async (limit, page, search, customerId) => {
+  let url = `/api/customer/${customerId}/equipment?access-token=${token}`;
+  if (limit) url += `&limit=${limit}`;
+  if (page) url += `&page=${page}`;
+  if (search) url += `&s=${search}`;
+
+  let config = {
+    method: "GET",
+    url,
+  };
+
+  const response = await api(config);
+  return response;
 };
 
 const addCustomerAPI = async (data) => {
@@ -71,6 +101,8 @@ const setMainCustomerImageAPI = async (customerId, imageId) => {
 export {
   getCustomersAPI,
   getCustomerAPI,
+  getCustomerFacilities,
+  getCustomerEquipment,
   addCustomerAPI,
   addCustomerImageAPI,
   deleteCustomerImageAPI,

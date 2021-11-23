@@ -1,13 +1,13 @@
 import React from "react";
-import "./dashboard.scss";
+import "../../../scss/dashboard.scss";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { useRouteMatch, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Header from "../../widgets/Header/Header";
 import Sidebar from "../../widgets/Sidebar/Sidebar";
 import Breadcrumbs from "../../widgets/Breadcrumbs/Breadcrumbs";
 import routes from "../../../routes";
-import { PageTitleContext } from "../../../context";
+import { PageContext } from "../../../context";
 
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 1074;
@@ -18,11 +18,12 @@ const DashboardLayout = ({ children }) => {
   );
   const [sidebarNeeded, setSidebarNeeded] = useState(true);
 
-  const match = useRouteMatch();
-
   const location = useLocation();
 
   const [pageTitle, setPageTitle] = useState();
+  const [pageType, setPageType] = useState();
+  const [pagePath, setPagePath] = useState();
+  const [id, setId] = useState();
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -40,10 +41,10 @@ const DashboardLayout = ({ children }) => {
 
   useEffect(() => {
     let filtered = routes.dashboard.filter((route) => {
-      return route.path === match.url;
+      return route.path === pagePath;
     })[0];
     filtered && setPageTitle(filtered.name);
-  }, [match.url]);
+  }, [pagePath]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -65,7 +66,9 @@ const DashboardLayout = ({ children }) => {
   }, [location]);
 
   return (
-    <PageTitleContext.Provider value={{ pageTitle }}>
+    <PageContext.Provider
+      value={{ pageTitle, pageType, setPageType, id, setId, setPagePath }}
+    >
       <div className="dashboard container-fluid">
         <div className="row">
           {!sidebarCollapsed && sidebarNeeded && (
@@ -73,6 +76,8 @@ const DashboardLayout = ({ children }) => {
               isMobile={isMobile}
               sidebarNeeded={sidebarNeeded}
               toggleSidebar={toggleSidebar}
+              type={pageType && pageType.ref}
+              id={id}
             />
           )}
           <section className={isMobile || !sidebarNeeded ? "col-12" : "col-10"}>
@@ -89,7 +94,7 @@ const DashboardLayout = ({ children }) => {
           </section>
         </div>
       </div>
-    </PageTitleContext.Provider>
+    </PageContext.Provider>
   );
 };
 

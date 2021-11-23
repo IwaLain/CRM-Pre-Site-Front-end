@@ -6,7 +6,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import star from "../../../assets/img/star.svg";
-import "./dropdownImageEdit.scss";
+import "../../../scss/dropdownImageEdit.scss";
 const DropdownImageEdit = ({ images, setMainImage }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => {

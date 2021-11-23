@@ -20,7 +20,7 @@ const TableView = ({ data, type }) => {
         </tr>
       </thead>
       <tbody>
-        {data.length > 0 ? (
+        {data && data.length > 0 ? (
           data.map((record) => {
             let progress = 0;
             if (record.name) progress += 33.3;

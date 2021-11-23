@@ -1,5 +1,5 @@
 import logo from "../../../assets/img/company.png";
-import closeBtnStyles from "./close-btn.module.scss";
+import closeBtnStyles from "../../../scss/close-btn.module.scss";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({ isMobile, sidebarNeeded, toggleSidebar, id, type }) => {
@@ -48,10 +48,10 @@ const Sidebar = ({ isMobile, sidebarNeeded, toggleSidebar, id, type }) => {
       <nav>
         <ul>
           <li>
-            <Link to={`/dashboard/${type}/facilities/${id}`}>Facilities</Link>
+            <Link to={`/dashboard/${type}/${id}/facilities`}>Facilities</Link>
           </li>
           <li>
-            <Link to={`/dashboard/${type}/equipment/${id}`}>Equipment</Link>
+            <Link to={`/dashboard/${type}/${id}/equipment`}>Equipment</Link>
           </li>
         </ul>
       </nav>

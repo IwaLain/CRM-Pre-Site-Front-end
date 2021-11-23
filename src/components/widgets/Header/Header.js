@@ -88,7 +88,7 @@ const Header = ({ sidebarNeeded, isMobile, toggleSidebar }) => {
       </button>
       <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
         <DropdownToggle className="profile-badge">
-          <i class="fas fa-star"></i>
+          <i className="fas fa-star"></i>
         </DropdownToggle>
         <DropdownMenu end>
           <DropdownItem>

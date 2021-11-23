@@ -2,102 +2,90 @@ import LoginPage from "./components/pages/LoginPage/LoginPage";
 import UsersPage from "./components/pages/UsersPage/UsersPage";
 import Profile from "./components/pages/Profile/Profile";
 import AddUserPage from "./components/pages/UsersPage/AddUserPage/AddUserPage";
-import Customers from "./components/pages/Customers/Customers";
 import Customer from "./components/pages/Customer/Customer";
 import CustomerCreate from "./components/pages/CustomerCreate/CustomerCreate";
-import CustomerFactories from "./components/pages/CustomerFactories/CustomerFactories";
-import CustomerLocations from "./components/pages/CustomerLocations/CustomerLocations";
-import CustomerEquipment from "./components/pages/CustomerEquipment/CustomerEquipment";
-import Factory from "./components/pages/Factory/Factory";
-import FactoryLocations from "./components/pages/FactoryLocations/FactoryLocations";
-import FactoryEquipment from "./components/pages/FactoryEquipment/FactoryEquipment";
-import Location from "./components/pages/Location/Location";
-import LocationEquipment from "./components/pages/LocationEquipment/LocationEquipment";
-import Equipment from "./components/pages/Equipment/Equipment";
+import List from "./components/pages/List/List";
+import React from "react";
+import FacilityCreate from "./components/pages/FacilityCreate/FacilityCreate";
 
 const routes = {
   auth: [
     {
       path: "/login",
       name: "Login",
-      component: LoginPage,
+      children: <LoginPage />,
     },
   ],
   dashboard: [
     {
       path: "/dashboard/users",
       name: "Users Page",
-      component: UsersPage,
+      children: <UsersPage />,
     },
     {
       path: "/dashboard/profile",
       name: "Profile Page",
-      component: Profile,
+      children: <Profile />,
     },
     {
       path: "/dashboard/add-user",
       name: "Add User",
-      component: AddUserPage,
-    },
-    {
-      path: "/dashboard/customers/:id",
-      name: "Customer",
-      component: Customer,
-    },
-    {
-      path: "/dashboard/customers",
-      name: "Customers",
-      component: Customers,
+      children: <AddUserPage />,
     },
     {
       path: "/dashboard/customers/create",
       name: "Customer Create",
-      component: CustomerCreate,
+      children: <CustomerCreate />,
+    },
+    {
+      path: "/dashboard/customers/:id/facilities/create",
+      name: "Facility Create",
+      children: <FacilityCreate />,
     },
     {
       path: "/dashboard/customers/:id/facilities",
-      name: "Customer Factories",
-      component: CustomerFactories,
+      name: "Customer Facilities",
+      children: <List type={{ entity: "facilities", ref: "customers" }} />,
+    },
+    {
+      path: "/dashboard/customers/:id/facilities",
+      name: "Customer Facilities",
+      children: <List type={{ entity: "facilities", ref: "customers" }} />,
     },
     {
       path: "/dashboard/customers/:id/locations",
       name: "Customer Locations",
-      component: CustomerLocations,
+      children: <List type={{ entity: "locations", ref: "customers" }} />,
     },
     {
-      path: "/dsahboard/customers/:id/equipment",
+      path: "/dashboard/customers/:id/equipment",
       name: "Customer Equipment",
-      component: CustomerEquipment,
+      children: <List type={{ entity: "equipment", ref: "customers" }} />,
+    },
+    {
+      path: "/dashboard/customers/:id",
+      name: "Customer",
+      children: <Customer type={{ entity: "customers", ref: "customers" }} />,
+    },
+    {
+      path: "/dashboard/customers",
+      name: "Customers",
+      children: <List type={{ entity: "customers" }} />,
     },
     {
       path: "/dashboard/facilities/:id/equipment",
       name: "Factory Equipment",
-      component: FactoryEquipment,
+      children: <List type={{ entity: "equipment", ref: "facilities" }} />,
     },
     {
       path: "/dashboard/facilities/:id/locations",
       name: "Factory Locations",
-      component: FactoryLocations,
+      children: <List type={{ entity: "locations", ref: "facilities" }} />,
     },
     {
       path: "/dashboard/facilities/:id",
-      name: "Factory",
-      component: Factory,
-    },
-    {
-      path: "/dashboard/locations/:id/equipment",
-      name: "Location Equipment",
-      component: LocationEquipment,
-    },
-    {
-      path: "/dashboard/locations/:id",
-      name: "Location",
-      component: Location,
-    },
-    {
-      path: "/dashboard/equipment/:id",
-      name: "Equipment",
-      component: Equipment,
+      name: "Facility",
+      children: <div></div>,
     },
   ],
 };

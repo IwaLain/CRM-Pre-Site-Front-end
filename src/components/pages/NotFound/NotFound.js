@@ -1,4 +1,4 @@
-import "./not-found-page.scss";
+import "../../../scss/not-found-page.scss";
 
 const NotFound = () => {
   return (
