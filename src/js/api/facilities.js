@@ -89,6 +89,7 @@ export {
   getUserRoleAPI,
   addUserAPI,
   getFacilityApi,
+  getFacilites,
   addFacilityImageApi,
   deleteFacilityImageAPI,
   setMainFacilityImageAPI,
