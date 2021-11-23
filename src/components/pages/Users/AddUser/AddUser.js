@@ -1,24 +1,10 @@
 import React from 'react'
-import { useForm } from 'react-hook-form';
 import { user } from '../../../../js/api/user';
 import { alert } from '../../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
 import FormUser from '../FormUser/FormUser';
 
 const AddUserPage = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        trigger,
-    } = useForm();
-
-    const data = {
-        register,
-        handleSubmit,
-        formState: { errors },
-        trigger,
-    }
 
     const onSubmit = (e) => {
         const data = {
@@ -46,7 +32,7 @@ const AddUserPage = () => {
 
     return (
         <div>
-            <FormUser title='Add User' onSubmit={onSubmit} data={data}/>
+            <FormUser title='Add User' onSubmit={onSubmit}/>
             <ToastContainer position='bottom-right'/>
         </div>
     )

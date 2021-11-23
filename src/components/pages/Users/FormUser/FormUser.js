@@ -3,9 +3,25 @@ import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap";
 import { validation } from '../../../../js/methods/validation';
 import { errorsValidation } from '../../../../js/methods/message';
 import './FormUser.scss'
+import { inputs } from '../../../../js/methods/input';
+import { useForm } from 'react-hook-form';
 
-const FormUser = ({ title, onSubmit, data }) => {
-    const { handleSubmit, register, trigger, formState: { errors }} = data
+const FormUser = ({ title, onSubmit}) => {
+    const { handleSubmit, register, trigger, formState: { errors }} = useForm()
+    const data = {
+        register,
+        handleSubmit,
+        fieldState: { errors },
+        trigger,
+    }
+
+    const fields = [
+        'username',
+        'email',
+        'phone',
+        'password'
+    ]
+
     return (
         <div>
             <h3>{title}</h3>
@@ -15,74 +31,10 @@ const FormUser = ({ title, onSubmit, data }) => {
                         id='formUser-form'
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        <Row className='formUser__item mt-3'>
-                            <Col md={2} lg={1}>
-                                <Label className='formUser__label'>Username</Label>
-                            </Col>
-                            <Col md={4}>
-                                <input
-                                    type='text'
-                                    placeholder='...'
-                                    className={`form-control ${errors.username && "invalid"}`}
-                                    {...register("username", validation('username') )}
-                                    onKeyUp={() => {
-                                        trigger("username");
-                                    }}
-                                />
-                                {errorsValidation(errors.username, 'Include any simvols')}
-                            </Col>
-                        </Row>
-                        <Row className='formUser__item'>
-                            <Col md={2} lg={1}>
-                                <Label className='formUser__label'>Email</Label>
-                            </Col>
-                            <Col md={4}>
-                                <input
-                                    type="email"
-                                    placeholder='...'
-                                    className={`form-control ${errors.email && "invalid"}`}
-                                    {...register("email", validation('email') )}
-                                    onKeyUp={() => {
-                                        trigger("email");
-                                    }}
-                                />
-                                {errorsValidation(errors.email, 'Dont forget "@"')}
-                            </Col>
-                        </Row>
-                        <Row className='formUser__item'>
-                            <Col md={2} lg={1}>
-                                <Label className='formUser__label'>Phone</Label>
-                            </Col>
-                            <Col md={4}>
-                                <input
-                                    type="text"
-                                    placeholder='...'
-                                    className={`form-control ${errors.phone && "invalid"}`}
-                                    {...register("phone", validation('phone') )}
-                                    onKeyUp={() => {
-                                        trigger("phone");
-                                    }}
-                                />
-                                {errorsValidation(errors.phone, 'Begin with "+" and split "-", "/" or "."')}
-                            </Col>
-                        </Row>
-                        <Row className='formUser__item'>
-                            <Col md={2} lg={1}>
-                                <Label className='formUser__label'>Password</Label>
-                            </Col>
-                            <Col md={4}>
-                                <input
-                                    type="password"
-                                    placeholder='...'
-                                    className={`form-control ${errors.password && "invalid"}`}
-                                    {...register("password", validation('password') )}
-                                    onKeyUp={() => {
-                                        trigger("password");
-                                    }}
-                                />
-                                {errorsValidation(errors.password, 'Password should contain special character')}
-                            </Col>
-                        </Row>
+                        {inputs('username', data, 'Username')}
+                        {inputs('email', data, 'Email')}
+                        {inputs('phone', data, 'Phone')}
+                        {inputs('password', data, 'Password')}
                         <Row className='formUser__item'>
                             <Col md={2} lg={1}>
                                 <Label className='formUser__label'>Role</Label>
