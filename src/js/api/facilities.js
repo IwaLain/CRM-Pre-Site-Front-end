@@ -33,6 +33,18 @@ const addUserAPI = async (data) => {
   const response = await api(config);
   return response;
 };
+
+const getFacilites = async () => {
+    let config = {
+        method: 'GET',
+        url: `/api/facilities?access-token=${token}`
+    }
+
+    const response = await api(config)
+
+    return response.facilities
+}
+
 const getFacilityApi = async (facilityId) => {
   let config = {
     method: "GET",
