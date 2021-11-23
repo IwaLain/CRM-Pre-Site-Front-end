@@ -1,34 +1,29 @@
 @import "../../../../scss/scss-variables.scss";
 
-.editUser {
+.formUser {
     padding: 20px;
 }
 
-.editUser__item {
+.formUser__item {
     display: flex;
     align-items: center;
     margin-bottom: 35px;
 }
 
-.editUser__label {
+.formUser__label {
     font-weight: 600;
-}
-
-.editUser__desc {
-    position: absolute;
-    z-index: 3;
 }
 
 .invalid {
     box-shadow: 0 0 1px 0 #F95B5B;
 }
 
-.editUser__submit {
+.formUser__submit {
     background-color: $success !important;
     border: none !important;
 }
 
-.editUser__cancel {
+.formUser__cancel {
     background-color: $default !important;
     border: none !important;
 }

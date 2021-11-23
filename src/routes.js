@@ -1,8 +1,8 @@
 import CustomerPage from "./components/pages/CustomerPage/CustomerPage";
-import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
-import LoginPage from "./components/pages/LoginPage/LoginPage";
-import UsersPage from "./components/pages/UsersPage/UsersPage";
-import AddUserPage from "./components/pages/UsersPage/AddUserPage/AddUserPage";
+import Profile from "./components/pages/Profile/Profile";
+import Login from "./components/pages/Login/Login";
+import Users from "./components/pages/Users/Users";
+import AddUser from "./components/pages/Users/AddUser/AddUser";
 import CustomerCreatePage from "./components/pages/CustomerCreatePage/CustomerCreatePage";
 import CustomerFactoryPage from "./components/pages/CustomerFactoryPage/CustomerFactoryPage";
 import CustomersPage from "./components/pages/CustomersPage/CustomersPage";
@@ -13,7 +13,7 @@ const routes = {
     {
       path: "/login",
       name: "Login",
-      component: LoginPage,
+      component: Login,
     },
   ],
   dashboard: [
@@ -24,18 +24,18 @@ const routes = {
     },
     {
       path: "/dashboard/profile",
-      name: "Profile Page",
-      component: ProfilePage,
+      name: "Profile",
+      component: Profile,
     },
     {
       path: "/dashboard/users",
-      name: "Users Page",
-      component: UsersPage,
+      name: "Users",
+      component: Users,
     },
     {
       path: "/dashboard/add-user",
       name: "Add User",
-      component: AddUserPage,
+      component: AddUser,
     },
     {
       path: "/dashboard/customer-create",

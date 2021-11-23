@@ -1,60 +1,59 @@
-import { api } from "./api";
-import { endpoints } from "./endpoint";
+import { api } from "./api"
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('token')
 
-const getUsersAPI = async () => {
-  let config = {
-    method: "GET",
-    url: endpoints.getUsers,
-  };
-
-  const response = await api(config);
-  return response[0];
-};
-
-const getUserRoleAPI = async (userId) => {
-  let config = {
-    method: "GET",
-    url: `/api/role/user-role/${userId}?access-token=${token}`,
-  };
-
-  const response = await api(config);
-  return response.role;
-};
-
-const addUserAPI = async (data) => {
-  let config = {
-    method: "POST",
-    url: endpoints.addUser,
-    data: data,
-  };
-
-  const response = await api(config);
-  return response;
-};
-
-const getFacilites = async () => {
+const getFacilities = async () => {
     let config = {
         method: 'GET',
         url: `/api/facilities?access-token=${token}`
     }
 
     const response = await api(config)
-
-    return response.facilities
+    return response.Facilities
 }
 
-const getFacilityApi = async (facilityId) => {
-  let config = {
-    method: "GET",
-    url: `/api/facilities/${facilityId}?access-token=${token}`,
-  };
+const getFacilityApi = async (FacilitiesId) => {
+    let config = {
+        method: 'GET',
+        url: `/api/facilities/${FacilitiesId}?access-token=${token}`
+    }
 
-  const response = await api(config);
+    const response = await api(config)
+    return response.Facilities
+}
 
-  return response.facility;
-};
+const addFacilities = async (data) => {
+    let config = {
+        method: 'POST',
+        url: `/api/facilities/create?access-token=${token}`,
+        data: data
+    } 
+
+    const response = await api(config)
+    return response
+}
+
+const editFacilities = async (FacilitiesId, data) => {
+    let config = {
+        method: 'PUT',
+        url: `/api/facilities/update/${FacilitiesId}?access-token=${token}`,
+        data: data
+    }
+
+    const response = await api(config)
+    return response
+}
+
+const deleteFacilities = async (FacilitiesId) => {
+    let config = {
+        method: 'DELETE',
+        url: `/api/facilities/delete/${FacilitiesId}?access-token=${token}`
+    }
+
+    const response = await api(config)
+    return response
+}
+
 const addFacilityImageApi = async (facilityId, dataImg) => {
   let config = {
     method: "POST",
@@ -85,11 +84,11 @@ const setMainFacilityImageAPI = async (facilityId, imageId) => {
   return response;
 };
 export {
-  getUsersAPI,
-  getUserRoleAPI,
-  addUserAPI,
+  getFacilities,
   getFacilityApi,
-  getFacilites,
+  addFacilities,
+  editFacilities,
+  deleteFacilities,
   addFacilityImageApi,
   deleteFacilityImageAPI,
   setMainFacilityImageAPI,
