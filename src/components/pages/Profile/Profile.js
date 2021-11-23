@@ -1,49 +1,56 @@
 import { Col, Label, Row } from "reactstrap"
 import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
-import { fields } from "./Fields/fields"
+import edit from '../../../assets/img/edite.svg'
+import { Fields } from "./Fields/Fields"
 const ProfilePage = () => {
+    const fieldsProfile = [
+        {
+            title: 'Username',
+            value: 'Alakey123',
+        },
+        {
+            title: 'First Name',
+            value: 'Alex',
+        },
+        {
+            title: 'Last Name',
+            value: 'Shatailov',
+        },
+        {
+            title: 'Email Ardess',
+            value: 'samoran232@gmail.com',
+        },
+    ]
+
     return(
         <>
             <h3>Profile</h3>
             <Row>
                 <Col lg={12} className='p-5 pt-4'>
                     <Row className='profile__item'>
-                        <Col  lg={1}>
+                        <Col md={3} lg={2}>
                             <Label className='profile__label'>Avatar</Label>
                         </Col>
-                        <Col lg={3} md={4} className='d-flex justify-content-center'>
-                            <img className='profile__img' src={placeholder} alt="Avatar" />
+                        <Col lg={4} md={4} className='d-flex justify-content-center'>
+                            <div className='profile__avatar'>
+                                <img className='profile__img' src={placeholder} alt="Avatar" />
+                                <div className='profile__img-edit justify-content-sm-center align-items-center'>
+                                    <img
+                                        src={edit}
+                                        alt="edit"
+                                    />
+                                </div>
+                            </div>
                         </Col>
                     </Row>
-                    {fields('Username', 'Alakey123')}
-                    {fields('First Name', 'Alex')}
-                    {fields('Last Name', 'Shatailov')}
-                    {fields('Email Ardess', 'samoran232@gmail.com')}
-                    {/* <Row className='profile__item'>
-                        <Col lg={2}>
-                            <Label className='profile__label'>First Name</Label>
-                        </Col>
-                        <Col lg={3} md={4}>
-                            <p className='profile__text form-control'>Alex</p>
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col lg={2}>
-                            <Label className='profile__label'>Last Name</Label>
-                        </Col>
-                        <Col lg={3} md={4}>
-                            <p className='profile__text form-control'>Shatailov</p>
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col lg={2}>
-                            <Label className='profile__label'>Email Adress</Label>
-                        </Col>
-                        <Col lg={3} md={4}>
-                            <p className='profile__text form-control'>samoran232@gmail.com</p>
-                        </Col>
-                    </Row> */}
+                    {
+                        fieldsProfile.map(data => (
+                            <div key={data.title}>
+                                {Fields(data.title, data.value)}
+                            </div>
+                        ))
+                    }
                 </Col>
             </Row>
         </>

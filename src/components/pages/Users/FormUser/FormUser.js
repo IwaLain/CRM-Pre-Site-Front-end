@@ -1,15 +1,15 @@
 import React from 'react';
-import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap";
+import { Button, Col, Form, FormGroup, Row } from "reactstrap";
 import './FormUser.scss'
 import { inputs, select } from '../../../../js/methods/input';
 import { useForm } from 'react-hook-form';
 import { ToastContainer } from 'react-toastify';
 
 const FormUser = ({ title, onSubmit, dataInputs, currentUser=''}) => {
-    const {  
-        register, 
-        handleSubmit, 
-        trigger, 
+    const {
+        register,
+        handleSubmit,
+        trigger,
         formState: { errors }
     } = useForm({
         defaultValues: {
