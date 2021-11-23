@@ -1,34 +1,9 @@
 import React from 'react'
-import { useForm } from 'react-hook-form';
 import { alert } from '../../../../js/methods/alert';
 import { user } from '../../../../js/api/user';
 import FormUser from '../FormUser/FormUser';
 
 export const EditeUserModal = ({currentUser, editeUser}) => {
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        trigger,
-        reset,
-    } = useForm( {
-        defaultValues: {
-            username: currentUser.username,
-            email: currentUser.email,
-            phone: currentUser.phone,
-            role: currentUser.role
-        }
-    });
-
-    const data = {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-        trigger,
-    }
-
     const onSubmit = (e) => {
         const data = {
             'username': e.username,
@@ -58,7 +33,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
 
     return (
         <div>
-            <FormUser title='Edit User' onSubmit={onSubmit} data={data} />
+            <FormUser title='Edit User' onSubmit={onSubmit} currentUser={currentUser}/>
         </div>
     )
 }

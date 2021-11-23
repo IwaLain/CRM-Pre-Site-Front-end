@@ -1,13 +1,27 @@
 import React from 'react';
 import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap";
-import { validation } from '../../../../js/methods/validation';
-import { errorsValidation } from '../../../../js/methods/message';
 import './FormUser.scss'
 import { inputs, select } from '../../../../js/methods/input';
 import { useForm } from 'react-hook-form';
+import { ToastContainer } from 'react-toastify';
 
-const FormUser = ({ title, onSubmit}) => {
-    const { handleSubmit, register, trigger, formState: { errors }} = useForm()
+const FormUser = ({ title, onSubmit, dataInputs, currentUser=''}) => {
+    const {  
+        register, 
+        handleSubmit, 
+        trigger, 
+        formState: { errors }
+    } = useForm({
+        defaultValues: {
+            username: currentUser.username,
+            email: currentUser.email,
+            phone: currentUser.phone,
+            role: currentUser.role,
+            password: ''
+        }
+    });
+
+
     const data = {
         register,
         handleSubmit,
@@ -27,7 +41,7 @@ const FormUser = ({ title, onSubmit}) => {
                         {inputs( 'username', data, 'Username', errors.username )}
                         {inputs( 'email', data, 'Email', errors.email )}
                         {inputs( 'phone', data, 'Phone', errors.phone )}
-                        {inputs( 'password', data, 'Password', errors.password )}
+                        {/* {inputs( 'password', data, 'Password', errors.password )} */}
                         {select( 'role', data, 'Role', errors.role )}
 
                         <FormGroup className='formUser__item mt-5'>
@@ -48,7 +62,7 @@ const FormUser = ({ title, onSubmit}) => {
                         </FormGroup>
                     </Form>
                 </Col>
-                {/* <ToastContainer position='bottom-right'/> */}
+                <ToastContainer position='bottom-right'/>
             </Row>
         </div>
     )

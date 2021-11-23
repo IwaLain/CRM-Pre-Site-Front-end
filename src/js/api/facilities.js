@@ -1,20 +1,42 @@
 import { api } from "./api"
-import { endpoints } from "./endpoint"
 
-const getFacilitiesAPI = async () => {
+const token = localStorage.getItem('token')
+
+const getFacilities = async () => {
     let config = {
         method: 'GET',
-        url: endpoints.getUsers
+        url: `/api/facilities?access-token=${token}`
     }
 
     const response = await api(config)
-    return response[0]
+    return response.Facilities
 }
 
-const addFacilitiesAPI = async (data) => {
+const getFacility = async (FacilitiesId) => {
+    let config = {
+        method: 'GET',
+        url: `/api/facilities/${FacilitiesId}?access-token=${token}`
+    }
+
+    const response = await api(config)
+    return response.Facilities
+}
+
+const addFacilities = async (data) => {
     let config = {
         method: 'POST',
-        url: endpoints.addUser,
+        url: `/api/facilities/create?access-token=${token}`,
+        data: data
+    } 
+
+    const response = await api(config)
+    return response
+}
+
+const editFacilities = async (FacilitiesId, data) => {
+    let config = {
+        method: 'PUT',
+        url: `/api/facilities/update/${FacilitiesId}?access-token=${token}`,
         data: data
     }
 
@@ -22,7 +44,43 @@ const addFacilitiesAPI = async (data) => {
     return response
 }
 
-export const user = {
-    getFacilitiesAPI,
-    addFacilitiesAPI
+const deleteFacilities = async (FacilitiesId) => {
+    let config = {
+        method: 'DELETE',
+        url: `/api/facilities/delete/${FacilitiesId}?access-token=${token}`
+    }
+
+    const response = await api(config)
+    return response
+}
+
+const deleteImageFacilities = async (FacilitiesImageId) => {
+    let config = {
+        method: 'DELETE',
+        url: `/api/facilities/image/delete/${FacilitiesImageId}?access-token=${token}`
+    }
+
+    const response = await api(config)
+    return response
+}
+
+const createImageFacilities = async (FacilitiesImageId, data) => {
+    let config = {
+        method: 'POST',
+        url: `/api/facilities/${FacilitiesImageId}/image/create?access-token=${token}`,
+        data: data
+    }
+
+    const response = await api(config)
+    return response
+}
+
+export const Facilities = {
+    getFacilities,
+    getFacility,
+    addFacilities,
+    editFacilities,
+    deleteFacilities,
+    deleteImageFacilities,
+    createImageFacilities,
 }

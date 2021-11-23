@@ -82,7 +82,6 @@ const UsersPage = () => {
             </Row>
 
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Edite User: '{currentUser.username}'</ModalHeader>
                 <ModalBody>
                     <EditeUserModal currentUser={currentUser} editeUser={editeUser}/>
                 </ModalBody>
