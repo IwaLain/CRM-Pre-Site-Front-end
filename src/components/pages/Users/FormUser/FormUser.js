@@ -3,7 +3,7 @@ import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap";
 import { validation } from '../../../../js/methods/validation';
 import { errorsValidation } from '../../../../js/methods/message';
 import './FormUser.scss'
-import { inputs } from '../../../../js/methods/input';
+import { inputs, select } from '../../../../js/methods/input';
 import { useForm } from 'react-hook-form';
 
 const FormUser = ({ title, onSubmit}) => {
@@ -11,16 +11,9 @@ const FormUser = ({ title, onSubmit}) => {
     const data = {
         register,
         handleSubmit,
-        fieldState: { errors },
+        formState: { errors },
         trigger,
     }
-
-    const fields = [
-        'username',
-        'email',
-        'phone',
-        'password'
-    ]
 
     return (
         <div>
@@ -31,41 +24,17 @@ const FormUser = ({ title, onSubmit}) => {
                         id='formUser-form'
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        {inputs('username', data, 'Username')}
-                        {inputs('email', data, 'Email')}
-                        {inputs('phone', data, 'Phone')}
-                        {inputs('password', data, 'Password')}
-                        <Row className='formUser__item'>
-                            <Col md={2} lg={1}>
-                                <Label className='formUser__label'>Role</Label>
-                            </Col>
-                            <Col md={4}>
-                                <select
-                                    className='form-control'
-                                    name='role'
-                                    {...register("role", validation('role'))}
-                                >
-                                    <option value='' defaultChecked disabled>
-                                        Select role
-                                    </option>
-                                    <option value='member'>
-                                        member
-                                    </option>
-                                    <option value='SuperAdmin'>
-                                        SuperAdmin
-                                    </option>
-                                    <option value='manager'>
-                                        manager
-                                    </option>
-                                </select>
-                                {errorsValidation(errors.role, 'Select role')}
-                            </Col>
-                        </Row>
+                        {inputs( 'username', data, 'Username', errors.username )}
+                        {inputs( 'email', data, 'Email', errors.email )}
+                        {inputs( 'phone', data, 'Phone', errors.phone )}
+                        {inputs( 'password', data, 'Password', errors.password )}
+                        {select( 'role', data, 'Role', errors.role )}
+
                         <FormGroup className='formUser__item mt-5'>
-                            <Col md={{offset: 2, size: 2}} lg={{offset: 1, size: 2}}>
+                            <Col md={{offset: 2, size: 6}}>
                                 <Button className='formUser__submit'>Submit</Button>
                             </Col>
-                            <Col md={3}>
+                            <Col md={6}>
                                 <Button
                                     className='formUser__cancel'
                                     onClick={(e) => {

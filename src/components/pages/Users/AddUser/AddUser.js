@@ -3,6 +3,7 @@ import { user } from '../../../../js/api/user';
 import { alert } from '../../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
 import FormUser from '../FormUser/FormUser';
+import { Col, Row } from 'reactstrap';
 
 const AddUserPage = () => {
 
@@ -32,7 +33,9 @@ const AddUserPage = () => {
 
     return (
         <div>
-            <FormUser title='Add User' onSubmit={onSubmit}/>
+            <Col md={4}>
+                <FormUser title='Add User' onSubmit={onSubmit}/>
+            </Col>
             <ToastContainer position='bottom-right'/>
         </div>
     )
