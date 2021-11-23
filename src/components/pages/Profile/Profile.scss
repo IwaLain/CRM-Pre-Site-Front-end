@@ -9,6 +9,7 @@ ul {
 }
 
 .profile__text {
+    position: relative;
     width: 100%;
     text-align: center;
     background: #DEDEDE;
@@ -24,5 +25,14 @@ ul {
     height: 86px;
     border-radius: 50%;
     color: #000;
-    background: #E3BB31;
+    background: #eeeeee;
+}
+
+.profile__edit {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import 'react-toastify/dist/ReactToastify.css';
 import './Login.scss';
-import logo from '../../../assets/img/company.png'
+import logo from '../../../assets/img/top-logo-black.svg'
 import { Card,
          Col,
          Container,
@@ -12,8 +12,9 @@ import { Card,
          CardBody } from 'reactstrap'
 import { alert } from '../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
-import { loginAPI } from '../../../js/api/login';
+import { login } from '../../../js/api/login';
 import { useHistory } from 'react-router';
+import { inputs } from '../../../js/methods/input';
 
 const LoginPage = () => {
     let history = useHistory();
@@ -25,13 +26,20 @@ const LoginPage = () => {
         trigger,
     } = useForm();
 
+    const data = {
+      register,
+      handleSubmit,
+      formState: { errors },
+      trigger
+    }
+
     const onSubmit = (e) => {
         const data = {
             'username': e.username,
             'password': e.password
         }
 
-        loginAPI(data)
+        login(data)
         .then(data => {
             if(data.errors) {
                 alert('error', data.errors)
@@ -49,7 +57,7 @@ const LoginPage = () => {
                 <Col sm={8} md={6} lg={4}>
                     <Card className='px-3'>
                         <CardBody>
-                            <div className='text-center mb-3'>
+                            <div className='text-center'>
                                 <CardImg
                                     alt="Logo"
                                     src={logo}
@@ -59,55 +67,12 @@ const LoginPage = () => {
                             <Form onSubmit={handleSubmit(onSubmit)}>
                                 <Row>
                                     <FormGroup>
-                                        <input
-                                            type="text"
-                                            placeholder='User Name ...'
-                                            autoComplete="off"
-                                            className={`form-control ${errors.username && "invalid"}`}
-                                            {...register("username", {
-                                                required: "UserName is Required",
-                                                minLength: {
-                                                    value: 3,
-                                                    message: "Minimum 3 simvols",
-                                                }
-                                            })}
-                                            onKeyUp={() => {
-                                                trigger("username");
-                                            }}
-                                        />
-                                        {errors.username && (
-                                            <small className="text-danger">{errors.username.message}</small>
-                                        )}
+                                        {inputs('username', data, 'Username:', errors.username)}
                                     </FormGroup>
                                 </Row>
                                 <Row>
                                     <FormGroup>
-                                        <input
-                                            type="password"
-                                            placeholder='Password ...'
-                                            className={`form-control ${errors.password && "invalid"}`}
-                                            {...register("password", {
-                                                required: "Password is Required",
-                                                minLength: {
-                                                    value: 4,
-                                                    message: "Minimum 6 simvols",
-                                                },
-                                                maxLength: {
-                                                    value: 16,
-                                                    message: "Maximum 16 simvols",
-                                                },
-                                                pattern: {
-                                                    value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
-                                                    message: "Password should contain atleast one number and one special character",
-                                                }
-                                            })}
-                                            onKeyUp={() => {
-                                                trigger("password");
-                                            }}
-                                        />
-                                        {errors.password && (
-                                            <small className="text-danger">{errors.password.message}</small>
-                                        )}
+                                        {inputs('password', data, 'Password:', errors.password)}
                                     </FormGroup>
                                 </Row>
                                 <Row>

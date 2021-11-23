@@ -1,27 +1,27 @@
 import { api } from "./api"
-import { endpoints } from "./endpoint"
 
-const getCustomersAPI = async () => {
-    let config = {
-        method: 'GET',
-        url: endpoints.getCustomers
+const token = localStorage.getItem('token')
+
+const Global = (method, url, data = '') => {
+    const config = {
+        method,
+        url,
+        data
     }
 
     const response = await api(config)
-    return response.customers
+    return response
 }
 
-const getCustomerAPI = async (customerId) => {
-    let config = {
-        method: 'GET',
-        url: `/api/customer/:${customerId}?access-token=`
-    }
-
-    const response = await api(config)
-    return response.customer
+const getCustomers = async () => {
+    return Global('GET', `/api/customer?access-token=${token}`)
 }
 
-const addCustomerAPI = async (data) => {
+const getCustomer = async (customerId) => {
+    return Global('GET', `/api/customer/:${customerId}?access-token=${token}`)
+}
+
+const addCustomer = async (data) => {
     let config = {
         method: 'POST',
         url: endpoints.addCustomer,
@@ -33,7 +33,7 @@ const addCustomerAPI = async (data) => {
 } 
 
 export const customer = {
-    getCustomersAPI,
-    getCustomerAPI,
-    addCustomerAPI
+    getCustomers,
+    getCustomer,
+    addCustomer
 }

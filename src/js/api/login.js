@@ -2,7 +2,7 @@ import { endpoints } from "./endpoint"
 const baseURL = 'http://crm.local'
 let response = []
 
-const login = async (configs) => {
+const log = async (configs) => {
     const path = `${baseURL + configs.url}`
 
     response = await fetch(path, {
@@ -14,14 +14,14 @@ const login = async (configs) => {
     return await response.json()
 }
 
-export const loginAPI = async (data) => {
+export const login = async (data) => {
     let config = {
         method: 'POST',
         url: endpoints.login,
         data: data
     }
 
-    const response = await login(config)
+    const response = await log(config)
     return response
 }
 

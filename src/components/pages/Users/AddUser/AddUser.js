@@ -1,9 +1,9 @@
 import React from 'react'
-import { user } from '../../../../js/api/user';
+import { profile } from '../../../../js/api/profile';
 import { alert } from '../../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
 import FormUser from '../FormUser/FormUser';
-import { Col, Row } from 'reactstrap';
+import { Col } from 'reactstrap';
 
 const AddUserPage = () => {
 
@@ -19,7 +19,7 @@ const AddUserPage = () => {
             'roleName': e.role,
         }
 
-        user.addUser(data)
+        profile.addUser(data)
         .then(data => {
             if(data.errors) {
                 for (let key in data.errors) {

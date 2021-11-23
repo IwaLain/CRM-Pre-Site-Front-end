@@ -4,7 +4,6 @@ import {
         Col,
         Modal,
         ModalBody,
-        ModalHeader,
         Row,
         Table
     } from 'reactstrap'
@@ -12,7 +11,7 @@ import star from '../../../assets/img/star.svg'
 import edite from '../../../assets/img/edite.svg'
 import './Users.scss'
 import { NavLink } from 'react-router-dom'
-import { user } from '../../../js/api/user'
+import { profile } from '../../../js/api/profile'
 import { EditeUserModal } from './EditUser/EditeUser'
 
 const UsersPage = () => {
@@ -24,7 +23,8 @@ const UsersPage = () => {
     const toggle = () => setModal(!modal)
 
     useEffect(() => {
-        user.getUsers().then(data => setUsers(data))
+        profile.getUsers()
+        .then(data => setUsers(data.user))
     }, [])
 
     const editeUser = (userId, dataUser) => {

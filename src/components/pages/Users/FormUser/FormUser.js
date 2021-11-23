@@ -17,7 +17,6 @@ const FormUser = ({ title, onSubmit, dataInputs, currentUser=''}) => {
             email: currentUser.email,
             phone: currentUser.phone,
             role: currentUser.role,
-            password: ''
         }
     });
 
@@ -41,7 +40,6 @@ const FormUser = ({ title, onSubmit, dataInputs, currentUser=''}) => {
                         {inputs( 'username', data, 'Username', errors.username )}
                         {inputs( 'email', data, 'Email', errors.email )}
                         {inputs( 'phone', data, 'Phone', errors.phone )}
-                        {/* {inputs( 'password', data, 'Password', errors.password )} */}
                         {select( 'role', data, 'Role', errors.role )}
 
                         <FormGroup className='formUser__item mt-5'>
