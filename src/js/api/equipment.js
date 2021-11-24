@@ -1,17 +1,6 @@
-import { api } from "./api"
+import { Global } from "./api"
 
 const token = localStorage.getItem('token')
-
-const Global = (method, url, data = '') => {
-    const config = {
-        method,
-        url,
-        data
-    }
-
-    const response = await api(config)
-    return response
-}
 
 const getEquipments = async () => {
     return Global('GET', `/api/equipment?access-token=${token}`)

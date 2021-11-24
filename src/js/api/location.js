@@ -1,60 +1,28 @@
-import { api } from "./api"
+import { Global } from "./api"
 
 const token = localStorage.getItem('token')
 
 const getLocationList = async () => {
-    let config = {
-        method: 'GET',
-        url: `/api/location/list?access-token=${token}`
-    }
-
-    const response = await api(config)
-    return response.location
+    return Global('GET', `/api/location/list?access-token=${token}`)
 }
 
 const getLocationTree = async () => {
-    let config = {
-        method: 'GET',
-        url: `/api/location/tree?access-token=${token}`
-    }
-
-    const response = await api(config)
-    return response.location
+    return Global('GET', `/api/location/tree?access-token=${token}`)
 }
 
 const addLocation = async (data) => {
-    let config = {
-        method: 'POST',
-        url: `/api/location/create?access-token=${token}`,
-        data: data
-    } 
-
-    const response = await api(config)
-    return response
+    return Global('POST', `/api/location/create?access-token=${token}`, data)
 }
 
 const editLocation = async (locationId, data) => {
-    let config = {
-        method: 'PUT',
-        url: `/api/location/update/${locationId}?access-token=${token}`,
-        data: data
-    }
-
-    const response = await api(config)
-    return response
+    return Global('PUT', `/api/location/update/${locationId}?access-token=${token}`, data)
 }
 
 const deleteLocation = async (locationId) => {
-    let config = {
-        method: 'DELETE',
-        url: `/api/location/delete/${locationId}?access-token=${token}`
-    }
-
-    const response = await api(config)
-    return response
+    return Global('DELETE', `/api/location/delete/${locationId}?access-token=${token}`)
 }
 
-export const Location = {
+export const location = {
     getLocationList,
     getLocationTree,
     addLocation,

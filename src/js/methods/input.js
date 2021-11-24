@@ -43,7 +43,7 @@ export const select = (type, data, label) => {
                         {...register(type, validation(type))}
                     >
                         <option value='' defaultChecked disabled>
-                            Select
+                            Select role
                         </option>
                         <option value='member'>
                             member

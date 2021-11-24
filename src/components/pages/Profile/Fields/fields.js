@@ -10,7 +10,6 @@ export const Fields = (label, value) => {
 
     const {
         register,
-        handleSubmit,
     } = useForm({
         defaultValues: {
             label: value
@@ -18,11 +17,11 @@ export const Fields = (label, value) => {
     });
 
     return (
-        <Row className='profile__item mt-3'>
-            <Col md={3} lg={2}>
+        <Row className='profile__item mt-4'>
+            <Col md={2} lg={1}>
                 <Label className='profile__label'>{label}</Label>
             </Col>
-            <Col lg={4} md={4}>
+            <Col lg={2} md={2}>
                 <div className='profile__text'>
                     <input
                         className='profile__blur form-control'

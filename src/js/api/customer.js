@@ -1,17 +1,6 @@
-import { api } from "./api"
+import { Global } from "./api"
 
 const token = localStorage.getItem('token')
-
-const Global = (method, url, data = '') => {
-    const config = {
-        method,
-        url,
-        data
-    }
-
-    const response = await api(config)
-    return response
-}
 
 const getCustomers = async () => {
     return Global('GET', `/api/customer?access-token=${token}`)
@@ -22,14 +11,7 @@ const getCustomer = async (customerId) => {
 }
 
 const addCustomer = async (data) => {
-    let config = {
-        method: 'POST',
-        url: endpoints.addCustomer,
-        data: data
-    }
-
-    const response = await api(config)
-    return response
+    return Global('POST', `/api/customer/create?access-token=${token}`, data)
 } 
 
 export const customer = {

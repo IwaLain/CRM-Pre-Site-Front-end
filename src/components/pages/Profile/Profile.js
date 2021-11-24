@@ -2,7 +2,7 @@ import { Col, Label, Row } from "reactstrap"
 import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
 import edit from '../../../assets/img/edite.svg'
-import { Fields } from "./Fields/Fields"
+import { Fields } from ".//Fields/fields"
 const ProfilePage = () => {
     const fieldsProfile = [
         {
@@ -29,10 +29,10 @@ const ProfilePage = () => {
             <Row>
                 <Col lg={12} className='p-5 pt-4'>
                     <Row className='profile__item'>
-                        <Col md={3} lg={2}>
+                        <Col md={2} lg={1}>
                             <Label className='profile__label'>Avatar</Label>
                         </Col>
-                        <Col lg={4} md={4} className='d-flex justify-content-center'>
+                        <Col lg={2} md={2} className='d-flex justify-content-center'>
                             <div className='profile__avatar'>
                                 <img className='profile__img' src={placeholder} alt="Avatar" />
                                 <div className='profile__img-edit justify-content-sm-center align-items-center'>

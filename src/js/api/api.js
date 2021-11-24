@@ -1,9 +1,10 @@
 const baseURL = 'http://crm.local'
 let response = []
+const token = localStorage.getItem('token')
 
 export const api = async (configs) => {
-    const path = `${baseURL + configs.url}`
-
+    const path = `${baseURL + configs.url + token}`
+    
     switch (configs.method) {
         case 'GET':
         case 'DELETE':
@@ -25,4 +26,15 @@ export const api = async (configs) => {
     }
 
     return await response.json()
+}
+
+export const Global = async (method, url, data = '') => {
+    const config = {
+        method,
+        url,
+        data
+    }
+
+    const response = await api(config)
+    return response
 }

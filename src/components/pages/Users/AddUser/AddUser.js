@@ -1,9 +1,9 @@
 import React from 'react'
-import { profile } from '../../../../js/api/profile';
+import { user } from '../../../../js/api/users';
 import { alert } from '../../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
-import FormUser from '../FormUser/FormUser';
 import { Col } from 'reactstrap';
+import ModalUser from '../ModalUser/ModalUser';
 
 const AddUserPage = () => {
 
@@ -15,11 +15,7 @@ const AddUserPage = () => {
             'password': e.password
         }
 
-        const role = {
-            'roleName': e.role,
-        }
-
-        profile.addUser(data)
+        user.addUser(data)
         .then(data => {
             if(data.errors) {
                 for (let key in data.errors) {
@@ -33,8 +29,11 @@ const AddUserPage = () => {
 
     return (
         <div>
-            <Col md={4}>
-                <FormUser title='Add User' onSubmit={onSubmit}/>
+            <Col lg={3}>
+                <ModalUser 
+                    title='Add User' 
+                    onSubmit={onSubmit} 
+                />
             </Col>
             <ToastContainer position='bottom-right'/>
         </div>

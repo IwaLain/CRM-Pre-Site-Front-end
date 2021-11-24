@@ -1,9 +1,9 @@
 import React from 'react'
 import { alert } from '../../../../js/methods/alert';
-import { profile } from '../../../../js/api/profile';
-import FormUser from '../FormUser/FormUser';
+import { user } from '../../../../js/api/users';
+import ModalUser from '../ModalUser/ModalUser';
 
-export const EditeUserModal = ({currentUser, editeUser}) => {
+const EditeUser = ({currentUser, toggle}) => {
     const onSubmit = (e) => {
         const data = {
             'username': e.username,
@@ -16,9 +16,7 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
             'roleName': e.role,
         }
 
-        editeUser(currentUser.id, data)
-
-        profile.editeUser(currentUser.id, data)
+        user.editeUser(currentUser.id, data)
         .then(data => {
             if(data.errors) {
                 alert('error', data.errors)
@@ -27,15 +25,20 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
             }
         })
 
-        profile.editUserRole(currentUser.id, role)
+        user.editUserRole(currentUser.id, role)
         .then(data => console.log(data))
     };
 
     return (
         <div>
-            <FormUser title='Edit User' onSubmit={onSubmit} currentUser={currentUser}/>
+            <ModalUser 
+                title='Edit User' 
+                onSubmit={onSubmit} 
+                currentUser={currentUser} 
+                toggle={toggle}
+            />
         </div>
     )
 }
 
-export default EditeUserModal
+export default EditeUser

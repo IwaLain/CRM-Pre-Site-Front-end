@@ -23,3 +23,12 @@
     background-color: $default !important;
     border: none !important;
 }
+
+.formUser__buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-footer {
+    display: block;
+}

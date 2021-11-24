@@ -1,6 +1,6 @@
-import { endpoints } from "./endpoint"
 const baseURL = 'http://crm.local'
 let response = []
+const token = localStorage.getItem('token')
 
 const log = async (configs) => {
     const path = `${baseURL + configs.url}`
@@ -17,7 +17,7 @@ const log = async (configs) => {
 export const login = async (data) => {
     let config = {
         method: 'POST',
-        url: endpoints.login,
+        url: `/api/login`,
         data: data
     }
 
@@ -26,7 +26,7 @@ export const login = async (data) => {
 }
 
 export const logout = async (userId) => {
-    const path = `${baseURL + endpoints.logout + userId + '?access-token=' + localStorage.getItem('token')}`
+    const path = `${baseURL + `/api/logout/` + userId + '?access-token=' + token}`
 
     response = await fetch(path, {
         method: 'POST',
