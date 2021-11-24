@@ -25,6 +25,7 @@ import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../InfoCard/InfoCard";
 import AttachedImages from "../AttachedImages/AttachedImages";
 import "../../scss/CRMEntity.scss";
+
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();

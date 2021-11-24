@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -8,12 +8,19 @@ import {
   ModalFooter,
   ModalHeader,
 } from "reactstrap";
+import FacilityCreate from "../pages/FacilityCreate/FacilityCreate";
+import CustomerCreate from "../pages/CustomerCreate/CustomerCreate";
 
-const ModalComponent = ({ title, toggle, modal, onSubmit, content }) => {
+const ModalComponent = ({ title, toggle, modal }) => {
+  const [FormComponent, setFormComponent] = useState();
+  useEffect(() => {
+    setFormComponent(<FacilityCreate />);
+  });
+
   return (
     <Modal isOpen={modal} toggle={toggle}>
       <ModalHeader>{title}</ModalHeader>
-      <ModalBody>{content}</ModalBody>
+      <ModalBody>{FormComponent}</ModalBody>
       <ModalFooter>
         <FormGroup md={12} className="formUser__buttons">
           <Col md={6}>
