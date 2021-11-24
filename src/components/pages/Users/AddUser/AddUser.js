@@ -5,10 +5,12 @@ import { ToastContainer } from 'react-toastify';
 import { Col } from 'reactstrap';
 import ModalUser from '../ModalUser/ModalUser';
 
-const AddUserPage = () => {
+const AddUser = ({ toggle, modal }) => {
 
     const onSubmit = (e) => {
         const data = {
+            'first_name': e.firstname,
+            'lust_name': e.lustname,
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
@@ -33,6 +35,8 @@ const AddUserPage = () => {
                 <ModalUser 
                     title='Add User' 
                     onSubmit={onSubmit} 
+                    toggle={toggle}
+                    modal={modal}
                 />
             </Col>
             <ToastContainer position='bottom-right'/>
@@ -40,4 +44,4 @@ const AddUserPage = () => {
     )
 }
 
-export default AddUserPage
+export default AddUser

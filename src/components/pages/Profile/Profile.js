@@ -2,26 +2,19 @@ import { Col, Label, Row } from "reactstrap"
 import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
 import edit from '../../../assets/img/edite.svg'
-import { Fields } from ".//Fields/fields"
+import { Fields } from "./Fields/fields"
+import { useEffect, useState } from "react"
+import { profile } from "../../../js/api/profile"
 const ProfilePage = () => {
-    const fieldsProfile = [
-        {
-            title: 'Username',
-            value: 'Alakey123',
-        },
-        {
-            title: 'First Name',
-            value: 'Alex',
-        },
-        {
-            title: 'Last Name',
-            value: 'Shatailov',
-        },
-        {
-            title: 'Email Ardess',
-            value: 'samoran232@gmail.com',
-        },
-    ]
+    const [profileData, setProfileData] = useState([])
+    useEffect(() => {
+        profile.getProfile()
+        .then(data => 
+            setProfileData(data)
+        )
+    }, [])
+
+    console.log(profileData)
 
     return(
         <>
@@ -45,11 +38,7 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     {
-                        fieldsProfile.map(data => (
-                            <div key={data.title}>
-                                {Fields(data.title, data.value)}
-                            </div>
-                        ))
+                        profileData
                     }
                 </Col>
             </Row>

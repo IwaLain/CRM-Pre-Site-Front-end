@@ -126,7 +126,11 @@ const DashboardLayout = ({ children }) => {
                             <DropdownItem><Link to="/dashboard/profile">Profile</Link></DropdownItem>
                             <DropdownItem><Link to="/dashboard/users">Users</Link></DropdownItem>
                             <DropdownItem divider/>
-                            <DropdownItem><Link to="/">Logout</Link></DropdownItem>
+                            <DropdownItem><Link to="/" 
+                                                onClick={() => 
+                                                localStorage.removeItem('token')
+                                                
+                                            }>Logout</Link></DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     </header>

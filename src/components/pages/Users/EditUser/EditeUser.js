@@ -3,9 +3,11 @@ import { alert } from '../../../../js/methods/alert';
 import { user } from '../../../../js/api/users';
 import ModalUser from '../ModalUser/ModalUser';
 
-const EditeUser = ({currentUser, toggle}) => {
+const EditeUser = ({currentUser, toggle, modal}) => {
     const onSubmit = (e) => {
         const data = {
+            'first_name': e.firstname,
+            'last_name': e.lastname,
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
@@ -36,6 +38,7 @@ const EditeUser = ({currentUser, toggle}) => {
                 onSubmit={onSubmit} 
                 currentUser={currentUser} 
                 toggle={toggle}
+                modal={modal}
             />
         </div>
     )

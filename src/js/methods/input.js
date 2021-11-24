@@ -5,7 +5,7 @@ import '../../scss/components/inputs.scss'
 
 export const inputs = (type, data, label, errors, message = '') => {
     const { register, trigger } = data
-    return (
+    return ( 
         <div>
             <Row className='form__item'>
                 <Col md={2} lg={1}>

@@ -1,9 +1,8 @@
 const baseURL = 'http://crm.local'
 let response = []
-const token = localStorage.getItem('token')
 
 export const api = async (configs) => {
-    const path = `${baseURL + configs.url + token}`
+    const path = `${baseURL + configs.url}`
     
     switch (configs.method) {
         case 'GET':

@@ -19,7 +19,6 @@ const UsersPage = () => {
         user.getUsers()
         .then(data => setUsers(data.user))
     }, [])
-
     return (
         <>
             <Row className='align-items-center justify-content-xs-between'>
@@ -36,7 +35,8 @@ const UsersPage = () => {
 
             <TableUser 
                 users={users}
-                modal={toggle}
+                modal={modal}
+                toggle={toggle}
             />
         </>
     )

@@ -4,10 +4,6 @@ import { Col, Label, Row } from "reactstrap"
 import edit from '../../../../assets/img/edite.svg'
 
 export const Fields = (label, value) => {
-    const [toggle, setToggle] = useState(true)
-
-    const toggleField = () => setToggle(!toggle)
-
     const {
         register,
     } = useForm({
@@ -25,14 +21,12 @@ export const Fields = (label, value) => {
                 <div className='profile__text'>
                     <input
                         className='profile__blur form-control'
-                        disabled={toggle}
-                        {...register('label')}
+                        {...register(label)}
                     />
                     <img
                         className='profile__edit'
                         src={edit}
                         alt="edit"
-                        onClick={toggleField}
                     />
                 </div>
             </Col>

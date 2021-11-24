@@ -13,10 +13,13 @@ const FormUser = ({ onSubmit, currentUser = ''}) => {
         formState: { errors }
     } = useForm({
         defaultValues: {
+            firstname: currentUser.first_name,
+            lastname: currentUser.last_name,
             username: currentUser.username,
             email: currentUser.email,
             phone: currentUser.phone,
             role: currentUser.role,
+            password: currentUser.password,
         }
     });
 
@@ -35,10 +38,13 @@ const FormUser = ({ onSubmit, currentUser = ''}) => {
                         id='formUser-form'
                         onSubmit={handleSubmit(onSubmit)}
                     >
+                        {inputs( 'firstname', data, 'Firstname', errors.firstname )}
+                        {inputs( 'lastname', data, 'Lastname', errors.lastname )}
                         {inputs( 'username', data, 'Username', errors.username )}
                         {inputs( 'email', data, 'Email', errors.email )}
                         {inputs( 'phone', data, 'Phone', errors.phone )}
                         {select( 'role', data, 'Role', errors.role )}
+                        {inputs( 'password', data, 'Password', errors.password )}
                     </Form>
                 </Col>
             </Row>
