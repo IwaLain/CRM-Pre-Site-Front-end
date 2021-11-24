@@ -16,7 +16,7 @@ const getEquipments = async () => {
 const getEquipment = async (equipmentId) => {
   let config = {
     method: "GET",
-    url: `/api/equipment?access-token=${token}`,
+    url: `/api/equipment/${equipmentId}?access-token=${token}`,
   };
 
   const response = await api(config);
@@ -55,28 +55,37 @@ const deleteEquipment = async (equipmentId) => {
   return response;
 };
 
-const deleteImageEquipment = async (equipmentImageId) => {
+const deleteImageEquipment = async (equipmentId, equipmentImageId) => {
   let config = {
     method: "DELETE",
-    url: `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`,
+    url: `/api/equipment/${equipmentId}/image/delete/${equipmentImageId}?access-token=${token}`,
   };
 
   const response = await api(config);
   return response;
 };
 
-const createImageEquipment = async (equipmentImageId, data) => {
+const createImageEquipment = async (equipmentId, data) => {
   let config = {
     method: "POST",
-    url: `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`,
+    url: `/api/equipment/${equipmentId}/image/create?access-token=${token}`,
     data: data,
   };
 
   const response = await api(config);
   return response;
 };
+const setMainEquipmentImageAPI = async (equipmentId, imageId) => {
+  let config = {
+    method: "PUT",
+    url: `/api/equipment/${equipmentId}/set-main-image/${imageId}?access-token=${token}`,
+  };
+  const response = await api(config);
 
-export const equipment = {
+  return response;
+};
+
+export {
   getEquipments,
   getEquipment,
   addEquipment,
@@ -84,4 +93,5 @@ export const equipment = {
   deleteEquipment,
   deleteImageEquipment,
   createImageEquipment,
+  setMainEquipmentImageAPI,
 };

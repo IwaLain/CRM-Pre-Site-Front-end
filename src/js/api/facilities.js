@@ -41,7 +41,7 @@ const getFacilityApi = async (facilityId) => {
 
   const response = await api(config);
 
-  return response.facility;
+  return response.facility[facilityId];
 };
 const addFacilityImageApi = async (facilityId, dataImg) => {
   let config = {

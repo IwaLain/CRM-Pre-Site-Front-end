@@ -56,7 +56,7 @@ const routes = {
     {
       path: "/dashboard/equipment/:id",
       name: "Location Equipment",
-      children: <EquipmentPage />,
+      children: <CRMEntity type={{ entity: "equipment" }} />,
     },
     {
       path: "/dashboard/locations/:id",

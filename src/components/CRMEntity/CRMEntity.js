@@ -15,11 +15,17 @@ import {
   setMainFacilityImageAPI,
 } from "../../js/api/facilities";
 import { getLocationAPI } from "../../js/api/locations";
+import {
+  getEquipment,
+  deleteImageEquipment,
+  createImageEquipment,
+  setMainEquipmentImageAPI,
+} from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../InfoCard/InfoCard";
 import AttachedImages from "../AttachedImages/AttachedImages";
-import FormComponent from "../FormComponent/FormComponent";
+import "../../scss/CRMEntity.scss";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
@@ -30,7 +36,7 @@ const CRMEntity = ({ type }) => {
   let setMainEntityImageAPI;
   let subEntityName = "";
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
-  const [entity, setEntity] = useState();
+  const [entityObject, setEntityObject] = useState();
   const [attachedImages, setAttachedImages] = useState();
   const [mainImage, setMainImage] = useState();
   const [subEntity, setSubEntity] = useState();
@@ -58,6 +64,13 @@ const CRMEntity = ({ type }) => {
       setMainImage(res["main-image"]);
     });
   };
+  const setNewInformationItem = (fieldTitle, value) => {
+    setInformationItems((oldArr) => {
+      const newElement = { fieldTitle: fieldTitle, value: value };
+
+      return [...oldArr, newElement];
+    });
+  };
   switch (type) {
     case "customer":
       getEntityAPI = getCustomerAPI;
@@ -74,43 +87,44 @@ const CRMEntity = ({ type }) => {
       subEntityName = "locations";
       break;
     case "location":
-      subEntityName = "equipments";
+      subEntityName = "equipment";
       getEntityAPI = getLocationAPI;
 
       break;
     case "equipment":
+      getEntityAPI = getEquipment;
+      deleteEntityImageAPI = deleteImageEquipment;
+      addEntityImageAPI = createImageEquipment;
+      setMainEntityImageAPI = setMainEquipmentImageAPI;
       break;
     default:
       break;
   }
 
   useEffect(() => {
-    getEntityAPI(id)
-      .then((data) => {
-        setEntity(data);
-        if (data[`${type}Images`]) {
-          setAttachedImages(data[`${type}Images`]);
-          const mainImage = getMainImage(data[`${type}Images`]);
-          setMainImage(mainImage);
+    getEntityAPI(id).then((data) => {
+      setEntityObject(data);
+      if (data[`${type}Images`]) {
+        setAttachedImages(data[`${type}Images`]);
+        const mainImage = getMainImage(data[`${type}Images`]);
+        setMainImage(mainImage);
+      }
+      if (data.jsonData) {
+        const customFields = data.jsonData[0];
+        for (const [key, value] of Object.entries(customFields)) {
+          setNewInformationItem(key, value);
         }
+      }
+      if (subEntityName.length !== 0) {
+        setSubEntity(data[subEntityName]);
+      }
 
-        if (subEntityName.length !== 0) {
-          setSubEntity(data[subEntityName]);
+      informationFieldNames.forEach((field) => {
+        if (data[field]) {
+          setNewInformationItem(field, data[field]);
         }
-
-        informationFieldNames.forEach((field) => {
-          if (data[field]) {
-            setInformationItems((oldArr) => {
-              const newElement = { fieldTitle: field, value: data[field] };
-
-              return [...oldArr, newElement];
-            });
-          }
-        });
-      })
-      .catch((e) => {
-        console.log(e);
       });
+    });
 
     window.addEventListener("resize", handleResize);
   }, []);
@@ -119,8 +133,8 @@ const CRMEntity = ({ type }) => {
   };
   return (
     <>
-      <div className="d-flex align-items-center customer-page--header">
-        {entity && entity[`${type}Images`] && (
+      <div className="d-flex align-items-center entity-page--header">
+        {entityObject && entityObject[`${type}Images`] && (
           <div className="main-img--container">
             <img
               src={
@@ -129,7 +143,7 @@ const CRMEntity = ({ type }) => {
                   : logo
               }
               alt="company img"
-              className="customer-page--img"
+              className="entity-page--img"
             ></img>
             <DropdownImageEdit
               images={
@@ -141,25 +155,28 @@ const CRMEntity = ({ type }) => {
             ></DropdownImageEdit>
           </div>
         )}
-        <h1 className="page-title">{entity && entity.name}</h1>
+        <h1 className="page-title">{entityObject && entityObject.name}</h1>
       </div>
-      {entity && informationItems.length > 0 && (
-        <InformationComponent
-          items={informationItems}
-          title={`Information ${type}`}
-        ></InformationComponent>
+
+      {entityObject && informationItems.length > 0 && (
+        <div className="entity-page--section">
+          <InformationComponent
+            items={informationItems}
+            title={`Information ${type}`}
+          ></InformationComponent>
+        </div>
       )}
-      {type === "location" && (
+      {/* {type === "location" && (
         <FormComponent
-          entity={entity}
+          entity={entityObject}
           formName="Facility Locations Form"
           addFieldBtn={true}
           attachedImages={false}
         ></FormComponent>
-      )}
+      )} */}
 
-      {entity && subEntityName.length > 0 && (
-        <div className="customer-page--factories">
+      {entityObject && subEntityName.length > 0 && (
+        <div className="customer-page--section">
           <h2 className="page-subtitle">{`${type} ${subEntityName}`}</h2>
           <div
             className={
@@ -178,13 +195,15 @@ const CRMEntity = ({ type }) => {
           </div>
         </div>
       )}
-      {entity && entity[`${type}Images`] && (
-        <AttachedImages
-          title="Attached images"
-          addImage={addEntityImage}
-          deleteImage={deleteEntityImage}
-          attachedImages={attachedImages ? attachedImages : []}
-        ></AttachedImages>
+      {entityObject && entityObject[`${type}Images`] && (
+        <div className="entity-page--section">
+          <AttachedImages
+            title="Attached images"
+            addImage={addEntityImage}
+            deleteImage={deleteEntityImage}
+            attachedImages={attachedImages ? attachedImages : []}
+          ></AttachedImages>
+        </div>
       )}
     </>
   );

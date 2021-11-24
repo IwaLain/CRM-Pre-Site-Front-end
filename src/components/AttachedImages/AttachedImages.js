@@ -43,18 +43,16 @@ const AttachedImages = ({ attachedImages, title, addImage, deleteImage }) => {
             {attachedImages &&
               attachedImages.map((image) => (
                 <div className="attached--item" key={image.id}>
-                  <div className="attached--img-container">
-                    <img
-                      src={process.env.REACT_APP_SERVER_URL + "/" + image.img}
-                      alt="..."
-                      className="attached-img"
-                      id={image.id}
-                    ></img>
-                    <span
-                      className="attached--remove-img"
-                      onClick={removeImageHandler}
-                    ></span>
-                  </div>
+                  <img
+                    src={process.env.REACT_APP_SERVER_URL + "/" + image.img}
+                    alt="..."
+                    className="attached-img"
+                    id={image.id}
+                  ></img>
+                  <span
+                    className="attached--remove-img"
+                    onClick={removeImageHandler}
+                  ></span>
                 </div>
               ))}
 
