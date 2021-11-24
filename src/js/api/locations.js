@@ -72,7 +72,7 @@ const getLocationAPI = async (locationId) => {
 
   const response = await api(config);
 
-  return response;
+  return response.location;
 };
 
 const getFacilityLocations = async (limit, page, search, facilityId) => {

@@ -16,7 +16,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
             parseInt(breadcrumb.props.children)
           ) {
             getCustomerAPI(breadcrumb.props.children).then((customer) => {
-              setCustomerName(customer[breadcrumb.props.children].name);
+              setCustomerName(customer.name);
             });
           }
 

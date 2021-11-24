@@ -4,6 +4,19 @@ import { useEffect, useState } from "react";
 
 const TableView = ({ data, type }) => {
   const [fieldTitle, setFieldTitle] = useState("Title");
+  const [showProgress, setShowProgress] = useState(true);
+
+  useEffect(() => {
+    switch (type) {
+      case "customers":
+      case "facilities":
+        setShowProgress(true);
+        break;
+      default:
+        setShowProgress(false);
+        break;
+    }
+  });
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -16,24 +29,36 @@ const TableView = ({ data, type }) => {
       <thead>
         <tr>
           <th style={{ width: "45%" }}>{fieldTitle}</th>
-          <th style={{ width: "45%" }}>Progress</th>
+          <th style={{ width: "45%" }}>{showProgress && "Progress"}</th>
         </tr>
       </thead>
       <tbody>
         {data && data.length > 0 ? (
           data.map((record) => {
             let progress = 0;
-            if (record.name) progress += 33.3;
-            if (record.facilities && record.facilities.length > 0)
-              progress += 33.3;
-            if (record.equipments && record.equipments.length > 0)
-              progress += 33.3;
+            console.log(record);
+            switch (type) {
+              case "customers":
+                if (record.name) progress += 33.3;
+                if (record.facilities && record.facilities.length > 0)
+                  progress += 33.3;
+                if (record.equipments && record.equipments.length > 0)
+                  progress += 33.3;
+                break;
+              case "facilities":
+                if (record.name) progress += 33.3;
+                if (record.locations && record.locations.length > 0)
+                  progress += 33.3;
+                if (record.equipments && record.equipments.length > 0)
+                  progress += 33.3;
+                break;
+              default:
+                break;
+            }
             return (
               <tr key={record.id}>
                 <td>{record.name}</td>
-                <td>
-                  <Progress value={progress} />
-                </td>
+                <td>{showProgress && <Progress value={progress} />}</td>
                 <td>
                   <Link to={`/dashboard/${type}/${record.id}`}>View</Link>
                 </td>

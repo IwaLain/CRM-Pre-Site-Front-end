@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import logo from "../../assets/img/company.png";
-// import "./customer-page.scss";
 import {
   deleteCustomerImageAPI,
   getCustomerAPI,
@@ -103,6 +102,7 @@ const CRMEntity = ({ type }) => {
 
   useEffect(() => {
     getEntityAPI(id).then((data) => {
+      console.log(data);
       setEntityObject(data);
       if (data[`${type}Images`]) {
         setAttachedImages(data[`${type}Images`]);
@@ -176,13 +176,11 @@ const CRMEntity = ({ type }) => {
       )} */}
 
       {entityObject && subEntityName.length > 0 && (
-        <div className="customer-page--section">
+        <div className="info-page--section">
           <h2 className="page-subtitle">{`${type} ${subEntityName}`}</h2>
           <div
             className={
-              screenSize > 440
-                ? "customer-card_group"
-                : "customer-card_group dense"
+              screenSize > 440 ? "info-card_group" : "info-card_group dense"
             }
           >
             {subEntity && subEntity.length > 0 ? (

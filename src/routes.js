@@ -2,7 +2,6 @@ import LoginPage from "./components/pages/LoginPage/LoginPage";
 import UsersPage from "./components/pages/UsersPage/UsersPage";
 import Profile from "./components/pages/Profile/Profile";
 import AddUserPage from "./components/pages/UsersPage/AddUserPage/AddUserPage";
-import Customer from "./components/pages/Customer/Customer";
 import CustomerCreate from "./components/pages/CustomerCreate/CustomerCreate";
 import List from "./components/pages/List/List";
 import React from "react";
