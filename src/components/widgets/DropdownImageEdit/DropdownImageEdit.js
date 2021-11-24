@@ -27,7 +27,10 @@ const DropdownImageEdit = ({ images, setMainImage }) => {
                 key={image.id}
                 onClick={() => setMainImage(image.id)}
               >
-                <img src={process.env.REACT_APP_SERVER_URL + "/" + image.img} />
+                <img
+                  src={process.env.REACT_APP_SERVER_URL + "/" + image.img}
+                  alt="..."
+                />
               </DropdownItem>
             ))
           ) : (

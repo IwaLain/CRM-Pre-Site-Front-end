@@ -34,7 +34,11 @@ const App = () => {
               {routes.auth.map(({ path, children }, index) => {
                 return <Route key={index} path={path} children={children} />;
               })}
+<<<<<<< HEAD
               <Route component={NotFound} />
+=======
+              <Route children={NotFoundPage} />
+>>>>>>> develop-bairov
             </Switch>
           </AuthLayout>
         </Route>

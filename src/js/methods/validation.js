@@ -1,18 +1,78 @@
-export const validation = (type, data) => {
+const regex = {
+  password: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+  email:
+    /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
+  phone: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+};
+
+const validation = (type) => {
   switch (type) {
     case "username":
-      break;
+      return {
+        required: "UserName is Required",
+        minLength: {
+          value: 3,
+          message: "Minimum 3 simvols",
+        },
+      };
     case "password":
-      break;
+      return {
+        required: "Password is Required",
+        minLength: {
+          value: 4,
+          message: "Minimum 4 simvols",
+        },
+        maxLength: {
+          value: 16,
+          message: "Maximum 16 simvols",
+        },
+        pattern: {
+          value: regex.password,
+          message:
+            "Password should contain atleast one number and one special character",
+        },
+      };
     case "email":
-      break;
+      return {
+        required: "Email is Required",
+        minLength: {
+          value: 5,
+          message: "Minimum 5 simvols",
+        },
+        pattern: {
+          value: regex.email,
+          message: "Email must be like exampl@mail.com",
+        },
+      };
     case "phone":
-      break;
+      return {
+        required: "Phone is Required",
+        minLength: {
+          value: 9,
+          message: "Minimum 9 simvols",
+        },
+        pattern: {
+          value: regex.phone,
+          message: "Phone must be like 555-555-5555",
+        },
+      };
     case "role":
-      break;
+      return {
+        pattern: {
+          value: "Select role",
+          message: "Please select role",
+        },
+      };
     case "text":
-      break;
+      return {
+        required: "This input is required",
+        minLength: {
+          value: 4,
+          message: "Minimum 4 simvols",
+        },
+      };
     default:
       break;
   }
 };
+export { validation };

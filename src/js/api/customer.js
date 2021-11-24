@@ -24,7 +24,7 @@ const getCustomerAPI = async (customerId) => {
   };
 
   const response = await api(config);
-  return response.customer;
+  return response.customer[customerId];
 };
 
 const getCustomerFacilities = async (limit, page, search, customerId) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, FormGroup, Button, Col } from "reactstrap";
 import { useForm } from "react-hook-form";
 import FieldComponent from "./FieldComponent/FieldComponent";
@@ -9,15 +9,46 @@ import AttachedImages from "../AttachedImages/AttachedImages";
 import AddFieldModal from "../AddFieldModal/AddFieldModal";
 
 const FormComponent = ({
-  formFields,
   formName,
   addFieldBtn,
   attachedImages,
   images,
+  entity,
 }) => {
-  const [modal, setModal] = useState(false);
-  const [inputFields, setInputFields] = useState(formFields);
+  const formFields = [
+    { name: "title", type: "text", defaultValue: "default", id: "id-1" },
+    { name: "title", type: "text", defaultValue: "default", id: "id-2" },
+    { name: "title", type: "text", defaultValue: "default", id: "id-3" },
+    { name: "title", type: "text", defaultValue: "default", id: "id-4" },
+  ];
 
+  const setNewField = (name, type, value) => {
+    setInputFields((oldArray) => {
+      let newField = {
+        name: name,
+        type: type,
+        defaultValue: value,
+        register: register,
+        trigger: trigger,
+        errors: errors,
+      };
+      return [...oldArray, newField];
+    });
+  };
+  const [modal, setModal] = useState(false);
+  const [inputFields, setInputFields] = useState([]);
+  useEffect(() => {
+    if (entity) {
+      setNewField("name", "text", entity.name);
+
+      if (entity.jsonData) {
+        const customFields = entity.jsonData[0];
+        for (const [key, value] of Object.entries(customFields)) {
+          setNewField(key, "text", value);
+        }
+      }
+    }
+  }, [entity]);
   const {
     register,
     handleSubmit,
@@ -32,18 +63,7 @@ const FormComponent = ({
 
   const addFieldHandler = (newField) => {
     if (newField.trim() !== "") {
-      setInputFields((oldArray) => {
-        const newElement = {
-          id: oldArray.length + 1,
-          name: newField,
-          type: "text",
-          register: register,
-          trigger: trigger,
-          errors: errors,
-        };
-
-        return [...oldArray, newElement];
-      });
+      setNewField(newField, "text", "");
     }
   };
 
@@ -60,8 +80,8 @@ const FormComponent = ({
               id={field.id}
               type={field.type}
               defaultValue={field.defaultValue}
-              register={register}
-              trigger={trigger}
+              register={field.register}
+              trigger={field.trigger}
               errors={errors}
             />
           ))}{" "}

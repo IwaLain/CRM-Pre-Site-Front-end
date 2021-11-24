@@ -6,6 +6,7 @@ import Customer from "./components/pages/Customer/Customer";
 import CustomerCreate from "./components/pages/CustomerCreate/CustomerCreate";
 import List from "./components/pages/List/List";
 import React from "react";
+import CRMEntity from "./components/CRMEntity/CRMEntity";
 
 const routes = {
   auth: [
@@ -39,17 +40,27 @@ const routes = {
     {
       path: "/dashboard/customers/:id",
       name: "Customer",
-      children: <Customer />,
+      children: <CRMEntity type={{ entity: "customer" }} />,
+    },
+    {
+      path: "/dashboard/facilities/:id",
+      name: "Facility",
+      children: <CRMEntity type={{ entity: "facility" }} />,
+    },
+    {
+      path: "/dashboard/locations/:id",
+      name: "Location",
+      children: <CRMEntity type={{ entity: "location" }} />,
+    },
+    {
+      path: "/dashboard/equipment/:id",
+      name: "Equipment",
+      children: <CRMEntity type={{ entity: "equipment" }} />,
     },
     {
       path: "/dashboard/customers",
       name: "Customers",
       children: <List type={{ entity: "customers" }} />,
-    },
-    {
-      path: "/dashboard/facilities/:id",
-      name: "Facility",
-      children: <div></div>,
     },
     {
       path: "/dashboard/facilities",
