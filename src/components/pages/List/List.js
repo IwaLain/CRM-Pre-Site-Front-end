@@ -1,35 +1,38 @@
 import "../../../scss/list.scss";
 import { useContext, useEffect, useState } from "react";
-import {
-  useParams,
-  useHistory,
-  useLocation,
-  useRouteMatch,
-} from "react-router";
+import { useParams, useRouteMatch } from "react-router";
+import TableView from "../../TableView/TableView";
+import InfoCard from "../../InfoCard/InfoCard";
+import Pagination from "../../widgets/Pagination/Pagination";
+import { Spinner, Input, Label } from "reactstrap";
 import { PageContext } from "../../../context";
 import {
   getCustomersAPI,
   getCustomerFacilities,
-  getCustomerEquipment,
 } from "../../../js/api/customer";
-import TableView from "../../TableView/TableView";
-import InfoCard from "../../InfoCard/InfoCard";
-import Pagination from "../../widgets/Pagination/Pagination";
-import { Spinner } from "reactstrap";
+import { getFacilityLocations, getLocations } from "../../../js/api/locations";
+import {
+  getEquipmentAPI,
+  getLocationEquipment,
+} from "../../../js/api/equipment";
+import { getFacilities } from "../../../js/api/facilities";
 
 const List = ({ type }) => {
   const [data, setData] = useState();
-  const [totalRecords, setTotalRecords] = useState();
   const [searchQuery, setSearchQuery] = useState("");
   const [requests, setRequests] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [view, setView] = useState(true);
   const [page, setPage] = useState(1);
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
-  const [showCreateBtn, setShowCreateBtn] = useState(false);
+  const [showEntitySelect, setShowEntitySelect] = useState(true);
+  const [totalPages, setTotalPages] = useState(Math.ceil(0));
+  const [entityNames, setEntityNames] = useState();
+  const [entityID, setEntityID] = useState();
 
-  const { pageTitle, setPageType, setId, setPagePath } =
-    useContext(PageContext);
+  const RECORDS_PER_PAGE = 12;
+
+  const { pageTitle, setPagePath } = useContext(PageContext);
 
   const params = useParams();
   let id = 0;
@@ -37,11 +40,7 @@ const List = ({ type }) => {
     id = params.id;
   }
 
-  const history = useHistory();
   const match = useRouteMatch();
-
-  const RECORDS_PER_PAGE = 12;
-  const totalPages = Math.ceil(totalRecords / RECORDS_PER_PAGE);
 
   const formatData = (data) => {
     const formattedData = [];
@@ -52,19 +51,27 @@ const List = ({ type }) => {
     return formattedData;
   };
 
+  const formatNames = (data) => {
+    const formattedNames = [];
+
+    for (const [key, value] of Object.entries(data)) {
+      formattedNames.push({ id: value.id, name: value.name });
+    }
+
+    return formattedNames;
+  };
+
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
 
     setIsLoading(true);
-    requests.list(RECORDS_PER_PAGE, page, e.target.value, id).then((res) => {
-      setData(formatData(res[type.entity]));
-      setTotalRecords(res.total);
-      setIsLoading(false);
-    });
-  };
-
-  const toggleView = () => {
-    setView(!view);
+    requests
+      .list(RECORDS_PER_PAGE, page, e.target.value, entityID)
+      .then((res) => {
+        setData(formatData(res[type.entity]));
+        setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
+        setIsLoading(false);
+      });
   };
 
   const handlePageChange = (e) => {
@@ -76,39 +83,35 @@ const List = ({ type }) => {
     SetScreenSize(window.innerWidth);
   };
 
+  const handleEntitySelect = (e) => {
+    setEntityID(e.target.value);
+  };
+
   useEffect(() => {
-    switch (JSON.stringify(type)) {
-      case JSON.stringify({ entity: "customers" }):
+    switch (type.entity) {
+      case "customers":
         setRequests({ list: getCustomersAPI });
+        setShowEntitySelect(false);
         break;
-      case JSON.stringify({ entity: "facilities", ref: "customers" }):
-        setRequests({ list: getCustomerFacilities });
+      case "facilities":
+        setRequests({ list: getCustomerFacilities, ref: getCustomersAPI });
+        setShowEntitySelect(true);
         break;
-      case JSON.stringify({ entity: "equipment", ref: "customers" }):
-        setRequests({ list: getCustomerEquipment });
+      case "locations":
+        setRequests({ list: getFacilityLocations, ref: getFacilities });
+        setShowEntitySelect(true);
         break;
+      case "equipment":
+        setRequests({ list: getLocationEquipment, ref: getLocations });
+        setShowEntitySelect(true);
     }
 
     setPagePath(match.path);
-    setId(id);
-    setPageType(type);
 
-    console.log(type);
-
-    switch (type.entity) {
-      case "customers":
-        if (!type.ref) setShowCreateBtn(true);
-        if (type.ref === "facilities") setShowCreateBtn(true);
-        break;
-      case "facilities":
-        if (type.ref === "customers") setShowCreateBtn(true);
-        break;
-      case "equipment":
-        if (type.ref === "facilities") setShowCreateBtn(true);
-        break;
-      default:
-        break;
-    }
+    if (requests.ref)
+      requests.ref().then((res) => {
+        setEntityNames(formatNames(res[type.ref]));
+      });
 
     window.addEventListener("resize", handleResize);
   }, []);
@@ -116,27 +119,74 @@ const List = ({ type }) => {
   useEffect(() => {
     if (requests.list) {
       setIsLoading(true);
-      requests.list(RECORDS_PER_PAGE, page, searchQuery, id).then((res) => {
-        setData(formatData(res[type.entity]));
-        setTotalRecords(res.total);
-        setIsLoading(false);
-      });
+      requests
+        .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
+        .then((res) => {
+          setData(formatData(res[type.entity]));
+          setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
+          setIsLoading(false);
+        });
     }
+
+    if (requests.ref)
+      requests.ref().then((res) => {
+        const formattedNames = formatNames(res[type.ref]);
+        setEntityNames(formattedNames);
+        setEntityID(formattedNames[0].id);
+      });
   }, [requests]);
 
   useEffect(() => {
     if (requests.list) {
-      requests.list(RECORDS_PER_PAGE, page, searchQuery, id).then((res) => {
-        setData(formatData(res[type.entity]));
-      });
+      requests
+        .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
+        .then((res) => {
+          setData(formatData(res[type.entity]));
+        });
     }
   }, [page]);
+
+  useEffect(() => {
+    if (requests.list) {
+      setIsLoading(true);
+      requests
+        .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
+        .then((res) => {
+          setData(formatData(res[type.entity]));
+          setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
+          setPage(1);
+          setIsLoading(false);
+        });
+    }
+  }, [entityID]);
 
   return (
     <div className="list">
       <div className="list__header">
-        <h3>{pageTitle}</h3>
+        <div className="list__title">
+          <h3>{pageTitle}</h3>
+          <button className="list__add-btn" onClick={() => {}}>
+            +
+          </button>
+        </div>
         <div className="list__options">
+          {showEntitySelect && (
+            <div className="list__select-entity">
+              <Label for="select-entity">{type.ref}:</Label>
+              <Input
+                id="select-entity"
+                type="select"
+                onChange={handleEntitySelect}
+              >
+                {entityNames &&
+                  entityNames.map((entity) => (
+                    <option key={entity.id} value={entity.id}>
+                      {entity.id}. {entity.name}
+                    </option>
+                  ))}
+              </Input>
+            </div>
+          )}
           <input
             className="list__search"
             type="text"
@@ -144,47 +194,17 @@ const List = ({ type }) => {
             onInput={handleSearch}
           />
           <div className="list__options_btns">
-            {showCreateBtn && (
-              <button
-                className="list__add-btn"
-                onClick={() =>
-                  history.push(
-                    `/dashboard/${type.ref}/${id}/${type.entity}/create`
-                  )
-                }
-              >
-                +
-              </button>
-            )}
-            <button onClick={toggleView} className="list__toggle-btn">
-              {view ? (
-                <svg
-                  width="44"
-                  height="44"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect width="44" height="44" fill="#DEDEDE" />
-                  <path d="M7 11H25" stroke="white" />
-                  <path d="M7 16L25 16" stroke="white" />
-                  <path d="M7 21L25 21" stroke="white" />
-                </svg>
-              ) : (
-                <svg
-                  width="44"
-                  height="44"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect width="44" height="44" fill="#05C12E" />
-                  <path d="M7.5 7.5H14.5V14.5H7.5V7.5Z" stroke="white" />
-                  <rect x="17.5" y="7.5" width="7" height="7" stroke="white" />
-                  <rect x="7.5" y="17.5" width="7" height="7" stroke="white" />
-                  <rect x="17.5" y="17.5" width="7" height="7" stroke="white" />
-                </svg>
-              )}
+            <button
+              onClick={() => setView(true)}
+              className={view ? "list__toggle-btn active" : "list__toggle-btn"}
+            >
+              <i className="fas fa-list-ul"></i>
+            </button>
+            <button
+              onClick={() => setView(false)}
+              className={!view ? "list__toggle-btn active" : "list__toggle-btn"}
+            >
+              <i className="fas fa-th-large"></i>
             </button>
           </div>
         </div>
@@ -202,21 +222,27 @@ const List = ({ type }) => {
               >
                 {data ? (
                   data.map((record) => (
-                    <InfoCard key={record.id} data={record} type={type} />
+                    <InfoCard
+                      key={record.id}
+                      data={record}
+                      type={type.entity}
+                    />
                   ))
                 ) : (
                   <p>No records found.</p>
                 )}
               </div>
             )}
-            <Pagination
-              previousLabel={"<"}
-              nextLabel={">"}
-              pageCount={totalPages}
-              onPageChange={handlePageChange}
-              containerClassName={"pagination"}
-              activeClassName={"active"}
-            />
+            {totalPages > 1 && (
+              <Pagination
+                previousLabel={"<"}
+                nextLabel={">"}
+                pageCount={totalPages}
+                onPageChange={handlePageChange}
+                containerClassName={"pagination"}
+                activeClassName={"active"}
+              />
+            )}
           </>
         ) : (
           <Spinner />

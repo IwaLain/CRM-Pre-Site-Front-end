@@ -44,6 +44,17 @@ const getFacilityApi = async (facilityId) => {
   return response.facility;
 };
 
+const getFacilities = async () => {
+  let config = {
+    method: "GET",
+    url: `/api/facilities?access-token=${token}`,
+  };
+
+  const response = await api(config);
+
+  return response;
+};
+
 const createFacility = async (data) => {
   let config = {
     method: "POST",
@@ -90,6 +101,7 @@ export {
   getUserRoleAPI,
   addUserAPI,
   getFacilityApi,
+  getFacilities,
   createFacility,
   addFacilityImageApi,
   deleteFacilityImageAPI,

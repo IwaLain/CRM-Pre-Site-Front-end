@@ -7,14 +7,16 @@ import { alert } from "../../../js/methods/alert";
 import convertToBase64 from "../../../js/methods/convertImage";
 import { PageContext } from "../../../context";
 import { useContext } from "react";
-import { useRouteMatch } from "react-router";
+import { useParams, useRouteMatch } from "react-router";
 import { createFacility } from "../../../js/api/facilities";
 
 const FacilityCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();
   const [img, setImg] = useState();
-  const { pageTitle, id, setPagePath } = useContext(PageContext);
+  const { pageTitle, setPagePath } = useContext(PageContext);
+
+  const { id } = useParams();
 
   const match = useRouteMatch();
 

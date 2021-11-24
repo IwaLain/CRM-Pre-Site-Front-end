@@ -4,6 +4,8 @@
 
 .dashboard.container-fluid {
   padding: 0;
+  display: grid;
+  grid-template-columns: 190px auto;
 }
 
 .dashboard > .row {
@@ -36,8 +38,11 @@
 }
 
 .dashboard aside nav ul {
-  list-style-image: url("../assets/img/star.svg");
-  padding-left: 1.5em;
+  padding-left: 0.25rem;
+}
+
+.dashboard aside nav > ul > li > a > i {
+  margin-right: 5px;
 }
 
 .dashboard aside nav > ul > li > a {
@@ -57,7 +62,7 @@
 
 .dashboard header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   background-color: $primary;
   height: 60px;
@@ -113,4 +118,13 @@
 
 .dashboard main {
   padding: 15px;
+}
+
+@media (max-width: 750px) {
+  .dashboard.container-fluid {
+    grid-template-columns: 60px auto;
+  }
+  .dashboard main {
+    padding: 3px;
+  }
 }

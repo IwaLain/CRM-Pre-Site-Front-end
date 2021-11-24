@@ -6,7 +6,6 @@ import Customer from "./components/pages/Customer/Customer";
 import CustomerCreate from "./components/pages/CustomerCreate/CustomerCreate";
 import List from "./components/pages/List/List";
 import React from "react";
-import FacilityCreate from "./components/pages/FacilityCreate/FacilityCreate";
 
 const routes = {
   auth: [
@@ -38,34 +37,9 @@ const routes = {
       children: <CustomerCreate />,
     },
     {
-      path: "/dashboard/customers/:id/facilities/create",
-      name: "Facility Create",
-      children: <FacilityCreate />,
-    },
-    {
-      path: "/dashboard/customers/:id/facilities",
-      name: "Customer Facilities",
-      children: <List type={{ entity: "facilities", ref: "customers" }} />,
-    },
-    {
-      path: "/dashboard/customers/:id/facilities",
-      name: "Customer Facilities",
-      children: <List type={{ entity: "facilities", ref: "customers" }} />,
-    },
-    {
-      path: "/dashboard/customers/:id/locations",
-      name: "Customer Locations",
-      children: <List type={{ entity: "locations", ref: "customers" }} />,
-    },
-    {
-      path: "/dashboard/customers/:id/equipment",
-      name: "Customer Equipment",
-      children: <List type={{ entity: "equipment", ref: "customers" }} />,
-    },
-    {
       path: "/dashboard/customers/:id",
       name: "Customer",
-      children: <Customer type={{ entity: "customers", ref: "customers" }} />,
+      children: <Customer />,
     },
     {
       path: "/dashboard/customers",
@@ -73,19 +47,24 @@ const routes = {
       children: <List type={{ entity: "customers" }} />,
     },
     {
-      path: "/dashboard/facilities/:id/equipment",
-      name: "Factory Equipment",
-      children: <List type={{ entity: "equipment", ref: "facilities" }} />,
-    },
-    {
-      path: "/dashboard/facilities/:id/locations",
-      name: "Factory Locations",
-      children: <List type={{ entity: "locations", ref: "facilities" }} />,
-    },
-    {
       path: "/dashboard/facilities/:id",
       name: "Facility",
       children: <div></div>,
+    },
+    {
+      path: "/dashboard/facilities",
+      name: "Factories",
+      children: <List type={{ entity: "facilities", ref: "customers" }} />,
+    },
+    {
+      path: "/dashboard/locations",
+      name: "Locations",
+      children: <List type={{ entity: "locations", ref: "facilities" }} />,
+    },
+    {
+      path: "/dashboard/equipment",
+      name: "Equipment",
+      children: <List type={{ entity: "equipment", ref: "locations" }} />,
     },
   ],
 };

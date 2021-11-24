@@ -2,7 +2,6 @@ import React from "react";
 import "../../../scss/dashboard.scss";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { useLocation } from "react-router-dom";
 import Header from "../../widgets/Header/Header";
 import Sidebar from "../../widgets/Sidebar/Sidebar";
 import Breadcrumbs from "../../widgets/Breadcrumbs/Breadcrumbs";
@@ -10,15 +9,12 @@ import routes from "../../../routes";
 import { PageContext } from "../../../context";
 
 const DashboardLayout = ({ children }) => {
-  const MOBILE_SIZE = 1074;
+  const MOBILE_SIZE = 750;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= MOBILE_SIZE);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     window.innerWidth <= MOBILE_SIZE
   );
-  const [sidebarNeeded, setSidebarNeeded] = useState(true);
-
-  const location = useLocation();
 
   const [pageTitle, setPageTitle] = useState();
   const [pageType, setPageType] = useState();
@@ -50,49 +46,25 @@ const DashboardLayout = ({ children }) => {
     window.addEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    switch (location.pathname) {
-      case "/dashboard/customers":
-      case "/dashboard/profile":
-      case "/dashboard/users":
-      case "/dashboard/customer-create":
-      case "/dashboard/add-user":
-        setSidebarNeeded(false);
-        break;
-      default:
-        setSidebarNeeded(true);
-        break;
-    }
-  }, [location]);
-
   return (
     <PageContext.Provider
       value={{ pageTitle, pageType, setPageType, id, setId, setPagePath }}
     >
       <div className="dashboard container-fluid">
-        <div className="row">
-          {!sidebarCollapsed && sidebarNeeded && (
-            <Sidebar
-              isMobile={isMobile}
-              sidebarNeeded={sidebarNeeded}
-              toggleSidebar={toggleSidebar}
-              type={pageType && pageType.ref}
-              id={id}
-            />
-          )}
-          <section className={isMobile || !sidebarNeeded ? "col-12" : "col-10"}>
-            <Header
-              sidebarNeeded={sidebarNeeded}
-              isMobile={isMobile}
-              toggleSidebar={toggleSidebar}
-            />
-            <main>
-              <Breadcrumbs />
-              {children}
-            </main>
-            <ToastContainer position="bottom-right" />
-          </section>
-        </div>
+        <Sidebar
+          isMobile={isMobile}
+          toggleSidebar={toggleSidebar}
+          type={pageType && pageType.ref}
+          id={id}
+        />
+        <section>
+          <Header isMobile={isMobile} toggleSidebar={toggleSidebar} />
+          <main>
+            <Breadcrumbs />
+            {children}
+          </main>
+          <ToastContainer position="bottom-right" />
+        </section>
       </div>
     </PageContext.Provider>
   );
