@@ -4,16 +4,16 @@ import FormUser from '../FormUser/FormUser'
 
 const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
     return (
-        <Modal 
-            isOpen={modal} 
+        <Modal
+            isOpen={modal}
             toggle={toggle}
         >
             <ModalHeader>
                 {title}
             </ModalHeader>
             <ModalBody>
-                <FormUser 
-                    currentUser={currentUser} 
+                <FormUser
+                    currentUser={currentUser}
                     onSubmit={onSubmit}
                 />
             </ModalBody>
@@ -31,9 +31,9 @@ const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
                             </Button>
                         </Col>
                         <Col md={6}>
-                            <Button 
+                            <Button
                                 className='formUser__submit'
-                                form='formUser-form' 
+                                form='formUser-form'
                             >
                                 Submit
                             </Button>

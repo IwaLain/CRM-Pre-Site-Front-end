@@ -8,13 +8,13 @@ import AddUser from '../AddUser/AddUser'
 
 const TableUser = ( { users, modal, toggle }) => {
     const [currentUser, setCurrentUser] = useState([])
-    
+
     const current = (currentUser) => setCurrentUser(currentUser)
     const deleteUser = (userId) => user.deleteUser(userId)
 
     return (
         <Row className='mt-5'>
-            <Col lg={8} md={10} sm={12}>
+            <Col md={12}>
                 <Table hover responsive striped>
                     <thead>
                         <tr>
@@ -50,11 +50,11 @@ const TableUser = ( { users, modal, toggle }) => {
                                     />
                                 </th>
                                 <th>
-                                    <img 
+                                    <img
                                         className='users__table-img'
-                                        src={del} 
+                                        src={del}
                                         alt="delete"
-                                        onClick={() => deleteUser(user.id)} 
+                                        onClick={() => deleteUser(user.id)}
                                     />
                                 </th>
                             </tr>
@@ -62,8 +62,8 @@ const TableUser = ( { users, modal, toggle }) => {
                     </tbody>
                 </Table>
             </Col>
-            <AddUser 
-                currentUser={currentUser} 
+            <EditeUser
+                currentUser={currentUser}
                 toggle={toggle}
                 modal={modal}
             />

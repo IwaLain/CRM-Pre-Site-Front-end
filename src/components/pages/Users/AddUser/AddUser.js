@@ -5,12 +5,13 @@ import { ToastContainer } from 'react-toastify';
 import { Col } from 'reactstrap';
 import ModalUser from '../ModalUser/ModalUser';
 
-const AddUser = ({ toggle, modal }) => {
+const AddUser = ({ toggle, modal, changeTable }) => {
 
     const onSubmit = (e) => {
+        console.log(e)
         const data = {
             'first_name': e.firstname,
-            'lust_name': e.lustname,
+            'last_name': e.lastname,
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
@@ -32,9 +33,9 @@ const AddUser = ({ toggle, modal }) => {
     return (
         <div>
             <Col lg={3}>
-                <ModalUser 
-                    title='Add User' 
-                    onSubmit={onSubmit} 
+                <ModalUser
+                    title='Add User'
+                    onSubmit={onSubmit}
                     toggle={toggle}
                     modal={modal}
                 />
