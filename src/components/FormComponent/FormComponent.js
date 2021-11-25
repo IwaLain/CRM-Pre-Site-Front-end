@@ -84,7 +84,7 @@ const FormComponent = ({
               trigger={field.trigger}
               errors={errors}
             />
-          ))}{" "}
+          ))}
           {addFieldBtn && (
             <FormGroup row>
               <Col sm={2} className="offset-md-2">
@@ -96,7 +96,6 @@ const FormComponent = ({
           )}
           {attachedImages && <AttachedImages images={images}></AttachedImages>}
           <FormGroup row>
-            {" "}
             <Col sm={4} className="offset-md-2">
               <div className="btn-toolbar ">
                 <Button color="primary" className="me-3" type="submit">

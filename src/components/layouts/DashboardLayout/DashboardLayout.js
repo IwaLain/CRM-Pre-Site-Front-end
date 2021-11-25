@@ -20,7 +20,9 @@ const DashboardLayout = ({ children }) => {
   const [pageType, setPageType] = useState();
   const [pagePath, setPagePath] = useState();
   const [id, setId] = useState();
+  const [entityID, setEntityID] = useState();
   const [editId, setEditId] = useState();
+  const [showFormModal, setShowFormModal] = useState(false);
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -58,6 +60,10 @@ const DashboardLayout = ({ children }) => {
         setPagePath,
         editId,
         setEditId,
+        entityID,
+        setEntityID,
+        showFormModal,
+        setShowFormModal,
       }}
     >
       <div className="dashboard container-fluid">

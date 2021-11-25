@@ -1,8 +1,8 @@
-.customer-create form {
+.create-form form {
   max-width: 700px;
 }
 
-.customer-create form .image-field {
+.create-form form .image-field {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,17 +14,17 @@
   border-radius: 0.25rem;
 }
 
-.customer-create form .image-field img {
+.create-form form .image-field img {
   width: 100%;
   height: 100%;
   border-radius: 0.25rem;
 }
 
-.customer-create form .image-field .star {
+.create-form form .image-field .star {
   width: 20px;
   height: 20px;
 }
 
-.customer-create form input[type="file"] {
+.create-form form input[type="file"] {
   display: none;
 }

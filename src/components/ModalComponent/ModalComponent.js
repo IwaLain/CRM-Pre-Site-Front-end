@@ -8,8 +8,10 @@ import {
   ModalFooter,
   ModalHeader,
 } from "reactstrap";
-import FacilityCreate from "../pages/FacilityCreate/FacilityCreate";
 import CustomerCreate from "../pages/CustomerCreate/CustomerCreate";
+import FacilityCreate from "../pages/FacilityCreate/FacilityCreate";
+import LocationCreate from "../pages/LocationCreate/LocationCreate";
+import EquipmentCreate from "../pages/EquipmentCreate/EquipmentCreate";
 
 const ModalComponent = ({ toggle, modal, type, mode }) => {
   const [FormComponent, setFormComponent] = useState();
@@ -25,14 +27,26 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
             break;
           case "facilities":
             setFormComponent(<FacilityCreate />);
+            setFormTitle("Facility Create");
+            break;
+          case "locations":
+            setFormComponent(<LocationCreate />);
+            setFormTitle("Location create");
+            break;
+          case "equipment":
+            setFormComponent(<EquipmentCreate />);
+            setFormTitle("Equipment create");
             break;
         }
+        break;
       case "edit":
         switch (type.entity) {
           case "customers":
-          //setFormComponent(<CustomerEdit />);
+            //setFormComponent(<CustomerEdit />);
+            break;
           case "facilities":
-          //setFormComponent(<FacilityEdit />);
+            //setFormComponent(<FacilityEdit />);
+            break;
         }
     }
   }, [type, mode]);
@@ -51,7 +65,7 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
         >
           Cancel
         </Button>
-        <Button form="form" className="formUser__submit">
+        <Button color="primary" form="form">
           Submit
         </Button>
       </ModalFooter>

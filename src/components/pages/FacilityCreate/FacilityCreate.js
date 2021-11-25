@@ -1,24 +1,21 @@
-import React, { createFactory, useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../../../scss/customer-create-page.scss";
-import { Button, Form, FormGroup, Label, Col } from "reactstrap";
+import { Form, FormGroup, Label, Col } from "reactstrap";
 import star from "../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/methods/alert";
 import convertToBase64 from "../../../js/methods/convertImage";
 import { PageContext } from "../../../context";
-import { useContext } from "react";
-import { useParams, useRouteMatch } from "react-router";
+import { useRouteMatch } from "react-router";
 import { createFacility } from "../../../js/api/facilities";
 
 const FacilityCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();
   const [img, setImg] = useState();
-  const { pageTitle, setPagePath } = useContext(PageContext);
+  const { setShowFormModal } = useContext(PageContext);
 
-  const { id } = useParams();
-
-  const match = useRouteMatch();
+  const { entityID } = useContext(PageContext);
 
   const {
     register,
@@ -56,16 +53,13 @@ const FacilityCreate = () => {
       else alert("error", "Request error.");
     });
     document.querySelector("#form").reset();
+
+    setShowFormModal(false);
   };
 
-  useEffect(() => {
-    setPagePath(match.path);
-  }, []);
-
   return (
-    <div className="customer-create">
+    <div className="create-form">
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-        <h2>{pageTitle}</h2>
         <FormGroup row>
           <Label sm={2} for="customerID-field">
             Customer ID
@@ -74,7 +68,7 @@ const FacilityCreate = () => {
             <input
               className="form-control"
               id="customerID-field"
-              value={id}
+              value={entityID}
               {...register("customerID")}
               readOnly
             />

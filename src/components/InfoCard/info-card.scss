@@ -23,8 +23,8 @@
   width: 100%;
 }
 
-.info-card__body > * {
-  margin-bottom: 20px;
+.info-card__body > .progress {
+  margin-bottom: 30px;
 }
 
 .info-card__body > .progress {
@@ -36,7 +36,7 @@
   background-color: $success;
 }
 
-.info-card__body > a {
+.info-card__body a {
   display: block;
   margin-bottom: 0;
   text-decoration: none;
@@ -48,9 +48,19 @@
   width: 100%;
 }
 
-.info-card__body > a:hover {
+.info-card__body a:hover {
   border: 1px solid black;
   color: black;
+}
+
+.info-card__btns {
+  display: flex;
+  gap: 5px;
+  height: 28px;
+}
+
+.info-card__btns > button {
+  padding: 0 5px;
 }
 
 /* Dense style */
