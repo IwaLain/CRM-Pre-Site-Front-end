@@ -11,11 +11,9 @@ import {
   getCustomerFacilities,
 } from "../../../js/api/customer";
 import { getFacilityLocations, getLocations } from "../../../js/api/locations";
-import {
-  getEquipmentAPI,
-  getLocationEquipment,
-} from "../../../js/api/equipment";
+import { getLocationEquipment } from "../../../js/api/equipment";
 import { getFacilities } from "../../../js/api/facilities";
+import ModalComponent from "../../ModalComponent/ModalComponent";
 
 const List = ({ type }) => {
   const [data, setData] = useState();
@@ -29,10 +27,12 @@ const List = ({ type }) => {
   const [totalPages, setTotalPages] = useState(Math.ceil(0));
   const [entityNames, setEntityNames] = useState();
   const [entityID, setEntityID] = useState();
+  const [modal, setModal] = useState(false);
+  const [mode, setMode] = useState();
 
   const RECORDS_PER_PAGE = 12;
 
-  const { pageTitle, setPagePath } = useContext(PageContext);
+  const { pageTitle, setPagePath, setEditId } = useContext(PageContext);
 
   const params = useParams();
   let id = 0;
@@ -85,6 +85,11 @@ const List = ({ type }) => {
 
   const handleEntitySelect = (e) => {
     setEntityID(e.target.value);
+  };
+
+  const toggleModal = (id) => {
+    setEditId(id);
+    setModal(!modal);
   };
 
   useEffect(() => {
@@ -161,94 +166,119 @@ const List = ({ type }) => {
   }, [entityID]);
 
   return (
-    <div className="list">
-      <div className="list__header">
-        <div className="list__title">
-          <h3>{pageTitle}</h3>
-          <button className="list__add-btn" onClick={() => {}}>
-            +
-          </button>
-        </div>
-        <div className="list__options">
-          {showEntitySelect && (
-            <div className="list__select-entity">
-              <Label for="select-entity">{type.ref}:</Label>
-              <Input
-                id="select-entity"
-                type="select"
-                onChange={handleEntitySelect}
-              >
-                {entityNames &&
-                  entityNames.map((entity) => (
-                    <option key={entity.id} value={entity.id}>
-                      {entity.id}. {entity.name}
-                    </option>
-                  ))}
-              </Input>
-            </div>
-          )}
-          <input
-            className="list__search"
-            type="text"
-            placeholder="Search..."
-            onInput={handleSearch}
-          />
-          <div className="list__options_btns">
+    <>
+      <ModalComponent
+        modal={modal}
+        toggle={toggleModal}
+        type={type}
+        mode={mode}
+      />
+      <div className="list">
+        <div className="list__header">
+          <div className="list__title">
+            <h3>{pageTitle}</h3>
             <button
-              onClick={() => setView(true)}
-              className={view ? "list__toggle-btn active" : "list__toggle-btn"}
+              className="list__add-btn"
+              onClick={() => {
+                setMode("create");
+                toggleModal();
+              }}
             >
-              <i className="fas fa-list-ul"></i>
-            </button>
-            <button
-              onClick={() => setView(false)}
-              className={!view ? "list__toggle-btn active" : "list__toggle-btn"}
-            >
-              <i className="fas fa-th-large"></i>
+              +
             </button>
           </div>
-        </div>
-      </div>
-      <div className="list__content">
-        {!isLoading ? (
-          <>
-            {view ? (
-              <TableView data={data} type={type.entity} />
-            ) : (
-              <div
-                className={
-                  screenSize > 440 ? "info-card_group" : "info-card_group dense"
-                }
-              >
-                {data ? (
-                  data.map((record) => (
-                    <InfoCard
-                      key={record.id}
-                      data={record}
-                      type={type.entity}
-                    />
-                  ))
-                ) : (
-                  <p>No records found.</p>
-                )}
+          <div className="list__options">
+            {showEntitySelect && (
+              <div className="list__select-entity">
+                <Label for="select-entity">{type.ref}:</Label>
+                <Input
+                  id="select-entity"
+                  type="select"
+                  onChange={handleEntitySelect}
+                >
+                  {entityNames &&
+                    entityNames.map((entity) => (
+                      <option key={entity.id} value={entity.id}>
+                        {entity.id}. {entity.name}
+                      </option>
+                    ))}
+                </Input>
               </div>
             )}
-            {totalPages > 1 && (
-              <Pagination
-                previousLabel={"<"}
-                nextLabel={">"}
-                pageCount={totalPages}
-                onPageChange={handlePageChange}
-                containerClassName={"pagination"}
-                activeClassName={"active"}
-              />
-            )}
-          </>
-        ) : (
-          <Spinner />
-        )}
+            <input
+              className="list__search"
+              type="text"
+              placeholder="Search..."
+              onInput={handleSearch}
+            />
+            <div className="list__options_btns">
+              <button
+                onClick={() => setView(true)}
+                className={
+                  view ? "list__toggle-btn active" : "list__toggle-btn"
+                }
+              >
+                <i className="fas fa-list-ul"></i>
+              </button>
+              <button
+                onClick={() => setView(false)}
+                className={
+                  !view ? "list__toggle-btn active" : "list__toggle-btn"
+                }
+              >
+                <i className="fas fa-th-large"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="list__content">
+          {!isLoading ? (
+            <>
+              {view ? (
+                <TableView
+                  data={data}
+                  type={type}
+                  toggleModal={toggleModal}
+                  modal={modal}
+                />
+              ) : (
+                <div
+                  className={
+                    screenSize > 440
+                      ? "info-card_group"
+                      : "info-card_group dense"
+                  }
+                >
+                  {data ? (
+                    data.map((record) => (
+                      <InfoCard
+                        key={record.id}
+                        data={record}
+                        type={type.entity}
+                      />
+                    ))
+                  ) : (
+                    <p>No records found.</p>
+                  )}
+                </div>
+              )}
+              {totalPages > 1 && (
+                <Pagination
+                  previousLabel={"<"}
+                  nextLabel={">"}
+                  pageCount={totalPages}
+                  onPageChange={handlePageChange}
+                  containerClassName={"pagination"}
+                  activeClassName={"active"}
+                />
+              )}
+            </>
+          ) : (
+            <Spinner />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

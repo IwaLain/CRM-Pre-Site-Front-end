@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../../../scss/customer-create-page.scss";
 import { Button, Form, FormGroup, Label, Col } from "reactstrap";
 import star from "../../../assets/img/star.svg";
@@ -54,7 +54,6 @@ const CustomerCreate = () => {
   return (
     <div className="customer-create">
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-        <h2>Customer Create</h2>
         <FormGroup row>
           <Label sm={2} for="name-field">
             Name
@@ -209,12 +208,6 @@ const CustomerCreate = () => {
             />
           </Col>
         </FormGroup>
-        <Button color="primary" className="me-3" type="submit">
-          Submit
-        </Button>
-        <Button type="reset" onClick={() => reset()}>
-          Cancel
-        </Button>
       </Form>
     </div>
   );

@@ -190,12 +190,6 @@ const FacilityCreate = () => {
             />
           </Col>
         </FormGroup>
-        <Button color="primary" className="me-3" type="submit">
-          Submit
-        </Button>
-        <Button type="reset" onClick={() => reset()}>
-          Cancel
-        </Button>
       </Form>
     </div>
   );

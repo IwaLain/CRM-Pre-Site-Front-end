@@ -20,6 +20,7 @@ const DashboardLayout = ({ children }) => {
   const [pageType, setPageType] = useState();
   const [pagePath, setPagePath] = useState();
   const [id, setId] = useState();
+  const [editId, setEditId] = useState();
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -48,7 +49,16 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <PageContext.Provider
-      value={{ pageTitle, pageType, setPageType, id, setId, setPagePath }}
+      value={{
+        pageTitle,
+        pageType,
+        setPageType,
+        id,
+        setId,
+        setPagePath,
+        editId,
+        setEditId,
+      }}
     >
       <div className="dashboard container-fluid">
         <Sidebar

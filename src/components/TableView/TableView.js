@@ -1,15 +1,13 @@
 import { Table, Progress, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ModalComponent from "../ModalComponent/ModalComponent";
 
-const TableView = ({ data, type }) => {
+const TableView = ({ data, type, toggleModal }) => {
   const [fieldTitle, setFieldTitle] = useState("Title");
   const [showProgress, setShowProgress] = useState(true);
-  const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    switch (type) {
+    switch (type.entity) {
       case "customers":
       case "facilities":
         setShowProgress(true);
@@ -26,14 +24,8 @@ const TableView = ({ data, type }) => {
     }
   }, [data]);
 
-  const toggleModal = (id) => {
-    console.log(id);
-    setModal(!modal);
-  };
-
   return (
     <>
-      <ModalComponent modal={modal} toggle={toggleModal} />
       <Table style={{ width: "100%", verticalAlign: "middle" }}>
         <thead>
           <tr>
@@ -45,7 +37,7 @@ const TableView = ({ data, type }) => {
           {data && data.length > 0 ? (
             data.map((record) => {
               let progress = 0;
-              switch (type) {
+              switch (type.entity) {
                 case "customers":
                   if (record.name) progress += 33.3;
                   if (record.facilities && record.facilities.length > 0)
@@ -68,7 +60,9 @@ const TableView = ({ data, type }) => {
                   <td>{record.name}</td>
                   <td>{showProgress && <Progress value={progress} />}</td>
                   <td>
-                    <Link to={`/dashboard/${type}/${record.id}`}>View</Link>
+                    <Link to={`/dashboard/${type.entity}/${record.id}`}>
+                      View
+                    </Link>
                   </td>
                   <td>
                     <Button onClick={() => toggleModal(record.id)}>Edit</Button>

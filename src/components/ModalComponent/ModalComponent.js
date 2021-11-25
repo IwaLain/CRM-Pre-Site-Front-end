@@ -11,41 +11,49 @@ import {
 import FacilityCreate from "../pages/FacilityCreate/FacilityCreate";
 import CustomerCreate from "../pages/CustomerCreate/CustomerCreate";
 
-const ModalComponent = ({ title, toggle, modal }) => {
+const ModalComponent = ({ toggle, modal, type, mode }) => {
   const [FormComponent, setFormComponent] = useState();
+  const [formTitle, setFormTitle] = useState();
+
   useEffect(() => {
-    setFormComponent(<FacilityCreate />);
-  });
+    switch (mode) {
+      case "create":
+        switch (type.entity) {
+          case "customers":
+            setFormComponent(<CustomerCreate />);
+            setFormTitle("Customer Create");
+            break;
+          case "facilities":
+            setFormComponent(<FacilityCreate />);
+            break;
+        }
+      case "edit":
+        switch (type.entity) {
+          case "customers":
+          //setFormComponent(<CustomerEdit />);
+          case "facilities":
+          //setFormComponent(<FacilityEdit />);
+        }
+    }
+  }, [type, mode]);
 
   return (
     <Modal isOpen={modal} toggle={toggle}>
-      <ModalHeader>{title}</ModalHeader>
+      <ModalHeader>{formTitle}</ModalHeader>
       <ModalBody>{FormComponent}</ModalBody>
       <ModalFooter>
-        <FormGroup md={12} className="formUser__buttons">
-          <Col md={6}>
-            <Button
-              className="formUser__cancel"
-              onClick={(e) => {
-                e.preventDefault();
-                toggle();
-              }}
-            >
-              Cancel
-            </Button>
-          </Col>
-          <Col md={6}>
-            <Button
-              className="formUser__submit"
-              onClick={(e) => {
-                e.preventDefault();
-                toggle();
-              }}
-            >
-              Submit
-            </Button>
-          </Col>
-        </FormGroup>
+        <Button
+          className="me-3"
+          onClick={(e) => {
+            e.preventDefault();
+            toggle();
+          }}
+        >
+          Cancel
+        </Button>
+        <Button form="form" className="formUser__submit">
+          Submit
+        </Button>
       </ModalFooter>
     </Modal>
   );
