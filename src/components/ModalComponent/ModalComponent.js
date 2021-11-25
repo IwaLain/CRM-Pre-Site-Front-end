@@ -10,12 +10,15 @@ import {
 } from "reactstrap";
 import FacilityCreate from "../pages/FacilityCreate/FacilityCreate";
 import CustomerCreate from "../pages/CustomerCreate/CustomerCreate";
-
+import EditCustomer from "../pages/EditCustomer/EditCustomer";
+import FacilityEdit from "../pages/FacilityEdit/FacilityEdit";
+import EquipmentEdit from "../pages/EquipmentEdit/EquipmentEdit";
 const ModalComponent = ({ toggle, modal, type, mode }) => {
   const [FormComponent, setFormComponent] = useState();
   const [formTitle, setFormTitle] = useState();
 
   useEffect(() => {
+    console.log("ASd");
     switch (mode) {
       case "create":
         switch (type.entity) {
@@ -26,14 +29,30 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
           case "facilities":
             setFormComponent(<FacilityCreate />);
             break;
+          default:
+            break;
         }
+        break;
       case "edit":
         switch (type.entity) {
           case "customers":
-          //setFormComponent(<CustomerEdit />);
+            setFormComponent(<EditCustomer />);
+            setFormTitle("Customer Edit");
+            break;
           case "facilities":
-          //setFormComponent(<FacilityEdit />);
+            setFormComponent(<FacilityEdit />);
+            setFormTitle("Facility Edit");
+            break;
+          case "equipment":
+            setFormComponent(<EquipmentEdit />);
+            setFormTitle("Equipment Edit");
+            break;
+          default:
+            break;
         }
+        break;
+      default:
+        break;
     }
   }, [type, mode]);
 

@@ -1,11 +1,11 @@
 import { Table, Progress, Button } from "reactstrap";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-const TableView = ({ data, type, toggleModal }) => {
+import { useEffect, useState, useContext } from "react";
+import { PageContext } from "../../context";
+const TableView = ({ data, type, toggleModal, setMode }) => {
   const [fieldTitle, setFieldTitle] = useState("Title");
   const [showProgress, setShowProgress] = useState(true);
-
+  const { setEditId } = useContext(PageContext);
   useEffect(() => {
     switch (type.entity) {
       case "customers":
@@ -65,7 +65,15 @@ const TableView = ({ data, type, toggleModal }) => {
                     </Link>
                   </td>
                   <td>
-                    <Button onClick={() => toggleModal(record.id)}>Edit</Button>
+                    <Button
+                      onClick={() => {
+                        setMode("edit");
+                        setEditId(record.id);
+                        toggleModal();
+                      }}
+                    >
+                      Edit
+                    </Button>
                   </td>
                 </tr>
               );

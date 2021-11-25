@@ -26,13 +26,20 @@ const List = ({ type }) => {
   const [showEntitySelect, setShowEntitySelect] = useState(true);
   const [totalPages, setTotalPages] = useState(Math.ceil(0));
   const [entityNames, setEntityNames] = useState();
-  const [entityID, setEntityID] = useState();
   const [modal, setModal] = useState(false);
   const [mode, setMode] = useState();
 
   const RECORDS_PER_PAGE = 12;
 
-  const { pageTitle, setPagePath, setEditId } = useContext(PageContext);
+  const {
+    pageTitle,
+    setPagePath,
+    setEditId,
+    entityID,
+    setEntityID,
+    showFormModal,
+    setShowFormModal,
+  } = useContext(PageContext);
 
   const params = useParams();
   let id = 0;
@@ -87,9 +94,8 @@ const List = ({ type }) => {
     setEntityID(e.target.value);
   };
 
-  const toggleModal = (id) => {
-    setEditId(id);
-    setModal(!modal);
+  const toggleModal = () => {
+    setShowFormModal(!showFormModal);
   };
 
   useEffect(() => {
@@ -168,7 +174,7 @@ const List = ({ type }) => {
   return (
     <>
       <ModalComponent
-        modal={modal}
+        modal={showFormModal}
         toggle={toggleModal}
         type={type}
         mode={mode}
@@ -240,6 +246,7 @@ const List = ({ type }) => {
                   type={type}
                   toggleModal={toggleModal}
                   modal={modal}
+                  setMode={setMode}
                 />
               ) : (
                 <div
