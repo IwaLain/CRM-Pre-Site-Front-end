@@ -16,6 +16,8 @@ const TableUser = ( { users, modal, toggle, changeTable, editeTable}) => {
         .then(data => changeTable(data.users))
     }
 
+    console.log(users)
+
     return (
         <Row className='mt-5'>
             <Col md={12}>

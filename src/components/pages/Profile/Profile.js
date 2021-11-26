@@ -2,7 +2,7 @@ import { Col, Label, Row } from "reactstrap"
 import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
 import edit from '../../../assets/img/edite.svg'
-import { Fields } from "./Fields/fields"
+import Fields from "./Fields/fields"
 import { useEffect, useState } from "react"
 import { profile } from "../../../js/api/profile"
 const ProfilePage = () => {
@@ -10,11 +10,16 @@ const ProfilePage = () => {
     useEffect(() => {
         profile.getProfile()
         .then(data => 
-            setProfileData(data)
+            setProfileData(data.user)
         )
     }, [])
 
-    console.log(profileData)
+    const getProfileData = (data) => {
+        let dataArray = []
+        for(let key in data) {
+           
+        }
+    }
 
     return(
         <>
@@ -38,7 +43,7 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     {
-                        profileData
+                        
                     }
                 </Col>
             </Row>

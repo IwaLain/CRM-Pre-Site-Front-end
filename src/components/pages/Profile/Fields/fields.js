@@ -1,9 +1,8 @@
-import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Col, Label, Row } from "reactstrap"
 import edit from '../../../../assets/img/edite.svg'
 
-export const Fields = (label, value) => {
+const Fields = ({label, value}) => {
     const {
         register,
     } = useForm({
@@ -33,3 +32,5 @@ export const Fields = (label, value) => {
         </Row>
     )
 }
+
+export default Fields
