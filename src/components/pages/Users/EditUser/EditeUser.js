@@ -1,5 +1,5 @@
 import React from 'react'
-import { alert } from '../../../../js/methods/alert';
+import { alert } from '../../../../js/helpers/alert';
 import { user } from '../../../../js/api/users';
 import ModalUser from '../ModalUser/ModalUser';
 

@@ -10,11 +10,11 @@ import { Card,
          Row,
          CardImg,
          CardBody } from 'reactstrap'
-import { alert } from '../../../js/methods/alert';
+import { alert } from '../../../js/helpers/alert';
 import { ToastContainer } from 'react-toastify';
 import { login } from '../../../js/api/login';
 import { useHistory } from 'react-router';
-import { inputs } from '../../../js/methods/input';
+import { inputs } from '../../../js/helpers/input';
 
 const LoginPage = () => {
     let history = useHistory();

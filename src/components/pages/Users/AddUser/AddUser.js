@@ -1,14 +1,13 @@
 import React from 'react'
-import { user } from '../../../../js/api/users';
-import { alert } from '../../../../js/methods/alert';
+import { alert } from '../../../../js/helpers/alert';
 import { ToastContainer } from 'react-toastify';
 import { Col } from 'reactstrap';
 import ModalUser from '../ModalUser/ModalUser';
+import User from '../../../../js/api/users';
 
 const AddUser = ({ toggle, modal, changeTable }) => {
 
     const onSubmit = (e) => {
-        console.log(e)
         const data = {
             'first_name': e.firstname,
             'last_name': e.lastname,
@@ -18,7 +17,7 @@ const AddUser = ({ toggle, modal, changeTable }) => {
             'password': e.password
         }
 
-        user.addUser(data)
+        User.addUser(data)
         .then(data => {
             if(data.errors) {
                 for (let key in data.errors) {

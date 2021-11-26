@@ -1,30 +1,47 @@
-import { Global } from "./api"
-const token = localStorage.getItem('token')
+import { getToken } from '../helpers/helpers'
+import { apiRequest } from "./api"
+import { URL } from './constants'
 
-const getUsers = async () => {
-    return Global('GET', `/api/user?access-token=${token}`)
+const User = {
+    getUsers: callback => {
+        const token = getToken
+
+        if ( token ) apiRequest( 'GET', URL, `/api/user?access-token=${token}}`, callback, {}, {
+            'Authorization': 'Bearer' + token
+        })
+    },
+
+    editUserRole: (userId, data, callback) => {
+        const token = getToken()
+
+        if ( token ) apiRequest('POST', URL + `/api/role/assign-role/${userId}?access-token=${token}`, callback, data, {
+            'Authorization': 'Bearer' + token
+        })
+    },
+
+    addUser: (data, callback) => {
+        const token = getToken()
+
+        if ( token ) apiRequest('POST', URL + `/api/user/create?access-token=${token}`, callback, data, {
+            'Authorization': 'Bearer' + token
+        })
+    },
+
+    editeUser: (userId, data, callback) => {
+        const token = getToken()
+
+        if ( token ) apiRequest('PUT', URL + `/api/user/update/${userId}?access-token=${token}`, callback, data, {
+            'Authorization': 'Bearer' + token
+        }) 
+    },
+
+    deleteUser: (userId, callback) => {
+        const token = getToken()
+
+        if ( token ) apiRequest('DELETE', URL + `/api/user/delete/${userId}?access-token=${token}`, callback, {}, {
+            'Authorization': 'Bearer' + token
+        })
+    }
 }
 
-const editUserRole = async (userId, data) => {
-    return Global('POST', `/api/role/assign-role/${userId}?access-token=${token}`, data)
-}
-
-const addUser = async (data) => {
-    return Global('POST', `/api/user/create?access-token=${token}`, data)
-}
-
-const editeUser = async (userId, data) => {
-    return Global('PUT', `/api/user/update/${userId}?access-token=${token}`, data)
-}
-
-const deleteUser = async (userId) => {
-    return Global('DELETE', `/api/user/delete/${userId}?access-token=${token}`)
-}
-
-export const user = {
-    getUsers,
-    editUserRole,
-    addUser,
-    editeUser,
-    deleteUser
-}
+export default User

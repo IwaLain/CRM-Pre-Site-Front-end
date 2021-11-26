@@ -3,7 +3,7 @@ import { Col, Row, Table } from 'reactstrap'
 import edite from '../../../../assets/img/edite.svg'
 import del from '../../../../assets/img/delete.svg'
 import EditeUser from '../EditUser/EditeUser'
-import { user } from '../../../../js/api/users'
+import User from '../../../../js/api/users'
 import './TableUser.scss'
 
 const TableUser = ( { users, modal, toggle, changeTable, editeTable}) => {
@@ -12,7 +12,7 @@ const TableUser = ( { users, modal, toggle, changeTable, editeTable}) => {
     const current = (currentUser) => setCurrentUser(currentUser)
     
     const deleteUser = (userId) => {
-        user.deleteUser(userId)
+        User.deleteUser(userId)
         .then(data => changeTable(data.users))
     }
 
