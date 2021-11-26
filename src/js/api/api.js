@@ -18,7 +18,6 @@ export const api = async (configs) => {
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(configs.data)
             })  
-            console.log(JSON.stringify(configs.data))
             break
         default:
             break

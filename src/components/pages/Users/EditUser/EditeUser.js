@@ -3,19 +3,17 @@ import { alert } from '../../../../js/methods/alert';
 import { user } from '../../../../js/api/users';
 import ModalUser from '../ModalUser/ModalUser';
 
-const EditeUser = ({currentUser, toggle, modal}) => {
+const EditeUser = ({currentUser, toggle, modal, editeTable}) => {
     const onSubmit = (e) => {
         const data = {
+            'id': currentUser.id,
             'first_name': e.firstname,
             'last_name': e.lastname,
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
-            'password': e.password
-        }
-
-        const role = {
-            'roleName': e.role,
+            'password': e.password,
+            'role': e.role,
         }
 
         user.editeUser(currentUser.id, data)
@@ -27,8 +25,9 @@ const EditeUser = ({currentUser, toggle, modal}) => {
             }
         })
 
-        user.editUserRole(currentUser.id, role)
-        .then(data => console.log(data))
+        user.editUserRole(currentUser.id, data)
+        
+        editeTable(currentUser.id, data)
     };
 
     return (

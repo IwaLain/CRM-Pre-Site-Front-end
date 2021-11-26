@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Col, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import './ModalUsr.scss'
 import FormUser from '../FormUser/FormUser'
 
 const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
@@ -8,8 +9,14 @@ const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
             isOpen={modal}
             toggle={toggle}
         >
-            <ModalHeader>
+            <ModalHeader className='modal__head'>
                 {title}
+                <span 
+                    type="button" 
+                    className="btn-close" 
+                    aria-label="Close"
+                    onClick={toggle}
+                ></span>
             </ModalHeader>
             <ModalBody>
                 <FormUser
@@ -22,10 +29,7 @@ const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
                         <Col md={6}>
                             <Button
                                 className='formUser__cancel'
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    document.getElementById("formUser-form").reset();
-                                }}
+                                onClick={toggle}
                             >
                                 Cancel
                             </Button>

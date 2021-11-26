@@ -25,6 +25,7 @@ const AddUser = ({ toggle, modal, changeTable }) => {
                     alert('error', data.errors[key])
                 }
             } else {
+                changeTable(data.users)
                 alert('success', 'Add User successful')
             }
         })
