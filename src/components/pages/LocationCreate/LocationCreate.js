@@ -42,7 +42,7 @@ const LocationCreate = () => {
                         body["name"] = value;
                         break;
                     default:
-                        jsonData.push({ name: key, value: value });
+                        jsonData.push({ name: fields.filter((el) => el.id === key)[0].title, value: value });
                         break;
                 }
             }
