@@ -7,12 +7,7 @@ import "./factory-page.scss";
 import InformationComponent from "../../InformationComponent/InformationComponent";
 import FormComponent from "../../FormComponent/FormComponent";
 import AttachedImages from "../../AttachedImages/AttachedImages";
-import {
-  getFacilityApi,
-  deleteFacilityImageAPI,
-  addFacilityImageApi,
-  setMainFacilityImageAPI,
-} from "../../../js/api/facilities";
+import { facilities } from "../../../js/api/facilities";
 import DropdownImageEdit from "../../widgets/DropdownImageEdit/DropdownImageEdit";
 const CustomerFactoryPage = () => {
   const { id } = useParams();
@@ -27,7 +22,7 @@ const CustomerFactoryPage = () => {
     return mainImage;
   };
   useEffect(() => {
-    getFacilityApi(id).then((data) => {
+    facilities.getFacility(id).then((data) => {
       setFacility(data);
       setAttachedImages(data.facilityImages);
       const mainImage = getMainImage(data.facilityImages);
@@ -49,17 +44,17 @@ const CustomerFactoryPage = () => {
   //   setFactoryImage(`http://crm.loc/${img}`);
   // };
   const addFacilityImage = (data) => {
-    addFacilityImageApi(id, data).then((res) => {
+    facilities.addFacilityImage(id, data).then((res) => {
       setAttachedImages(res.facilityImages);
     });
   };
   const deleteFacilityImage = (img) => {
-    deleteFacilityImageAPI(img.facility_id, img.id).then((res) => {
+    facilities.deleteFacilityImage(img.facility_id, img.id).then((res) => {
       setAttachedImages(res.facilityImages);
     });
   };
   const setMainFacilityImage = (imageId) => {
-    setMainFacilityImageAPI(id, imageId).then((res) => {
+    facilities.setMainFacilityImage(id, imageId).then((res) => {
       setMainImage(res["main-image"]);
     });
   };

@@ -1,95 +1,47 @@
-import { api } from "./api"
+import { Global } from "./api"
 
 const token = localStorage.getItem('token')
 
 const getFacilities = async () => {
-    let config = {
-        method: 'GET',
-        url: `/api/facilities?access-token=${token}`
-    }
-
-    const response = await api(config)
-    return response.Facilities
+    return Global('GET', `/api/facilities?access-token=${token}`)
 }
 
-const getFacilityApi = async (FacilitiesId) => {
-    let config = {
-        method: 'GET',
-        url: `/api/facilities/${FacilitiesId}?access-token=${token}`
-    }
-
-    const response = await api(config)
-    return response.Facilities
+const getFacility = async (facilityId) => {
+    return Global('GET', `/api/facilities/${facilityId}?access-token=${token}`)
 }
 
 const addFacilities = async (data) => {
-    let config = {
-        method: 'POST',
-        url: `/api/facilities/create?access-token=${token}`,
-        data: data
-    } 
-
-    const response = await api(config)
-    return response
+    return Global('POST', `/api/facilities/create?access-token=${token}`, data)
 }
 
-const editFacilities = async (FacilitiesId, data) => {
-    let config = {
-        method: 'PUT',
-        url: `/api/facilities/update/${FacilitiesId}?access-token=${token}`,
-        data: data
-    }
-
-    const response = await api(config)
-    return response
+const editFacilities = async (facilityId, data) => {
+    return Global('PUT', `/api/facilities/update/${facilityId}?access-token=${token}`, data)
 }
 
-const deleteFacilities = async (FacilitiesId) => {
-    let config = {
-        method: 'DELETE',
-        url: `/api/facilities/delete/${FacilitiesId}?access-token=${token}`
-    }
-
-    const response = await api(config)
-    return response
+const deleteFacilities = async (facilityId) => {
+    return Global('DELETE', `/api/facilities/delete/${facilityId}?access-token=${token}`)
 }
 
-const addFacilityImageApi = async (facilityId, dataImg) => {
-  let config = {
-    method: "POST",
-    url: `/api/facilities/${facilityId}/image/create?access-token=${token}`,
-    data: dataImg,
-  };
+const deleteFacilityImage = async (facilityId, imageId) => {
+  return Global('DELETE', `/api/facilities/${facilityId}/image/delete/${imageId}?access-token=${token}`)
+}
 
-  const response = await api(config);
-  return response;
-};
-const deleteFacilityImageAPI = async (facilityId, imageId) => {
-  let config = {
-    method: "DELETE",
-    url: `/api/facilities/${facilityId}/image/delete/${imageId}?access-token=${token}`,
-  };
+const addFacilityImage = async (facilityId, data) => {
+  return Global('POST', `/api/facilities/${facilityId}/image/create?access-token=${token}`, data)
+}
 
-  const response = await api(config);
+const setMainFacilityImage = async (facilityId, imageId) => {
+  return Global('PUT', `/api/facilities/${facilityId}/set-main-image/${imageId}?access-token=${token}`)
+}
 
-  return response;
-};
-const setMainFacilityImageAPI = async (facilityId, imageId) => {
-  let config = {
-    method: "PUT",
-    url: `/api/facilities/${facilityId}/set-main-image/${imageId}?access-token=${token}`,
-  };
-  const response = await api(config);
 
-  return response;
-};
-export {
-  getFacilities,
-  getFacilityApi,
-  addFacilities,
-  editFacilities,
-  deleteFacilities,
-  addFacilityImageApi,
-  deleteFacilityImageAPI,
-  setMainFacilityImageAPI,
-};
+export const facilities = {
+    getFacilities,
+    getFacility,
+    addFacilities,
+    editFacilities,
+    deleteFacilities,
+    deleteFacilityImage,
+    addFacilityImage,
+    setMainFacilityImage
+}

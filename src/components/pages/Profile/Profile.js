@@ -1,54 +1,50 @@
 import { Col, Label, Row } from "reactstrap"
 import './Profile.scss'
-import placeholder from '../../../assets/img/company.png'
+import placeholder from '../../../assets/img/profile_placeholder.png'
+import edit from '../../../assets/img/edite.svg'
+import Fields from "./Fields/fields"
+import { useEffect, useState } from "react"
+import { profile } from "../../../js/api/profile"
 const ProfilePage = () => {
+    const [profileData, setProfileData] = useState([])
+    useEffect(() => {
+        profile.getProfile()
+        .then(data => 
+            setProfileData(data.user)
+        )
+    }, [])
+
+    const getProfileData = (data) => {
+        let dataArray = []
+        for(let key in data) {
+           
+        }
+    }
+
     return(
         <>
             <h3>Profile</h3>
             <Row>
                 <Col lg={12} className='p-5 pt-4'>
                     <Row className='profile__item'>
-                        <Col  lg={2}>
+                        <Col md={2} lg={1}>
                             <Label className='profile__label'>Avatar</Label>
                         </Col>
-                        <Col lg={3} md={4} className='d-flex justify-content-center'>
-                            <img className='profile__img' src={placeholder} alt="Avatar" />
+                        <Col lg={2} md={2} className='d-flex justify-content-center'>
+                            <div className='profile__avatar'>
+                                <img className='profile__img' src={placeholder} alt="Avatar" />
+                                <div className='profile__img-edit justify-content-sm-center align-items-center'>
+                                    <img
+                                        src={edit}
+                                        alt="edit"
+                                    />
+                                </div>
+                            </div>
                         </Col>
                     </Row>
-                    <Row className='profile__item mt-3'>
-                        <Col lg={2}>
-                            <Label className='profile__label'>Username</Label>
-                        </Col>
-                        <Col lg={3} md={4}>
-                            <p className='profile__text form-control'>
-                                Alakey123
-                            </p>
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col lg={2}>
-                            <Label className='profile__label'>First Name</Label>
-                        </Col>
-                        <Col lg={3} md={4}>
-                            <p className='profile__text form-control'>Alex</p>
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col lg={2}>
-                            <Label className='profile__label'>Last Name</Label>
-                        </Col>
-                        <Col lg={3} md={4}>
-                            <p className='profile__text form-control'>Shatailov</p>
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col lg={2}>
-                            <Label className='profile__label'>Email Adress</Label>
-                        </Col>
-                        <Col lg={3} md={4}>
-                            <p className='profile__text form-control'>samoran232@gmail.com</p>
-                        </Col>
-                    </Row>
+                    {
+                        
+                    }
                 </Col>
             </Row>
         </>

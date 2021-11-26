@@ -1,22 +1,21 @@
 import React from 'react'
-import { user } from '../../../../js/api/user';
+import { user } from '../../../../js/api/users';
 import { alert } from '../../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
-import FormUser from '../FormUser/FormUser';
-import { Col, Row } from 'reactstrap';
+import { Col } from 'reactstrap';
+import ModalUser from '../ModalUser/ModalUser';
 
-const AddUserPage = () => {
+const AddUser = ({ toggle, modal, changeTable }) => {
 
     const onSubmit = (e) => {
+        console.log(e)
         const data = {
+            'first_name': e.firstname,
+            'last_name': e.lastname,
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
             'password': e.password
-        }
-
-        const role = {
-            'roleName': e.role,
         }
 
         user.addUser(data)
@@ -26,6 +25,7 @@ const AddUserPage = () => {
                     alert('error', data.errors[key])
                 }
             } else {
+                changeTable(data.users)
                 alert('success', 'Add User successful')
             }
         })
@@ -33,12 +33,17 @@ const AddUserPage = () => {
 
     return (
         <div>
-            <Col md={4}>
-                <FormUser title='Add User' onSubmit={onSubmit}/>
+            <Col lg={3}>
+                <ModalUser
+                    title='Add User'
+                    onSubmit={onSubmit}
+                    toggle={toggle}
+                    modal={modal}
+                />
             </Col>
             <ToastContainer position='bottom-right'/>
         </div>
     )
 }
 
-export default AddUserPage
+export default AddUser

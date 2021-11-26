@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import logo from "../../../assets/img/company.png";
 import "./customer-page.scss";
-import {
-  deleteCustomerImageAPI,
-  getCustomerAPI,
-  addCustomerImageAPI,
-  setMainCustomerImageAPI,
-} from "../../../js/api/customer";
+import { customersApi } from "../../../js/api/customer";
 import InformationComponent from "../../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../../InfoCard/InfoCard";
@@ -20,12 +15,12 @@ const CustomerPage = () => {
   const [attachedImages, setAttachedImages] = useState();
   const [mainImage, setMainImage] = useState();
   const deleteCustomerImage = (img) => {
-    deleteCustomerImageAPI(img.customer_id, img.id).then((res) => {
+    customer.deleteCustomerImage(img.customer_id, img.id).then((res) => {
       setAttachedImages(res.customerImages);
     });
   };
   const addCustomerImage = (data) => {
-    addCustomerImageAPI(id, data).then((res) => {
+    customersApi.addCustomerImage(id, data).then((res) => {
       setAttachedImages(res.customerImages);
     });
   };
@@ -40,13 +35,13 @@ const CustomerPage = () => {
     return mainImage;
   };
   const setMainCustomerImage = (imageId) => {
-    setMainCustomerImageAPI(id, imageId).then((res) => {
+    customersApi.setMainCustomerImage(id, imageId).then((res) => {
       setMainImage(res["main-image"]);
     });
   };
   useEffect(() => {
-    getCustomerAPI(id).then((data) => {
-      setCustomer(data);
+    customersApi.getCustomer(id).then((data) => {
+      setCustomer(data.customer);
       setAttachedImages(data.customerImages);
       // setAttachedImages(
       //   data.customerImages.map((image) => {

@@ -6,7 +6,7 @@ import CustomersTable from "../../CustomersTable/CustomersTable";
 import Pagination from "../../widgets/Pagination/Pagination";
 import { PageTitleContext } from "../../../context";
 import { Spinner } from "reactstrap";
-import { getCustomersAPI } from "../../../js/api/customer";
+import { customersApi } from "../../../js/api/customer";
 
 const CustomersPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +51,7 @@ const CustomersPage = () => {
     setSearchQuery(e.target.value);
 
     setIsLoading(true);
-    getCustomersAPI(customersPerPage, e.target.value).then((data) => {
+    customersApi.getCustomers(customersPerPage, e.target.value).then((data) => {
       setCustomers(formatCustomers(data.customers));
       setTotalCustomers(data.total);
       setIsLoading(false);
@@ -60,7 +60,7 @@ const CustomersPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getCustomersAPI(customersPerPage).then((data) => {
+    customersApi.getCustomers(customersPerPage).then((data) => {
       setCustomers(formatCustomers(data.customers));
       setTotalCustomers(data.total);
       setIsLoading(false);
@@ -70,7 +70,7 @@ const CustomersPage = () => {
   }, []);
 
   useEffect(() => {
-    getCustomersAPI(customersPerPage, searchQuery, page).then((data) => {
+    customersApi.getCustomers(customersPerPage, searchQuery, page).then((data) => {
       setCustomers(formatCustomers(data.customers));
     });
   }, [page]);

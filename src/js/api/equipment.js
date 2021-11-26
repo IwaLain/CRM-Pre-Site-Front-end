@@ -1,79 +1,33 @@
-import { api } from "./api"
-import { endpoints } from "./endpoint"
+import { Global } from "./api"
 
 const token = localStorage.getItem('token')
 
 const getEquipments = async () => {
-    let config = {
-        method: 'GET',
-        url: endpoints.getEquipment
-    }
-
-    const response = await api(config)
-    return response.equipment
+    return Global('GET', `/api/equipment?access-token=${token}`)
 }
 
 const getEquipment = async (equipmentId) => {
-    let config = {
-        method: 'GET',
-        url: `/api/equipment?access-token=${token}`
-    }
-
-    const response = await api(config)
-    return response.equipment
+    return Global('GET', `/api/equipment/${equipmentId}?access-token=${token}`)
 }
 
 const addEquipment = async (data) => {
-    let config = {
-        method: 'POST',
-        url: `/api/equipment/create?access-token=${token}`,
-        data: data
-    } 
-
-    const response = await api(config)
-    return response
+    return Global('POST', `/api/equipment/create?access-token=${token}`, data)
 }
 
 const editEquipment = async (equipmentId, data) => {
-    let config = {
-        method: 'PUT',
-        url: `/api/equipment/update/${equipmentId}?access-token=${token}`,
-        data: data
-    }
-
-    const response = await api(config)
-    return response
+    return Global('PUT', `/api/equipment/update/${equipmentId}?access-token=${token}`, data)
 }
 
 const deleteEquipment = async (equipmentId) => {
-    let config = {
-        method: 'DELETE',
-        url: `/api/equipment/delete/${equipmentId}?access-token=${token}`
-    }
-
-    const response = await api(config)
-    return response
+    return Global('DELETE', `/api/equipment/delete/${equipmentId}?access-token=${token}`)
 }
 
 const deleteImageEquipment = async (equipmentImageId) => {
-    let config = {
-        method: 'DELETE',
-        url: `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`
-    }
-
-    const response = await api(config)
-    return response
+    return Global('DELETE', `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`)
 }
 
 const createImageEquipment = async (equipmentImageId, data) => {
-    let config = {
-        method: 'POST',
-        url: `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`,
-        data: data
-    }
-
-    const response = await api(config)
-    return response
+    return Global('POST', `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`, data)
 }
 
 export const equipment = {

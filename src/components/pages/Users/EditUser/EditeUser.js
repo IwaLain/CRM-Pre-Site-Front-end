@@ -1,22 +1,20 @@
 import React from 'react'
 import { alert } from '../../../../js/methods/alert';
-import { user } from '../../../../js/api/user';
-import FormUser from '../FormUser/FormUser';
+import { user } from '../../../../js/api/users';
+import ModalUser from '../ModalUser/ModalUser';
 
-export const EditeUserModal = ({currentUser, editeUser}) => {
+const EditeUser = ({currentUser, toggle, modal, editeTable}) => {
     const onSubmit = (e) => {
         const data = {
+            'id': currentUser.id,
+            'first_name': e.firstname,
+            'last_name': e.lastname,
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
-            'password': e.password
+            'password': e.password,
+            'role': e.role,
         }
-
-        const role = {
-            'roleName': e.role,
-        }
-
-        editeUser(currentUser.id, data)
 
         user.editeUser(currentUser.id, data)
         .then(data => {
@@ -27,15 +25,22 @@ export const EditeUserModal = ({currentUser, editeUser}) => {
             }
         })
 
-        user.editUserRole(currentUser.id, role)
-        .then(data => console.log(data))
+        user.editUserRole(currentUser.id, data)
+        
+        editeTable(currentUser.id, data)
     };
 
     return (
         <div>
-            <FormUser title='Edit User' onSubmit={onSubmit} currentUser={currentUser}/>
+            <ModalUser 
+                title='Edit User' 
+                onSubmit={onSubmit} 
+                currentUser={currentUser} 
+                toggle={toggle}
+                modal={modal}
+            />
         </div>
     )
 }
 
-export default EditeUserModal
+export default EditeUser

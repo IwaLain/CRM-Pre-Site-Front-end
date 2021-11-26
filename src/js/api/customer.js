@@ -1,78 +1,40 @@
-import { api } from "./api";
+import { Global } from "./api"
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('token')
 
-const getCustomersAPI = async (limit, search, page) => {
-  let url = `/api/customer?access-token=${token}`;
-  if (limit) url += `&limit=${limit}`;
-  if (page) url += `&page=${page}`;
-  if (search) url += `&s=${search}`;
+const getCustomers = async (limit, search, page) => {
+    let url = `/api/customer?access-token=${token}`;
+    if (limit) url += `&limit=${limit}`;
+    if (page) url += `&page=${page}`;
+    if (search) url += `&s=${search}`;
+    return Global('GET', url)
+}
 
-  let config = {
-    method: "GET",
-    url,
-  };
+const getCustomer = async (customerId) => {
+    return Global('GET', `/api/customer/:${customerId}?access-token=${token}`)
+}
 
-  const response = await api(config);
-  return response;
-};
+const addCustomer = async (data) => {
+    return Global('POST', `/api/customer/create?access-token=${token}`, data)
+} 
 
-const getCustomerAPI = async (customerId) => {
-  let config = {
-    method: "GET",
-    url: `/api/customer/${customerId}?access-token=${token}`,
-  };
+const addCustomerImage = async (customerId, data) => {
+    return Global('POST', `/api/customer/${customerId}/image/create?access-token=${token}`, data)
+} 
 
-  const response = await api(config);
-  return response.customer;
-};
+const deleteCustomerImage = async (customerId, imageId) => {
+    return Global('DELETE', `/api/customer/${customerId}/image/delete/${imageId}?access-token=${token}`)
+} 
 
-const addCustomerAPI = async (data) => {
-  let config = {
-    method: "POST",
-    url: `/api/customer/create?access-token=${token}`,
-    data: data,
-  };
+const setMainCustomerImage = async (customerId, imageId) => {
+    return Global('PUT', `/api/customer/${customerId}/set-main-image/${imageId}?access-token=${token}`)
+} 
 
-  const response = await api(config);
-  return response;
-};
-
-const addCustomerImageAPI = async (customerId, dataImg) => {
-  let config = {
-    method: "POST",
-    url: `/api/customer/${customerId}/image/create?access-token=${token}`,
-    data: dataImg,
-  };
-
-  const response = await api(config);
-  return response;
-};
-const deleteCustomerImageAPI = async (customerId, imageId) => {
-  let config = {
-    method: "DELETE",
-    url: `/api/customer/${customerId}/image/delete/${imageId}?access-token=${token}`,
-  };
-
-  const response = await api(config);
-
-  return response;
-};
-const setMainCustomerImageAPI = async (customerId, imageId) => {
-  let config = {
-    method: "PUT",
-    url: `/api/customer/${customerId}/set-main-image/${imageId}?access-token=${token}`,
-  };
-
-  const response = await api(config);
-
-  return response;
-};
-export {
-  getCustomersAPI,
-  getCustomerAPI,
-  addCustomerAPI,
-  addCustomerImageAPI,
-  deleteCustomerImageAPI,
-  setMainCustomerImageAPI,
-};
+export const customersApi = {
+    getCustomers,
+    getCustomer,
+    addCustomer,
+    addCustomerImage,
+    deleteCustomerImage,
+    setMainCustomerImage
+}

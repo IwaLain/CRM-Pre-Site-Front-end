@@ -1,15 +1,10 @@
-import { api } from "./api"
+import { Global } from "./api" 
+const token = localStorage.getItem('token')
 
-const getProfileAPI = async (userId) => {
-    let config = {
-        method: 'GET',
-        url: `/api/customer/:${userId}?access-token=`
-    }
-
-    const response = await api(config)
-    return response
+const getProfile = async () => {
+    return Global('GET', `/api/user/profile?access-token=${token}`)
 }
 
 export const profile = {
-    getProfileAPI
+    getProfile,
 }
