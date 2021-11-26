@@ -1,0 +1,28 @@
+ul {
+    list-style: none;
+}
+
+.profile__item {
+    display: flex;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.profile__text {
+    width: 100%;
+    text-align: center;
+    background: #DEDEDE;
+    border-radius: 5px;
+    padding-bottom: 0;
+}
+
+.profile__img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    color: #000;
+    background: #E3BB31;
+}

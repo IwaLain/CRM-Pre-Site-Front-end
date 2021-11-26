@@ -1,6 +1,6 @@
 import { Global } from "./api"
 
-const token = localStorage.getItem('token')
+const token = localStorage.getItem("token");
 
 const getFacilities = async () => {
     return Global('GET', `/api/facilities?access-token=${token}`)
@@ -34,8 +34,7 @@ const setMainFacilityImage = async (facilityId, imageId) => {
   return Global('PUT', `/api/facilities/${facilityId}/set-main-image/${imageId}?access-token=${token}`)
 }
 
-
-export const facilities = {
+export const facilitiesApi = {
     getFacilities,
     getFacility,
     addFacilities,

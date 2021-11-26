@@ -1,9 +1,13 @@
 import placeholder from "../../assets/img/company.png";
-import { Progress } from "reactstrap";
+import { Progress, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./info-card.scss";
+import { useContext } from "react";
+import { PageContext } from "../../context";
 
-const InfoCard = ({ data, type }) => {
+const InfoCard = ({ data, type, toggleModal }) => {
+  const { setEditId } = useContext(PageContext);
+
   let progress = 0;
 
   switch (type) {
@@ -22,22 +26,32 @@ const InfoCard = ({ data, type }) => {
   }
 
   return (
-    <div className="customer-card">
+    <div className="info-card">
       <img
         src={
-          data.image
-            ? process.env.REACT_APP_SERVER_URL + "/" + data.image
+          data.img
+            ? process.env.REACT_APP_SERVER_URL + "/" + data.img
             : placeholder
         }
         alt="customer"
       />
-      <div className="customer-card__body">
+      <div className="info-card__body">
         <h4>{data.name}</h4>
         <Progress
           style={!progress ? { visibility: "hidden" } : {}}
           value={progress}
         />
-        <Link to={`/dashboard/${type}/${data.id}`}>View</Link>
+        <div className="info-card__btns">
+          <Link to={`/dashboard/${type}/${data.id}`}>View</Link>
+          <Button
+            onClick={() => {
+              setEditId(data.id);
+              toggleModal();
+            }}
+          >
+            <i className="far fa-edit"></i>
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import star from "../../../assets/img/star.svg";
-import "./dropdownImageEdit.scss";
+import "../../../scss/dropdownImageEdit.scss";
 const DropdownImageEdit = ({ images, setMainImage }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => {
@@ -27,7 +27,10 @@ const DropdownImageEdit = ({ images, setMainImage }) => {
                 key={image.id}
                 onClick={() => setMainImage(image.id)}
               >
-                <img src={process.env.REACT_APP_SERVER_URL + "/" + image.img} />
+                <img
+                  src={process.env.REACT_APP_SERVER_URL + "/" + image.img}
+                  alt="..."
+                />
               </DropdownItem>
             ))
           ) : (

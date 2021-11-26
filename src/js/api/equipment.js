@@ -1,6 +1,6 @@
 import { Global } from "./api"
 
-const token = localStorage.getItem('token')
+const token = localStorage.getItem("token");
 
 const getEquipments = async () => {
     return Global('GET', `/api/equipment?access-token=${token}`)
@@ -30,6 +30,19 @@ const createImageEquipment = async (equipmentImageId, data) => {
     return Global('POST', `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`, data)
 }
 
+const getLocationEquipment = async (limit, page, search, locationId) => {
+  let url = `/api/location/${locationId}/equipment?access-token=${token}`;
+  if (limit) url += `&limit=${limit}`;
+  if (page) url += `&page=${page}`;
+  if (search) url += `&s=${search}`;
+
+  return Global('GET', url)
+}
+
+const setMainEquipmentImage = async (equipmentId, imageId) => {
+    return Global('PUT', `/api/equipment/${equipmentId}/set-main-image/${imageId}?access-token=${token}`)
+}
+
 export const equipment = {
     getEquipments,
     getEquipment,
@@ -38,4 +51,6 @@ export const equipment = {
     deleteEquipment,
     deleteImageEquipment,
     createImageEquipment,
+    setMainEquipmentImage,
+    getLocationEquipment,
 }

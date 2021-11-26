@@ -1,9 +1,11 @@
-@import "../../../scss/scss-variables.scss";
+@import "./scss-variables.scss";
 
 /* Dashboard */
 
 .dashboard.container-fluid {
   padding: 0;
+  display: grid;
+  grid-template-columns: 190px auto;
 }
 
 .dashboard > .row {
@@ -36,8 +38,11 @@
 }
 
 .dashboard aside nav ul {
-  list-style-image: url("../../../assets/img/star.svg");
-  padding-left: 1.5em;
+  padding-left: 0.25rem;
+}
+
+.dashboard aside nav > ul > li > a > i {
+  margin-right: 5px;
 }
 
 .dashboard aside nav > ul > li > a {
@@ -57,7 +62,7 @@
 
 .dashboard header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   background-color: $primary;
   height: 60px;
@@ -68,9 +73,9 @@
 
 .dashboard header .profile-badge {
   position: relative;
-  background: transparent;
+  background: black;
   border: 0;
-  padding: 0;
+  padding: 20px;
   border-radius: 50px;
 }
 
@@ -83,7 +88,7 @@
   box-shadow: none;
 }
 
-.dashboard header .profile-badge img {
+.dashboard header .profile-badge i {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -113,4 +118,13 @@
 
 .dashboard main {
   padding: 15px;
+}
+
+@media (max-width: 750px) {
+  .dashboard.container-fluid {
+    grid-template-columns: 60px auto;
+  }
+  .dashboard main {
+    padding: 3px;
+  }
 }

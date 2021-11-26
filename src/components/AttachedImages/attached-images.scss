@@ -1,14 +1,11 @@
-.attached--img-container {
-  position: relative;
-  height: 100%;
-}
-
 .attached--list {
   padding: 0;
 }
 .attached--item {
+  position: relative;
   margin-right: 1rem;
   margin-bottom: 1rem;
+  z-index: 1;
   width: 105px;
   height: 90px;
 }

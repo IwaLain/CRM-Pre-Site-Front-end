@@ -1,6 +1,6 @@
-import "./not-found-page.scss";
+import "../../../scss/not-found-page.scss";
 
-const NotFoundPage = () => {
+const NotFound = () => {
   return (
     <div className="not-found-banner">
       <h1>404</h1>
@@ -9,4 +9,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default NotFound;

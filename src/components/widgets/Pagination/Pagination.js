@@ -1,5 +1,5 @@
 import ReactPaginate from "react-paginate";
-import "./pagination.scss";
+import "../../../scss/pagination.scss";
 
 const Pagination = ({
   previousLabel,

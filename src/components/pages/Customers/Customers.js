@@ -1,14 +1,14 @@
-import "./customers-page.scss";
+import "../../../scss/list.scss";
 import { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import InfoCard from "../../InfoCard/InfoCard";
-import CustomersTable from "../../CustomersTable/CustomersTable";
+import TableView from "../../TableView/TableView";
 import Pagination from "../../widgets/Pagination/Pagination";
 import { PageTitleContext } from "../../../context";
 import { Spinner } from "reactstrap";
 import { customersApi } from "../../../js/api/customer";
 
-const CustomersPage = () => {
+const Customers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [view, setView] = useState(true);
   const [customers, setCustomers] = useState([]);
@@ -130,13 +130,11 @@ const CustomersPage = () => {
         {!isLoading ? (
           <>
             {view ? (
-              <CustomersTable customers={customers} />
+              <TableView data={customers} type="customers" />
             ) : (
               <div
                 className={
-                  screenSize > 440
-                    ? "customer-card_group"
-                    : "customer-card_group dense"
+                  screenSize > 440 ? "info-card_group" : "info-card_group dense"
                 }
               >
                 {customers ? (
@@ -169,4 +167,4 @@ const CustomersPage = () => {
   );
 };
 
-export default CustomersPage;
+export default Customers;

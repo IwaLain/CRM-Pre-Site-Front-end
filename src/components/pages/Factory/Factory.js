@@ -9,11 +9,22 @@ import FormComponent from "../../FormComponent/FormComponent";
 import AttachedImages from "../../AttachedImages/AttachedImages";
 import { facilities } from "../../../js/api/facilities";
 import DropdownImageEdit from "../../widgets/DropdownImageEdit/DropdownImageEdit";
-const CustomerFactoryPage = () => {
+const Factory = () => {
   const { id } = useParams();
   const [facility, setFacility] = useState();
   const [attachedImages, setAttachedImages] = useState();
   const [mainImage, setMainImage] = useState();
+
+  useEffect(() => {
+    facilities.getFacility(id).then((data) => {
+      setFacility(data);
+      console.log(data);
+      setAttachedImages(data.facilityImages);
+      const mainImage = getMainImage(data.facilityImages);
+      setMainImage(mainImage);
+    });
+  }, []);
+
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
     if (!mainImage) {
@@ -21,14 +32,6 @@ const CustomerFactoryPage = () => {
     }
     return mainImage;
   };
-  useEffect(() => {
-    facilities.getFacility(id).then((data) => {
-      setFacility(data);
-      setAttachedImages(data.facilityImages);
-      const mainImage = getMainImage(data.facilityImages);
-      setMainImage(mainImage);
-    });
-  }, []);
 
   const formFields = [
     { name: "title", type: "text", defaultValue: "default", id: "id-1" },
@@ -37,27 +40,24 @@ const CustomerFactoryPage = () => {
     { name: "title", type: "text", defaultValue: "default", id: "id-4" },
   ];
 
-  // const setMainFacilityImage = (imageId) => {
-  //   setMainImage(id, imageId);
-  // };
-  // const editImage = (img) => {
-  //   setFactoryImage(`http://crm.loc/${img}`);
-  // };
   const addFacilityImage = (data) => {
     facilities.addFacilityImage(id, data).then((res) => {
       setAttachedImages(res.facilityImages);
     });
   };
+
   const deleteFacilityImage = (img) => {
     facilities.deleteFacilityImage(img.facility_id, img.id).then((res) => {
       setAttachedImages(res.facilityImages);
     });
   };
+
   const setMainFacilityImage = (imageId) => {
     facilities.setMainFacilityImage(id, imageId).then((res) => {
       setMainImage(res["main-image"]);
     });
   };
+
   return (
     <>
       <div className="d-flex align-items-center factory-page--header">
@@ -77,26 +77,6 @@ const CustomerFactoryPage = () => {
             }
             setMainImage={setMainFacilityImage}
           ></DropdownImageEdit>
-          {/* <span className="edit-img">
-            <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-              <DropdownToggle className="edit-img__btn">
-                <img src={star} alt="star" />
-              </DropdownToggle>
-              <DropdownMenu className="edit-img__menu">
-                {facility && facility.facilityImages.length > 0 ? (
-                  facility.facilityImages.map(({ img }) => (
-                    <DropdownItem key={img} onClick={() => editImage(img)}>
-                      <img src={`http://crm.loc/${img}`} />
-                    </DropdownItem>
-                  ))
-                ) : (
-                  <DropdownItem>
-                    <p>No images.</p>
-                  </DropdownItem>
-                )}
-              </DropdownMenu>
-            </Dropdown>
-          </span> */}
         </div>
         <h1 className="page-title">{facility && facility.name}</h1>
       </div>
@@ -123,4 +103,4 @@ const CustomerFactoryPage = () => {
   );
 };
 
-export default CustomerFactoryPage;
+export default Factory;

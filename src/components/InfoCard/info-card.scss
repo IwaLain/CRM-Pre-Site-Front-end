@@ -1,42 +1,42 @@
 @import "../../scss/scss-variables.scss";
 
-.customer-card_group {
+.info-card_group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   grid-gap: 10px;
 }
 
-.customer-card {
+.info-card {
   display: flex;
   border: 1px solid black;
   min-width: 400px;
 }
 
-.customer-card > img {
+.info-card > img {
   height: 120px;
 }
 
-.customer-card__body {
+.info-card__body {
   display: flex;
   flex-direction: column;
   padding: 9px;
   width: 100%;
 }
 
-.customer-card__body > * {
-  margin-bottom: 20px;
+.info-card__body > .progress {
+  margin-bottom: 30px;
 }
 
-.customer-card__body > .progress {
+.info-card__body > .progress {
   width: 100%;
   height: 7px;
 }
 
-.customer-card__body > .progress > .progress-bar {
+.info-card__body > .progress > .progress-bar {
   background-color: $success;
 }
 
-.customer-card__body > a {
+.info-card__body a {
   display: block;
   margin-bottom: 0;
   text-decoration: none;
@@ -48,28 +48,38 @@
   width: 100%;
 }
 
-.customer-card__body > a:hover {
+.info-card__body a:hover {
   border: 1px solid black;
   color: black;
 }
 
+.info-card__btns {
+  display: flex;
+  gap: 5px;
+  height: 28px;
+}
+
+.info-card__btns > button {
+  padding: 0 5px;
+}
+
 /* Dense style */
-.customer-card_group.dense {
+.info-card_group.dense {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   justify-items: center;
 }
 
-.customer-card_group.dense > .customer-card {
+.info-card_group.dense > .info-card {
   flex-direction: column;
   min-width: 0;
   width: 200px;
 }
 
-.customer-card_group.dense > .customer-card > img {
+.info-card_group.dense > .info-card > img {
   width: 100%;
   height: 100%;
 }
 
-.customer-card_group.dense > .customer-card > .customer-card__body > h4 {
+.info-card_group.dense > .info-card > .info-card__body > h4 {
   height: 54px;
 }
