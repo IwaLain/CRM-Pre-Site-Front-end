@@ -1,6 +1,6 @@
 import React from 'react'
+import User from '../../../../js/api/users';
 import { alert } from '../../../../js/helpers/alert';
-import { user } from '../../../../js/api/users';
 import ModalUser from '../ModalUser/ModalUser';
 
 const EditeUser = ({currentUser, toggle, modal, editeTable}) => {
@@ -16,7 +16,7 @@ const EditeUser = ({currentUser, toggle, modal, editeTable}) => {
             'role': e.role,
         }
 
-        user.editeUser(currentUser.id, data)
+        User.editeUser(currentUser.id, data)
         .then(data => {
             if(data.errors) {
                 alert('error', data.errors)
@@ -26,16 +26,16 @@ const EditeUser = ({currentUser, toggle, modal, editeTable}) => {
         })
 
         user.editUserRole(currentUser.id, data)
-        
+
         editeTable(currentUser.id, data)
     };
 
     return (
         <div>
-            <ModalUser 
-                title='Edit User' 
-                onSubmit={onSubmit} 
-                currentUser={currentUser} 
+            <ModalUser
+                title='Edit User'
+                onSubmit={onSubmit}
+                currentUser={currentUser}
                 toggle={toggle}
                 modal={modal}
             />

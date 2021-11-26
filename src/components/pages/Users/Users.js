@@ -6,7 +6,7 @@ import {
     } from 'reactstrap'
 import star from '../../../assets/img/star.svg'
 import './Users.scss'
-import { user } from '../../../js/api/users'
+import User from '../../../js/api/users'
 import TableUser from './TableUser/TableUser'
 import AddUser from './AddUser/AddUser'
 
@@ -24,7 +24,7 @@ const UsersPage = () => {
     }
 
     useEffect(() => {
-        user.getUsers()
+        User.getUsers()
         .then(data => setUsers(data.user))
     }, [])
 
