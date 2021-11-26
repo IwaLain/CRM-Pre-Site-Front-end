@@ -13,6 +13,7 @@ import CustomerCreate from "../pages/CustomerCreate/CustomerCreate";
 import EditCustomer from "../pages/EditCustomer/EditCustomer";
 import FacilityEdit from "../pages/FacilityEdit/FacilityEdit";
 import EquipmentEdit from "../pages/EquipmentEdit/EquipmentEdit";
+import LocationEdit from "../pages/LocationEdit/LocationEdit";
 const ModalComponent = ({ toggle, modal, type, mode }) => {
   const [FormComponent, setFormComponent] = useState();
   const [formTitle, setFormTitle] = useState();
@@ -46,6 +47,10 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
           case "equipment":
             setFormComponent(<EquipmentEdit />);
             setFormTitle("Equipment Edit");
+            break;
+          case "locations":
+            setFormComponent(<LocationEdit />);
+            setFormTitle("Location Edit");
             break;
           default:
             break;

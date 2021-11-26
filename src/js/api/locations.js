@@ -90,6 +90,16 @@ const getFacilityLocations = async (limit, page, search, facilityId) => {
 
   return response;
 };
+const updateLocationsAPI = async (locationId, dataLocation) => {
+  let config = {
+    method: "PUT",
+    url: `/api/customer/update/${locationId}?access-token=${token}`,
+    data: dataLocation,
+  };
+
+  const response = await api(config);
+  return response;
+};
 export {
   getLocationTree,
   addLocation,
@@ -98,4 +108,5 @@ export {
   getLocationAPI,
   getLocations,
   getFacilityLocations,
+  updateLocationsAPI,
 };
