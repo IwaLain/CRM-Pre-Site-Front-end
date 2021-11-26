@@ -5,7 +5,7 @@ import TableView from "../../TableView/TableView";
 import InfoCard from "../../InfoCard/InfoCard";
 import Pagination from "../../widgets/Pagination/Pagination";
 import { Spinner, Input, Label } from "reactstrap";
-import { PageContext } from "../../../context";
+import { GlobalContext } from "../../../context";
 import { customersApi } from "../../../js/api/customer";
 import { location } from "../../../js/api/locations";
 import { equipment } from "../../../js/api/equipment";
@@ -34,7 +34,7 @@ const List = ({ type }) => {
     setEntityID,
     showFormModal,
     setShowFormModal,
-  } = useContext(PageContext);
+  } = useContext(GlobalContext);
 
   const params = useParams();
   let id = 0;
@@ -100,15 +100,24 @@ const List = ({ type }) => {
         setShowEntitySelect(false);
         break;
       case "facilities":
-        setRequests({ list: customersApi.getCustomerFacilities, ref: customersApi.getCustomers });
+        setRequests({
+          list: customersApi.getCustomerFacilities,
+          ref: customersApi.getCustomers,
+        });
         setShowEntitySelect(true);
         break;
       case "locations":
-        setRequests({ list: location.getFacilityLocations, ref: facilitiesApi.getFacilities });
+        setRequests({
+          list: location.getFacilityLocations,
+          ref: facilitiesApi.getFacilities,
+        });
         setShowEntitySelect(true);
         break;
       case "equipment":
-        setRequests({ list: equipment.getLocationEquipment, ref: location.getLocations });
+        setRequests({
+          list: equipment.getLocationEquipment,
+          ref: location.getLocations,
+        });
         setShowEntitySelect(true);
     }
 

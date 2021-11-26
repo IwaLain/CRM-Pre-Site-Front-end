@@ -5,14 +5,14 @@ import { Form, FormGroup, Label, Col } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/methods/alert";
 import { equipment as equipmentApi } from "../../../js/api/equipment";
-import { PageContext } from "../../../context";
+import { GlobalContext } from "../../../context";
 import convertToBase64 from "../../../js/methods/convertImage";
 
 const EquipmentEdit = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();
   const [img, setImg] = useState();
-  const { setShowFormModal, entityID, editId } = useContext(PageContext);
+  const { setShowFormModal, entityID, editId } = useContext(GlobalContext);
   const [equipment, setEquipment] = useState();
   const {
     register,

@@ -5,7 +5,7 @@ import star from "../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/methods/alert";
 import convertToBase64 from "../../../js/methods/convertImage";
-import { PageContext } from "../../../context";
+import { GlobalContext } from "../../../context";
 import { useRouteMatch } from "react-router";
 import { facilitiesApi } from "../../../js/api/facilities";
 
@@ -13,9 +13,9 @@ const FacilityCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();
   const [img, setImg] = useState();
-  const { setShowFormModal } = useContext(PageContext);
+  const { setShowFormModal } = useContext(GlobalContext);
 
-  const { entityID } = useContext(PageContext);
+  const { entityID } = useContext(GlobalContext);
 
   const {
     register,

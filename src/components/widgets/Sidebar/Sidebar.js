@@ -1,7 +1,7 @@
 import logo from "../../../assets/img/company.png";
 import { Link } from "react-router-dom";
 
-const Sidebar = ({ isMobile, toggleSidebar }) => {
+const Sidebar = ({ isMobile }) => {
   return (
     <aside>
       <div className="logo sidebar">
@@ -45,6 +45,12 @@ const Sidebar = ({ isMobile, toggleSidebar }) => {
       </div>
       <nav>
         <ul>
+          <li>
+            <Link to={`/dashboard`}>
+              <i className="fas fa-chart-area"></i>
+              {!isMobile && "Dashboard"}
+            </Link>
+          </li>
           <li>
             <Link to={`/dashboard/customers`}>
               <i className="fas fa-user"></i>

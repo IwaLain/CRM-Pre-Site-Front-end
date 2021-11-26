@@ -5,7 +5,7 @@ import star from "../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/methods/alert";
 import convertToBase64 from "../../../js/methods/convertImage";
-import { PageContext } from "../../../context";
+import { GlobalContext } from "../../../context";
 import { useContext } from "react";
 import { useParams, useRouteMatch } from "react-router";
 import { facilitiesApi } from "../../../js/api/facilities";
@@ -14,7 +14,7 @@ const FacilityEdit = () => {
   const [loadedImg, setLoadedImg] = useState();
   const [img, setImg] = useState();
 
-  const { editId, entityID, setShowFormModal } = useContext(PageContext);
+  const { editId, entityID, setShowFormModal } = useContext(GlobalContext);
   const [facility, setFacility] = useState();
 
   const {
@@ -27,7 +27,9 @@ const FacilityEdit = () => {
     facilitiesApi.getFacility(editId).then(({ facility }) => {
       setFacility(facility[editId]);
       reset(facility[editId]);
-      setLoadedImg(process.env.REACT_APP_SERVER_URL + "/" + facility[editId].img);
+      setLoadedImg(
+        process.env.REACT_APP_SERVER_URL + "/" + facility[editId].img
+      );
       setImgLoaded(true);
     });
   }, [reset]);

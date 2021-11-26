@@ -18,11 +18,10 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    logout()
-      .then((res) => {
-        localStorage.removeItem("token");
-      })
-      .then(history.push("/"));
+    logout().then(() => {
+      localStorage.removeItem("token");
+      history.push("/");
+    });
   };
 
   return (

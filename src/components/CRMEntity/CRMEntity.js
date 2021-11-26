@@ -11,12 +11,12 @@ import InfoCard from "../InfoCard/InfoCard";
 import AttachedImages from "../AttachedImages/AttachedImages";
 import "../../scss/CRMEntity.scss";
 import ModalComponent from "../ModalComponent/ModalComponent";
-import { PageContext } from "../../context";
+import { GlobalContext } from "../../context";
 
 const CRMEntity = ({ type }) => {
-  type = type.entity; 
+  type = type.entity;
   const { id } = useParams();
-  const { showFormModal, setShowFormModal } = useContext(PageContext);
+  const { showFormModal, setShowFormModal } = useContext(GlobalContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
@@ -91,11 +91,11 @@ const CRMEntity = ({ type }) => {
 
   useEffect(() => {
     getEntityAPI(id).then((data) => {
-      
-      if(type==='customer'||type==='facility') {
+      if (type === "customer" || type === "facility") {
         data = data[type][id];
+      } else {
+        data = data[type];
       }
-      else{data = data[type];}
       setEntityObject(data);
       if (data[`${type}Images`]) {
         setAttachedImages(data[`${type}Images`]);
@@ -132,7 +132,7 @@ const CRMEntity = ({ type }) => {
       <ModalComponent
         modal={showFormModal}
         toggle={toggleModal}
-        type={{entity:subEntityName}}
+        type={{ entity: subEntityName }}
         mode="edit"
       />
       <div className="d-flex align-items-center entity-page--header">
