@@ -28,8 +28,6 @@ const UsersPage = () => {
         .then(data => setUsers(data.user))
     }, [])
 
-    console.log(users)
-
     return (
         <>
             <Row className='align-items-center justify-content-xs-between'>
