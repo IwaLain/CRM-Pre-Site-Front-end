@@ -1,10 +1,10 @@
 import { getToken } from '../helpers/helpers'
 import { apiRequest } from './api'
-import { URL } from './constants'
+import { BASE_URL } from './constants'
 
 const Global = {
-    loginRequest: ( username, password, callback ) => {
-        apiRequest( 'POST', URL + '/api/login', callback, {
+    loginRequest: ( username, password ) => {
+        return apiRequest( 'POST', BASE_URL + '/api/login', {
             username: username,
             password: password
         }, {
@@ -12,31 +12,31 @@ const Global = {
         })
     },
 
-    logoutRequest: callback => {
+    logoutRequest: () => {
         const token = getToken()
 
-        if ( token ) apiRequest( 'POST', URL + '/api/logout/', callback, {}, {
-            'Authorization': 'Bearer' + token
+        if ( token ) return apiRequest( 'POST', BASE_URL + '/api/logout/', {}, {
+            'Content-Type':'application/json'
         })
     },
 
-    getProfile: callback => {
+    getProfile: () => {
         const token = getToken()
-        if ( token ) apiRequest( 'GET', URL, `/api/user?access-token=${token}`, callback, {}, {
-            'Authorization': 'Bearer' + token
+        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user?access-token=${token}`, {}, {
+            'Content-Type':'application/json'
         })
     },
 
-    updateProfile: (callback, data, id) => {
+    updateProfile: (data, id) => {
         const token = getToken()
-        if ( token ) apiRequest( 'GET', URL, `/api/user/update/${id}?access-token=${token}`, callback, data, {
-            'Authorization': 'Bearer' + token
+        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
+            'Content-Type':'application/json'
         })
     },
 
-    uploadProfilePhoto: (callback, data, id) => {
+    uploadProfilePhoto: (data, id) => {
         const token = getToken()
-        if ( token ) apiRequest( 'GET', URL, `/api/user/update/${id}?access-token=${token}`, callback, data, {
+        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Authorization': 'Bearer' + token
         })
     }

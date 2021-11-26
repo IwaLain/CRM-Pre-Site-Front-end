@@ -1,5 +1,3 @@
-const baseURL = 'http://crm.local'
-
 export const apiRequest = async ( method, url, data = {}, headers = undefined) => {
     if ( method === 'GET' || method === 'DELETE' ) {
         const response = await fetch(url, {
@@ -16,7 +14,8 @@ export const apiRequest = async ( method, url, data = {}, headers = undefined) =
     }
 }
 
-let response = []
+const baseURL = "http://crm.local";
+let response = [];
 
 export const api = async (configs) => {
     const path = `${baseURL + configs.url}`

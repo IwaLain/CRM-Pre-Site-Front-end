@@ -1,0 +1,51 @@
+@import "./scss-variables.scss";
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin-top: 20px;
+  padding: 0;
+}
+
+.pagination a {
+  cursor: default;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid $btn-primary;
+  color: $btn-primary;
+  margin: 0 5px;
+  text-decoration: none;
+}
+
+.pagination li:not(.disabled) a:hover {
+  background-color: $default;
+  cursor: pointer;
+}
+
+.pagination li a {
+  font-weight: bold;
+}
+
+.pagination li.active a {
+  color: #fff;
+  background: $btn-primary;
+}
+
+.pagination li.disabled a {
+  pointer-events: none;
+  color: rgb(198, 197, 202);
+  border: 1px solid rgb(198, 197, 202);
+}
+
+@media (max-width: 600px) {
+  .pagination a {
+    padding: 5px;
+  }
+}
+
+@media (max-width: 490px) {
+  .pagination a {
+    margin: 0;
+  }
+}

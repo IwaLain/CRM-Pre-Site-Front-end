@@ -25,7 +25,7 @@ const EditeUser = ({currentUser, toggle, modal, editeTable}) => {
             }
         })
 
-        user.editUserRole(currentUser.id, data)
+        User.editUserRole(currentUser.id, data)
 
         editeTable(currentUser.id, data)
     };

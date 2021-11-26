@@ -1,41 +1,72 @@
-import { Global } from "./api"
+import { getToken } from "../helpers/helpers";
+import { apiRequest } from "./api";
+import { BASE_URL } from "./constants";
 
-const token = localStorage.getItem('token')
+const equipmentApi = {
+    getEquipments: async () => {
+        const token = getToken()
 
-const getEquipments = async () => {
-    return Global('GET', `/api/equipment?access-token=${token}`)
+        if ( token ) return apiRequest('GET', BASE_URL + `/api/equipment?access-token=${token}`, {}, {})
+    },
+
+    getEquipment: async (equipmentId) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('GET', BASE_URL + `/api/equipment/${equipmentId}?access-token=${token}`, {}, {})
+    },
+
+    addEquipment: async (data) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('POST', BASE_URL + `/api/equipment/create?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
+    },
+
+    editEquipment: async (equipmentId, data) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('PUT', BASE_URL + `/api/equipment/update/${equipmentId}?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
+    },
+
+    deleteEquipment: async (equipmentId) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/equipment/delete/${equipmentId}?access-token=${token}`, {}, {})
+    },
+
+    deleteImageEquipment: async (equipmentImageId) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`, {}, {})
+    },
+
+    createImageEquipment: async (equipmentImageId, data) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`, data, {})
+    },
+
+    getLocationEquipment: async (limit, page, search, locationId) => {
+        const token = getToken()
+        let url = `/api/location/${locationId}/equipment?access-token=${token}`;
+
+        if (limit) url += `&limit=${limit}`;
+        if (page) url += `&page=${page}`;
+        if (search) url += `&s=${search}`;
+
+        if ( token ) return apiRequest('GET', BASE_URL + url, {}, {})
+    },
+
+    setMainEquipmentImage: async (equipmentId, imageId) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('PUT', BASE_URL +  `/api/equipment/${equipmentId}/set-main-image/${imageId}?access-token=${token}`, {}, {
+            'Content-Type':'application/json'
+        })
+    }
 }
 
-const getEquipment = async (equipmentId) => {
-    return Global('GET', `/api/equipment/${equipmentId}?access-token=${token}`)
-}
-
-const addEquipment = async (data) => {
-    return Global('POST', `/api/equipment/create?access-token=${token}`, data)
-}
-
-const editEquipment = async (equipmentId, data) => {
-    return Global('PUT', `/api/equipment/update/${equipmentId}?access-token=${token}`, data)
-}
-
-const deleteEquipment = async (equipmentId) => {
-    return Global('DELETE', `/api/equipment/delete/${equipmentId}?access-token=${token}`)
-}
-
-const deleteImageEquipment = async (equipmentImageId) => {
-    return Global('DELETE', `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`)
-}
-
-const createImageEquipment = async (equipmentImageId, data) => {
-    return Global('POST', `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`, data)
-}
-
-export const equipment = {
-    getEquipments,
-    getEquipment,
-    addEquipment,
-    editEquipment,
-    deleteEquipment,
-    deleteImageEquipment,
-    createImageEquipment,
-}
+export default equipmentApi

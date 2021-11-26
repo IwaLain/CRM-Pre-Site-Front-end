@@ -4,12 +4,12 @@ import { BASE_URL } from './constants'
 
 const User = {
     getUsers: () => {
-        const token = getToken
+        const token = getToken()
 
-        if ( token ) return apiRequest( 'GET', BASE_URL, `/api/user?access-token=${token}}`, {}, {})
+        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user?access-token=${token}`, {}, {})
     },
 
-    editUserRole: (userId, data, callback) => {
+    editUserRole: (userId, data) => {
         const token = getToken()
 
         if ( token ) return apiRequest('POST', BASE_URL + `/api/role/assign-role/${userId}?access-token=${token}`, data, {
@@ -17,7 +17,7 @@ const User = {
         })
     },
 
-    addUser: (data, callback) => {
+    addUser: (data) => {
         const token = getToken()
 
         if ( token ) return apiRequest('POST', BASE_URL + `/api/user/create?access-token=${token}`, data, {
@@ -25,7 +25,7 @@ const User = {
         })
     },
 
-    editeUser: (userId, data, callback) => {
+    editeUser: (userId, data) => {
         const token = getToken()
 
         if ( token ) return apiRequest('PUT', BASE_URL + `/api/user/update/${userId}?access-token=${token}`, data, {
@@ -33,7 +33,7 @@ const User = {
         })
     },
 
-    deleteUser: (userId, callback) => {
+    deleteUser: (userId) => {
         const token = getToken()
 
         if ( token ) return apiRequest('DELETE', URL + `/api/user/delete/${userId}?access-token=${token}`, {}, {})
