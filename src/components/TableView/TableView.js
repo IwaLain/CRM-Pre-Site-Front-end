@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { PageContext } from "../../context";
 
-const TableView = ({ data, type, toggleModal }) => {
+const TableView = ({ data, type, toggleModal, setMode }) => {
   const [fieldTitle, setFieldTitle] = useState("Title");
   const [showProgress, setShowProgress] = useState(true);
 
@@ -70,6 +70,7 @@ const TableView = ({ data, type, toggleModal }) => {
                   <td>
                     <Button
                       onClick={() => {
+                        setMode("edit");
                         setEditId(record.id);
                         toggleModal();
                       }}

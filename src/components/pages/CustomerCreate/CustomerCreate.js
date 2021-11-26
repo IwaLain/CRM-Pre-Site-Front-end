@@ -4,10 +4,9 @@ import { Form, FormGroup, Label, Col } from "reactstrap";
 import star from "../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/methods/alert";
-import { addCustomerAPI } from "../../../js/api/customer";
+import { addCustomerAPI, getCustomerAPI } from "../../../js/api/customer";
 import convertToBase64 from "../../../js/methods/convertImage";
 import { PageContext } from "../../../context";
-
 const CustomerCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();

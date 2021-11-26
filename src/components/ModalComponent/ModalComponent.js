@@ -12,7 +12,10 @@ import CustomerCreate from "../pages/CustomerCreate/CustomerCreate";
 import FacilityCreate from "../pages/FacilityCreate/FacilityCreate";
 import LocationCreate from "../pages/LocationCreate/LocationCreate";
 import EquipmentCreate from "../pages/EquipmentCreate/EquipmentCreate";
-
+import EditCustomer from "../pages/EditCustomer/EditCustomer";
+import FacilityEdit from "../pages/FacilityEdit/FacilityEdit";
+import EquipmentEdit from "../pages/EquipmentEdit/EquipmentEdit";
+import LocationEdit from "../pages/LocationEdit/LocationEdit";
 const ModalComponent = ({ toggle, modal, type, mode }) => {
   const [FormComponent, setFormComponent] = useState();
   const [formTitle, setFormTitle] = useState();
@@ -37,17 +40,34 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
             setFormComponent(<EquipmentCreate />);
             setFormTitle("Equipment create");
             break;
+          default:
+            break;
         }
         break;
       case "edit":
         switch (type.entity) {
           case "customers":
-            //setFormComponent(<CustomerEdit />);
+            setFormComponent(<EditCustomer />);
+            setFormTitle("Customer Edit");
             break;
           case "facilities":
-            //setFormComponent(<FacilityEdit />);
+            setFormComponent(<FacilityEdit />);
+            setFormTitle("Facility Edit");
+            break;
+          case "equipment":
+            setFormComponent(<EquipmentEdit />);
+            setFormTitle("Equipment Edit");
+            break;
+          case "locations":
+            setFormComponent(<LocationEdit />);
+            setFormTitle("Location Edit");
+            break;
+          default:
             break;
         }
+        break;
+      default:
+        break;
     }
   }, [type, mode]);
 

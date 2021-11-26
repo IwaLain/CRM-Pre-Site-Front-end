@@ -98,6 +98,16 @@ const setMainCustomerImageAPI = async (customerId, imageId) => {
 
   return response;
 };
+const updateCustomerAPI = async (customerId, dataCustomer) => {
+  let config = {
+    method: "PUT",
+    url: `/api/customer/update/${customerId}?access-token=${token}`,
+    data: dataCustomer,
+  };
+
+  const response = await api(config);
+  return response;
+};
 export {
   getCustomersAPI,
   getCustomerAPI,
@@ -107,4 +117,5 @@ export {
   addCustomerImageAPI,
   deleteCustomerImageAPI,
   setMainCustomerImageAPI,
+  updateCustomerAPI,
 };

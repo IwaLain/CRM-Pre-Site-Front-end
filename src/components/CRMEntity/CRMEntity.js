@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import logo from "../../assets/img/company.png";
 import {
@@ -25,10 +25,13 @@ import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../InfoCard/InfoCard";
 import AttachedImages from "../AttachedImages/AttachedImages";
 import "../../scss/CRMEntity.scss";
+import ModalComponent from "../ModalComponent/ModalComponent";
+import { PageContext } from "../../context";
 
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
+  const { showFormModal, setShowFormModal } = useContext(PageContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
@@ -132,8 +135,17 @@ const CRMEntity = ({ type }) => {
   const handleResize = () => {
     SetScreenSize(window.innerWidth);
   };
+  const toggleModal = () => {
+    setShowFormModal(!showFormModal);
+  };
   return (
     <>
+      <ModalComponent
+        modal={showFormModal}
+        toggle={toggleModal}
+        type={type}
+        mode="edit"
+      />
       <div className="d-flex align-items-center entity-page--header">
         {entityObject && entityObject[`${type}Images`] && (
           <div className="main-img--container">
@@ -186,7 +198,11 @@ const CRMEntity = ({ type }) => {
           >
             {subEntity && subEntity.length > 0 ? (
               subEntity.map((subEnt) => (
-                <InfoCard data={subEnt} type={subEntityName} />
+                <InfoCard
+                  data={subEnt}
+                  type={subEntityName}
+                  toggleModal={toggleModal}
+                />
               ))
             ) : (
               <p>No {subEntityName} found.</p>

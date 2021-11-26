@@ -99,7 +99,16 @@ const setMainEquipmentImageAPI = async (equipmentId, imageId) => {
 
   return response;
 };
+const updateEquipmentAPI = async (equipmentId, dataEquipment) => {
+  let config = {
+    method: "PUT",
+    url: `/api/equipment/update/${equipmentId}?access-token=${token}`,
+    data: dataEquipment,
+  };
 
+  const response = await api(config);
+  return response;
+};
 export {
   getEquipments,
   getEquipment,
@@ -110,4 +119,5 @@ export {
   createImageEquipment,
   setMainEquipmentImageAPI,
   getLocationEquipment,
+  updateEquipmentAPI,
 };

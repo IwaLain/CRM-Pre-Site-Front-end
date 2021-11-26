@@ -244,6 +244,7 @@ const List = ({ type }) => {
                   type={type}
                   toggleModal={toggleModal}
                   modal={showFormModal}
+                  setMode={setMode}
                 />
               ) : (
                 <div
@@ -260,6 +261,7 @@ const List = ({ type }) => {
                         data={record}
                         type={type.entity}
                         toggleModal={toggleModal}
+                        setMode={setMode}
                       />
                     ))
                   ) : (
