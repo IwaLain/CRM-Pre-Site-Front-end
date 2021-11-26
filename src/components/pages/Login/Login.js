@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import "react-toastify/dist/ReactToastify.css";
-import "./LoginPage.scss";
+import "./Login.scss";
 import logo from "../../../assets/img/company.png";
 import {
   Card,
@@ -15,8 +15,11 @@ import {
 import { alert } from "../../../js/methods/alert";
 import { ToastContainer } from "react-toastify";
 import { loginAPI } from "../../../js/api/login";
+import { useHistory } from "react-router";
 
 const LoginPage = () => {
+  let history = useHistory();
+
   const {
     register,
     handleSubmit,
@@ -37,7 +40,7 @@ const LoginPage = () => {
         localStorage.setItem("token", data.token);
         alert("success", "Login success");
       }
-    });
+    }).then(history.push('/dashboard'));
   };
 
   return (

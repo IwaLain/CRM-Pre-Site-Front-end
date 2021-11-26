@@ -18,10 +18,17 @@ const Header = () => {
   };
 
   const handleLogout = () => {
+<<<<<<< HEAD
     logout().then(() => {
       localStorage.removeItem("token");
       history.push("/");
     });
+=======
+    logout().then((res) => {
+      localStorage.removeItem('token')
+      
+    }).then(history.push("/"));
+>>>>>>> 46d90e9fb9e1c2f511625f5d41cde3ae94609dc7
   };
 
   return (

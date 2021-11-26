@@ -1,7 +1,7 @@
 import { api } from "./api"
 import { endpoints } from "./endpoint"
 
-const getUsersAPI = async () => {
+const getUsers = async () => {
     let config = {
         method: 'GET',
         url: endpoints.getUsers
@@ -11,7 +11,7 @@ const getUsersAPI = async () => {
     return response.user
 }
 
-const editUserRoleAPI = async (userId, data) => {
+const editUserRole = async (userId, data) => {
     let config = {
         method: 'POST',
         url: `/api/role/assign-role/${userId}?access-token=${localStorage.getItem('token')}`,
@@ -22,7 +22,7 @@ const editUserRoleAPI = async (userId, data) => {
     return response
 }
 
-const addUserAPI = async (data) => {
+const addUser = async (data) => {
     let config = {
         method: 'POST',
         url: endpoints.addUser,
@@ -33,7 +33,7 @@ const addUserAPI = async (data) => {
     return response
 }
 
-const editeUserAPI = async (userId, data) => {
+const editeUser = async (userId, data) => {
     let config = {
         method: 'PUT',
         url: endpoints.editeUser + userId + '?access-token=' + localStorage.getItem('token'),
@@ -45,8 +45,8 @@ const editeUserAPI = async (userId, data) => {
 }
 
 export const user = {
-    getUsersAPI,
-    editUserRoleAPI,
-    addUserAPI,
-    editeUserAPI
+    getUsers,
+    editUserRole,
+    addUser,
+    editeUser
 }

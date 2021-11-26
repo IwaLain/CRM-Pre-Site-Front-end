@@ -4,33 +4,31 @@ import {
         Col,
         Modal,
         ModalBody,
-        ModalHeader,
         Row,
         Table
     } from 'reactstrap'
 import star from '../../../assets/img/star.svg'
 import edite from '../../../assets/img/edite.svg'
-import './UsersPage.scss'
+import './Users.scss'
 import { NavLink } from 'react-router-dom'
 import { user } from '../../../js/api/user'
-import { EditeUserModal } from './EditUser/EditeUserModal'
+import { EditeUserModal } from './EditUser/EditeUser'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
     const [modal, setModal] = useState(false)
     const [currentUser, setCurrentUser] = useState([])
-    const [loading, setLoading] = useState([])
 
     const toggle = () => setModal(!modal)
 
     useEffect(() => {
-        user.getUsersAPI().then(data => setUsers(data))
-    }, []) 
+        user.getUsers().then(data => setUsers(data))
+    }, [])
 
     const editeUser = (userId, dataUser) => {
         setUsers(users.map(data => data.id === userId ? {...data, data: dataUser.id} : data))
     }
-    
+
     return (
         <>
             <Row className='align-items-center justify-content-xs-between'>
@@ -80,9 +78,8 @@ const UsersPage = () => {
                     </Table>
                 </Col>
             </Row>
-            
+
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Edite User: '{currentUser.username}'</ModalHeader>
                 <ModalBody>
                     <EditeUserModal currentUser={currentUser} editeUser={editeUser}/>
                 </ModalBody>
