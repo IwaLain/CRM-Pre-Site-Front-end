@@ -2,18 +2,18 @@ import React, { useState } from 'react'
 import { Col, Row, Table } from 'reactstrap'
 import edite from '../../../../assets/img/edite.svg'
 import del from '../../../../assets/img/delete.svg'
-import EditeUser from '../EditUser/EditeUser'
+import UserEdit from '../UserEdit/UserEdit'
 import User from '../../../../js/api/users'
-import './TableUser.scss'
+import './UserTable.scss'
 
-const TableUser = ( { users, modal, toggle, changeTable, editeTable}) => {
+const UserTable = ( { users, modal, toggle, changeTable, editeTable}) => {
     const [currentUser, setCurrentUser] = useState([])
 
     const current = (currentUser) => setCurrentUser(currentUser)
-    
+
     const deleteUser = (userId) => {
         User.deleteUser(userId)
-        .then(data => changeTable(data.users))
+        .then(data => console.log(data))
     }
 
     return (
@@ -68,7 +68,7 @@ const TableUser = ( { users, modal, toggle, changeTable, editeTable}) => {
                     </tbody>
                 </Table>
             </Col>
-            <EditeUser
+            <UserEdit
                 currentUser={currentUser}
                 editeTable={editeTable}
                 toggle={toggle}
@@ -78,4 +78,4 @@ const TableUser = ( { users, modal, toggle, changeTable, editeTable}) => {
     )
 }
 
-export default TableUser
+export default UserTable

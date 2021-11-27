@@ -7,8 +7,8 @@ import {
 import star from '../../../assets/img/star.svg'
 import './Users.scss'
 import User from '../../../js/api/users'
-import TableUser from './TableUser/TableUser'
-import AddUser from './AddUser/AddUser'
+import UserTable from './UserTable/UserTable'
+import UserAdd from './UserAdd/UserAdd'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
@@ -42,14 +42,14 @@ const UsersPage = () => {
                 </Col>
             </Row>
 
-            <TableUser
+            <UserTable
                 changeTable={changeTable}
                 editeTable={editeTable}
                 users={users}
                 modal={modalEditUser}
                 toggle={toggleEditUser}
             />
-            <AddUser
+            <UserAdd
                 changeTable={changeTable}
                 toggle={toggleAddUser}
                 modal={modalAddUser}

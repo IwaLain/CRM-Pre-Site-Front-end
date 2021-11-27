@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Form, Row } from "reactstrap";
-import './FormUser.scss'
-import { inputs, select } from '../../../../js/helpers/input';
+import './UserForm.scss'
+// import Input from '../../../../js/helpers/input';
 import { useForm } from 'react-hook-form';
 import { ToastContainer } from 'react-toastify';
 
@@ -38,13 +38,13 @@ const FormUser = ({ onSubmit, currentUser = ''}) => {
                         id='formUser-form'
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        {inputs( 'firstname', data, 'Firstname', errors.firstname )}
+                        {/* {inputs( 'firstname', data, 'Firstname', errors.firstname )}
                         {inputs( 'lastname', data, 'Lastname', errors.lastname )}
                         {inputs( 'username', data, 'Username', errors.username )}
                         {inputs( 'email', data, 'Email', errors.email )}
                         {inputs( 'phone', data, 'Phone', errors.phone )}
                         {select( 'role', data, 'Role', errors.role )}
-                        {inputs( 'password', data, 'Password', errors.password )}
+                        {inputs( 'password', data, 'Password', errors.password )} */}
                     </Form>
                 </Col>
             </Row>

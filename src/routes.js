@@ -1,7 +1,6 @@
 import LoginPage from "./components/pages/Login/Login";
 import UsersPage from "./components/pages/Users/Users";
 import Profile from "./components/pages/Profile/Profile";
-import AddUserPage from "./components/pages/Users/AddUser/AddUser";
 import CustomerCreate from "./components/pages/CustomerCreate/CustomerCreate";
 import List from "./components/pages/List/List";
 import React from "react";
@@ -25,11 +24,6 @@ const routes = {
       path: "/dashboard/profile",
       name: "Profile Page",
       children: <Profile />,
-    },
-    {
-      path: "/dashboard/add-user",
-      name: "Add User",
-      children: <AddUserPage />,
     },
     {
       path: "/dashboard/customers/create",

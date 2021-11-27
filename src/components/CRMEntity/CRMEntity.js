@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import logo from "../../assets/img/company.png";
 import customersApi from "../../js/api/customer";
 import facilitiesApi from "../../js/api/facilities";
-import { location } from "../../js/api/locations";
+import locationApi from "../../js/api/locations";
 import equipmentApi from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
@@ -76,7 +76,7 @@ const CRMEntity = ({ type }) => {
       break;
     case "location":
       subEntityName = "equipment";
-      getEntityAPI = location.getLocation;
+      getEntityAPI = locationApi.getLocation;
 
       break;
     case "equipment":

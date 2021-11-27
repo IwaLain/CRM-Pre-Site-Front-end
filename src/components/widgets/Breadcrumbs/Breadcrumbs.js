@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../../../scss/breadcrumbs.scss";
 import customersApi from "../../../js/api/customer";
 import facilitiesApi from "../../../js/api/facilities";
-import { location } from "../../../js/api/locations";
+import locationApi from "../../../js/api/locations";
 import { useState } from "react";
 import equipmentApi from "../../../js/api/equipment";
 
@@ -32,7 +32,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
             breadcrumb.key.includes("/dashboard/locations/") &&
             parseInt(breadcrumb.props.children)
           ) {
-            location.getLocation(breadcrumb.props.children).then((location) => {
+            locationApi.getLocation(breadcrumb.props.children).then((location) => {
               setName(location.name);
             });
           } else if (

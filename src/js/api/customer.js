@@ -25,7 +25,7 @@ const customersApi = {
     addCustomer: async (data) => {
         const token = getToken()
 
-        if ( token ) return apiRequest('POST', BASE_URL + `/api/customer/create?access-token=${token}`, data, {
+        if ( token ) return await apiRequest('POST', BASE_URL + `/api/customer/create?access-token=${token}`, data, {
             'Content-Type':'application/json'
         })
     },

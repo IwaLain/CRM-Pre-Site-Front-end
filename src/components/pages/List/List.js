@@ -7,7 +7,7 @@ import Pagination from "../../widgets/Pagination/Pagination";
 import { Spinner, Input, Label } from "reactstrap";
 import { PageContext } from "../../../context";
 import customersApi from "../../../js/api/customer";
-import { location } from "../../../js/api/locations";
+import locationApi from "../../../js/api/locations";
 import equipmentApi from "../../../js/api/equipment";
 import facilitiesApi from "../../../js/api/facilities";
 import ModalComponent from "../../ModalComponent/ModalComponent";
@@ -104,11 +104,11 @@ const List = ({ type }) => {
         setShowEntitySelect(true);
         break;
       case "locations":
-        setRequests({ list: location.getFacilityLocations, ref: facilitiesApi.getFacilities });
+        setRequests({ list: locationApi.getFacilityLocations, ref: facilitiesApi.getFacilities });
         setShowEntitySelect(true);
         break;
       case "equipment":
-        setRequests({ list: equipmentApi.getLocationEquipment, ref: location.getLocations });
+        setRequests({ list: equipmentApi.getLocationEquipment, ref: locationApi.getLocations });
         setShowEntitySelect(true);
     }
 

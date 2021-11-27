@@ -3,19 +3,16 @@ import { apiRequest } from './api'
 import { BASE_URL } from './constants'
 
 const Global = {
-    loginRequest: ( username, password ) => {
-        return apiRequest( 'POST', BASE_URL + '/api/login', {
-            username: username,
-            password: password
-        }, {
-            'Accept': 'application/json'
+    loginRequest: ( data ) => {
+        return apiRequest( 'POST', BASE_URL + '/api/login', data, {
+            'Content-Type': 'application/json'
         })
     },
 
     logoutRequest: () => {
         const token = getToken()
 
-        if ( token ) return apiRequest( 'POST', BASE_URL + '/api/logout/', {}, {
+        if ( token ) return apiRequest( 'POST', BASE_URL + `/api/logout?access-token=${token}`, {}, {
             'Content-Type':'application/json'
         })
     },

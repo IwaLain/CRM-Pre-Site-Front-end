@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Col, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import './ModalUsr.scss'
-import FormUser from '../FormUser/FormUser'
+import './UserModal.scss'
+import FormUser from '../UserForm/UserForm'
 
 const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
     return (
@@ -11,9 +11,9 @@ const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
         >
             <ModalHeader className='modal__head'>
                 {title}
-                <span 
-                    type="button" 
-                    className="btn-close" 
+                <span
+                    type="button"
+                    className="btn-close"
                     aria-label="Close"
                     onClick={toggle}
                 ></span>

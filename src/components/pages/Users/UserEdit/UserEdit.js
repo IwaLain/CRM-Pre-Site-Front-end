@@ -1,9 +1,9 @@
 import React from 'react'
 import User from '../../../../js/api/users';
 import { alert } from '../../../../js/helpers/alert';
-import ModalUser from '../ModalUser/ModalUser';
+import UserModal from '../UserModal/UserModal';
 
-const EditeUser = ({currentUser, toggle, modal, editeTable}) => {
+const UserEdit = ({currentUser, toggle, modal, editeTable}) => {
     const onSubmit = (e) => {
         const data = {
             'id': currentUser.id,
@@ -32,7 +32,7 @@ const EditeUser = ({currentUser, toggle, modal, editeTable}) => {
 
     return (
         <div>
-            <ModalUser
+            <UserModal
                 title='Edit User'
                 onSubmit={onSubmit}
                 currentUser={currentUser}
@@ -43,4 +43,4 @@ const EditeUser = ({currentUser, toggle, modal, editeTable}) => {
     )
 }
 
-export default EditeUser
+export default UserEdit

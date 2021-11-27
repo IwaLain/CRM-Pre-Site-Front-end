@@ -36,7 +36,7 @@ const User = {
     deleteUser: (userId) => {
         const token = getToken()
 
-        if ( token ) return apiRequest('DELETE', URL + `/api/user/delete/${userId}?access-token=${token}`, {}, {})
+        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/user/delete/${userId}?access-token=${token}`, {}, {})
     }
 }
 

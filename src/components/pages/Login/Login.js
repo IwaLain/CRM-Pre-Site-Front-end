@@ -12,9 +12,9 @@ import { Card,
          CardBody } from 'reactstrap'
 import { alert } from '../../../js/helpers/alert';
 import { ToastContainer } from 'react-toastify';
-import { login } from '../../../js/api/login';
+import Global from '../../../js/api/global';
 import { useHistory } from 'react-router';
-import { inputs } from '../../../js/helpers/input';
+import InputForm from '../../../js/helpers/input';
 
 const LoginPage = () => {
   let history = useHistory();
@@ -26,7 +26,7 @@ const LoginPage = () => {
     trigger,
   } = useForm();
 
-  const data = {
+  const dataInput = {
     register,
     handleSubmit,
     formState: { errors },
@@ -39,7 +39,7 @@ const LoginPage = () => {
       password: e.password,
     };
 
-    login(data).then((data) => {
+    Global.loginRequest(data).then((data) => {
       if (data.errors) {
         alert("error", data.errors);
       } else {
@@ -62,12 +62,20 @@ const LoginPage = () => {
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
                   <FormGroup>
-                    {inputs("username", data, "Username:", errors.username)}
+                    <InputForm
+                        type={'username'}
+                        data={dataInput}
+                        errors={errors.username}
+                    />
                   </FormGroup>
                 </Row>
                 <Row>
                   <FormGroup>
-                    {inputs("password", data, "Password:", errors.password)}
+                    <InputForm
+                        type={'password'}
+                        data={dataInput}
+                        errors={errors.password}
+                    />
                   </FormGroup>
                 </Row>
                 <Row>

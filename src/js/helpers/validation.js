@@ -1,5 +1,5 @@
 const regex = {
-    password: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+    password: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8})$/,
     email: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
     phone: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
 }
@@ -21,22 +21,14 @@ export const validation = (type) => {
                     value: 4,
                     message: "Minimum 4 simvols",
                 },
-                maxLength: {
-                    value: 16,
-                    message: "Maximum 16 simvols",
-                },
                 pattern: {
                     value: regex.password,
-                    message: "Password should contain atleast one number and one special character",
+                    message: "Password should contain number and sinvols",
                 }
             }
         case 'email':
             return {
                 required: "Email is Required",
-                minLength: {
-                    value: 5,
-                    message: "Minimum 5 simvols",
-                },
                 pattern: {
                     value: regex.email,
                     message: "Email must be like exampl@mail.com",
@@ -61,15 +53,15 @@ export const validation = (type) => {
                     message: 'Please select role'
                 }
             }
-        case 'text':
-            return {
-                required: 'This input is required',
-                minLength: {
-                    value: 4,
-                    message: "Minimum 4 simvols",
-                },
-            }
         default:
             break
+    }
+}
+
+export const errorsValidation = (errors, message) => {
+    if (errors) {
+        return <small className="addUser__desc text-danger">{errors.message}</small>
+    } else {
+        return <small className='addUser__desc text-muted'>{message}</small>
     }
 }
