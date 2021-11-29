@@ -59,16 +59,6 @@ const getFacilityLocations = async (limit, page, search, facilityId) => {
   return Global("GET", url);
 };
 
-const updateLocationsAPI = async (locationId, dataLocation) => {
-  return Global(
-    "PUT",
-    `/api/customer/update/${locationId}?access-token=${localStorage.getItem(
-      "token"
-    )}`,
-    dataLocation
-  );
-};
-
 export const location = {
   getLocationTree,
   addLocation,
@@ -77,5 +67,4 @@ export const location = {
   getLocation,
   getLocations,
   getFacilityLocations,
-  updateLocationsAPI,
 };

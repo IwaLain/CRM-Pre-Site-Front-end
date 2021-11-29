@@ -59,7 +59,7 @@ const CRMEntity = ({ type }) => {
   const setNewInformationItem = (fieldTitle, value) => {
     setInformationItems((oldArr) => {
       const newElement = { fieldTitle: fieldTitle, value: value };
-
+      console.log(newElement);
       return [...oldArr, newElement];
     });
   };
@@ -107,10 +107,13 @@ const CRMEntity = ({ type }) => {
         setMainImage(mainImage);
       }
       if (data.jsonData) {
-        const customFields = data.jsonData[0];
-        for (const [key, value] of Object.entries(customFields)) {
-          setNewInformationItem(key, value);
-        }
+        const customFields = data.jsonData;
+        console.log(customFields);
+        customFields.forEach((el) => {
+          if (el.value) {
+            setNewInformationItem(el.name, el.value);
+          }
+        });
       }
       if (subEntityName.length !== 0) {
         setSubEntity(data[subEntityName]);

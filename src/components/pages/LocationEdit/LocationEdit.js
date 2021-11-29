@@ -13,13 +13,10 @@ import {
 } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/methods/alert";
-import {
-  getLocationAPI,
-  updateLocationsAPI,
-} from "../../../js/api/locations";
+import { getLocationAPI, updateLocationsAPI } from "../../../js/api/locations";
 import { location as locationApi } from "../../../js/api/locations";
 import { PageContext } from "../../../context";
-
+import "../../../scss/location-edit.scss";
 const LocationEdit = () => {
   const { setShowFormModal, editId, entityID } = useContext(PageContext);
   const [fields, setFields] = useState([]);
@@ -36,22 +33,26 @@ const LocationEdit = () => {
     locationApi.getLocation(editId).then((data) => {
       setlocation(data.location);
       const jsonData = data.location["jsonData"];
-      const newFields = fields;
-      jsonData.forEach((el) => {
-        Object.entries(el).map(([key, value]) => {
-          newFields.push({
-            id: `field${fieldCount}`,
-            title: key,
-            value: value,
-          });
-        });
-      });
 
-      setFields(newFields);
+      reset({ name: data.location["name"] });
+      if (jsonData) {
+        let newFields = [];
+        let newCount = 1;
+        jsonData.forEach((el) => {
+          newFields.push({
+            id: `field${newCount}`,
+            title: el.name,
+            value: el.value,
+          });
+          newCount += 1;
+        });
+        setFieldCount(newCount);
+
+        setFields(newFields);
+      }
     });
-  }, []);
+  }, [reset]);
   const onSubmit = (data) => {
-    console.log(data);
     if (Object.keys(data).length > 2) {
       const body = {};
       const jsonData = [];
@@ -73,7 +74,7 @@ const LocationEdit = () => {
       }
       body["jsonData"] = jsonData;
 
-      locationApi.updateLocationsAPI(editId, body).then((res) => {
+      locationApi.editLocation(editId, body).then((res) => {
         if (res.status === "Successfully updated")
           alert("success", "Location updated.");
         else alert("error", "Request error.");
@@ -172,25 +173,19 @@ const LocationEdit = () => {
                 <Label sm={2} for={`${id}-field`}>
                   {title}
                 </Label>
-                <Col sm={10}>
+                <Col sm={9}>
                   <input
                     className={`form-control ${
                       errors[`${id}`] ? "is-invalid" : ""
                     }`}
                     id={`${id}-field`}
                     placeholder="Enter address."
-                    {...register(`${id}`, {
-                      required: {
-                        value: true,
-                        message: "Address is required.",
-                      },
-                      minLength: {
-                        value: 3,
-                        message: "Address should contain at least 3 symbols.",
-                      },
-                    })}
+                    {...register(`${id}`)}
                     defaultValue={value}
                   />
+                </Col>
+                <Col sm={1} className="delete-field--container">
+                  <Button className="delete-field--btn"></Button>
                 </Col>
               </FormGroup>
             ))}
