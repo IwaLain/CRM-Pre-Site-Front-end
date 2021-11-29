@@ -1,22 +1,39 @@
-import { Table, Progress, Button } from "reactstrap";
+import { Table, Progress, Button, FormGroup, Input } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context";
 
-const TableView = ({ data, type, toggleModal, setMode }) => {
+const TableView = ({
+  data,
+  type,
+  toggleModal,
+  setMode,
+  showChooseBox,
+  changeCustomer,
+}) => {
   const [fieldTitle, setFieldTitle] = useState("Title");
   const [showProgress, setShowProgress] = useState(true);
+  const [subEntity, setSubEntity] = useState("");
 
-  const { setEditId } = useContext(GlobalContext);
+  const { setEditId, selectedCustomer } = useContext(GlobalContext);
 
   useEffect(() => {
     switch (type.entity) {
       case "customers":
+        setShowProgress(true);
+        setSubEntity("Facilities");
+        break;
       case "facilities":
         setShowProgress(true);
+        setSubEntity("Locations");
+        break;
+      case "locations":
+        setShowProgress(false);
+        setSubEntity("Equipment");
         break;
       default:
         setShowProgress(false);
+        setSubEntity("");
         break;
     }
   });
@@ -27,40 +44,59 @@ const TableView = ({ data, type, toggleModal, setMode }) => {
     }
   }, [data]);
 
+  const calculateProgress = (record) => {
+    let progress = 0;
+    switch (type.entity) {
+      case "customers":
+        if (record.name) progress += 33.3;
+        if (record.facilities && record.facilities.length > 0) progress += 33.3;
+        if (record.equipments && record.equipments.length > 0) progress += 33.3;
+        break;
+      case "facilities":
+        if (record.name) progress += 33.3;
+        if (record.locations && record.locations.length > 0) progress += 33.3;
+        if (record.equipments && record.equipments.length > 0) progress += 33.3;
+        break;
+      default:
+        break;
+    }
+
+    return progress;
+  };
+
   return (
     <>
       <Table style={{ width: "100%", verticalAlign: "middle" }}>
         <thead>
           <tr>
-            <th style={{ width: "45%" }}>{fieldTitle}</th>
-            <th style={{ width: "45%" }}>{showProgress && "Progress"}</th>
+            {showChooseBox && <th style={{ width: "2%" }}></th>}
+            <th style={{ width: "10%" }}>{fieldTitle}</th>
+            {subEntity && <th style={{ width: "3%" }}>{subEntity}</th>}
+            <th style={{ width: "75%" }}>{showProgress && "Progress"}</th>
+            <th style={{ width: "5%" }}></th>
           </tr>
         </thead>
         <tbody>
           {data && data.length > 0 ? (
             data.map((record) => {
-              let progress = 0;
-              switch (type.entity) {
-                case "customers":
-                  if (record.name) progress += 33.3;
-                  if (record.facilities && record.facilities.length > 0)
-                    progress += 33.3;
-                  if (record.equipments && record.equipments.length > 0)
-                    progress += 33.3;
-                  break;
-                case "facilities":
-                  if (record.name) progress += 33.3;
-                  if (record.locations && record.locations.length > 0)
-                    progress += 33.3;
-                  if (record.equipments && record.equipments.length > 0)
-                    progress += 33.3;
-                  break;
-                default:
-                  break;
-              }
+              let progress = calculateProgress(record);
               return (
                 <tr key={record.id}>
+                  {showChooseBox && (
+                    <td>
+                      <FormGroup check>
+                        <Input
+                          type="checkbox"
+                          checked={record.id === selectedCustomer.id}
+                          onChange={() => changeCustomer(record.id)}
+                        />
+                      </FormGroup>
+                    </td>
+                  )}
                   <td>{record.name}</td>
+                  {subEntity && (
+                    <td>{record[subEntity.toLowerCase()].length}</td>
+                  )}
                   <td>{showProgress && <Progress value={progress} />}</td>
                   <td>
                     <Link to={`/dashboard/${type.entity}/${record.id}`}>
@@ -69,6 +105,7 @@ const TableView = ({ data, type, toggleModal, setMode }) => {
                   </td>
                   <td>
                     <Button
+                      color="primary"
                       onClick={() => {
                         setMode("edit");
                         setEditId(record.id);

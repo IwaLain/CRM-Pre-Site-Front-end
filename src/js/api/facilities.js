@@ -12,9 +12,7 @@ const getFacilities = async () => {
 const getFacility = async (facilityId) => {
   return Global(
     "GET",
-    `/api/facilities/${facilityId}?access-token=${localStorage.getItem(
-      "token"
-    )}`
+    `/api/facility/${facilityId}?access-token=${localStorage.getItem("token")}`
   );
 };
 

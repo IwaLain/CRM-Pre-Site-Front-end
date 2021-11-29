@@ -47,6 +47,7 @@ const LoginPage = () => {
       } else {
         localStorage.setItem("token", data.token);
         alert("success", "Login success");
+        window.location.reload();
         history.push("/dashboard");
       }
     });

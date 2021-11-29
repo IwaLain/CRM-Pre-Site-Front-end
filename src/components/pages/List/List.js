@@ -24,6 +24,7 @@ const List = ({ type }) => {
   const [totalPages, setTotalPages] = useState(Math.ceil(0));
   const [entityNames, setEntityNames] = useState();
   const [mode, setMode] = useState();
+  const [showChooseBox, setShowChooseBox] = useState(false);
 
   const RECORDS_PER_PAGE = 12;
 
@@ -34,6 +35,8 @@ const List = ({ type }) => {
     setEntityID,
     showFormModal,
     setShowFormModal,
+    selectedCustomer,
+    setSelectedCustomer,
   } = useContext(GlobalContext);
 
   const params = useParams();
@@ -93,10 +96,23 @@ const List = ({ type }) => {
     setShowFormModal(!showFormModal);
   };
 
+  const changeCustomer = (id) => {
+    fetch(
+      process.env.REACT_APP_SERVER_URL +
+        "/api/customer/" +
+        id +
+        "?access-token=" +
+        localStorage.getItem("token")
+    )
+      .then((res) => res.json())
+      .then((customer) => setSelectedCustomer(customer.customer[id]));
+  };
+
   useEffect(() => {
     switch (type.entity) {
       case "customers":
         setRequests({ list: customersApi.getCustomers });
+        setShowChooseBox(true);
         setShowEntitySelect(false);
         break;
       case "facilities":
@@ -104,6 +120,7 @@ const List = ({ type }) => {
           list: customersApi.getCustomerFacilities,
           ref: customersApi.getCustomers,
         });
+        setShowChooseBox(false);
         setShowEntitySelect(true);
         break;
       case "locations":
@@ -111,6 +128,7 @@ const List = ({ type }) => {
           list: location.getFacilityLocations,
           ref: facilitiesApi.getFacilities,
         });
+        setShowChooseBox(false);
         setShowEntitySelect(true);
         break;
       case "equipment":
@@ -118,6 +136,7 @@ const List = ({ type }) => {
           list: equipment.getLocationEquipment,
           ref: location.getLocations,
         });
+        setShowChooseBox(false);
         setShowEntitySelect(true);
     }
 
@@ -147,7 +166,13 @@ const List = ({ type }) => {
       requests.ref().then((res) => {
         const formattedNames = formatNames(res[type.ref]);
         setEntityNames(formattedNames);
-        setEntityID(formattedNames[0].id);
+        if (
+          selectedCustomer &&
+          Object.keys(selectedCustomer).length > 0 &&
+          type.ref === "customers"
+        )
+          setEntityID(selectedCustomer.id);
+        else setEntityID(formattedNames[0].id);
       });
   }, [requests]);
 
@@ -203,12 +228,16 @@ const List = ({ type }) => {
                 <Label for="select-entity">{type.ref}:</Label>
                 <Input
                   id="select-entity"
-                  type="select"
                   onChange={handleEntitySelect}
+                  type="select"
                 >
                   {entityNames &&
                     entityNames.map((entity) => (
-                      <option key={entity.id} value={entity.id}>
+                      <option
+                        key={entity.id}
+                        value={entity.id}
+                        selected={entity.id === selectedCustomer.id}
+                      >
                         {entity.id}. {entity.name}
                       </option>
                     ))}
@@ -251,6 +280,8 @@ const List = ({ type }) => {
                   toggleModal={toggleModal}
                   modal={showFormModal}
                   setMode={setMode}
+                  showChooseBox={showChooseBox}
+                  changeCustomer={changeCustomer}
                 />
               ) : (
                 <div
@@ -267,6 +298,10 @@ const List = ({ type }) => {
                         data={record}
                         type={type.entity}
                         toggleModal={toggleModal}
+                        setMode={setMode}
+                        showChooseBox={showChooseBox}
+                        selected={record.id === selectedCustomer.id}
+                        changeCustomer={changeCustomer}
                         setMode={setMode}
                       />
                     ))

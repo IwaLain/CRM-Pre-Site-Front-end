@@ -10,7 +10,7 @@ import DashboardLayout from "./components/layouts/DashboardLayout/DashboardLayou
 import NotFound from "./components/pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
-import Dashboard from "./components/pages/Dashboard/Dashboard";
+import LoginPage from "./components/pages/Login/Login";
 
 const App = () => {
   const [pageTitle, setPageTitle] = useState();
@@ -20,6 +20,13 @@ const App = () => {
   const [editId, setEditId] = useState();
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState({});
+  const [userProfile, setUserProfile] = useState({});
+
+  useEffect(() => {
+    window.addEventListener("storage", (e) => {
+      console.log(1);
+    });
+  }, []);
 
   return (
     <GlobalContext.Provider
@@ -36,6 +43,8 @@ const App = () => {
         setEntityID,
         showFormModal,
         setShowFormModal,
+        userProfile,
+        setUserProfile,
         selectedCustomer,
         setSelectedCustomer,
       }}
@@ -67,9 +76,16 @@ const App = () => {
                     <Redirect to="/login" />
                   )}
                 </Route>
-                {routes.auth.map(({ path, children }, index) => {
-                  return <Route key={index} path={path} children={children} />;
-                })}
+                <Route path="/login">
+                  {localStorage.getItem("token") ? (
+                    <Redirect to="/dashboard" />
+                  ) : (
+                    <LoginPage />
+                  )}
+                </Route>
+                {/* // {routes.auth.map(({ path, children }, index) => {
+                //   return <Route key={index} path={path} children={children} />;
+                // })}  */}
                 <Route component={NotFound} />
               </Switch>
             </AuthLayout>
