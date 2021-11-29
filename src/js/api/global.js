@@ -17,7 +17,9 @@ const Global = {
         })
     },
 
-    getProfile: async (token) => {
+    getProfile: async () => {
+        const token = getToken()
+        
         if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/profile?access-token=${token}`, {}, {
             'Content-Type':'application/json'
         })
