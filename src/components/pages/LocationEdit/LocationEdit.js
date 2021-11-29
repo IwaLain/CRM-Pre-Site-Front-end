@@ -16,11 +16,7 @@ import { alert } from "../../../js/methods/alert";
 import { getLocationAPI, updateLocationsAPI } from "../../../js/api/locations";
 import { location as locationApi } from "../../../js/api/locations";
 import { GlobalContext } from "../../../context";
-<<<<<<< HEAD
 import "../../../scss/location-edit.scss";
-=======
-
->>>>>>> develop-fedorov
 const LocationEdit = () => {
   const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);

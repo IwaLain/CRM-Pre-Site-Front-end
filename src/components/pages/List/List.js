@@ -35,11 +35,8 @@ const List = ({ type }) => {
     setEntityID,
     showFormModal,
     setShowFormModal,
-<<<<<<< HEAD
-=======
     selectedCustomer,
     setSelectedCustomer,
->>>>>>> develop-fedorov
   } = useContext(GlobalContext);
 
   const params = useParams();
@@ -123,10 +120,7 @@ const List = ({ type }) => {
           list: customersApi.getCustomerFacilities,
           ref: customersApi.getCustomers,
         });
-<<<<<<< HEAD
-=======
         setShowChooseBox(false);
->>>>>>> develop-fedorov
         setShowEntitySelect(true);
         break;
       case "locations":
@@ -134,10 +128,7 @@ const List = ({ type }) => {
           list: location.getFacilityLocations,
           ref: facilitiesApi.getFacilities,
         });
-<<<<<<< HEAD
-=======
         setShowChooseBox(false);
->>>>>>> develop-fedorov
         setShowEntitySelect(true);
         break;
       case "equipment":
@@ -145,10 +136,7 @@ const List = ({ type }) => {
           list: equipment.getLocationEquipment,
           ref: location.getLocations,
         });
-<<<<<<< HEAD
-=======
         setShowChooseBox(false);
->>>>>>> develop-fedorov
         setShowEntitySelect(true);
     }
 

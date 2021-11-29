@@ -15,11 +15,7 @@ const TableView = ({
   const [showProgress, setShowProgress] = useState(true);
   const [subEntity, setSubEntity] = useState("");
 
-<<<<<<< HEAD
-  const { setEditId } = useContext(GlobalContext);
-=======
   const { setEditId, selectedCustomer } = useContext(GlobalContext);
->>>>>>> develop-fedorov
 
   useEffect(() => {
     switch (type.entity) {

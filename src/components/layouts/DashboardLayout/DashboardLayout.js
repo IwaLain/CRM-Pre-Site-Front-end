@@ -44,41 +44,6 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   return (
-<<<<<<< HEAD
-    <GlobalContext.Provider
-      value={{
-        pageTitle,
-        pageType,
-        setPageType,
-        id,
-        setId,
-        setPagePath,
-        editId,
-        setEditId,
-        entityID,
-        setEntityID,
-        showFormModal,
-        setShowFormModal,
-      }}
-    >
-      <div className="dashboard container-fluid">
-        <Sidebar
-          isMobile={isMobile}
-          toggleSidebar={toggleSidebar}
-          type={pageType && pageType.ref}
-          id={id}
-        />
-        <section>
-          <Header isMobile={isMobile} toggleSidebar={toggleSidebar} />
-          <main>
-            <Breadcrumbs />
-            {children}
-          </main>
-          <ToastContainer position="bottom-right" />
-        </section>
-      </div>
-    </GlobalContext.Provider>
-=======
     <div className="dashboard container-fluid">
       <Sidebar
         isMobile={isMobile}
@@ -94,7 +59,6 @@ const DashboardLayout = ({ children }) => {
         <ToastContainer position="bottom-right" />
       </section>
     </div>
->>>>>>> develop-fedorov
   );
 };
 

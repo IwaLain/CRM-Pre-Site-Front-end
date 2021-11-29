@@ -1,13 +1,6 @@
 import placeholder from "../../assets/img/company.png";
 import { Progress, Button, FormGroup, Input } from "reactstrap";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-import "./info-card.scss";
-import { useContext } from "react";
-import { GlobalContext } from "../../context";
-
-const InfoCard = ({ data, type, toggleModal }) => {
-=======
 import "../../scss/info-card.scss";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context";
@@ -23,7 +16,6 @@ const InfoCard = ({
 }) => {
   const [subEntity, setSubEntity] = useState("");
   const [progress, setProgress] = useState(0);
->>>>>>> develop-fedorov
   const { setEditId } = useContext(GlobalContext);
 
   useEffect(() => {
