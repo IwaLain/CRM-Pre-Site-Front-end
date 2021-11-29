@@ -1,12 +1,11 @@
 import React from 'react'
 import { alert } from '../../../../js/helpers/alert';
-import InputForm from '../../../../js/helpers/input';
-import { ToastContainer } from 'react-toastify';
-import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import User from '../../../../js/api/users';
+import UserModal from '../UserModal/UserModal';
 import { useForm } from 'react-hook-form';
 
-const AddUser = ({ changeTable }) => {
+const UserAdd = ({ toggle, modal, changeTable }) => {
+
     const {
         register,
         handleSubmit,
@@ -46,78 +45,15 @@ const AddUser = ({ changeTable }) => {
 
     return (
         <div>
-            <Row>
-                <Col>
-                    <Form
-                        id='form'
-                        onSubmit={handleSubmit(onSubmit)}
-                    >
-                        <FormGroup>
-                            <Row>
-                                <Col md={6}>
-                                    <Label className=''>First Name:</Label>
-                                    <InputForm
-                                        type={'firstname'}
-                                        data={dataInput}
-                                        errors={errors.firstname}
-                                    />
-                                </Col>
-                                <Col md={6}>
-                                    <Label className=''>Lust Name:</Label>
-                                    <InputForm
-                                        type={'lastname'}
-                                        data={dataInput}
-                                        errors={errors.lastname}
-                                    />
-                                </Col>
-                            </Row>
-                        </FormGroup>
-                        <FormGroup>
-                            <Row>
-                                <Col md={6}>
-                                    <Label className=''>User Name:</Label>
-                                    <InputForm
-                                        type={'username'}
-                                        data={dataInput}
-                                        errors={errors.username}
-                                    />
-                                </Col>
-                                <Col md={6}>
-                                    <Label className=''>Email:</Label>
-                                    <InputForm
-                                        type={'email'}
-                                        data={dataInput}
-                                        errors={errors.email}
-                                    />
-                                </Col>
-                            </Row>
-                        </FormGroup>
-                        <FormGroup>
-                            <Row>
-                                <Col md={6}>
-                                    <Label className=''>Phone:</Label>
-                                    <InputForm
-                                        type={'phone'}
-                                        data={dataInput}
-                                        errors={errors.phone}
-                                    />
-                                </Col>
-                                <Col md={6}>
-                                    <Label className=''>Password:</Label>
-                                    <InputForm
-                                        type={'password'}
-                                        data={dataInput}
-                                        errors={errors.password}
-                                    />
-                                </Col>
-                            </Row>
-                        </FormGroup>
-                    </Form>
-                </Col>
-            </Row>
-            <ToastContainer position='bottom-right'/>
+            <UserModal
+                type='Add User' 
+                toggle={toggle}
+                modal={modal}
+                method={onSubmit}
+                data={dataInput}
+            />
         </div>
     )
 }
 
-export default AddUser
+export default UserAdd

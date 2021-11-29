@@ -1,11 +1,11 @@
 import React from 'react'
+import { useForm } from 'react-hook-form';
 import User from '../../../../js/api/users';
 import { alert } from '../../../../js/helpers/alert';
 import UserModal from '../UserModal/UserModal';
 
-const UserEdit = ({toggle, modal, currentUser = '', editeMethod}) => {
-
-    const onSubmit = (e) => {
+const UserEdit = ({ toggle, modal, currentUser, editeMethod}) => {
+     const onSubmit = (e) => {
         const data = {
             'id': currentUser.id,
             'first_name': e.firstname,
@@ -38,7 +38,7 @@ const UserEdit = ({toggle, modal, currentUser = '', editeMethod}) => {
                 toggle={toggle}
                 modal={modal}
                 method={editeMethod, onSubmit}
-                currentUser={currentUser}
+                data={currentUser}
             />
         </div>
     )

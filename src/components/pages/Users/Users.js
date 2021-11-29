@@ -8,7 +8,7 @@ import star from '../../../assets/img/star.svg'
 import './Users.scss'
 import User from '../../../js/api/users'
 import UserTable from './UserTable/UserTable'
-import UserModal from './UserModal/UserModal'
+import UserAdd from './UserAdd/UserAdd'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
@@ -48,7 +48,7 @@ const UsersPage = () => {
                 users={users}
             />
 
-            <UserModal
+            <UserAdd
                 title='Add User'
                 toggle={toggleAddUser}
                 modal={modalAddUser}

@@ -1,10 +1,11 @@
 import React from 'react'
 import { Button, Col, Form, FormGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap'
 import './UserModal.scss'
-import InputForm from '../../../../js/helpers/input'
+import { errorsValidation, validation } from '../../../../js/helpers/validation'
 import { useForm } from 'react-hook-form'
 
-const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
+const UserModal = ({type, toggle, modal, method, data}) => {
+    const message = ''
     const {
         register,
         handleSubmit,
@@ -12,21 +13,15 @@ const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
         formState: { errors }
     } = useForm({
         defaultValues: {
-            firstname: currentUser.first_name,
-            lastname: currentUser.last_name,
-            username: currentUser.username,
-            email: currentUser.email,
-            phone: currentUser.phone,
-            role: currentUser.role,
+            firstname: data.first_name,
+            lastname: data.last_name,
+            username: data.username,
+            email: data.email,
+            phone: data.phone,
+            role: data.role,
+            // password: profile.password,
         }
     })
-
-    const dataInput = {
-        register,
-        handleSubmit,
-        formState: { errors },
-        trigger,
-    }
 
     return (
         <Modal
@@ -53,19 +48,29 @@ const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
                             <Row>
                                 <Col md={6}>
                                     <Label className=''>First Name:</Label>
-                                    <InputForm
-                                        type={'firstname'}
-                                        data={dataInput}
-                                        errors={errors.firstname}
+                                    <input
+                                        type='text'
+                                        placeholder='...'
+                                        className={`form-control ${errors.firstname ? 'is-invalid' : ''}`}
+                                        {...register('firstname', validation('firstname') )}
+                                        onKeyUp={() => {
+                                            trigger('firstname')
+                                        }}
                                     />
+                                    {errorsValidation(errors.firstname, message)}
                                 </Col>
                                 <Col md={6}>
                                     <Label className=''>Lust Name:</Label>
-                                    <InputForm
-                                        type={'lastname'}
-                                        data={dataInput}
-                                        errors={errors.lastname}
+                                    <input
+                                        type='text'
+                                        placeholder='...'
+                                        className={`form-control ${errors.lastname ? 'is-invalid' : ''}`}
+                                        {...register('lastname', validation('lastname') )}
+                                        onKeyUp={() => {
+                                            trigger('lastname')
+                                        }}
                                     />
+                                    {errorsValidation(errors.lastname, message)}
                                 </Col>
                             </Row>
                         </FormGroup>
@@ -73,19 +78,29 @@ const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
                             <Row>
                                 <Col md={6}>
                                     <Label className=''>User Name:</Label>
-                                    <InputForm
-                                        type={'username'}
-                                        data={dataInput}
-                                        errors={errors.username}
+                                    <input
+                                        type='text'
+                                        placeholder='...'
+                                        className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                                        {...register('username', validation('username') )}
+                                        onKeyUp={() => {
+                                            trigger('username')
+                                        }}
                                     />
+                                    {errorsValidation(errors.username, message)}
                                 </Col>
                                 <Col md={6}>
                                     <Label className=''>Email:</Label>
-                                    <InputForm
-                                        type={'email'}
-                                        data={dataInput}
-                                        errors={errors.email}
+                                    <input
+                                        type='email'
+                                        placeholder='...'
+                                        className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                                        {...register('email', validation('email') )}
+                                        onKeyUp={() => {
+                                            trigger('email')
+                                        }}
                                     />
+                                    {errorsValidation(errors.email, message)}
                                 </Col>
                             </Row>
                         </FormGroup>
@@ -93,19 +108,44 @@ const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
                             <Row>
                                 <Col md={6}>
                                     <Label className=''>Phone:</Label>
-                                    <InputForm
-                                        type={'phone'}
-                                        data={dataInput}
-                                        errors={errors.phone}
+                                    <input
+                                        type='text'
+                                        placeholder='...'
+                                        className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
+                                        {...register('phone', validation('phone') )}
+                                        onKeyUp={() => {
+                                            trigger('phone')
+                                        }}
                                     />
+                                    {errorsValidation(errors.phone, message)}
                                 </Col>
                                 <Col md={6}>
+                                    <Label className=''>Role:</Label>
+                                    <select
+                                        className='form-control'
+                                    >
+                                        <option selected disabled>Select role</option>
+                                        <option>member</option>
+                                        <option>manager</option>
+                                        <option>SuperAdmin</option>
+                                    </select>
+                                </Col>
+                            </Row>
+                        </FormGroup>
+                        <FormGroup>
+                            <Row>
+                                <Col className='modal__password' md={6}>
                                     <Label className=''>Password:</Label>
-                                    <InputForm
-                                        type={'password'}
-                                        data={dataInput}
-                                        errors={errors.password}
+                                    <input
+                                        type='password'
+                                        placeholder='...'
+                                        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                                        {...register('password', validation('password') )}
+                                        onKeyUp={() => {
+                                            trigger('password')
+                                        }}
                                     />
+                                    {errorsValidation(errors.password, message)}
                                 </Col>
                             </Row>
                         </FormGroup>
@@ -115,6 +155,7 @@ const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
             </ModalBody>
             <ModalFooter>
                 <FormGroup md={12} className='formUser__buttons'>
+                    <Row>
                         <Col md={6}>
                             <Button
                                 className='formUser__cancel'
@@ -131,7 +172,8 @@ const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
                                 Submit
                             </Button>
                         </Col>
-                    </FormGroup>
+                    </Row>
+                </FormGroup>
             </ModalFooter>
         </Modal>
     )
