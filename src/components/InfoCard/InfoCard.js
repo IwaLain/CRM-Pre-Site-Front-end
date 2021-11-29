@@ -1,32 +1,72 @@
 import placeholder from "../../assets/img/company.png";
-import { Progress, Button } from "reactstrap";
+import { Progress, Button, FormGroup, Input } from "reactstrap";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 import "./info-card.scss";
 import { useContext } from "react";
 import { GlobalContext } from "../../context";
 
 const InfoCard = ({ data, type, toggleModal }) => {
+=======
+import "../../scss/info-card.scss";
+import { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../../context";
+
+const InfoCard = ({
+  data,
+  type,
+  toggleModal,
+  showChooseBox,
+  selected,
+  changeCustomer,
+  setMode,
+}) => {
+  const [subEntity, setSubEntity] = useState("");
+  const [progress, setProgress] = useState(0);
+>>>>>>> develop-fedorov
   const { setEditId } = useContext(GlobalContext);
 
-  let progress = 0;
+  useEffect(() => {
+    let totalProgress = 0;
 
-  switch (type) {
-    case "customers":
-      if (data.name) progress += 33.3;
-      if (data.facilities && data.facilities.length > 0) progress += 33.3;
-      if (data.equipments && data.equipments.length > 0) progress += 33.3;
-      break;
-    case "facilities":
-      if (data.name) progress += 33.3;
-      if (data.locations && data.locations.length > 0) progress += 33.3;
-      if (data.equipments && data.equipments.length > 0) progress += 33.3;
-      break;
-    default:
-      break;
-  }
+    switch (type) {
+      case "customers":
+        if (data.name) totalProgress += 33.3;
+        if (data.facilities && data.facilities.length > 0)
+          totalProgress += 33.3;
+        if (data.equipments && data.equipments.length > 0)
+          totalProgress += 33.3;
+        setSubEntity("Facilities");
+        break;
+      case "facilities":
+        if (data.name) totalProgress += 33.3;
+        if (data.locations && data.locations.length > 0) totalProgress += 33.3;
+        if (data.equipments && data.equipments.length > 0)
+          totalProgress += 33.3;
+        setSubEntity("Locations");
+        break;
+      case "locations":
+        setSubEntity("Equipment");
+        break;
+      default:
+        setSubEntity("");
+        break;
+    }
+
+    setProgress(totalProgress);
+  }, [type]);
 
   return (
     <div className="info-card">
+      {showChooseBox && (
+        <FormGroup check>
+          <Input
+            type="checkbox"
+            checked={selected}
+            onChange={() => changeCustomer(data.id)}
+          />
+        </FormGroup>
+      )}
       <img
         src={
           data.img
@@ -37,6 +77,9 @@ const InfoCard = ({ data, type, toggleModal }) => {
       />
       <div className="info-card__body">
         <h4>{data.name}</h4>
+        {subEntity && (
+          <span>{`${subEntity}: ${data[subEntity.toLowerCase()].length}`}</span>
+        )}
         <Progress
           style={!progress ? { visibility: "hidden" } : {}}
           value={progress}
@@ -44,7 +87,9 @@ const InfoCard = ({ data, type, toggleModal }) => {
         <div className="info-card__btns">
           <Link to={`/dashboard/${type}/${data.id}`}>View</Link>
           <Button
+            color="primary"
             onClick={() => {
+              setMode("edit");
               setEditId(data.id);
               toggleModal();
             }}

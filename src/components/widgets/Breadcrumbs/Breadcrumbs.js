@@ -18,30 +18,40 @@ const Breadcrumbs = ({ breadcrumbs }) => {
             breadcrumb.key.includes("/dashboard/customers/") &&
             parseInt(breadcrumb.props.children)
           ) {
-            customersApi.getCustomer(breadcrumb.props.children).then((customer) => {
-              setName(customer.name);
-            });
+            customersApi
+              .getCustomer(breadcrumb.props.children)
+              .then((customer) => {
+                setName(
+                  customer.customer[Object.keys(customer.customer)[0]].name
+                );
+              });
           } else if (
             breadcrumb.key.includes("/dashboard/facilities/") &&
             parseInt(breadcrumb.props.children)
           ) {
-            facilitiesApi.getFacility(breadcrumb.props.children).then((facility) => {
-              setName(facility.name);
-            });
+            facilitiesApi
+              .getFacility(breadcrumb.props.children)
+              .then((facility) => {
+                setName(
+                  facility.facility[Object.keys(facility.facility)[0]].name
+                );
+              });
           } else if (
             breadcrumb.key.includes("/dashboard/locations/") &&
             parseInt(breadcrumb.props.children)
           ) {
             location.getLocation(breadcrumb.props.children).then((location) => {
-              setName(location.name);
+              setName(location.location.name);
             });
           } else if (
             breadcrumb.key.includes("/dashboard/equipment/") &&
             parseInt(breadcrumb.props.children)
           ) {
-            equipment.getEquipment(breadcrumb.props.children).then((equipment) => {
-              setName(equipment.name);
-            });
+            equipment
+              .getEquipment(breadcrumb.props.children)
+              .then((equipment) => {
+                setName(equipment.equipment.name);
+              });
           }
 
           return (

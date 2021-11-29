@@ -12,8 +12,12 @@ import InfoCard from "../InfoCard/InfoCard";
 import "../../scss/CRMEntity.scss";
 import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
+<<<<<<< HEAD
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/methods/convertImage";
+=======
+
+>>>>>>> develop-fedorov
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
@@ -142,7 +146,11 @@ const CRMEntity = ({ type }) => {
         modal={showFormModal}
         toggle={toggleModal}
         type={{ entity: subEntityName }}
+<<<<<<< HEAD
         mode={mode}
+=======
+        mode="edit"
+>>>>>>> develop-fedorov
       />
       <div className="d-flex align-items-center entity-page--header">
         {entityObject && entityObject[`${type}Images`] && (

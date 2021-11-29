@@ -4,12 +4,15 @@ import {
   DropdownToggle,
   DropdownMenu,
 } from "reactstrap";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { logout } from "../../../js/api/login";
+import { GlobalContext } from "../../../context";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const { selectedCustomer } = useContext(GlobalContext);
 
   const history = useHistory();
 
@@ -18,17 +21,27 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    logout()
-      .then((res) => {
-        localStorage.removeItem("token");
-      })
-      .then(history.push("/"));
+    logout().then(() => {
+      localStorage.removeItem("token");
+      window.location.reload();
+      history.push("/");
+    });
   };
 
   return (
     <header style={{ zIndex: 10 }}>
-      <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-        <DropdownToggle className="profile-badge">
+      <span></span>
+      <span className="selected-customer">
+        {selectedCustomer &&
+          Object.keys(selectedCustomer).length > 0 &&
+          selectedCustomer.name}
+      </span>
+      <Dropdown
+        className="profile-badge"
+        isOpen={dropdownOpen}
+        toggle={toggleDropdown}
+      >
+        <DropdownToggle className="profile-badge__toggle">
           <i className="fas fa-star"></i>
         </DropdownToggle>
         <DropdownMenu end>

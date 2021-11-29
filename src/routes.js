@@ -6,6 +6,8 @@ import CustomerCreate from "./components/pages/CustomerCreate/CustomerCreate";
 import List from "./components/pages/List/List";
 import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
+import Dashboard from "./components/pages/Dashboard/Dashboard";
+import Network from "./components/pages/Network/Network";
 
 const routes = {
   auth: [
@@ -75,6 +77,16 @@ const routes = {
       path: "/dashboard/equipment",
       name: "Equipment",
       children: <List type={{ entity: "equipment", ref: "locations" }} />,
+    },
+    {
+      path: "/dashboard/network",
+      name: "Network",
+      children: <Network />,
+    },
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      children: <Dashboard />,
     },
   ],
 };

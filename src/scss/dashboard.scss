@@ -61,8 +61,8 @@
 /* Header */
 
 .dashboard header {
-  display: flex;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
   background-color: $primary;
   height: 60px;
@@ -71,7 +71,17 @@
   top: 0;
 }
 
+.dashboard header .selected-customer {
+  justify-self: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
 .dashboard header .profile-badge {
+  justify-self: end;
+}
+
+.dashboard header .profile-badge__toggle {
   position: relative;
   background: black;
   border: 0;
@@ -79,16 +89,16 @@
   border-radius: 50px;
 }
 
-.dashboard header .profile-badge:hover {
+.dashboard header .profile-badge__toggle:hover {
   box-shadow: 0 0 5px black;
 }
 
-.dashboard header .profile-badge:active,
-.dashboard header .profile-badge:focus {
+.dashboard header .profile-badge__toggle:active,
+.dashboard header .profile-badge__toggle:focus {
   box-shadow: none;
 }
 
-.dashboard header .profile-badge i {
+.dashboard header .profile-badge__toggle i {
   position: absolute;
   top: 50%;
   left: 50%;

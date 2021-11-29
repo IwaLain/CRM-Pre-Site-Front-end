@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../../../scss/dashboard.scss";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -16,13 +16,7 @@ const DashboardLayout = ({ children }) => {
     window.innerWidth <= MOBILE_SIZE
   );
 
-  const [pageTitle, setPageTitle] = useState();
-  const [pageType, setPageType] = useState();
-  const [pagePath, setPagePath] = useState();
-  const [id, setId] = useState();
-  const [entityID, setEntityID] = useState();
-  const [editId, setEditId] = useState();
-  const [showFormModal, setShowFormModal] = useState(false);
+  const { pagePath, setPageTitle, pageType } = useContext(GlobalContext);
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -50,6 +44,7 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   return (
+<<<<<<< HEAD
     <GlobalContext.Provider
       value={{
         pageTitle,
@@ -83,6 +78,23 @@ const DashboardLayout = ({ children }) => {
         </section>
       </div>
     </GlobalContext.Provider>
+=======
+    <div className="dashboard container-fluid">
+      <Sidebar
+        isMobile={isMobile}
+        toggleSidebar={toggleSidebar}
+        type={pageType && pageType.ref}
+      />
+      <section>
+        <Header isMobile={isMobile} toggleSidebar={toggleSidebar} />
+        <main>
+          <Breadcrumbs />
+          {children}
+        </main>
+        <ToastContainer position="bottom-right" />
+      </section>
+    </div>
+>>>>>>> develop-fedorov
   );
 };
 
