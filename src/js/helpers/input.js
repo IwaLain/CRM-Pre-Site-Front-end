@@ -3,6 +3,7 @@ import '../../scss/components/inputs.scss'
 
 const InputForm = ({type, data, errors, placeholder = '...', message = ''}) => {
     const { register, trigger } = data
+    
     return (
         <div>
             <input

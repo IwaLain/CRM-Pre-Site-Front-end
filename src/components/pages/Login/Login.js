@@ -9,11 +9,13 @@ import { Card,
          FormGroup,
          Row,
          CardImg,
-         CardBody } from 'reactstrap'
+         CardBody 
+       } from 'reactstrap'
 import { alert } from '../../../js/helpers/alert';
 import { ToastContainer } from 'react-toastify';
 import Global from '../../../js/api/global';
 import { useHistory } from 'react-router';
+
 import InputForm from '../../../js/helpers/input';
 
 const LoginPage = () => {

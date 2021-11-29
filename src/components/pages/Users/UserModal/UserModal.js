@@ -5,14 +5,14 @@ import AddUser from '../UserAdd/UserAdd'
 import UserEdit from '../UserEdit/UserEdit'
 import ProfileEdit from '../../Profile/ProfileEdit/ProfileEdit'
 
-const UserModal = ({title, toggle, modal, method, currentUser}) => {
+const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
     return (
         <Modal
             isOpen={modal}
             toggle={toggle}
         >
             <ModalHeader className='modal__head'>
-                {title}
+                {type}
                 <span
                     type="button"
                     className="btn-close"
@@ -21,7 +21,7 @@ const UserModal = ({title, toggle, modal, method, currentUser}) => {
                 ></span>
             </ModalHeader>
             <ModalBody>
-                {title === "Add User" ?
+                {type === "Add User" ?
                     <AddUser
                         changeTable={method}
                     />

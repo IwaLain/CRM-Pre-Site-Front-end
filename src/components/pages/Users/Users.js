@@ -49,10 +49,10 @@ const UsersPage = () => {
             />
 
             <UserModal
-                title='Add User'
+                type='Add User'
+                method={changeTable}
                 toggle={toggleAddUser}
                 modal={modalAddUser}
-                method={changeTable}
             />
         </>
     )

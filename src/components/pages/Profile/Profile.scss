@@ -9,6 +9,7 @@
 
         .form-label {
             margin-bottom: 0;
+            min-width: 100px;
         }
     }
 
@@ -34,6 +35,10 @@
 
         & input[type="file"] {
             display: none;
+        }
+
+        .image-field {
+            text-align: center;
         }
     }
 

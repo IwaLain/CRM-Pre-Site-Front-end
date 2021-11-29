@@ -71,7 +71,7 @@ const UserTable = ( { users, editeTable}) => {
                 </Table>
             </Col>
             <UserModal
-                title='Edit User'
+                type='Edit Profile'
                 currentUser={currentUser}
                 method={editeTable}
                 toggle={toggleEditUser}

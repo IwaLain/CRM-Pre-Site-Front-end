@@ -1,12 +1,12 @@
 import React from 'react'
 import { alert } from '../../../../js/helpers/alert';
-import InputForm from '../../../../js/helpers/input';
-import { ToastContainer } from 'react-toastify';
-import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import User from '../../../../js/api/users';
+import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import { useForm } from 'react-hook-form';
+import InputForm from '../../../../js/helpers/input';
 
-const AddUser = ({ changeTable }) => {
+const UserAdd = ({ changeTable }) => {
+
     const {
         register,
         handleSubmit,
@@ -115,9 +115,8 @@ const AddUser = ({ changeTable }) => {
                     </Form>
                 </Col>
             </Row>
-            <ToastContainer position='bottom-right'/>
         </div>
     )
 }
 
-export default AddUser
+export default UserAdd

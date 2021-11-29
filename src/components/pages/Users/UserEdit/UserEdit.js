@@ -5,7 +5,7 @@ import User from '../../../../js/api/users';
 import { alert } from '../../../../js/helpers/alert';
 import InputForm from '../../../../js/helpers/input';
 
-const UserEdit = ({currentUser = '', editeMethod}) => {
+const UserEdit = ({ currentUser, editeMethod }) => {
     const {
         register,
         handleSubmit,
