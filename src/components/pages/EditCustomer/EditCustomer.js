@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 import { alert } from "../../../js/helpers/alert";
 import customersApi from "../../../js/api/customer";
 import convertToBase64 from "../../../js/helpers/convertImage";
-import { PageContext } from "../../../context";
+import { GlobalContext } from "../../../context";
 const EditCustomer = () => {
-  const { editId, setShowFormModal } = useContext(PageContext);
+  const { editId, setShowFormModal } = useContext(GlobalContext);
   const [customer, setCustomer] = useState();
   const {
     register,
@@ -25,7 +25,9 @@ const EditCustomer = () => {
     customersApi.getCustomer(editId).then(({ customer }) => {
       setCustomer(customer[editId]);
       reset(customer[editId]);
-      setLoadedImg(process.env.REACT_APP_SERVER_URL + "/" + customer[editId].img);
+      setLoadedImg(
+        process.env.REACT_APP_SERVER_URL + "/" + customer[editId].img
+      );
       setImgLoaded(true);
     });
   }, [reset]);

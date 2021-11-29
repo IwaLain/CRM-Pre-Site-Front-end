@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, FormGroup, Button, Col } from "reactstrap";
 import { useForm } from "react-hook-form";
 import FieldComponent from "./FieldComponent/FieldComponent";
-import { alert } from "../../js/methods/alert";
+import { alert } from "../../js/helpers/alert";
 import "react-toastify/dist/ReactToastify.css";
 import "./form-component.scss";
 import AttachedImages from "../AttachedImages/AttachedImages";

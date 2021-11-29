@@ -1,4 +1,4 @@
-@import "../../scss/scss-variables.scss";
+@import "./scss-variables.scss";
 
 .info-card_group {
   display: grid;
@@ -7,9 +7,16 @@
 }
 
 .info-card {
+  position: relative;
   display: flex;
   border: 1px solid black;
   min-width: 400px;
+}
+
+.info-card > .form-check {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 
 .info-card > img {
@@ -19,12 +26,12 @@
 .info-card__body {
   display: flex;
   flex-direction: column;
-  padding: 9px;
+  padding: 4px 10px;
   width: 100%;
 }
 
 .info-card__body > .progress {
-  margin-bottom: 30px;
+  margin-bottom: 16px;
 }
 
 .info-card__body > .progress {

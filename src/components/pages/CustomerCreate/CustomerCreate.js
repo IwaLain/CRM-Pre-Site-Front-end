@@ -6,13 +6,13 @@ import { useForm } from "react-hook-form";
 import { alert } from "../../../js/helpers/alert";
 import customersApi from "../../../js/api/customer";
 import convertToBase64 from "../../../js/helpers/convertImage";
-import { PageContext } from "../../../context";
+import { GlobalContext } from "../../../context";
 const CustomerCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();
   const [img, setImg] = useState();
 
-  const { setShowFormModal } = useContext(PageContext);
+  const { setShowFormModal } = useContext(GlobalContext);
 
   const {
     register,

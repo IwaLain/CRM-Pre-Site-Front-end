@@ -8,15 +8,17 @@ import equipmentApi from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../InfoCard/InfoCard";
-import AttachedImages from "../AttachedImages/AttachedImages";
+
 import "../../scss/CRMEntity.scss";
 import ModalComponent from "../ModalComponent/ModalComponent";
-import { PageContext } from "../../context";
-
+import { GlobalContext } from "../../context";
+import AttachedFiles from "../AttachedFiles/AttachedFiles";
+import convertToBase64 from "../../js/helpers/convertImage";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
-  const { showFormModal, setShowFormModal } = useContext(PageContext);
+  const { showFormModal, setShowFormModal, setEntityID } =
+    useContext(GlobalContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
@@ -30,6 +32,8 @@ const CRMEntity = ({ type }) => {
   const [subEntity, setSubEntity] = useState();
   const [informationItems, setInformationItems] = useState([]);
   const informationFieldNames = ["address", "phone", "email"];
+  const [mode, setMode] = useState("edit");
+
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
     if (!mainImage) {
@@ -37,14 +41,17 @@ const CRMEntity = ({ type }) => {
     }
     return mainImage;
   };
-  const deleteEntityImage = (img) => {
-    deleteEntityImageAPI(img[`${type}_id`], img.id).then((res) => {
+  const deleteEntityImage = (file) => {
+    deleteEntityImageAPI(id, file.id).then((res) => {
       setAttachedImages(res[`${type}Images`]);
     });
   };
-  const addEntityImage = (data) => {
-    addEntityImageAPI(id, data).then((res) => {
-      setAttachedImages(res[`${type}Images`]);
+  const addEntityImage = (file) => {
+    convertToBase64(file).then((baseFormat) => {
+      const data = { img: baseFormat };
+      addEntityImageAPI(id, data).then((res) => {
+        setAttachedImages(res[`${type}Images`]);
+      });
     });
   };
   const setMainEntityImage = (imageId) => {
@@ -55,7 +62,7 @@ const CRMEntity = ({ type }) => {
   const setNewInformationItem = (fieldTitle, value) => {
     setInformationItems((oldArr) => {
       const newElement = { fieldTitle: fieldTitle, value: value };
-
+      console.log(newElement);
       return [...oldArr, newElement];
     });
   };
@@ -91,11 +98,11 @@ const CRMEntity = ({ type }) => {
 
   useEffect(() => {
     getEntityAPI(id).then((data) => {
-
-      if(type==='customer'||type==='facility') {
+      if (type === "customer" || type === "facility") {
         data = data[type][id];
+      } else {
+        data = data[type];
       }
-      else{data = data[type];}
       setEntityObject(data);
       if (data[`${type}Images`]) {
         setAttachedImages(data[`${type}Images`]);
@@ -103,10 +110,13 @@ const CRMEntity = ({ type }) => {
         setMainImage(mainImage);
       }
       if (data.jsonData) {
-        const customFields = data.jsonData[0];
-        for (const [key, value] of Object.entries(customFields)) {
-          setNewInformationItem(key, value);
-        }
+        const customFields = data.jsonData;
+        console.log(customFields);
+        customFields.forEach((el) => {
+          if (el.value) {
+            setNewInformationItem(el.name, el.value);
+          }
+        });
       }
       if (subEntityName.length !== 0) {
         setSubEntity(data[subEntityName]);
@@ -118,6 +128,8 @@ const CRMEntity = ({ type }) => {
         }
       });
     });
+
+    setEntityID(id);
 
     window.addEventListener("resize", handleResize);
   }, []);
@@ -132,8 +144,8 @@ const CRMEntity = ({ type }) => {
       <ModalComponent
         modal={showFormModal}
         toggle={toggleModal}
-        type={{entity:subEntityName}}
-        mode="edit"
+        type={{ entity: subEntityName }}
+        mode={mode}
       />
       <div className="d-flex align-items-center entity-page--header">
         {entityObject && entityObject[`${type}Images`] && (
@@ -168,14 +180,6 @@ const CRMEntity = ({ type }) => {
           ></InformationComponent>
         </div>
       )}
-      {/* {type === "location" && (
-        <FormComponent
-          entity={entityObject}
-          formName="Facility Locations Form"
-          addFieldBtn={true}
-          attachedImages={false}
-        ></FormComponent>
-      )} */}
 
       {entityObject && subEntityName.length > 0 && (
         <div className="info-page--section">
@@ -191,6 +195,7 @@ const CRMEntity = ({ type }) => {
                   data={subEnt}
                   type={subEntityName}
                   toggleModal={toggleModal}
+                  setMode={setMode}
                 />
               ))
             ) : (
@@ -201,12 +206,12 @@ const CRMEntity = ({ type }) => {
       )}
       {entityObject && entityObject[`${type}Images`] && (
         <div className="entity-page--section">
-          <AttachedImages
+          <AttachedFiles
             title="Attached images"
-            addImage={addEntityImage}
-            deleteImage={deleteEntityImage}
-            attachedImages={attachedImages ? attachedImages : []}
-          ></AttachedImages>
+            onAddImage={addEntityImage}
+            onRemoveImage={deleteEntityImage}
+            attachedFiles={attachedImages ? attachedImages : []}
+          />
         </div>
       )}
     </>

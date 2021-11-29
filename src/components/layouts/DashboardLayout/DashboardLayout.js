@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../../../scss/dashboard.scss";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -6,7 +6,7 @@ import Header from "../../widgets/Header/Header";
 import Sidebar from "../../widgets/Sidebar/Sidebar";
 import Breadcrumbs from "../../widgets/Breadcrumbs/Breadcrumbs";
 import routes from "../../../routes";
-import { PageContext } from "../../../context";
+import { GlobalContext } from "../../../context";
 
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 750;
@@ -16,13 +16,7 @@ const DashboardLayout = ({ children }) => {
     window.innerWidth <= MOBILE_SIZE
   );
 
-  const [pageTitle, setPageTitle] = useState();
-  const [pageType, setPageType] = useState();
-  const [pagePath, setPagePath] = useState();
-  const [id, setId] = useState();
-  const [entityID, setEntityID] = useState();
-  const [editId, setEditId] = useState();
-  const [showFormModal, setShowFormModal] = useState(false);
+  const { pagePath, setPageTitle, pageType } = useContext(GlobalContext);
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -50,39 +44,21 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   return (
-    <PageContext.Provider
-      value={{
-        pageTitle,
-        pageType,
-        setPageType,
-        id,
-        setId,
-        setPagePath,
-        editId,
-        setEditId,
-        entityID,
-        setEntityID,
-        showFormModal,
-        setShowFormModal,
-      }}
-    >
-      <div className="dashboard container-fluid">
-        <Sidebar
-          isMobile={isMobile}
-          toggleSidebar={toggleSidebar}
-          type={pageType && pageType.ref}
-          id={id}
-        />
-        <section>
-          <Header isMobile={isMobile} toggleSidebar={toggleSidebar} />
-          <main>
-            <Breadcrumbs />
-            {children}
-          </main>
-          <ToastContainer position="bottom-right" />
-        </section>
-      </div>
-    </PageContext.Provider>
+    <div className="dashboard container-fluid">
+      <Sidebar
+        isMobile={isMobile}
+        toggleSidebar={toggleSidebar}
+        type={pageType && pageType.ref}
+      />
+      <section>
+        <Header isMobile={isMobile} toggleSidebar={toggleSidebar} />
+        <main>
+          <Breadcrumbs />
+          {children}
+        </main>
+        <ToastContainer position="bottom-right" />
+      </section>
+    </div>
   );
 };
 
