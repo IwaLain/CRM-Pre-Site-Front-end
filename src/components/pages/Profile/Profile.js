@@ -38,7 +38,6 @@ const ProfilePage = () => {
         }
     };
 
-    profile.img === '' ? profile.img = placeholder : console.log('dsad')
     return(
         <>
             <h3>Profile</h3>
