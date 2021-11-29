@@ -4,7 +4,7 @@ import edite from '../../../../assets/img/edite.svg'
 import del from '../../../../assets/img/delete.svg'
 import User from '../../../../js/api/users'
 import './UserTable.scss'
-import UserEdit from '../UserEdit/UserEdit'
+import UserModal from '../UserModal/UserModal'
 
 const UserTable = ( { users, editeTable}) => {
     const [currentUser, setCurrentUser] = useState([])
@@ -70,9 +70,10 @@ const UserTable = ( { users, editeTable}) => {
                     </tbody>
                 </Table>
             </Col>
-            <UserEdit
+            <UserModal
+                type='Edit Profile'
                 currentUser={currentUser}
-                editeMethod={editeTable}
+                method={editeTable}
                 toggle={toggleEditUser}
                 modal={modalEditUser}
             />

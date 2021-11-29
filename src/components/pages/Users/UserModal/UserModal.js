@@ -1,33 +1,11 @@
 import React from 'react'
-import { Button, Col, Form, FormGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap'
+import { Button, Col, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap'
 import './UserModal.scss'
-import InputForm from '../../../../js/helpers/input'
-import { useForm } from 'react-hook-form'
+import AddUser from '../UserAdd/UserAdd'
+import UserEdit from '../UserEdit/UserEdit'
+import ProfileEdit from '../../Profile/ProfileEdit/ProfileEdit'
 
-const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
-    const {
-        register,
-        handleSubmit,
-        trigger,
-        formState: { errors }
-    } = useForm({
-        defaultValues: {
-            firstname: currentUser.first_name,
-            lastname: currentUser.last_name,
-            username: currentUser.username,
-            email: currentUser.email,
-            phone: currentUser.phone,
-            role: currentUser.role,
-        }
-    })
-
-    const dataInput = {
-        register,
-        handleSubmit,
-        formState: { errors },
-        trigger,
-    }
-
+const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
     return (
         <Modal
             isOpen={modal}
@@ -43,78 +21,25 @@ const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
                 ></span>
             </ModalHeader>
             <ModalBody>
-            <Row>
-                <Col>
-                    <Form
-                        id='form'
-                        onSubmit={handleSubmit(method.onSubmit)}
-                    >
-                        <FormGroup>
-                            <Row>
-                                <Col md={6}>
-                                    <Label className=''>First Name:</Label>
-                                    <InputForm
-                                        type={'firstname'}
-                                        data={dataInput}
-                                        errors={errors.firstname}
-                                    />
-                                </Col>
-                                <Col md={6}>
-                                    <Label className=''>Lust Name:</Label>
-                                    <InputForm
-                                        type={'lastname'}
-                                        data={dataInput}
-                                        errors={errors.lastname}
-                                    />
-                                </Col>
-                            </Row>
-                        </FormGroup>
-                        <FormGroup>
-                            <Row>
-                                <Col md={6}>
-                                    <Label className=''>User Name:</Label>
-                                    <InputForm
-                                        type={'username'}
-                                        data={dataInput}
-                                        errors={errors.username}
-                                    />
-                                </Col>
-                                <Col md={6}>
-                                    <Label className=''>Email:</Label>
-                                    <InputForm
-                                        type={'email'}
-                                        data={dataInput}
-                                        errors={errors.email}
-                                    />
-                                </Col>
-                            </Row>
-                        </FormGroup>
-                        <FormGroup>
-                            <Row>
-                                <Col md={6}>
-                                    <Label className=''>Phone:</Label>
-                                    <InputForm
-                                        type={'phone'}
-                                        data={dataInput}
-                                        errors={errors.phone}
-                                    />
-                                </Col>
-                                <Col md={6}>
-                                    <Label className=''>Password:</Label>
-                                    <InputForm
-                                        type={'password'}
-                                        data={dataInput}
-                                        errors={errors.password}
-                                    />
-                                </Col>
-                            </Row>
-                        </FormGroup>
-                    </Form>
-                </Col>
-            </Row>
+                {type === "Add User" ?
+                    <AddUser
+                        changeTable={method}
+                    />
+                    : "Edit User" ?
+                    <UserEdit
+                        currentUser={currentUser}
+                        editeMethod={method}
+                    />
+                    :
+                    <ProfileEdit
+                        currentUser={currentUser}
+                        editeMethod={method}
+                    />
+                }
             </ModalBody>
             <ModalFooter>
                 <FormGroup md={12} className='formUser__buttons'>
+                    <Row>
                         <Col md={6}>
                             <Button
                                 className='formUser__cancel'
@@ -131,7 +56,8 @@ const UserModal = ({type, toggle, modal, method, currentUser = '', data}) => {
                                 Submit
                             </Button>
                         </Col>
-                    </FormGroup>
+                    </Row>
+                </FormGroup>
             </ModalFooter>
         </Modal>
     )

@@ -1,5 +1,9 @@
+@import "../../../../scss/scss-variables.scss";
 .modal__head span {
     position: absolute;
     right: 20px;
     top: 20px;
+}
+.formUser__submit {
+    background-color: $btn-primary !important;
 }
