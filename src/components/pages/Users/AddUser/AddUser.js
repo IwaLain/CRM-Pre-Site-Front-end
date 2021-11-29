@@ -1,9 +1,9 @@
 import React from 'react'
-import { alert } from '../../../../js/helpers/alert';
+import { alert } from '../../../../js/methods/alert';
 import { ToastContainer } from 'react-toastify';
 import { Col } from 'reactstrap';
 import ModalUser from '../ModalUser/ModalUser';
-import User from '../../../../js/api/users';
+import User, {user} from '../../../../js/api/users';
 
 const AddUser = ({ toggle, modal, changeTable }) => {
 

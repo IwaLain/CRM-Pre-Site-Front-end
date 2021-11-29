@@ -1,0 +1,85 @@
+@import "../../scss/scss-variables.scss";
+
+.info-card_group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 10px;
+}
+
+.info-card {
+  display: flex;
+  border: 1px solid black;
+  min-width: 400px;
+}
+
+.info-card > img {
+  height: 120px;
+}
+
+.info-card__body {
+  display: flex;
+  flex-direction: column;
+  padding: 9px;
+  width: 100%;
+}
+
+.info-card__body > .progress {
+  margin-bottom: 30px;
+}
+
+.info-card__body > .progress {
+  width: 100%;
+  height: 7px;
+}
+
+.info-card__body > .progress > .progress-bar {
+  background-color: $success;
+}
+
+.info-card__body a {
+  display: block;
+  margin-bottom: 0;
+  text-decoration: none;
+  color: black;
+  background-color: $default;
+  border: 1px solid $default;
+  text-align: center;
+  font-weight: 700;
+  width: 100%;
+}
+
+.info-card__body a:hover {
+  border: 1px solid black;
+  color: black;
+}
+
+.info-card__btns {
+  display: flex;
+  gap: 5px;
+  height: 28px;
+}
+
+.info-card__btns > button {
+  padding: 0 5px;
+}
+
+/* Dense style */
+.info-card_group.dense {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  justify-items: center;
+}
+
+.info-card_group.dense > .info-card {
+  flex-direction: column;
+  min-width: 0;
+  width: 200px;
+}
+
+.info-card_group.dense > .info-card > img {
+  width: 100%;
+  height: 100%;
+}
+
+.info-card_group.dense > .info-card > .info-card__body > h4 {
+  height: 54px;
+}

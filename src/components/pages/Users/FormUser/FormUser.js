@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Form, Row } from "reactstrap";
 import './FormUser.scss'
-import { inputs, select } from '../../../../js/helpers/input';
+import { inputs, select } from '../../../../js/methods/input';
 import { useForm } from 'react-hook-form';
 import { ToastContainer } from 'react-toastify';
 

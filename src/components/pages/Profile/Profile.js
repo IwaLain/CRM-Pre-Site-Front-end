@@ -3,11 +3,11 @@ import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
 import edit from '../../../assets/img/edite.svg'
 import { useEffect, useState } from "react"
-import { profile } from "../../../js/api/profile"
+import Global from "../../../js/api/global"
 const ProfilePage = () => {
     const [profile, setProfile] = useState()
     useEffect(() => {
-        profile.getProfile()
+        Global.getProfile()
         .then(data => 
             setProfile(data.user)
         )
