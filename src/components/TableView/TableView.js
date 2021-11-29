@@ -1,13 +1,13 @@
 import { Table, Progress, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { PageContext } from "../../context";
+import { GlobalContext } from "../../context";
 
 const TableView = ({ data, type, toggleModal, setMode }) => {
   const [fieldTitle, setFieldTitle] = useState("Title");
   const [showProgress, setShowProgress] = useState(true);
 
-  const { setEditId } = useContext(PageContext);
+  const { setEditId } = useContext(GlobalContext);
 
   useEffect(() => {
     switch (type.entity) {

@@ -3,10 +3,10 @@ import { Progress, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./info-card.scss";
 import { useContext } from "react";
-import { PageContext } from "../../context";
+import { GlobalContext } from "../../context";
 
 const InfoCard = ({ data, type, toggleModal }) => {
-  const { setEditId } = useContext(PageContext);
+  const { setEditId } = useContext(GlobalContext);
 
   let progress = 0;
 

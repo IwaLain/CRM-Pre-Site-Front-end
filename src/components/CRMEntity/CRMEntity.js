@@ -11,13 +11,13 @@ import InfoCard from "../InfoCard/InfoCard";
 
 import "../../scss/CRMEntity.scss";
 import ModalComponent from "../ModalComponent/ModalComponent";
-import { PageContext } from "../../context";
+import { GlobalContext } from "../../context";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/methods/convertImage";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
-  const { showFormModal, setShowFormModal } = useContext(PageContext);
+  const { showFormModal, setShowFormModal } = useContext(GlobalContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
@@ -31,6 +31,8 @@ const CRMEntity = ({ type }) => {
   const [subEntity, setSubEntity] = useState();
   const [informationItems, setInformationItems] = useState([]);
   const informationFieldNames = ["address", "phone", "email"];
+  const [mode, setMode] = useState("edit");
+
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
     if (!mainImage) {
@@ -140,7 +142,7 @@ const CRMEntity = ({ type }) => {
         modal={showFormModal}
         toggle={toggleModal}
         type={{ entity: subEntityName }}
-        mode="edit"
+        mode={mode}
       />
       <div className="d-flex align-items-center entity-page--header">
         {entityObject && entityObject[`${type}Images`] && (
@@ -190,6 +192,7 @@ const CRMEntity = ({ type }) => {
                   data={subEnt}
                   type={subEntityName}
                   toggleModal={toggleModal}
+                  setMode={setMode}
                 />
               ))
             ) : (

@@ -15,10 +15,10 @@ import { useForm } from "react-hook-form";
 import { alert } from "../../../js/methods/alert";
 import { getLocationAPI, updateLocationsAPI } from "../../../js/api/locations";
 import { location as locationApi } from "../../../js/api/locations";
-import { PageContext } from "../../../context";
+import { GlobalContext } from "../../../context";
 import "../../../scss/location-edit.scss";
 const LocationEdit = () => {
-  const { setShowFormModal, editId, entityID } = useContext(PageContext);
+  const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);
   const [fieldCount, setFieldCount] = useState(1);
   const [addFieldModal, setAddFieldModal] = useState(false);

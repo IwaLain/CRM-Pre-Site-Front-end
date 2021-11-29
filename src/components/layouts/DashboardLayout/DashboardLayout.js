@@ -6,7 +6,7 @@ import Header from "../../widgets/Header/Header";
 import Sidebar from "../../widgets/Sidebar/Sidebar";
 import Breadcrumbs from "../../widgets/Breadcrumbs/Breadcrumbs";
 import routes from "../../../routes";
-import { PageContext } from "../../../context";
+import { GlobalContext } from "../../../context";
 
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 750;
@@ -50,7 +50,7 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   return (
-    <PageContext.Provider
+    <GlobalContext.Provider
       value={{
         pageTitle,
         pageType,
@@ -82,7 +82,7 @@ const DashboardLayout = ({ children }) => {
           <ToastContainer position="bottom-right" />
         </section>
       </div>
-    </PageContext.Provider>
+    </GlobalContext.Provider>
   );
 };
 
