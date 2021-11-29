@@ -3,13 +3,13 @@ import { apiRequest } from './api'
 import { BASE_URL } from './constants'
 
 const Global = {
-    loginRequest: ( data ) => {
+    loginRequest: async ( data ) => {
         return apiRequest( 'POST', BASE_URL + '/api/login', data, {
             'Content-Type': 'application/json'
         })
     },
 
-    logoutRequest: () => {
+    logoutRequest: async () => {
         const token = getToken()
 
         if ( token ) return apiRequest( 'POST', BASE_URL + `/api/logout?access-token=${token}`, {}, {
@@ -17,21 +17,20 @@ const Global = {
         })
     },
 
-    getProfile: () => {
-        const token = getToken()
-        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user?access-token=${token}`, {}, {
+    getProfile: async (token) => {
+        if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/profile?access-token=${token}`, {}, {
             'Content-Type':'application/json'
         })
     },
 
-    updateProfile: (data, id) => {
+    updateProfile: async (id, data) => {
         const token = getToken()
-        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
+        if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Content-Type':'application/json'
         })
     },
 
-    uploadProfilePhoto: (data, id) => {
+    uploadProfilePhoto: async (id, data) => {
         const token = getToken()
         if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Authorization': 'Bearer' + token

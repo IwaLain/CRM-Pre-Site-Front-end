@@ -10,9 +10,9 @@ export const validation = (type) => {
             return {
                 required: "UserName is Required",
                 minLength: {
-                    value: 3,
-                    message: "Minimum 3 simvols",
-                }
+                    value: 2,
+                    message: "Minimum 2 simvols",
+                },
             }
         case 'password':
             return {

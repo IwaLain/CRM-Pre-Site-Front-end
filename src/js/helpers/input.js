@@ -1,15 +1,13 @@
-import { errorsValidation } from "./validation"
-import { validation } from "./validation"
+import { errorsValidation, validation } from "./validation"
 import '../../scss/components/inputs.scss'
-import { Input } from "reactstrap"
 
-const InputForm = ({type, data, errors = '', message = ''}) => {
+const InputForm = ({type, data, errors, placeholder = '...', message = ''}) => {
     const { register, trigger } = data
     return (
         <div>
-            <Input
+            <input
                 type={type}
-                placeholder='...'
+                placeholder={placeholder}
                 className={`form-control ${errors ? 'is-invalid' : ''}`}
                 {...register(type, validation(type) )}
                 onKeyUp={() => {

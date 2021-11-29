@@ -28,7 +28,6 @@ const LoginPage = () => {
 
   const dataInput = {
     register,
-    handleSubmit,
     formState: { errors },
     trigger,
   };
@@ -66,6 +65,7 @@ const LoginPage = () => {
                         type={'username'}
                         data={dataInput}
                         errors={errors.username}
+                        placeholder={'username...'}
                     />
                   </FormGroup>
                 </Row>
@@ -75,6 +75,7 @@ const LoginPage = () => {
                         type={'password'}
                         data={dataInput}
                         errors={errors.password}
+                        placeholder={'password...'}
                     />
                   </FormGroup>
                 </Row>

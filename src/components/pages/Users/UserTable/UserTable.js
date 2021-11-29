@@ -2,13 +2,15 @@ import React, { useState } from 'react'
 import { Col, Row, Table } from 'reactstrap'
 import edite from '../../../../assets/img/edite.svg'
 import del from '../../../../assets/img/delete.svg'
-import UserEdit from '../UserEdit/UserEdit'
 import User from '../../../../js/api/users'
 import './UserTable.scss'
+import UserModal from '../UserModal/UserModal'
 
-const UserTable = ( { users, modal, toggle, changeTable, editeTable}) => {
+const UserTable = ( { users, editeTable}) => {
     const [currentUser, setCurrentUser] = useState([])
+    const [modalEditUser, setModalEditUser] = useState(false)
 
+    const toggleEditUser = () => setModalEditUser(!modalEditUser)
     const current = (currentUser) => setCurrentUser(currentUser)
 
     const deleteUser = (userId) => {
@@ -47,7 +49,7 @@ const UserTable = ( { users, modal, toggle, changeTable, editeTable}) => {
                                         src={edite}
                                         alt="edite"
                                         onClick={() => {
-                                                toggle(true)
+                                                toggleEditUser(true)
                                                 current(user)
                                             }
                                         }
@@ -68,11 +70,12 @@ const UserTable = ( { users, modal, toggle, changeTable, editeTable}) => {
                     </tbody>
                 </Table>
             </Col>
-            <UserEdit
+            <UserModal
+                title='Edit User'
                 currentUser={currentUser}
-                editeTable={editeTable}
-                toggle={toggle}
-                modal={modal}
+                method={editeTable}
+                toggle={toggleEditUser}
+                modal={modalEditUser}
             />
         </Row>
     )

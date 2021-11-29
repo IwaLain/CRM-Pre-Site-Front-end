@@ -1,15 +1,15 @@
 .users__title {
     line-height: 1.3;
     padding-top: 5px;
+
+    &-img {
+        padding-bottom: 3px;
+        padding-left: 5px;
+    }
 }
 
-.users__title-img {
-    padding-bottom: 3px;
-    padding-left: 5px;
-}
-
-@media (max-width: 600px) {
-    .users__button {
+.users__button {
+    @media (max-width: 600px) {
         text-align: right;
     }
 }

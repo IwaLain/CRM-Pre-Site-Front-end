@@ -1,47 +1,46 @@
 import React from 'react'
-import { alert } from '../../../../js/helpers/alert';
-import InputForm from '../../../../js/helpers/input';
-import { ToastContainer } from 'react-toastify';
-import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
-import User from '../../../../js/api/users';
-import { useForm } from 'react-hook-form';
+import Global from '../../../../js/api/global';
 
-const AddUser = ({ changeTable }) => {
+const ProfileEdit = ({currentUser, editeProfile}) => {
     const {
         register,
         handleSubmit,
         trigger,
         formState: { errors }
-    } = useForm()
-
-    const dataInput = {
-        register,
-        handleSubmit,
-        formState: { errors },
-        trigger,
-    }
+    } = useForm({
+        defaultValues: {
+            firstname: currentUser.first_name,
+            lastname: currentUser.last_name,
+            username: currentUser.username,
+            email: currentUser.email,
+            phone: currentUser.phone,
+            role: currentUser.role,
+        }
+    })
 
     const onSubmit = (e) => {
         const data = {
+            'id': currentUser.id,
             'first_name': e.firstname,
             'last_name': e.lastname,
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
-            'password': e.password
+            'role': e.role,
         }
 
-        User.addUser(data)
+        Global.updateProfile(currentUser.id, data)
         .then(data => {
             if(data.errors) {
-                for (let key in data.errors) {
-                    alert('error', data.errors[key])
-                }
+                alert('error', data.errors)
             } else {
-                changeTable(data.users)
-                alert('success', 'Add User successful')
+                alert('success', 'Edit Profile successful')
             }
         })
+
+        User.editUserRole(currentUser.id, data)
+
+        editeTable(currentUser.id, data)
     };
 
     return (
@@ -102,22 +101,13 @@ const AddUser = ({ changeTable }) => {
                                         errors={errors.phone}
                                     />
                                 </Col>
-                                <Col md={6}>
-                                    <Label className=''>Password:</Label>
-                                    <InputForm
-                                        type={'password'}
-                                        data={dataInput}
-                                        errors={errors.password}
-                                    />
-                                </Col>
                             </Row>
                         </FormGroup>
                     </Form>
                 </Col>
             </Row>
-            <ToastContainer position='bottom-right'/>
         </div>
     )
 }
 
-export default AddUser
+export default ProfileEdit

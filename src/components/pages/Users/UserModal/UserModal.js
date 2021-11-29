@@ -1,9 +1,10 @@
 import React from 'react'
 import { Button, Col, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import './UserModal.scss'
-import FormUser from '../UserForm/UserForm'
+import AddUser from '../UserAdd/UserAdd'
+import UserEdit from '../UserEdit/UserEdit'
 
-const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
+const UserModal = ({title, toggle, modal, method, currentUser}) => {
     return (
         <Modal
             isOpen={modal}
@@ -19,10 +20,16 @@ const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
                 ></span>
             </ModalHeader>
             <ModalBody>
-                <FormUser
-                    currentUser={currentUser}
-                    onSubmit={onSubmit}
-                />
+                {title === "Add User" ?
+                    <AddUser
+                        changeTable={method.changeTable}
+                    />
+                    :
+                    <UserEdit
+                        currentUser={currentUser}
+                        editeMethod={method.editeTable}
+                    />
+                }
             </ModalBody>
             <ModalFooter>
                 <FormGroup md={12} className='formUser__buttons'>
@@ -37,7 +44,7 @@ const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
                         <Col md={6}>
                             <Button
                                 className='formUser__submit'
-                                form='formUser-form'
+                                form='form'
                             >
                                 Submit
                             </Button>
@@ -48,4 +55,4 @@ const ModalUser = ({title, toggle, modal, onSubmit, currentUser}) => {
     )
 }
 
-export default ModalUser
+export default UserModal
