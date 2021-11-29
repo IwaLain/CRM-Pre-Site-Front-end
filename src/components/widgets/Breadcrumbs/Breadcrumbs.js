@@ -1,11 +1,11 @@
 import withBreadcrumbs from "react-router-breadcrumbs-hoc";
 import { Link } from "react-router-dom";
 import "../../../scss/breadcrumbs.scss";
-import { customersApi } from "../../../js/api/customer";
-import { facilitiesApi } from "../../../js/api/facilities";
-import { location } from "../../../js/api/locations";
+import customersApi from "../../../js/api/customer";
+import facilitiesApi from "../../../js/api/facilities";
+import locationApi from "../../../js/api/locations";
 import { useState } from "react";
-import { equipment } from "../../../js/api/equipment";
+import equipmentApi from "../../../js/api/equipment";
 
 const Breadcrumbs = ({ breadcrumbs }) => {
   const [name, setName] = useState();
@@ -32,14 +32,14 @@ const Breadcrumbs = ({ breadcrumbs }) => {
             breadcrumb.key.includes("/dashboard/locations/") &&
             parseInt(breadcrumb.props.children)
           ) {
-            location.getLocation(breadcrumb.props.children).then((location) => {
+            locationApi.getLocation(breadcrumb.props.children).then((location) => {
               setName(location.name);
             });
           } else if (
             breadcrumb.key.includes("/dashboard/equipment/") &&
             parseInt(breadcrumb.props.children)
           ) {
-            equipment.getEquipment(breadcrumb.props.children).then((equipment) => {
+            equipmentApi.getEquipment(breadcrumb.props.children).then((equipment) => {
               setName(equipment.name);
             });
           }

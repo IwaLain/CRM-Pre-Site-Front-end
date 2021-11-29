@@ -12,8 +12,8 @@ import {
     ModalFooter,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/methods/alert";
-import { location } from "../../../js/api/locations";
+import { alert } from "../../../js/helpers/alert";
+import locationApi from "../../../js/api/locations";
 import { PageContext } from "../../../context";
 
 const LocationCreate = () => {
@@ -48,7 +48,7 @@ const LocationCreate = () => {
             }
             body["jsonData"] = jsonData;
 
-            location.addLocation(body).then((res) => {
+            locationApi.addLocation(body).then((res) => {
                 if (res.status === "Successfully created")
                     alert("success", "Location created.");
                 else alert("error", "Request error.");

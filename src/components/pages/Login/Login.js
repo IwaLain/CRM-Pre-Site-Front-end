@@ -1,22 +1,20 @@
-import { useForm } from "react-hook-form";
-import "react-toastify/dist/ReactToastify.css";
-import "./Login.scss";
-import logo from "../../../assets/img/top-logo-black.svg";
-import {
-  Card,
-  Col,
-  Container,
-  Form,
-  FormGroup,
-  Row,
-  CardImg,
-  CardBody,
-} from "reactstrap";
-import { alert } from "../../../js/methods/alert";
-import { ToastContainer } from "react-toastify";
-import Global from "../../../js/api/global";
-import { useHistory } from "react-router";
-import { inputs } from "../../../js/methods/input";
+import { useForm } from 'react-hook-form'
+import 'react-toastify/dist/ReactToastify.css';
+import './Login.scss';
+import logo from '../../../assets/img/top-logo-black.svg'
+import { Card,
+         Col,
+         Container,
+         Form,
+         FormGroup,
+         Row,
+         CardImg,
+         CardBody } from 'reactstrap'
+import { alert } from '../../../js/helpers/alert';
+import { ToastContainer } from 'react-toastify';
+import Global from '../../../js/api/global';
+import { useHistory } from 'react-router';
+import InputForm from '../../../js/helpers/input';
 
 const LoginPage = () => {
   let history = useHistory();
@@ -28,9 +26,8 @@ const LoginPage = () => {
     trigger,
   } = useForm();
 
-  const data = {
+  const dataInput = {
     register,
-    handleSubmit,
     formState: { errors },
     trigger,
   };
@@ -64,12 +61,22 @@ const LoginPage = () => {
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
                   <FormGroup>
-                    {inputs("username", data, "Username:", errors.username)}
+                    <InputForm
+                        type={'username'}
+                        data={dataInput}
+                        errors={errors.username}
+                        placeholder={'username...'}
+                    />
                   </FormGroup>
                 </Row>
                 <Row>
                   <FormGroup>
-                    {inputs("password", data, "Password:", errors.password)}
+                    <InputForm
+                        type={'password'}
+                        data={dataInput}
+                        errors={errors.password}
+                        placeholder={'password...'}
+                    />
                   </FormGroup>
                 </Row>
                 <Row>

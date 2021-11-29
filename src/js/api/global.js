@@ -1,42 +1,38 @@
-import { getToken } from '../methods/helpers'
+import { getToken } from '../helpers/helpers'
 import { apiRequest } from './api'
-import { URL } from './constants'
+import { BASE_URL } from './constants'
 
 const Global = {
-    loginRequest: ( username, password, callback ) => {
-        return apiRequest( 'POST', URL + '/api/login', callback, {
-            username: username,
-            password: password
-        }, {
-            'Accept': 'application/json'
+    loginRequest: async ( data ) => {
+        return apiRequest( 'POST', BASE_URL + '/api/login', data, {
+            'Content-Type': 'application/json'
         })
     },
 
-    logoutRequest: callback => {
+    logoutRequest: async () => {
         const token = getToken()
 
-        if ( token ) return apiRequest( 'POST', URL + '/api/logout/', callback, {}, {
-            'Authorization': 'Bearer' + token
+        if ( token ) return apiRequest( 'POST', BASE_URL + `/api/logout?access-token=${token}`, {}, {
+            'Content-Type':'application/json'
         })
     },
 
-    getProfile: callback => {
-        const token = getToken()
-        if ( token ) return apiRequest( 'GET', URL, `/api/user?access-token=${token}`, callback, {}, {
-            'Authorization': 'Bearer' + token
+    getProfile: async (token) => {
+        if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/profile?access-token=${token}`, {}, {
+            'Content-Type':'application/json'
         })
     },
 
-    updateProfile: (callback, data, id) => {
+    updateProfile: async (id, data) => {
         const token = getToken()
-        if ( token ) return apiRequest( 'GET', URL, `/api/user/update/${id}?access-token=${token}`, callback, data, {
-            'Authorization': 'Bearer' + token
+        if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
+            'Content-Type':'application/json'
         })
     },
 
-    uploadProfilePhoto: (callback, data, id) => {
+    uploadProfilePhoto: async (id, data) => {
         const token = getToken()
-        if ( token ) return apiRequest( 'GET', URL, `/api/user/update/${id}?access-token=${token}`, callback, data, {
+        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Authorization': 'Bearer' + token
         })
     }

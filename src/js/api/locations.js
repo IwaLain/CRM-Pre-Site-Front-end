@@ -1,81 +1,71 @@
-import { Global } from "./api";
+import { getToken } from "../helpers/helpers";
+import { apiRequest } from "./api";
+import { BASE_URL } from "./constants";
 
-const getLocations = async (limit, page, search) => {
-  let url = `/api/location/list?access-token=${localStorage.getItem("token")}`;
-  if (limit) url += `&limit=${limit}`;
-  if (page) url += `&page=${page}`;
-  if (search) url += `&s=${search}`;
-  return Global("GET", url);
-};
+const locationApi = {
+    getLocations: async (limit, page, search) => {
+        const token = getToken()
+        let url = `/api/location/list?access-token=${token}`;
 
-const getLocationTree = async () => {
-  return Global(
-    "GET",
-    `/api/location/tree?access-token=${localStorage.getItem("token")}`
-  );
-};
+        if ( limit  ) url += `&limit=${limit}`;
+        if ( page   ) url += `&page=${page}`;
+        if ( search ) url += `&s=${search}`;
 
-const addLocation = async (data) => {
-  return Global(
-    "POST",
-    `/api/location/create?access-token=${localStorage.getItem("token")}`,
-    data
-  );
-};
+        if ( token ) return apiRequest('GET', BASE_URL + url, {}, {})
+    },
 
-const editLocation = async (locationId, data) => {
-  return Global(
-    "PUT",
-    `/api/location/update/${locationId}?access-token=${localStorage.getItem(
-      "token"
-    )}`,
-    data
-  );
-};
+    getLocationTree: async () => {
+        const token = getToken()
 
-const deleteLocation = async (locationId) => {
-  return Global(
-    "DELETE",
-    `/api/location/delete/${locationId}?access-token=${localStorage.getItem(
-      "token"
-    )}`
-  );
-};
+        if ( token ) return apiRequest('GET', BASE_URL + `/api/location/tree?access-token=${token}`, {}, {})
+    },
 
-const getLocation = async (locationId) => {
-  return Global(
-    "GET",
-    `/api/location/${locationId}?access-token=${localStorage.getItem("token")}`
-  );
-};
+    addLocation: async (data) => {
+        const token = getToken()
 
-const getFacilityLocations = async (limit, page, search, facilityId) => {
-  let url = `/api/facility/${facilityId}/locations?access-token=${localStorage.getItem(
-    "token"
-  )}`;
-  if (limit) url += `&limit=${limit}`;
-  if (page) url += `&page=${page}`;
-  if (search) url += `&s=${search}`;
-  return Global("GET", url);
-};
+        if ( token ) return apiRequest('POST', BASE_URL + `/api/location/create?access-token=${token}`, {data}, {
+            'Content-Type':'application/json'
+        })
+    },
 
-const updateLocationsAPI = async (locationId, dataLocation) => {
-  return Global(
-    "PUT",
-    `/api/customer/update/${locationId}?access-token=${localStorage.getItem(
-      "token"
-    )}`,
-    dataLocation
-  );
-};
+    editLocation: async (locationId, data) => {
+        const token = getToken()
 
-export const location = {
-  getLocationTree,
-  addLocation,
-  editLocation,
-  deleteLocation,
-  getLocation,
-  getLocations,
-  getFacilityLocations,
-  updateLocationsAPI,
-};
+        if ( token ) return apiRequest('PUT', BASE_URL + `/api/location/update/${locationId}?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
+    },
+
+    deleteLocatio: async (locationId) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/location/delete/${locationId}?access-token=${token}`, {}, {})
+    },
+
+    getLocation: async (locationId) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('GET', BASE_URL + `/api/location/${locationId}?access-token=${token}`, {}, {})
+    },
+
+    getFacilityLocations: async (limit, page, search, facilityId) => {
+        const token = getToken()
+        let url = `/api/facility/${facilityId}/locations?access-token=${token}`;
+
+        if ( limit  ) url += `&limit=${limit}`;
+        if ( page   ) url += `&page=${page}`;
+        if ( search ) url += `&s=${search}`;
+
+        if ( token ) return apiRequest('GET', BASE_URL + url, {}, {})
+    },
+
+    updateLocationsAPI: async (locationId, data) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('PUT', BASE_URL + `/api/customer/update/${locationId}?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
+    }
+}
+
+export default locationApi

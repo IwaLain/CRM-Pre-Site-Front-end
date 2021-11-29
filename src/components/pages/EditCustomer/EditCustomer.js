@@ -3,9 +3,9 @@ import "../../../scss/customer-create-page.scss";
 import { Button, Form, FormGroup, Label, Col } from "reactstrap";
 import star from "../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/methods/alert";
-import { customersApi } from "../../../js/api/customer";
-import convertToBase64 from "../../../js/methods/convertImage";
+import { alert } from "../../../js/helpers/alert";
+import customersApi from "../../../js/api/customer";
+import convertToBase64 from "../../../js/helpers/convertImage";
 import { PageContext } from "../../../context";
 const EditCustomer = () => {
   const { editId, setShowFormModal } = useContext(PageContext);

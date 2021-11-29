@@ -1,85 +1,63 @@
-import { Global } from "./api";
+import { getToken } from "../helpers/helpers";
+import { apiRequest } from "./api";
+import { BASE_URL } from "./constants";
 
-const token = localStorage.getItem("token");
+const facilitiesApi = {
+    getFacilities: async () => {
+        const token = getToken()
 
-const getFacilities = async () => {
-  return Global(
-    "GET",
-    `/api/facilities?access-token=${localStorage.getItem("token")}`
-  );
-};
+        if ( token ) return apiRequest('GET', BASE_URL + `/api/facilities?access-token=${token}`, {}, {})
+    },
 
-const getFacility = async (facilityId) => {
-  return Global(
-    "GET",
-    `/api/facilities/${facilityId}?access-token=${localStorage.getItem(
-      "token"
-    )}`
-  );
-};
+    getFacility: async (facilityId) => {
+        const token = getToken()
 
-const addFacilities = async (data) => {
-  return Global(
-    "POST",
-    `/api/facilities/create?access-token=${localStorage.getItem("token")}`,
-    data
-  );
-};
+        if ( token ) return apiRequest('GET', BASE_URL + `/api/facilities/${facilityId}?access-token=${token}`, {}, {})
+    },
 
-const editFacilities = async (facilityId, data) => {
-  return Global(
-    "PUT",
-    `/api/facilities/update/${facilityId}?access-token=${localStorage.getItem(
-      "token"
-    )}`,
-    data
-  );
-};
+    addFacilities: async (data) => {
+        const token = getToken()
 
-const deleteFacilities = async (facilityId) => {
-  return Global(
-    "DELETE",
-    `/api/facilities/delete/${facilityId}?access-token=${localStorage.getItem(
-      "token"
-    )}`
-  );
-};
+        if ( token ) return apiRequest('POST', BASE_URL + `/api/facilities/create?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
+    },
 
-const deleteFacilityImage = async (facilityId, imageId) => {
-  return Global(
-    "DELETE",
-    `/api/facilities/${facilityId}/image/delete/${imageId}?access-token=${localStorage.getItem(
-      "token"
-    )}`
-  );
-};
+    editFacilities: async (facilityId, data) => {
+        const token = getToken()
 
-const addFacilityImage = async (facilityId, data) => {
-  return Global(
-    "POST",
-    `/api/facilities/${facilityId}/image/create?access-token=${localStorage.getItem(
-      "token"
-    )}`,
-    data
-  );
-};
+        if ( token ) return apiRequest('PUT', BASE_URL + `/api/facilities/update/${facilityId}?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
+    },
 
-const setMainFacilityImage = async (facilityId, imageId) => {
-  return Global(
-    "PUT",
-    `/api/facilities/${facilityId}/set-main-image/${imageId}?access-token=${localStorage.getItem(
-      "token"
-    )}`
-  );
-};
+    deleteFacilities: async (facilityId) => {
+        const token = getToken()
 
-export const facilitiesApi = {
-  getFacilities,
-  getFacility,
-  addFacilities,
-  editFacilities,
-  deleteFacilities,
-  deleteFacilityImage,
-  addFacilityImage,
-  setMainFacilityImage,
-};
+        if ( token ) apiRequest('DELETE', BASE_URL + `/api/facilities/delete/${facilityId}?access-token=${token}`, {}, {})
+    },
+
+    deleteFacilityImage: async (facilityId, imageId) => {
+        const token = getToken()
+
+        if ( token ) apiRequest('DELETE', BASE_URL + `/api/facilities/${facilityId}/image/delete/${imageId}?access-token=${token}`, {}, {})
+    },
+
+    addFacilityImage: async (facilityId, data) => {
+        const token = getToken()
+
+        if ( token ) apiRequest('POST', BASE_URL + `/api/facilities/${facilityId}/image/create?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
+    },
+
+    setMainFacilityImage: async (facilityId, imageId) => {
+        const token = getToken()
+
+        if ( token ) apiRequest('PUT', BASE_URL +  `/api/facilities/${facilityId}/set-main-image/${imageId}?access-token=${token}`, {}, {
+            'Content-Type':'application/json'
+        })
+    }
+}
+
+export default facilitiesApi

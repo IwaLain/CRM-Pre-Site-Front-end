@@ -1,84 +1,75 @@
-import { Global } from "./api";
+import { getToken } from '../helpers/helpers'
+import { apiRequest } from "./api"
+import { BASE_URL } from './constants'
 
-const getCustomers = async (limit, page, search) => {
-  let url = `/api/customer?access-token=${localStorage.getItem("token")}`;
-  if (limit) url += `&limit=${limit}`;
-  if (page) url += `&page=${page}`;
-  if (search) url += `&s=${search}`;
-  return Global("GET", url);
-};
+const customersApi = {
+    getCustomers: async (limit, page, search) => {
+        const token = getToken()
 
-const getCustomer = async (customerId) => {
-  return Global(
-    "GET",
-    `/api/customer/${customerId}?access-token=${localStorage.getItem("token")}`
-  );
-};
+        let url = `/api/customer?access-token=${token}`;
+        if ( limit ) url += `&limit=${limit}`;
+        if ( page ) url += `&page=${page}`;
+        if ( search ) url += `&s=${search}`;
 
-const addCustomer = async (data) => {
-  return Global(
-    "POST",
-    `/api/customer/create?access-token=${localStorage.getItem("token")}`,
-    data
-  );
-};
+        if ( token ) return apiRequest('GET', BASE_URL + url, {}, {
+            'Content-Type':'application/json'
+        })
+    },
 
-const addCustomerImage = async (customerId, data) => {
-  return Global(
-    "POST",
-    `/api/customer/${customerId}/image/create?access-token=${localStorage.getItem(
-      "token"
-    )}`,
-    data
-  );
-};
+    getCustomer: async (customerId) => {
+        const token = getToken()
 
-const deleteCustomerImage = async (customerId, imageId) => {
-  return Global(
-    "DELETE",
-    `/api/customer/${customerId}/image/delete/${imageId}?access-token=${localStorage.getItem(
-      "token"
-    )}`
-  );
-};
+        if ( token ) return apiRequest('GET', BASE_URL + `/api/customer/${customerId}?access-token=${token}`, {}, {})
+    },
 
-const setMainCustomerImage = async (customerId, imageId) => {
-  return Global(
-    "PUT",
-    `/api/customer/${customerId}/set-main-image/${imageId}?access-token=${localStorage.getItem(
-      "token"
-    )}`
-  );
-};
+    addCustomer: async (data) => {
+        const token = getToken()
 
-const updateCustomer = async (customerId, dataCustomer) => {
-  return Global(
-    "PUT",
-    `/api/customer/update/${customerId}?access-token=${localStorage.getItem(
-      "token"
-    )}`,
-    dataCustomer
-  );
-};
+        if ( token ) return await apiRequest('POST', BASE_URL + `/api/customer/create?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
+    },
 
-const getCustomerFacilities = async (limit, page, search, customerId) => {
-  let url = `/api/customer/${customerId}/facilities?access-token=${localStorage.getItem(
-    "token"
-  )}`;
-  if (limit) url += `&limit=${limit}`;
-  if (page) url += `&page=${page}`;
-  if (search) url += `&s=${search}`;
+    addCustomerImage: async (customerId, data) => {
+        const token = getToken()
 
-  return Global("GET", url);
-};
+        if ( token ) return apiRequest('POST', BASE_URL + `/api/customer/${customerId}/image/create?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
+    },
 
-export const customersApi = {
-  getCustomers,
-  getCustomer,
-  addCustomer,
-  addCustomerImage,
-  deleteCustomerImage,
-  setMainCustomerImage,
-  updateCustomer,
-  getCustomerFacilities,
-};
+    deleteCustomerImage: async (customerId, imageId) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/customer/${customerId}/image/delete/${imageId}?access-token=${token}`, {}, {})
+    },
+
+    setMainCustomerImage: async (customerId, imageId) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('PUT', BASE_URL + `/api/customer/${customerId}/set-main-image/${imageId}?access-token=${token}`, {}, {
+            'Content-Type':'application/json'
+        })
+    },
+
+    updateCustomer: async (customerId, dataCustomer) => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('PUT', BASE_URL + `/api/customer/update/${customerId}?access-token=${token}`, dataCustomer, {
+            'Content-Type':'application/json'
+        })
+    },
+
+    getCustomerFacilities: async (limit, page, search, customerId) => {
+        const token = getToken()
+
+        let url = `/api/customer/${customerId}/facilities?access-token=${token}`;
+          if ( limit ) url += `&limit=${limit}`;
+          if ( page ) url += `&page=${page}`;
+          if ( search ) url += `&s=${search}`;
+
+        if ( token ) return apiRequest('GET', BASE_URL + url, {}, {})
+    }
+}
+
+export default customersApi

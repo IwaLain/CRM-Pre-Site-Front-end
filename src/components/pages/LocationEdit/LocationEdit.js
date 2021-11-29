@@ -12,12 +12,8 @@ import {
   ModalFooter,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/methods/alert";
-import {
-  getLocationAPI,
-  updateLocationsAPI,
-} from "../../../js/api/locations";
-import { location as locationApi } from "../../../js/api/locations";
+import { alert } from "../../../js/helpers/alert";
+import locationApi from "../../../js/api/locations";
 import { PageContext } from "../../../context";
 
 const LocationEdit = () => {

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import logo from "../../assets/img/company.png";
-import { customersApi } from "../../js/api/customer";
-import { facilitiesApi } from "../../js/api/facilities";
-import { location } from "../../js/api/locations";
-import { equipment } from "../../js/api/equipment";
+import customersApi from "../../js/api/customer";
+import facilitiesApi from "../../js/api/facilities";
+import locationApi from "../../js/api/locations";
+import equipmentApi from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../InfoCard/InfoCard";
@@ -14,7 +14,7 @@ import ModalComponent from "../ModalComponent/ModalComponent";
 import { PageContext } from "../../context";
 
 const CRMEntity = ({ type }) => {
-  type = type.entity; 
+  type = type.entity;
   const { id } = useParams();
   const { showFormModal, setShowFormModal } = useContext(PageContext);
 
@@ -76,14 +76,14 @@ const CRMEntity = ({ type }) => {
       break;
     case "location":
       subEntityName = "equipment";
-      getEntityAPI = location.getLocation;
+      getEntityAPI = locationApi.getLocation;
 
       break;
     case "equipment":
-      getEntityAPI = equipment.getEquipment;
-      deleteEntityImageAPI = equipment.deleteImageEquipment;
-      addEntityImageAPI = equipment.createImageEquipment;
-      setMainEntityImageAPI = equipment.setMainEquipmentImage;
+      getEntityAPI = equipmentApi.getEquipment;
+      deleteEntityImageAPI = equipmentApi.deleteImageEquipment;
+      addEntityImageAPI = equipmentApi.createImageEquipment;
+      setMainEntityImageAPI = equipmentApi.setMainEquipmentImage;
       break;
     default:
       break;
@@ -91,7 +91,7 @@ const CRMEntity = ({ type }) => {
 
   useEffect(() => {
     getEntityAPI(id).then((data) => {
-      
+
       if(type==='customer'||type==='facility') {
         data = data[type][id];
       }

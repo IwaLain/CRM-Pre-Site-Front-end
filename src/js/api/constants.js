@@ -1,1 +1,1 @@
-export const URL = 'http://crm.local'
+export const BASE_URL = 'http://crm.local'

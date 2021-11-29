@@ -3,10 +3,10 @@ import "../../../scss/customer-create-page.scss";
 import star from "../../../assets/img/star.svg";
 import { Form, FormGroup, Label, Col } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/methods/alert";
-import { equipment as equipmentApi } from "../../../js/api/equipment";
+import { alert } from "../../../js/helpers/alert";
+import equipmentApi from "../../../js/api/equipment";
 import { PageContext } from "../../../context";
-import convertToBase64 from "../../../js/methods/convertImage";
+import convertToBase64 from "../../../js/helpers/convertImage";
 
 const EquipmentEdit = () => {
   const [imgLoaded, setImgLoaded] = useState(false);

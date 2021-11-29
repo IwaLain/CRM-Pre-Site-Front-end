@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Col, Label } from "reactstrap";
 import "./attached-images.scss";
 import star from "../../assets/img/star.svg";
-import uploadImage from "../../js/methods/convertImage";
+import uploadImage from "../../js/helpers/convertImage";
 
 const AttachedImages = ({ attachedImages, title, addImage, deleteImage }) => {
   const getImageById = (id) => {

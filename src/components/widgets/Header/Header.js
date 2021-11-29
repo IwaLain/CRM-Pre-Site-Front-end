@@ -6,7 +6,7 @@ import {
 } from "reactstrap";
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { logout } from "../../../js/api/login";
+import Global from "../../../js/api/global";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -18,7 +18,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    logout()
+    Global.logoutRequest()
       .then((res) => {
         localStorage.removeItem("token");
       })
