@@ -30,6 +30,13 @@ const Global = {
         })
     },
 
+    lastCustomer: async (id) => {
+        const token = getToken()
+        if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/last-customer/${id}?access-token=${token}`, {}, {
+            'Content-Type':'application/json'
+        })
+    },
+
     uploadProfilePhoto: async (id, data) => {
         const token = getToken()
         if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {

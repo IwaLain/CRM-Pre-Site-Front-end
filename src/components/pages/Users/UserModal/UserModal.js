@@ -1,8 +1,9 @@
 import React from 'react'
-import { Button, Col, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import { Button, Col, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap'
 import './UserModal.scss'
 import AddUser from '../UserAdd/UserAdd'
 import UserEdit from '../UserEdit/UserEdit'
+import ProfileEdit from '../../Profile/ProfileEdit/ProfileEdit'
 
 const UserModal = ({title, toggle, modal, method, currentUser}) => {
     return (
@@ -22,17 +23,23 @@ const UserModal = ({title, toggle, modal, method, currentUser}) => {
             <ModalBody>
                 {title === "Add User" ?
                     <AddUser
-                        changeTable={method.changeTable}
+                        changeTable={method}
                     />
-                    :
+                    : "Edit User" ?
                     <UserEdit
                         currentUser={currentUser}
-                        editeMethod={method.editeTable}
+                        editeMethod={method}
+                    />
+                    :
+                    <ProfileEdit
+                        currentUser={currentUser}
+                        editeMethod={method}
                     />
                 }
             </ModalBody>
             <ModalFooter>
                 <FormGroup md={12} className='formUser__buttons'>
+                    <Row>
                         <Col md={6}>
                             <Button
                                 className='formUser__cancel'
@@ -49,7 +56,8 @@ const UserModal = ({title, toggle, modal, method, currentUser}) => {
                                 Submit
                             </Button>
                         </Col>
-                    </FormGroup>
+                    </Row>
+                </FormGroup>
             </ModalFooter>
         </Modal>
     )

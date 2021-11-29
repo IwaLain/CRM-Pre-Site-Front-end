@@ -1,5 +1,9 @@
 import React from 'react'
+import { useForm } from 'react-hook-form';
+import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import Global from '../../../../js/api/global';
+import User from '../../../../js/api/users';
+import InputForm from '../../../../js/helpers/input';
 
 const ProfileEdit = ({currentUser, editeProfile}) => {
     const {
@@ -18,6 +22,13 @@ const ProfileEdit = ({currentUser, editeProfile}) => {
         }
     })
 
+    const dataInput = {
+        register,
+        handleSubmit,
+        formState: { errors },
+        trigger,
+    }
+
     const onSubmit = (e) => {
         const data = {
             'id': currentUser.id,
@@ -27,6 +38,7 @@ const ProfileEdit = ({currentUser, editeProfile}) => {
             'email': e.email,
             'phone': e.phone,
             'role': e.role,
+            'img': e.img
         }
 
         Global.updateProfile(currentUser.id, data)
@@ -40,7 +52,7 @@ const ProfileEdit = ({currentUser, editeProfile}) => {
 
         User.editUserRole(currentUser.id, data)
 
-        editeTable(currentUser.id, data)
+        editeProfile(currentUser.id, data)
     };
 
     return (

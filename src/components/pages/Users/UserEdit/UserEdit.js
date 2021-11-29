@@ -113,6 +113,15 @@ const UserEdit = ({currentUser = '', editeMethod}) => {
                                         errors={errors.phone}
                                     />
                                 </Col>
+                                <Col md={6}>
+                                    <Label className=''>Role:</Label>
+                                    <select className='form-control'>
+                                        <option disabled selected> Select role</option>
+                                        <option value='manager'>manager</option>
+                                        <option value='member'>member</option>
+                                        <option value='SuperAdmin'>SuperAdmin</option>
+                                    </select>
+                                </Col>
                             </Row>
                         </FormGroup>
                     </Form>
