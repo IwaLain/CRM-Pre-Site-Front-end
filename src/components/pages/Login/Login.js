@@ -14,14 +14,13 @@ import { Card,
 import { alert } from '../../../js/helpers/alert';
 import { ToastContainer } from 'react-toastify';
 import Global from '../../../js/api/global';
-import { useHistory } from 'react-router';
 
 import InputForm from '../../../js/helpers/input';
 import { GlobalContext } from '../../../context';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
+import { getToken } from '../../../js/helpers/helpers';
 
 const LoginPage = () => {
-  let history = useHistory();
   const { setUserProfile } = useContext(GlobalContext)
 
   const {
@@ -51,10 +50,14 @@ const LoginPage = () => {
         alert("success", "Login success");
       }
 
-    Global.getProfile()
-    .then(data => {
-      setUserProfile(data.user)
-    })
+      const token = getToken()
+      
+      if(token) {
+        Global.getProfile()
+        .then(data => {
+          setUserProfile(data.user)
+        })
+      }
     });
   };
   

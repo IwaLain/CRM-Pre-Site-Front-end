@@ -20,8 +20,9 @@ const ProfilePage = () => {
     }, [userProfile])
 
     const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
-
+    // const setImage = () => Global.updateProfile(userProfile.id, {'img': loadedImg})
     const editeProfile = (data) => {
+        setProfile(data)
         setUserProfile(data)
     }
 
@@ -31,19 +32,31 @@ const ProfilePage = () => {
             convertToBase64(file).then((res) => setImg(res));
             const url = URL.createObjectURL(file);
             setLoadedImg(url);
+            // setImage()
         }
     };
+
+    
 
     return(
         <>
             <h3>Profile</h3>
-            <Row className='profile'>
-                <Col className='p-5 pt-4'>
+            <Row>
+                <Col md={10} className='profile p-5 pt-4'>
                     <Row className='profile__item'>
                         <Col lg={{offset: 2, size: 3}} className='d-flex justify-content-center profile__avatar'>
                             <div className='profile__avatar'>
-                                <Label className="image-field" for="image-field">
-                                    <img className='profile__img' src={placeholder} alt="Avatar" />
+                                <Label 
+                                    className="image-field" 
+                                    for="image-field">
+                                    <img 
+                                        className='profile__img' 
+                                        src={
+                                            loadedImg === '' ? placeholder : loadedImg
+                                        } 
+                                        alt="Avatar"
+                                        
+                                    />
                                 </Label>
                                 <input
                                     className="form-control"

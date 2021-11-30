@@ -2,7 +2,10 @@ import { errorsValidation, validation } from "./validation"
 import '../../scss/components/inputs.scss'
 
 const InputForm = ({type, data, errors, placeholder = '...', message = ''}) => {
-    const { register, trigger } = data
+    const { 
+        register, 
+        trigger 
+    } = data
     
     return (
         <div>

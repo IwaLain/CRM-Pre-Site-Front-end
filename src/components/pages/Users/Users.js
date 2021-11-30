@@ -40,7 +40,9 @@ const UsersPage = () => {
                         toggleAddUser()
                     }}>
                         Add User
-                        <img className='users__title-img' src={star} alt="star"/>
+                        <div users__title-img>
+                            <i class="fas fa-user-plus"></i>
+                        </div>
                     </Button>
                 </Col>
             </Row>

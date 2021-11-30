@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form';
 import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
-import { GlobalContext } from '../../../../context';
 import Global from '../../../../js/api/global';
 import User from '../../../../js/api/users';
+import { alert } from '../../../../js/helpers/alert';
 import InputForm from '../../../../js/helpers/input';
 
 const ProfileEdit = ({currentUser, editeMethod}) => {
@@ -42,11 +42,17 @@ const ProfileEdit = ({currentUser, editeMethod}) => {
             'role': currentUser.role,
         }
 
-        Global.updateProfile(currentUser.id, data)
+        Global.updateProfile(currentUser.id, data).then(data => {
+            if (!data) {
+                alert('error', 'Something went wrong')
+            } else {
+                alert('success', 'Profile seccess edited')
+            }
+        })
 
         User.editUserRole(currentUser.id, data)
 
-        editeMethod(currentUser.id, data)
+        editeMethod(data)
     };
 
     return (
