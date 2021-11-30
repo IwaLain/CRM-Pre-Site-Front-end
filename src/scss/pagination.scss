@@ -12,8 +12,8 @@
   cursor: default;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid $btn-primary;
-  color: $btn-primary;
+  border: 1px solid $primary;
+  color: $primary;
   margin: 0 5px;
   text-decoration: none;
 }
@@ -29,7 +29,7 @@
 
 .pagination li.active a {
   color: #fff;
-  background: $btn-primary;
+  background: $primary;
 }
 
 .pagination li.disabled a {

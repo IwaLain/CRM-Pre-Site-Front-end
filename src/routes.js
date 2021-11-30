@@ -7,6 +7,7 @@ import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
 import Dashboard from "./components/pages/Dashboard/Dashboard";
 import Network from "./components/pages/Network/Network";
+import UIKit from "./components/UIKit/UIKit";
 
 const routes = {
   auth: [
@@ -17,6 +18,10 @@ const routes = {
     },
   ],
   dashboard: [
+    {
+      path: "/dashboard/ui-kit",
+      children: <UIKit />,
+    },
     {
       path: "/dashboard/users",
       name: "Users Page",
@@ -59,7 +64,7 @@ const routes = {
     },
     {
       path: "/dashboard/facilities",
-      name: "Factories",
+      name: "Facilities",
       children: <List type={{ entity: "facilities", ref: "customers" }} />,
     },
     {

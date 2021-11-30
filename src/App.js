@@ -11,6 +11,7 @@ import NotFound from "./components/pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
 import LoginPage from "./components/pages/Login/Login";
+import UIKit from "./components/UIKit/UIKit";
 
 const App = () => {
   const [pageTitle, setPageTitle] = useState();

@@ -5,7 +5,7 @@
 .dashboard.container-fluid {
   padding: 0;
   display: grid;
-  grid-template-columns: 190px auto;
+  grid-template-columns: 280px auto;
 }
 
 .dashboard > .row {
@@ -15,19 +15,20 @@
 /* Sidebar */
 
 .dashboard aside {
-  background-color: $secondary;
+  background-color: $main-secondary;
   padding: 15px;
   height: 100vh;
   position: sticky;
   top: 0;
   z-index: 50;
+  font-size: 1.1em;
 }
 
 .dashboard .logo-sidebar {
   margin-bottom: 35px;
 }
 
-.dashboard .logo img {
+.dashboard .logo img:nth-child(1) {
   width: 30px;
   max-width: 45px;
   margin-right: 15px;
@@ -38,6 +39,7 @@
 }
 
 .dashboard aside nav ul {
+  list-style: none;
   padding-left: 0.25rem;
 }
 
@@ -64,7 +66,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  background-color: $primary;
+  background-color: $main-primary;
   height: 60px;
   padding: 0 15px;
   position: sticky;

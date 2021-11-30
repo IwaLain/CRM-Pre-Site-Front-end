@@ -33,7 +33,7 @@ const locationApi = {
       return apiRequest(
         "POST",
         BASE_URL + `/api/location/create?access-token=${token}`,
-        { data },
+        data,
         {
           "Content-Type": "application/json",
         }
@@ -54,7 +54,7 @@ const locationApi = {
       );
   },
 
-  deleteLocatio: async (locationId) => {
+  deleteLocation: async (locationId) => {
     const token = getToken();
 
     if (token)
