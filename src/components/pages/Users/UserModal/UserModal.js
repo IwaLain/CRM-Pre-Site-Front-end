@@ -30,7 +30,7 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                         currentUser={currentUser}
                         editeMethod={method}
                     />
-                    :
+                    : 
                     <ProfileEdit
                         currentUser={currentUser}
                         editeMethod={method}

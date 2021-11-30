@@ -89,7 +89,7 @@ const UserEdit = ({ currentUser, editeMethod }) => {
                                     <Label className=''>User Name:</Label>
                                     <InputForm
                                         type={'username'}
-                                        data={dataInput}
+                                        data={dataInput} 
                                         errors={errors.username}
                                     />
                                 </Col>
@@ -115,7 +115,10 @@ const UserEdit = ({ currentUser, editeMethod }) => {
                                 </Col>
                                 <Col md={6}>
                                     <Label className=''>Role:</Label>
-                                    <select className='form-control'>
+                                    <select 
+                                        className='form-control'
+                                        {...register('role')}
+                                    >
                                         <option disabled selected> Select role</option>
                                         <option value='manager'>manager</option>
                                         <option value='member'>member</option>

@@ -21,7 +21,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    Global.logout().then(() => {
+    Global.logoutRequest().then(() => {
       localStorage.removeItem("token");
       window.location.reload();
       history.push("/");
