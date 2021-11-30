@@ -1,10 +1,31 @@
 .delete-field--btn {
-  width: 100%;
-  height: 100%;
-  position: relative;
 }
-.col-sm-1.delete-field--container {
+.delete-field {
+  display: flex !important;
+  flex-direction: row !important;
+}
+.delete-field--container {
+  border-radius: 5px;
+  position: relative;
   padding: 0px;
   width: 38px;
   height: 38px;
+}
+.delete-field--cross:before,
+.delete-field--cross:after {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  content: " ";
+  height: 25px;
+  width: 2px;
+  background-color: white;
+}
+
+.delete-field--cross:before {
+  transform: translate(50%, -50%) rotate(45deg);
+}
+
+.delete-field--cross:after {
+  transform: translate(50%, -50%) rotate(-45deg);
 }
