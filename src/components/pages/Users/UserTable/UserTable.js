@@ -44,26 +44,24 @@ const UserTable = ( { users, editeTable }) => {
                                 <td data-label='Phone'>{user.phone}</td>
                                 <td data-label='Role'>{user.role}</td>
                                 <td data-label='Edit'>
-                                    <img
-                                        className='users-table__img'
-                                        src={edite}
+                                    <i
+                                        class="fas fa-edit users-table__img"
                                         alt="edite"
                                         onClick={() => {
                                                 toggleEditUser(true)
                                                 current(user)
                                             }
                                         }
-                                    />
+                                    ></i>
                                 </td>
                                 <td data-label='Delite'>
-                                    <img
-                                        className='users-table__img'
-                                        src={del}
+                                    <i
+                                        class="fas fa-trash users-table__img"
                                         alt="delete"
                                         onClick={() => {
                                             deleteUser(user.id)
                                         }}
-                                    />
+                                    ></i>
                                 </td>
                             </tr>
                         ))}

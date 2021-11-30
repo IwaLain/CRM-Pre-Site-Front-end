@@ -17,12 +17,7 @@ const Network = () => {
       <section className="dashboard-page__section">
         <h3>Network</h3>
         <div className="dashboard-page__block-wrapper">
-          <div 
-            className="dashboard-page__block"
-            onClick={(e) => {
-              
-            }}
-          >
+          <div className="dashboard-page__block">
             <h5>Gateways</h5>
             <span>{"{staticField}"}</span>
           </div>
@@ -45,7 +40,7 @@ const Network = () => {
         </div>
       </section>
       <section>
-        
+
       </section>
     </div>
   );
