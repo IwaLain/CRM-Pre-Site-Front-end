@@ -17,9 +17,12 @@ import Global from '../../../js/api/global';
 import { useHistory } from 'react-router';
 
 import InputForm from '../../../js/helpers/input';
+import { GlobalContext } from '../../../context';
+import { useContext, useEffect } from 'react';
 
 const LoginPage = () => {
   let history = useHistory();
+  const { setUserProfile } = useContext(GlobalContext)
 
   const {
     register,
@@ -46,12 +49,15 @@ const LoginPage = () => {
       } else {
         localStorage.setItem("token", data.token);
         alert("success", "Login success");
-        window.location.reload();
-        history.push("/dashboard");
       }
+
+    Global.getProfile()
+    .then(data => {
+      setUserProfile(data.user)
+    })
     });
   };
-
+  
   return (
     <Container fluid className="login__bg">
       <Row className="vh-100 justify-content-sm-center align-items-center">

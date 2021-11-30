@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap'
 import './UserModal.scss'
 import AddUser from '../UserAdd/UserAdd'
@@ -6,13 +6,36 @@ import UserEdit from '../UserEdit/UserEdit'
 import ProfileEdit from '../../Profile/ProfileEdit/ProfileEdit'
 
 const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
+    const [formComponent, setFormComponent] = useState({});
+    const [formTitle, setFormTitle] = useState({});
+
+    useEffect(() => {
+        switch (type) {
+            case 'Add User':
+                setFormComponent(<AddUser changeTable={method} />)
+                setFormTitle('Add User')
+                break;
+            case 'Edit User':
+                setFormComponent(<UserEdit currentUser={currentUser} editeMethod={method} />)
+                setFormTitle('Edit User')
+                break;
+            case 'Edit Profile':
+                setFormComponent(<ProfileEdit currentUser={currentUser} editeMethod={method} />)
+                setFormTitle('Edit Profile')
+                break;
+            default:
+                break;
+        }
+    }, [type, currentUser])
+    
+
     return (
         <Modal
             isOpen={modal}
             toggle={toggle}
         >
             <ModalHeader className='modal__head'>
-                {type}
+                {formTitle}
                 <span
                     type="button"
                     className="btn-close"
@@ -21,21 +44,7 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                 ></span>
             </ModalHeader>
             <ModalBody>
-                {type === "Add User" ?
-                    <AddUser
-                        changeTable={method}
-                    />
-                    : "Edit User" ?
-                    <UserEdit
-                        currentUser={currentUser}
-                        editeMethod={method}
-                    />
-                    : 
-                    <ProfileEdit
-                        currentUser={currentUser}
-                        editeMethod={method}
-                    />
-                }
+                {formComponent}
             </ModalBody>
             <ModalFooter>
                 <FormGroup md={12} className='formUser__buttons'>

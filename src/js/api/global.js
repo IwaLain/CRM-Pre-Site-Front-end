@@ -27,7 +27,7 @@ const Global = {
 
     updateProfile: async (id, data) => {
         const token = getToken()
-        if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
+        if ( token ) return await apiRequest( 'PUT', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Content-Type':'application/json'
         })
     },

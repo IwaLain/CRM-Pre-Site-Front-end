@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form';
 import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
+import { GlobalContext } from '../../../../context';
 import Global from '../../../../js/api/global';
 import User from '../../../../js/api/users';
 import InputForm from '../../../../js/helpers/input';
 
-const ProfileEdit = ({currentUser, editeProfile}) => {
+const ProfileEdit = ({currentUser, editeMethod}) => {
     const {
         register,
         handleSubmit,
@@ -37,22 +38,15 @@ const ProfileEdit = ({currentUser, editeProfile}) => {
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
-            'role': e.role,
-            'img': e.img
+            'img': e.img,
+            'role': currentUser.role,
         }
 
         Global.updateProfile(currentUser.id, data)
-        .then(data => {
-            if(data.errors) {
-                alert('error', data.errors)
-            } else {
-                alert('success', 'Edit Profile successful')
-            }
-        })
 
         User.editUserRole(currentUser.id, data)
 
-        editeProfile(currentUser.id, data)
+        editeMethod(currentUser.id, data)
     };
 
     return (

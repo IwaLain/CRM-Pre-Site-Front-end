@@ -1,33 +1,29 @@
 import { Button, Col, Label, Row } from "reactstrap"
 import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Global from "../../../js/api/global"
 import convertToBase64 from "../../../js/helpers/convertImage"
 import UserModal from "../Users/UserModal/UserModal"
+import { GlobalContext } from "../../../context"
 const ProfilePage = () => {
     const [loadedImg, setLoadedImg] = useState('');
     const [img, setImg] = useState('');
     const [modalEditProfile, setModalEditProfile] = useState(false)
-    const [profile, setProfile] = useState({
-        id: '',
-        email: '',
-        username: '',
-        first_name: '',
-        last_name: '',
-        phone: '',
-        role: '',
-        img: placeholder
-    });
+    const { userProfile, setUserProfile } = useContext(GlobalContext)
+    const [profile, setProfile] = useState(userProfile);
     useEffect(() => {
         Global.getProfile()
         .then(data => {
             setProfile(data.user)
         })
-    }, [])
+    }, [userProfile])
 
     const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
-    const  editeProfile = (data) => setProfile(data)
+
+    const editeProfile = (data) => {
+        setUserProfile(data)
+    }
 
     const addImageHandler = (e) => {
         const file = e.target.files[0];

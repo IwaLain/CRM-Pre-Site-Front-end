@@ -6,7 +6,7 @@ import User from '../../../../js/api/users'
 import './UserTable.scss'
 import UserModal from '../UserModal/UserModal'
 
-const UserTable = ( { users, editeTable}) => {
+const UserTable = ( { users, editeTable }) => {
     const [currentUser, setCurrentUser] = useState([])
     const [modalEditUser, setModalEditUser] = useState(false)
 
