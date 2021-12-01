@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import "../../../scss/customer-create-page.scss";
 import "./EquiomentCreate.scss"
-import star from "../../../assets/img/star.svg";
 import { Form, FormGroup, Label, Col, Row } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/helpers/alert";

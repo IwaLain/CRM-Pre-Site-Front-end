@@ -16,11 +16,10 @@ const ProfilePage = () => {
         Global.getProfile()
         .then(data => {
             setProfile(data.user)
+            setLoadedImg(
+                process.env.REACT_APP_SERVER_URL + "/" + profile.img
+            );
         })
-        
-        setLoadedImg(
-            process.env.REACT_APP_SERVER_URL + "/" + profile.img
-        );
     }, [userProfile])
 
     const setNewImage = (img) => {

@@ -15,6 +15,12 @@ const equipmentApi = {
         if ( token ) return apiRequest('GET', BASE_URL + `/api/equipment/${equipmentId}?access-token=${token}`, {}, {})
     },
 
+    getEquipmentTypes: async () => {
+        const token = getToken()
+
+        if ( token ) return apiRequest('GET', BASE_URL + `/api/equipment/type?access-token=${token}`, {}, {})
+    },
+
     addEquipment: async (data) => {
         const token = getToken()
 

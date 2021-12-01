@@ -5,7 +5,7 @@ import { BASE_URL } from "./constants"
 
 const networkApi = {
     create: {
-        gataways: async (data) => {
+        gataway: async (data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('POST', BASE_URL + `/api/gateway/create?access-token=${token}`, data, {
@@ -13,7 +13,7 @@ const networkApi = {
             })
         },
     
-        nodes: async (data) => {
+        node: async (data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('POST', BASE_URL + `/api/node/create?access-token=${token}`, data, {
@@ -21,7 +21,7 @@ const networkApi = {
             })
         },
     
-        motes: async (data) => {
+        mote: async (data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('POST', BASE_URL + `/api/mote/create?access-token=${token}`, data, {
@@ -29,7 +29,7 @@ const networkApi = {
             })
         },
     
-        routers: async (data) => {
+        router: async (data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('POST', BASE_URL + `/api/router/create?access-token=${token}`, data, {
@@ -37,7 +37,7 @@ const networkApi = {
             })
         },
     
-        sensors: async (data) => {
+        sensor: async (data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('POST', BASE_URL + `/api/sensor/create?access-token=${token}`, data, {
@@ -47,7 +47,7 @@ const networkApi = {
     },
 
     update: {
-        gataways: async (id, data) => {
+        gataway: async (id, data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('PUT', BASE_URL + `/api/gateway/update/${id}?access-token=${token}`, data, {
@@ -55,7 +55,7 @@ const networkApi = {
             })
         },
     
-        nodes: async (id, data) => {
+        node: async (id, data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('PUT', BASE_URL + `/api/node/update/${id}?access-token=${token}`, data, {
@@ -63,7 +63,7 @@ const networkApi = {
             })
         },
     
-        motes: async (id, data) => {
+        mote: async (id, data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('PUT', BASE_URL + `/api/mote/update/${id}?access-token=${token}`, data, {
@@ -71,7 +71,7 @@ const networkApi = {
             })
         },
     
-        routers: async (id, data) => {
+        router: async (id, data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('PUT', BASE_URL + `/api/router/update/${id}?access-token=${token}`, data, {
@@ -79,7 +79,7 @@ const networkApi = {
             })
         },
     
-        sensors: async (id, data) => {
+        sensor: async (id, data) => {
             const token = getToken()
 
             if ( token ) return apiRequest('PUT', BASE_URL + `/api/sensor/update/${id}?access-token=${token}`, data, {
@@ -119,63 +119,69 @@ const networkApi = {
             if ( token ) return apiRequest('GET', BASE_URL + `/api/sensors/list?access-token=${token}`, {}, {})
         },
 
-        gataways: async (id) => {
+        gataway: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('GET', BASE_URL + `/api/gateway/${id}?access-token=${token}`, {}, {})
         },
     
-        nodes: async (id) => {
+        node: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('GET', BASE_URL + `/api/node/${id}?access-token=${token}`, {}, {})
         },
     
-        motes: async (id) => {
+        mote: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('GET', BASE_URL + `/api/mote/${id}?access-token=${token}`, {}, {})
         },
     
-        routers: async (id) => {
+        router: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('GET', BASE_URL + `/api/router/${id}?access-token=${token}`, {}, {})
         },
     
-        sensors: async (id) => {
+        sensor: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('GET', BASE_URL + `/api/sensor/${id}?access-token=${token}`, {}, {})
+        },
+
+        gatawayByCustomer: async (id) => {
+            const token = getToken()
+
+            if ( token ) return apiRequest('GET', BASE_URL + `/api/customer/${id}/gateway?access-token=${token}`, {}, {})
         }
     },
 
     delete: {
-        gataways: async (id) => {
+        gataway: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('DELETE', BASE_URL + `/api/gateway/delete/${id}?access-token=${token}`, {}, {})
         },
     
-        nodes: async (id) => {
+        node: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('DELETE', BASE_URL + `/api/delete/delete/${id}?access-token=${token}`, {}, {})
         },
     
-        motes: async (id) => {
+        mote: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('DELETE', BASE_URL + `/api/mote/delete/${id}?access-token=${token}`, {}, {})
         },
     
-        routers: async (id) => {
+        router: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('DELETE', BASE_URL + `/api/router/delete/${id}?access-token=${token}`, {}, {})
         },
     
-        sensors: async (id) => {
+        sensor: async (id) => {
             const token = getToken()
 
             if ( token ) return apiRequest('DELETE', BASE_URL + `/api/sensor/delete/${id}?access-token=${token}`, {}, {})
