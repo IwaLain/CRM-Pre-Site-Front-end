@@ -6,7 +6,7 @@ const InformationComponent = ({ items, title }) => {
     <>
       <h2 className="page-subtitle">{title}</h2>
 
-      <div className="d-flex flex-wrap">
+      <div className="information--list">
         {items &&
           items.map((item, i) => (
             <div key={i} className="information--item">

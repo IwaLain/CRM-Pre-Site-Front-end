@@ -8,12 +8,14 @@ import equipmentApi from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../InfoCard/InfoCard";
-
+import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
+import DropzoneComponent from "../Dropzone/Dropzone";
+
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
@@ -27,13 +29,19 @@ const CRMEntity = ({ type }) => {
   let subEntityName = "";
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
   const [entityObject, setEntityObject] = useState();
-  const [attachedImages, setAttachedImages] = useState();
+  const [attachedImages, setAttachedImages] = useState([]);
+  const [attachedSchemas, setAttachedSchemas] = useState([]);
+  const [attachedDocs, setAttachedDocs] = useState([]);
   const [mainImage, setMainImage] = useState();
   const [subEntity, setSubEntity] = useState();
   const [informationItems, setInformationItems] = useState([]);
   const informationFieldNames = ["address", "phone", "email"];
   const [mode, setMode] = useState("edit");
-
+  const [fileTypes, setFileTypes] = useState([
+    { type_id: "1", setFunc: setAttachedImages },
+    { type_id: "2", setFunc: setAttachedDocs },
+    { type_id: "3", setFunc: setAttachedSchemas },
+  ]);
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
     if (!mainImage) {
@@ -43,17 +51,44 @@ const CRMEntity = ({ type }) => {
   };
   const deleteEntityImage = (file) => {
     deleteEntityImageAPI(id, file.id).then((res) => {
+      alert("success", `image deleted`);
       setAttachedImages(res[`${type}Images`]);
     });
   };
-  const addEntityImage = (file) => {
-    convertToBase64(file).then((baseFormat) => {
-      const data = { img: baseFormat };
-      addEntityImageAPI(id, data).then((res) => {
-        setAttachedImages(res[`${type}Images`]);
-      });
-    });
-  };
+  async function addEntityImage(files, type_id) {
+    // const fileBaseFormat = await convertToBase64(file);
+    const newFiles = [...files];
+
+    const fileType = fileTypes.find((fileType) => fileType.type_id === type_id);
+    // switch (fileType) {
+    //   case "image":
+    //     fileTypeId = "1";
+    //     setAttachedFiles = setAttachedImages;
+    //     break;
+    //   case "schema":
+    //     fileTypeId = "3";
+    //     setAttachedFiles = setAttachedSchemas;
+    //     break;
+    //   case "doc":
+    //     fileTypeId = "2";
+    //     setAttachedFiles = setAttachedDocs;
+    //     break;
+    //   default:
+    //     break;
+    // }
+    if (fileType) {
+      for (let i = 0; i < newFiles.length; i++) {
+        let base64Format = await convertToBase64(newFiles[i]);
+        let data = await { type_id: fileType.type_id, img: base64Format };
+
+        const response = await addEntityImageAPI(id, data);
+
+        fileType.setFunc([...response[`${type}Images`]]);
+      }
+    } else {
+      alert("warning", "wrong type of file");
+    }
+  }
   const setMainEntityImage = (imageId) => {
     setMainEntityImageAPI(id, imageId).then((res) => {
       setMainImage(res["main-image"]);
@@ -62,7 +97,7 @@ const CRMEntity = ({ type }) => {
   const setNewInformationItem = (fieldTitle, value) => {
     setInformationItems((oldArr) => {
       const newElement = { fieldTitle: fieldTitle, value: value };
-      console.log(newElement);
+
       return [...oldArr, newElement];
     });
   };
@@ -105,13 +140,20 @@ const CRMEntity = ({ type }) => {
       }
       setEntityObject(data);
       if (data[`${type}Images`]) {
-        setAttachedImages(data[`${type}Images`]);
+        fileTypes.forEach((fileType) => {
+          const files = data[`${type}Images`].filter(
+            (file) => file.type_id === fileType.type_id
+          );
+          fileType.setFunc([...files]);
+        });
+        // setAttachedImages([...data[`${type}Images`]]);
+
         const mainImage = getMainImage(data[`${type}Images`]);
         setMainImage(mainImage);
       }
       if (data.jsonData) {
         const customFields = data.jsonData;
-        console.log(customFields);
+
         customFields.forEach((el) => {
           if (el.value) {
             setNewInformationItem(el.name, el.value);
@@ -204,14 +246,45 @@ const CRMEntity = ({ type }) => {
           </div>
         </div>
       )}
+
       {entityObject && entityObject[`${type}Images`] && (
+        // <DropzoneComponent
+        //   type="image"
+        //   title="Attached images"
+        //   onAddFile={addEntityImage}
+        //   onRemoveFile={deleteEntityImage}
+        //   attachedFiles={attachedImages ? attachedImages : []}
+        // />
         <div className="entity-page--section">
-          <AttachedFiles
-            title="Attached images"
-            onAddImage={addEntityImage}
-            onRemoveImage={deleteEntityImage}
-            attachedFiles={attachedImages ? attachedImages : []}
-          />
+          <div className="attached-files--list">
+            <div className="attached-files--item">
+              <AttachedFiles
+                type="image"
+                title="Attached images"
+                onAddFile={addEntityImage}
+                onRemoveFile={deleteEntityImage}
+                attachedFiles={attachedImages ? attachedImages : []}
+              />
+            </div>
+            <div className="attached-files--item">
+              <AttachedFiles
+                type="schema"
+                title="Attached Schemas"
+                onAddFile={addEntityImage}
+                onRemoveFile={deleteEntityImage}
+                attachedFiles={attachedSchemas ? attachedSchemas : []}
+              />
+            </div>
+            <div className="attached-files--item">
+              <AttachedFiles
+                type="doc"
+                title="Attached docs"
+                onAddFile={addEntityImage}
+                onRemoveFile={deleteEntityImage}
+                attachedFiles={attachedDocs ? attachedDocs : []}
+              />
+            </div>
+          </div>
         </div>
       )}
     </>

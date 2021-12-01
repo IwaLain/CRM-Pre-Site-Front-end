@@ -1,45 +1,79 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "reactstrap";
-import convertToBase64 from "../../js/helpers/convertImage";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import "./Previews.scss";
 
 const AttachedFiles = ({
   type,
   title,
-  onAddImage,
+  onAddFile,
   attachedFiles,
-  onRemoveImage,
+  onRemoveFile,
 }) => {
   const [files, setFiles] = useState([]);
-
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [removeFile, setRemoveFile] = useState();
+  const [newFiles, setNewFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
-    onDrop: (acceptedFiles) => {
-      setFiles((oldFiles) => {
-        acceptedFiles.map((file) => {
-          onAddImage(file);
-          return Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          });
-        });
-        let newArr = oldFiles.concat(acceptedFiles);
+    onDrop: async (acceptedFiles) => {
+      // const newAcceptedFiles = acceptedFiles.map(function (file) {
+      //   const newObj = {
+      //     preview: URL.createObjectURL(file),
+      //     id: file.name,
+      //   };
+      //   return newObj;
+      // });
+      // setFiles((oldFiles) => {
+      //   let newArr = oldFiles.concat(newAcceptedFiles);
 
-        return newArr;
-      });
+      //   return newArr;
+      // });
+      // setNewFiles((oldFiles) => {
+      //   let newArr = oldFiles.concat(acceptedFiles);
+
+      //   return newArr;
+      // });
+
+      onAddFile(acceptedFiles, "1");
+
+      // const newAcceptedFiles = acceptedFiles.map(function (file) {
+      //   const newObj = {
+      //     preview: URL.createObjectURL(file),
+      //     id: file.name,
+      //   };
+      //   return newObj;
+      // });
+
+      // setFiles((oldFiles) => {
+      //   let newArr = oldFiles.concat(newAcceptedFiles);
+
+      //   return newArr;
+      // });
+      // setNewFiles((oldFiles) => {
+      //   let newArr = oldFiles.concat(acceptedFiles);
+
+      //   return newArr;
+      // });
     },
   });
-
-  const thumbs = files.map((file) => (
-    <div className="thumb" key={file.name}>
-      <span
-        className="attached--remove-img"
-        onClick={() => onRemoveImage(file)}
-      ></span>
-      <div className="thumbInner">
-        <img src={file.preview} className="attached--img" alt="..." />
-      </div>
-    </div>
-  ));
+  const toggleConfirmModal = () => {
+    setConfirmModal(!confirmModal);
+  };
+  // const thumbs = files.map((file) => (
+  //   <div className="thumb" key={file.id}>
+  //     <span
+  //       className="attached--remove-img"
+  //       onClick={() => {
+  //         setRemoveFile(file);
+  //         toggleConfirmModal();
+  //       }}
+  //     ></span>
+  //     <div className="thumbInner">
+  //       <img src={file.preview} className="attached--img" alt="..." />
+  //     </div>
+  //   </div>
+  // ));
 
   useEffect(() => {
     switch (type) {
@@ -65,20 +99,71 @@ const AttachedFiles = ({
       }),
     ]);
   }, [attachedFiles]);
+  // const uploadFiles = async (newFiles, addFileFunc) => {
+  //   if (newFiles.length > 0) {
+  //     const arr = [...newFiles];
+  //     for (let i = 0; i < arr.length; i++) {
+  //       let base64Format = await toBase64(arr[i]);
+  //       await addFileFunc(base64Format, "image");
+  //     }
+  //     setNewFiles([]);
+  //   } else {
+  //     console.log("Dont have files to upload");
+  //   }
+  // };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
   return (
-    <div className="">
-      {title && <h3>{title}</h3>}
-      <div className="thumbsContainer">
-        {thumbs}
+    <>
+      <ConfirmModal
+        modal={confirmModal}
+        toggleModal={toggleConfirmModal}
+        title="Remove image"
+        handleSubmit={() => {
+          onRemoveFile(removeFile);
+        }}
+        modalText={`Are you sure you want to DELETE file`}
+      />
+      <div className="">
+        <h2 className="page-subtitle">{title && title}</h2>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+        >
+          Upload Files
+        </Button>
         <div {...getRootProps({ className: "dropzone" })}>
           <input {...getInputProps()} />
-          <Button className="thumb" color="secondary">
-            Add image
-          </Button>
+          {/* Add {type && type} */}
+          {files &&
+            files.map((file) => (
+              <div className="thumb" key={file.id}>
+                <span
+                  className="attached--remove-img"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setRemoveFile(file);
+                    toggleConfirmModal();
+                  }}
+                ></span>
+                <div className="thumbInner">
+                  <img src={file.preview} className="attached--img" alt="..." />
+                </div>
+              </div>
+            ))}
         </div>
+        <div className="thumbsContainer"></div>
       </div>
-    </div>
+    </>
   );
 };
 export default AttachedFiles;

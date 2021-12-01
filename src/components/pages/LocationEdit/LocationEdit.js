@@ -16,6 +16,7 @@ import { alert } from "../../../js/helpers/alert";
 import locationApi from "../../../js/api/locations";
 import { GlobalContext } from "../../../context";
 import "../../../scss/location-edit.scss";
+import ConfirmModal from "../../ConfirmModal/ConfirmModal";
 const LocationEdit = () => {
   const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);
@@ -93,13 +94,10 @@ const LocationEdit = () => {
   const toggleRemoveFieldModal = () => {
     setRemoveFieldModal(!removeFieldModal);
   };
-  const handleRemoveFieldFormSubmit = async (e) => {
-    e.preventDefault();
+  const handleRemoveFieldFormSubmit = () => {
     unregister(removeField.id);
     setFields(fields.filter((field) => field.id !== removeField.id));
     setRemoveField("");
-
-    toggleRemoveFieldModal();
   };
   const handleAddFieldFormSubmit = async (e) => {
     e.preventDefault();
@@ -119,12 +117,12 @@ const LocationEdit = () => {
   return (
     <>
       <Modal isOpen={addFieldModal} toggle={toggleAddFieldModal}>
-        <ModalHeader>Add address</ModalHeader>
+        <ModalHeader>Add Field</ModalHeader>
         <ModalBody>
           <Form id="add-field-form" onSubmit={handleAddFieldFormSubmit}>
             <FormGroup row>
               <Label sm={3} for="add-field-field">
-                Address title
+                Field title
               </Label>
               <Col sm={9}>
                 <input className="form-control" id="add-field-field" />
@@ -139,7 +137,18 @@ const LocationEdit = () => {
           </Button>
         </ModalFooter>
       </Modal>
-      <Modal isOpen={removeFieldModal} toggle={toggleRemoveFieldModal}>
+      <ConfirmModal
+        modal={removeFieldModal}
+        toggleModal={toggleRemoveFieldModal}
+        title="Delete Field"
+        handleSubmit={() => {
+          handleRemoveFieldFormSubmit();
+        }}
+        modalText={`Are you sure you want to DELETE ${
+          removeField && removeField.title
+        }`}
+      />
+      {/* <Modal isOpen={removeFieldModal} toggle={toggleRemoveFieldModal}>
         <ModalHeader>Delete Field</ModalHeader>
         <ModalBody>
           <Form id="remove-field-form" onSubmit={handleRemoveFieldFormSubmit}>
@@ -155,7 +164,7 @@ const LocationEdit = () => {
             Delete
           </Button>
         </ModalFooter>
-      </Modal>
+      </Modal> */}
       <div className="create-form">
         <Form id="form" onSubmit={handleSubmit(onSubmit)}>
           <FormGroup row>
@@ -223,9 +232,9 @@ const LocationEdit = () => {
               </FormGroup>
             ))}
           <FormGroup row>
-            <Col sm={2} className="offset-md-2">
+            <Col sm={4} className="offset-md-2">
               <Button color="primary" onClick={toggleAddFieldModal}>
-                Add address
+                Add Field
               </Button>
             </Col>
           </FormGroup>
