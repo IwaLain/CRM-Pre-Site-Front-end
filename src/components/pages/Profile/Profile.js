@@ -23,8 +23,6 @@ const ProfilePage = () => {
         );
     }, [userProfile])
 
-    
-
     const setNewImage = (img) => {
         let data = {
             'img': img
@@ -35,7 +33,6 @@ const ProfilePage = () => {
     const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
     const editeProfile = (data) => {
         setProfile(data)
-        setUserProfile(data)
     }
 
     const addImageHandler = (e) => {

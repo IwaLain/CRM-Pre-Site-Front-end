@@ -28,7 +28,7 @@ const UsersPage = () => {
     }, [])
     
     return (
-        <>
+        <div className='Users'>
             <Row className='align-items-center justify-content-xs-between'>
                 <Col lg={1} md={2} sm={2} xs={6}>
                     <h3 className='users__title'>Users</h3>
@@ -50,6 +50,7 @@ const UsersPage = () => {
 
             <UserTable
                 editeTable={editeTable}
+                changeTable={changeTable}
                 users={users}
             />
 
@@ -59,7 +60,7 @@ const UsersPage = () => {
                 toggle={toggleAddUser}
                 modal={modalAddUser}
             />
-        </>
+        </div>
     )
 }
 

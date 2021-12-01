@@ -20,7 +20,7 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                 setFormTitle('Edit User')
                 break;
             case 'Edit Profile':
-                setFormComponent(<ProfileEdit currentUser={currentUser} editeMethod={method} />)
+                setFormComponent(<ProfileEdit toggle={toggle} currentUser={currentUser} editeMethod={method} />)
                 setFormTitle('Edit Profile')
                 break;
             default:
@@ -41,8 +41,8 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                         type="button"
                         className="btn-close"
                         aria-label="Close"
-                        onClick={toggle}
-                    ></span>
+                        onClick={toggle}>
+                    </span>
                 </Row>
             </ModalHeader>
             <ModalBody>
@@ -54,16 +54,14 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                         <Col md={6}>
                             <Button
                                 className='formUser__cancel'
-                                onClick={toggle}
-                            >
+                                onClick={toggle}>
                                 Cancel
                             </Button>
                         </Col>
                         <Col md={6}>
                             <Button
                                 className='formUser__submit'
-                                form='form'
-                            >
+                                form='form'>
                                 Submit
                             </Button>
                         </Col>

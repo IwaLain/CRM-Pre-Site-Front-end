@@ -6,7 +6,7 @@ import User from '../../../../js/api/users';
 import { alert } from '../../../../js/helpers/alert';
 import InputForm from '../../../../js/helpers/input';
 
-const ProfileEdit = ({currentUser, editeMethod}) => {
+const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
     const {
         register,
         handleSubmit,
@@ -46,6 +46,7 @@ const ProfileEdit = ({currentUser, editeMethod}) => {
             if (!data) {
                 alert('error', 'Something went wrong')
             } else {
+                toggle()
                 alert('success', 'Profile seccess edited')
             }
         })
