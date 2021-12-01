@@ -26,7 +26,7 @@ const UsersPage = () => {
         User.getUsers()
         .then(data => setUsers(data.user))
     }, [])
-    console.log(userProfile)
+    
     return (
         <>
             <Row className='align-items-center justify-content-xs-between'>
@@ -42,7 +42,7 @@ const UsersPage = () => {
                     }>
 
                         <div calassName='users__title-img'>
-                            Add User <i class="fas fa-user-plus"></i>
+                            Add User <i className="fas fa-user-plus"></i>
                         </div>
                     </Button>
                 </Col>

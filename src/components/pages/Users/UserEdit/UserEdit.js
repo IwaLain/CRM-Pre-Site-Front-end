@@ -43,8 +43,8 @@ const UserEdit = ({ currentUser, editeMethod }) => {
 
         User.editeUser(currentUser.id, data)
         .then(data => {
-            if(data.errors) {
-                alert('error', data.errors)
+            if(!data) {
+                alert('error', 'Something went wrong')
             } else {
                 alert('success', 'Edit User successful')
             }

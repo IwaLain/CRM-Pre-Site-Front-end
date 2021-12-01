@@ -57,6 +57,14 @@ export const validation = (type) => {
                   message: 'Please select role'
               }
           }
+      case 'name':
+          return {
+            required: "Name is Required",
+              minLength: {
+                value: 3,
+                message: "Name should contain at least 3 symbols.",
+              },
+          }
       default:
           break
   }

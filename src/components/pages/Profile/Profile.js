@@ -17,10 +17,22 @@ const ProfilePage = () => {
         .then(data => {
             setProfile(data.user)
         })
+        
+        setLoadedImg(
+            process.env.REACT_APP_SERVER_URL + "/" + profile.img
+        );
     }, [userProfile])
 
+    
+
+    const setNewImage = (img) => {
+        let data = {
+            'img': img
+        }
+        Global.updateProfile(profile.id, data)
+    }
+        
     const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
-    // const setImage = () => Global.updateProfile(userProfile.id, {'img': loadedImg})
     const editeProfile = (data) => {
         setProfile(data)
         setUserProfile(data)
@@ -32,11 +44,9 @@ const ProfilePage = () => {
             convertToBase64(file).then((res) => setImg(res));
             const url = URL.createObjectURL(file);
             setLoadedImg(url);
-            // setImage()
+            setNewImage(img)
         }
     };
-
-    
 
     return(
         <>
@@ -123,8 +133,10 @@ const ProfilePage = () => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     toggleEditProfile(true)
-                                }}
-                            >Edite Profile</Button>
+                            }}>
+                                Edite Profile
+                                <i className="fas fa-user-edit"></i>
+                            </Button>
                         </Col>
                     </Row>
                 </Col>

@@ -1,12 +1,14 @@
 import React, { useContext, useState } from "react";
 import "../../../scss/customer-create-page.scss";
+import "./EquiomentCreate.scss"
 import star from "../../../assets/img/star.svg";
-import { Form, FormGroup, Label, Col } from "reactstrap";
+import { Form, FormGroup, Label, Col, Row } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/helpers/alert";
 import equipmentApi from "../../../js/api/equipment";
 import { GlobalContext } from "../../../context";
 import convertToBase64 from "../../../js/helpers/convertImage";
+import { errorsValidation, validation } from "../../../js/helpers/validation";
 
 const EquipmentCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -18,6 +20,7 @@ const EquipmentCreate = () => {
     register,
     handleSubmit,
     formState: { errors },
+    trigger
   } = useForm();
 
   const addImageHandler = (e) => {
@@ -53,63 +56,65 @@ const EquipmentCreate = () => {
   return (
     <div className="create-form">
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup row>
-          <Label sm={2} for="locationID-field">
-            Location ID
-          </Label>
-          <Col sm={10}>
-            <input
-              className="form-control"
-              id="locationID-field"
-              value={entityID}
-              {...register("locationID")}
-              readOnly
-            />
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="name-field">
-            Name
-          </Label>
-          <Col sm={10}>
-            <input
-              className={`form-control ${errors.name ? "is-invalid" : ""}`}
-              id="name-field"
-              placeholder="Enter equipment name."
-              {...register("name", {
-                required: {
-                  value: true,
-                  message: "Name is required.",
-                },
-                minLength: {
-                  value: 3,
-                  message: "Name should contain at least 3 symbols.",
-                },
-              })}
-            />
-          </Col>
-        </FormGroup>
-        <FormGroup row style={{ display: "flex", alignItems: "center" }}>
-          <Col sm={2}>Image</Col>
-          <Col sm={10}>
-            {!imgLoaded ? (
-              <Label className="image-field" for="image-field">
-                <img className="star" src={star} alt="star" />
-                <span>Add image</span>
+        <FormGroup>
+            <Row>
+              <Label for="locationID-field">
+                Location ID
               </Label>
-            ) : (
-              <Label className="image-field" for="image-field">
-                <img src={loadedImg} alt="customer-img" />
-              </Label>
-            )}
-            <input
-              className="form-control"
-              id="image-field"
-              type="file"
-              accept="image/*"
-              onChange={addImageHandler}
-            />
-          </Col>
+              <Col>
+                <input
+                  className="form-control"
+                  id="locationID-field"
+                  value={entityID}
+                  {...register("locationID")}
+                  readOnly
+                />
+              </Col>
+            </Row>
+        </FormGroup>
+        <FormGroup>
+          <Row>
+            <Label for="name-field">
+              Name
+            </Label>
+            <Col>
+              <input
+                className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                id="name-field"
+                placeholder="Enter equipment name..."
+                {...register("name", validation("name"))}
+                onKeyUp={() => {
+                  trigger('name')
+                }}
+              />
+              {errorsValidation(errors.name)}
+            </Col>
+          </Row>
+        </FormGroup>
+        <FormGroup>
+          <Row className='equipment__add-img'>
+            <Col>
+              {!imgLoaded ? (
+                <Label className="image-field" for="image-field">
+                  <i class="fas fa-image"></i>
+                  <span>
+                    Add image
+                  </span>
+                </Label>
+              ) : (
+                <Label className="image-field" for="image-field">
+                  <img src={loadedImg} alt="customer-img" />
+                </Label>
+              )}
+              <input
+                className="form-control"
+                id="image-field"
+                type="file"
+                accept="image/*"
+                onChange={addImageHandler}
+              />
+            </Col>
+          </Row>
         </FormGroup>
       </Form>
     </div>
