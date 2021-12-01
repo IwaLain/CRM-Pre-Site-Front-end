@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Col, Row, Table } from 'reactstrap'
-import edite from '../../../../assets/img/edite.svg'
-import del from '../../../../assets/img/delete.svg'
 import User from '../../../../js/api/users'
 import './UserTable.scss'
 import UserModal from '../UserModal/UserModal'
+import DataTable from "react-data-table-component";
+import Loader from '../../../../js/helpers/loader'
+import { render } from 'react-dom'
 
 const UserTable = ( { users, editeTable }) => {
     const [currentUser, setCurrentUser] = useState([])
@@ -18,10 +19,56 @@ const UserTable = ( { users, editeTable }) => {
         .then(data => console.log(data))
     }
 
+    render() {
+        const columns = [
+            {
+                name: 'First Name',
+                selector: 'first_name',
+                sortable: true,
+            },
+            {
+                name: 'Last Name',
+                selector: 'last_name',
+                sortable: true,
+            },
+            {
+                name: 'UserName',
+                selector: 'username',
+            },
+            {
+                name: 'Email Address',
+                selector: 'email',
+            },
+            {
+                name: 'Phone',
+                selector: 'phone',
+            },
+            {
+                name: 'Role',
+                selector: 'role',
+            },
+            {
+                name: '',
+                selector: 'edit',
+            },
+            {
+                name: '',
+                selector: 'delete',
+            },
+        ];
+    }
+
     return (
         <Row className='mt-5'>
             <Col md={12}>
-                <Table hover responsive striped>
+                <DataTable
+                    columns={columns}
+                    data={users}
+                    defaultSortField="title"
+                    progressComponent={<Loader />}
+                    pagination
+                />
+                {/* <Table hover responsive striped>
                     <thead>
                         <tr>
                             <th>First Name</th>
@@ -66,7 +113,7 @@ const UserTable = ( { users, editeTable }) => {
                             </tr>
                         ))}
                     </tbody>
-                </Table>
+                </Table> */}
             </Col>
             <UserModal
                 type='Edit User'

@@ -8,7 +8,7 @@ const TableView = ({
   type,
   toggleModal,
   setMode,
-  showChooseBox,
+  chooseMode,
   changeCustomer,
 }) => {
   const [fieldTitle, setFieldTitle] = useState("Title");
@@ -69,7 +69,7 @@ const TableView = ({
       <Table style={{ width: "100%", verticalAlign: "middle" }}>
         <thead>
           <tr>
-            {showChooseBox && <th style={{ width: "2%" }}></th>}
+            {chooseMode && <th style={{ width: "2%" }}></th>}
             <th style={{ width: "10%" }}>{fieldTitle}</th>
             {subEntity && <th style={{ width: "3%" }}>{subEntity}</th>}
             <th style={{ width: "75%" }}>{showProgress && "Progress"}</th>
@@ -82,7 +82,7 @@ const TableView = ({
               let progress = calculateProgress(record);
               return (
                 <tr key={record.id}>
-                  {showChooseBox && (
+                  {chooseMode && (
                     <td>
                       <FormGroup check>
                         <Input
@@ -99,13 +99,15 @@ const TableView = ({
                   )}
                   <td>{showProgress && <Progress value={progress} />}</td>
                   <td>
-                    <Link to={`/dashboard/${type.entity}/${record.id}`}>
+                    <Link
+                      className="table-view_btn"
+                      to={`/dashboard/${type.entity}/${record.id}`}
+                    >
                       View
                     </Link>
                   </td>
                   <td>
                     <Button
-                      color="primary"
                       onClick={() => {
                         setMode("edit");
                         setEditId(record.id);

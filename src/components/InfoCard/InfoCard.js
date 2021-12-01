@@ -9,7 +9,7 @@ const InfoCard = ({
   data,
   type,
   toggleModal,
-  showChooseBox,
+  chooseMode,
   selected,
   changeCustomer,
   setMode,
@@ -50,7 +50,7 @@ const InfoCard = ({
 
   return (
     <div className="info-card">
-      {showChooseBox && (
+      {chooseMode ? (
         <FormGroup check>
           <Input
             type="checkbox"
@@ -58,6 +58,17 @@ const InfoCard = ({
             onChange={() => changeCustomer(data.id)}
           />
         </FormGroup>
+      ) : (
+        <Button
+          className="info-card__edit"
+          onClick={() => {
+            setMode("edit");
+            setEditId(data.id);
+            toggleModal();
+          }}
+        >
+          <i className="far fa-edit"></i>
+        </Button>
       )}
       <img
         src={
@@ -79,14 +90,14 @@ const InfoCard = ({
         <div className="info-card__btns">
           <Link to={`/dashboard/${type}/${data.id}`}>View</Link>
           <Button
-            color="primary"
+            style={!chooseMode ? { visibility: "hidden" } : {}}
             onClick={() => {
               setMode("edit");
               setEditId(data.id);
               toggleModal();
             }}
           >
-            <i className="far fa-edit"></i>
+            <span>Edit</span>
           </Button>
         </div>
       </div>

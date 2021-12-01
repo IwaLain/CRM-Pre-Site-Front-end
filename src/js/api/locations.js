@@ -54,7 +54,7 @@ const locationApi = {
       );
   },
 
-  deleteLocatio: async (locationId) => {
+  deleteLocation: async (locationId) => {
     const token = getToken();
 
     if (token)

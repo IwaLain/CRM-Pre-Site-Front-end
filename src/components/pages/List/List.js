@@ -11,6 +11,7 @@ import location from "../../../js/api/locations";
 import equipment from "../../../js/api/equipment";
 import facilitiesApi from "../../../js/api/facilities";
 import ModalComponent from "../../ModalComponent/ModalComponent";
+import Button from "../../UIKit/Button/Button";
 
 const List = ({ type }) => {
   const [data, setData] = useState();
@@ -24,7 +25,7 @@ const List = ({ type }) => {
   const [totalPages, setTotalPages] = useState(Math.ceil(0));
   const [entityNames, setEntityNames] = useState();
   const [mode, setMode] = useState();
-  const [showChooseBox, setShowChooseBox] = useState(false);
+  const [chooseMode, setChooseMode] = useState(false);
 
   const RECORDS_PER_PAGE = 12;
 
@@ -38,12 +39,6 @@ const List = ({ type }) => {
     selectedCustomer,
     setSelectedCustomer,
   } = useContext(GlobalContext);
-
-  const params = useParams();
-  let id = 0;
-  if (params) {
-    id = params.id;
-  }
 
   const match = useRouteMatch();
 
@@ -112,7 +107,7 @@ const List = ({ type }) => {
     switch (type.entity) {
       case "customers":
         setRequests({ list: customersApi.getCustomers });
-        setShowChooseBox(true);
+        setChooseMode(true);
         setShowEntitySelect(false);
         break;
       case "facilities":
@@ -120,7 +115,7 @@ const List = ({ type }) => {
           list: customersApi.getCustomerFacilities,
           ref: customersApi.getCustomers,
         });
-        setShowChooseBox(false);
+        setChooseMode(false);
         setShowEntitySelect(true);
         break;
       case "locations":
@@ -128,7 +123,7 @@ const List = ({ type }) => {
           list: location.getFacilityLocations,
           ref: facilitiesApi.getFacilities,
         });
-        setShowChooseBox(false);
+        setChooseMode(false);
         setShowEntitySelect(true);
         break;
       case "equipment":
@@ -136,7 +131,7 @@ const List = ({ type }) => {
           list: equipment.getLocationEquipment,
           ref: location.getLocations,
         });
-        setShowChooseBox(false);
+        setChooseMode(false);
         setShowEntitySelect(true);
     }
 
@@ -251,22 +246,16 @@ const List = ({ type }) => {
               onInput={handleSearch}
             />
             <div className="list__options_btns">
-              <button
+              <Button
+                type="list-view"
                 onClick={() => setView(true)}
-                className={
-                  view ? "list__toggle-btn active" : "list__toggle-btn"
-                }
-              >
-                <i className="fas fa-list-ul"></i>
-              </button>
-              <button
+                className={view ? "active" : ""}
+              ></Button>
+              <Button
+                type="block-view"
                 onClick={() => setView(false)}
-                className={
-                  !view ? "list__toggle-btn active" : "list__toggle-btn"
-                }
-              >
-                <i className="fas fa-th-large"></i>
-              </button>
+                className={!view ? "active" : ""}
+              ></Button>
             </div>
           </div>
         </div>
@@ -280,7 +269,7 @@ const List = ({ type }) => {
                   toggleModal={toggleModal}
                   modal={showFormModal}
                   setMode={setMode}
-                  showChooseBox={showChooseBox}
+                  chooseMode={chooseMode}
                   changeCustomer={changeCustomer}
                 />
               ) : (
@@ -299,10 +288,9 @@ const List = ({ type }) => {
                         type={type.entity}
                         toggleModal={toggleModal}
                         setMode={setMode}
-                        showChooseBox={showChooseBox}
+                        chooseMode={chooseMode}
                         selected={record.id === selectedCustomer.id}
                         changeCustomer={changeCustomer}
-                        setMode={setMode}
                       />
                     ))
                   ) : (

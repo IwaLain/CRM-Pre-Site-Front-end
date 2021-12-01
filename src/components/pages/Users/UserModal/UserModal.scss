@@ -1,11 +1,11 @@
 @import "../../../../scss/scss-variables.scss";
 .modal__head span {
-    position: absolute;
-    right: 20px;
-    top: 20px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
 .formUser__submit {
-    background-color: $btn-primary !important;
+    background-color: $primary !important;
 }
 
 .form__item {
@@ -29,7 +29,7 @@
               1px 1.5em;
             background-repeat: no-repeat;
           }
-          
+
           select:focus {
             background-image:
               linear-gradient(45deg, green 50%, transparent 50%),
@@ -47,8 +47,8 @@
             border-color: green;
             outline: 0;
           }
-          
-          
+
+
           select:-moz-focusring {
             color: transparent;
             text-shadow: 0 0 0 #000;

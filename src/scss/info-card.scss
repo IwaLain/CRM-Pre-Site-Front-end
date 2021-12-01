@@ -2,7 +2,7 @@
 
 .info-card_group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-gap: 10px;
 }
 
@@ -10,7 +10,17 @@
   position: relative;
   display: flex;
   border: 1px solid black;
-  min-width: 400px;
+  min-width: 350px;
+}
+
+.info-card .info-card__edit {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  padding-left: 3px;
 }
 
 .info-card > .form-check {
@@ -57,17 +67,28 @@
 
 .info-card__body a:hover {
   border: 1px solid black;
-  color: black;
+  color: white;
 }
 
 .info-card__btns {
   display: flex;
+  justify-content: space-between;
   gap: 5px;
   height: 28px;
 }
 
 .info-card__btns > button {
-  padding: 0 5px;
+  max-width: 120px;
+  width: 100%;
+  padding: 0;
+}
+
+.info-card__btns > a {
+  max-width: 120px;
+  background-color: $primary;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: 4px;
 }
 
 /* Dense style */

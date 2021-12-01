@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-        Button,
+    Button,
         Col,
         Row,
     } from 'reactstrap'
-import star from '../../../assets/img/star.svg'
 import './Users.scss'
 import User from '../../../js/api/users'
 import UserTable from './UserTable/UserTable'
@@ -35,13 +34,15 @@ const UsersPage = () => {
                     <h3 className='users__title'>Users</h3>
                 </Col>
                 <Col md={6} sm={3} xs={6} className='users__button'>
-                    <Button onClick={(e) => {
-                        e.preventDefault()
-                        toggleAddUser()
-                    }}>
-                        Add User
-                        <div users__title-img>
-                            <i class="fas fa-user-plus"></i>
+                    <Button
+                        onClick={(e) => {
+                            e.preventDefault()
+                            toggleAddUser()
+                        }
+                    }>
+
+                        <div calassName='users__title-img'>
+                            Add User <i class="fas fa-user-plus"></i>
                         </div>
                     </Button>
                 </Col>
