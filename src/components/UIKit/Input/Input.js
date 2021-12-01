@@ -7,6 +7,9 @@ const Input = ({
   value,
   checked,
   defaultChecked,
+  onChange,
+  className,
+  style,
 }) => {
   return (
     <input
@@ -19,6 +22,9 @@ const Input = ({
       disabled={disabled}
       checked={checked}
       defaultChecked={defaultChecked}
+      onChange={onChange}
+      className={className}
+      style={style}
     />
   );
 };

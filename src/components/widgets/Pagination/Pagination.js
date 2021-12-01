@@ -8,12 +8,14 @@ const Pagination = ({
   onPageChange,
   containerClassName,
   activeClassName,
+  initialPage,
 }) => {
   return (
     <ReactPaginate
       previousLabel={previousLabel}
       nextLabel={nextLabel}
       pageCount={pageCount}
+      initialPage={initialPage}
       onPageChange={onPageChange}
       containerClassName={containerClassName}
       activeClassName={activeClassName}

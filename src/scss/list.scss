@@ -70,7 +70,11 @@
   border: 1px solid black;
 }
 
-.list table .progress > .progress-bar {
+.list .progress {
+  width: 100%;
+}
+
+.list .progress > .progress-bar {
   background-color: $success;
 }
 
@@ -109,6 +113,14 @@
   background-color: $primary;
   color: white;
   border: 1px solid transparent;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 18px;
+  border-radius: 5px;
+}
+
+.list .table-view_btn:hover {
+  border: 1px solid black;
 }
 
 @media (max-width: 1024px) {

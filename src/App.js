@@ -23,12 +23,6 @@ const App = () => {
   const [selectedCustomer, setSelectedCustomer] = useState({});
   const [userProfile, setUserProfile] = useState({});
 
-  useEffect(() => {
-    window.addEventListener("storage", (e) => {
-      console.log(1);
-    });
-  }, []);
-
   return (
     <GlobalContext.Provider
       value={{

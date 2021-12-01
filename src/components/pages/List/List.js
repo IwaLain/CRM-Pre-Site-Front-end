@@ -22,12 +22,13 @@ const List = ({ type }) => {
   const [page, setPage] = useState(1);
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
   const [showEntitySelect, setShowEntitySelect] = useState(true);
-  const [totalPages, setTotalPages] = useState(Math.ceil(0));
+  const [totalRows, setTotalRows] = useState(Math.ceil(0));
   const [entityNames, setEntityNames] = useState();
   const [mode, setMode] = useState();
   const [chooseMode, setChooseMode] = useState(false);
+  const [totalPages, setTotalPages] = useState();
 
-  const RECORDS_PER_PAGE = 12;
+  const RECORDS_PER_PAGE = 10;
 
   const {
     pageTitle,
@@ -41,15 +42,6 @@ const List = ({ type }) => {
   } = useContext(GlobalContext);
 
   const match = useRouteMatch();
-
-  const formatData = (data) => {
-    const formattedData = [];
-    for (let i = 0; i < Object.keys(data).length; i++) {
-      formattedData.push(data[Object.keys(data)[i]]);
-    }
-
-    return formattedData;
-  };
 
   const formatNames = (data) => {
     const formattedNames = [];
@@ -68,15 +60,11 @@ const List = ({ type }) => {
     requests
       .list(RECORDS_PER_PAGE, page, e.target.value, entityID)
       .then((res) => {
-        setData(formatData(res[type.entity]));
+        setData(res);
+        setTotalRows(res.total);
         setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
         setIsLoading(false);
       });
-  };
-
-  const handlePageChange = (e) => {
-    const page = e.selected + 1;
-    setPage(page);
   };
 
   const handleResize = () => {
@@ -85,6 +73,11 @@ const List = ({ type }) => {
 
   const handleEntitySelect = (e) => {
     setEntityID(e.target.value);
+  };
+
+  const handlePageChange = (e) => {
+    const page = e.selected + 1;
+    setPage(page);
   };
 
   const toggleModal = () => {
@@ -133,6 +126,25 @@ const List = ({ type }) => {
         });
         setChooseMode(false);
         setShowEntitySelect(true);
+        break;
+      case "gateways":
+        setRequests({
+          list: (limit, page, search) => {
+            let url =
+              process.env.REACT_APP_SERVER_URL +
+              "/api/customer/" +
+              selectedCustomer.id +
+              "/gateway?access-token=" +
+              localStorage.getItem("token");
+            if (limit) url += "&limit=" + limit;
+            if (page) url += "&page=" + page;
+            if (search) url += "&s=" + search;
+
+            return fetch(url).then((res) => res.json());
+          },
+        });
+      default:
+        break;
     }
 
     setPagePath(match.path);
@@ -151,7 +163,8 @@ const List = ({ type }) => {
       requests
         .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
         .then((res) => {
-          setData(formatData(res[type.entity]));
+          setData(res);
+          setTotalRows(res.total);
           setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
           setIsLoading(false);
         });
@@ -176,7 +189,7 @@ const List = ({ type }) => {
       requests
         .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
         .then((res) => {
-          setData(formatData(res[type.entity]));
+          setData(res);
         });
     }
   }, [page]);
@@ -187,7 +200,8 @@ const List = ({ type }) => {
       requests
         .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
         .then((res) => {
-          setData(formatData(res[type.entity]));
+          setData(res);
+          setTotalRows(res.total);
           setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
           setPage(1);
           setIsLoading(false);
@@ -266,6 +280,9 @@ const List = ({ type }) => {
                 <TableView
                   data={data}
                   type={type}
+                  totalRows={totalRows}
+                  page={page}
+                  setPage={setPage}
                   toggleModal={toggleModal}
                   modal={showFormModal}
                   setMode={setMode}
@@ -280,16 +297,16 @@ const List = ({ type }) => {
                       : "info-card_group dense"
                   }
                 >
-                  {data && data.length > 0 ? (
-                    data.map((record) => (
+                  {data && Object.keys(data[type.entity]).length > 0 ? (
+                    Object.entries(data[type.entity]).map((record) => (
                       <InfoCard
-                        key={record.id}
-                        data={record}
+                        key={record[1].id}
+                        data={record[1]}
                         type={type.entity}
                         toggleModal={toggleModal}
                         setMode={setMode}
                         chooseMode={chooseMode}
-                        selected={record.id === selectedCustomer.id}
+                        selected={record[1].id === selectedCustomer.id}
                         changeCustomer={changeCustomer}
                       />
                     ))
@@ -298,11 +315,12 @@ const List = ({ type }) => {
                   )}
                 </div>
               )}
-              {totalPages > 1 && (
+              {!view && totalPages > 1 && (
                 <Pagination
                   previousLabel={"<"}
                   nextLabel={">"}
                   pageCount={totalPages}
+                  initialPage={page - 1}
                   onPageChange={handlePageChange}
                   containerClassName={"pagination"}
                   activeClassName={"active"}
