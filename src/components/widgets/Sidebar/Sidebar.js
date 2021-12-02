@@ -49,6 +49,12 @@ const Sidebar = ({ isMobile }) => {
               {!isMobile && "Network"}
             </Link>
           </li>
+          <li>
+            <Link to={`/dashboard/network`}>
+              <i className="fab fa-hubspot"></i>
+              {!isMobile && "Commertial Purpose"}
+            </Link>
+          </li>
         </ul>
       </nav>
     </aside>

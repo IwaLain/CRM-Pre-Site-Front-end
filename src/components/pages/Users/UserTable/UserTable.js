@@ -86,7 +86,8 @@ const UserTable = ( { users, editeTable, changeTable }) => {
                 onClick={() => {
                     deleteUser(row.id)
                 }}
-            ></i>
+            ></i>,
+            grow: 0
         },
     ];
 
@@ -98,17 +99,9 @@ const UserTable = ( { users, editeTable, changeTable }) => {
     );
 
     const subHeaderComponent = useMemo(() => {
-        const handleClear = () => {
-          if (filterText) {
-            setResetPaginationToggle(!resetPaginationToggle);
-            setFilterText("");
-          }
-        };
-    
         return (
           <FilterComponent
             onFilter={e => setFilterText(e.target.value)}
-            onClear={handleClear}
             filterText={filterText}
           />
         );
@@ -123,9 +116,11 @@ const UserTable = ( { users, editeTable, changeTable }) => {
                     data={filteredItems}
                     defaultSortField="title"
                     progressComponent={<Loader />}
+                    responsive
                     pagination
                     subHeader
                     subHeaderComponent={subHeaderComponent}
+                    subHeaderAlign="right"
                     customStyles={customStyles}
                 />
             </Col>

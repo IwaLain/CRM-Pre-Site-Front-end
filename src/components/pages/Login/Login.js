@@ -63,7 +63,7 @@ const LoginPage = () => {
   return (
     <Container fluid className="login__bg">
       <Row className="vh-100 justify-content-sm-center align-items-center">
-        <Col sm={8} md={6} lg={4}>
+        <Col sm={8} md={6} lg={3}>
           <Card className="px-3">
             <CardBody>
               <div className="text-center">

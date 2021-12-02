@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import star from "../../../assets/img/star.svg";
 import logo from "../../../assets/img/company.png";
 import "react-toastify/dist/ReactToastify.css";
 import "./factory-page.scss";
@@ -18,7 +17,6 @@ const Factory = () => {
   useEffect(() => {
     facilities.getFacility(id).then((data) => {
       setFacility(data);
-      console.log(data);
       setAttachedImages(data.facilityImages);
       const mainImage = getMainImage(data.facilityImages);
       setMainImage(mainImage);

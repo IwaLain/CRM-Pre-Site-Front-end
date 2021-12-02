@@ -6,7 +6,7 @@ import { alert } from "../../../js/helpers/alert";
 import equipmentApi from "../../../js/api/equipment";
 import { GlobalContext } from "../../../context";
 import convertToBase64 from "../../../js/helpers/convertImage";
-import { errorsValidation, validation } from "../../../js/helpers/validation";
+import { errorsValidation, validation } from "../../../js/helpers/validation"; 
 
 const EquipmentEdit = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -125,6 +125,7 @@ const EquipmentEdit = () => {
                     <option 
                       key={data.id}
                       value={data.id}
+                      // selected={data.id === equipment.equipment.type_id}
                     >
                       {data.name}
                     </option>

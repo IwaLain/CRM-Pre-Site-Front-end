@@ -36,7 +36,9 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
         >
             <ModalHeader className='modal__head'>
                 <Row>
-                    {formTitle}
+                    <Col>
+                        {formTitle}
+                    </Col>
                     <span
                         type="button"
                         className="btn-close"

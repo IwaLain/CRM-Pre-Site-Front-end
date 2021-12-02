@@ -77,7 +77,7 @@ const TableView = ({
           </tr>
         </thead>
         <tbody>
-          {data && data.length > 0 ? (
+          {data && data.length > 0 ? ( 
             data.map((record) => {
               let progress = calculateProgress(record);
               return (

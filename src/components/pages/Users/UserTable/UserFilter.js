@@ -2,9 +2,9 @@ import React from 'react'
 import { Button, Col, Input, Row } from 'reactstrap';
 import '../Users.scss'
 
-const FilterComponent = ({ filterText, onFilter, onClear }) => (
+const FilterComponent = ({ filterText, onFilter }) => (
     <Row className='user__filter'>
-        <Col className='d-flex'>
+        <Col md={8} className='d-flex'>
             <Input
                 id="search"
                 type="text"
@@ -13,7 +13,6 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
                 value={filterText}
                 onChange={onFilter}
             />
-            <Button onClick={onClear}>X</Button>
         </Col>
     </Row>
   );

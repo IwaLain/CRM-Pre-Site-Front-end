@@ -40,6 +40,9 @@ const InfoCard = ({
       case "locations":
         setSubEntity("Equipment");
         break;
+      case "Equipment":
+        setSubEntity("Equipment");
+        break;
       default:
         setSubEntity("");
         break;

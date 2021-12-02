@@ -28,7 +28,7 @@ const ProfilePage = () => {
         }
         Profile.updateProfile(profile.id, data)
     }
-        
+         
     const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
     const editeProfile = (data) => {
         setProfile(data)
@@ -46,11 +46,12 @@ const ProfilePage = () => {
 
     return(
         <>
-            <h3>Profile</h3>
-            <Row>
-                <Col md={10} className='profile p-5 pt-4'>
+            <h3>Profile</h3> 
+            <Row className='profile__container'>
+                <Col lg={4} md={8} sm={10} className='profile'>
                     <Row className='profile__item'>
-                        <Col lg={{offset: 2, size: 3}} className='d-flex justify-content-center profile__avatar'>
+                        <Col sm={4}></Col>
+                        <Col className='profile__avatar'>
                             <div className='profile__avatar'>
                                 <Label 
                                     className="image-field" 
@@ -75,55 +76,56 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Username</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.username}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>First Name</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.first_name}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Last Name</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.last_name}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Email</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.email}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Phone</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.phone}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Role</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.role}
                         </Col>
                     </Row>
                     <Row>
-                        <Col className='profile__button' lg={{offset: 2, size: 3}}>
+                        <Col sm={4}></Col>
+                        <Col className='profile__button'>
                             <Button
                                 className=''
                                 onClick={(e) => {

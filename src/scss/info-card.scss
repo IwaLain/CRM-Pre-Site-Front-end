@@ -30,7 +30,9 @@
 }
 
 .info-card > img {
+  object-fit: cover;
   height: 120px;
+  min-width: 120px;
 }
 
 .info-card__body {
