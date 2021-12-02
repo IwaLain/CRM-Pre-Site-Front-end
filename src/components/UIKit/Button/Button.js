@@ -3,12 +3,29 @@ import getColor from "../getColor";
 import listView from "../../../assets/img/list-view.svg";
 import blockView from "../../../assets/img/block-view.svg";
 
-const Button = ({ children, color, type, onClick, className }) => {
-  const [style, setStyle] = useState();
+const Button = ({
+  children,
+  color,
+  type,
+  onClick,
+  className,
+  dataBsToggle,
+  dataBsTarget,
+  style,
+}) => {
+  const [formattedStyle, setFormattedStyle] = useState();
 
   useEffect(() => {
-    if (color !== "default") setStyle({ backgroundColor: getColor(color) });
-    else setStyle({ backgroundColor: getColor(color), color: "black" });
+    let newStyle;
+    let colorStyle;
+
+    if (color !== "default") colorStyle = { backgroundColor: getColor(color) };
+    else colorStyle = { backgroundColor: getColor(color), color: "black" };
+
+    if (style) newStyle = { ...style, ...colorStyle };
+    else newStyle = colorStyle;
+
+    setFormattedStyle(newStyle);
   }, [color]);
 
   return (
@@ -16,9 +33,11 @@ const Button = ({ children, color, type, onClick, className }) => {
       className={
         type ? `${className} ui-kit__type-btn` : `${className} ui-kit__btn`
       }
-      style={style}
+      style={formattedStyle}
       onClick={onClick}
       type={type}
+      data-bs-toggle={dataBsToggle}
+      data-bs-target={dataBsTarget}
     >
       {type ? (
         type === "list-view" ? (

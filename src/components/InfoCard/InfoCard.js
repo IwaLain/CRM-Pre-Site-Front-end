@@ -14,6 +14,7 @@ const InfoCard = ({
   selected,
   changeCustomer,
   setMode,
+  showView,
 }) => {
   const [subEntity, setSubEntity] = useState("");
   const [progress, setProgress] = useState(0);
@@ -90,7 +91,12 @@ const InfoCard = ({
           value={progress}
         />
         <div className="info-card__btns">
-          <Link to={`/dashboard/${type}/${data.id}`}>View</Link>
+          <Link
+            to={`/dashboard/${type}/${data.id}`}
+            style={!showView ? { visibility: "hidden" } : {}}
+          >
+            View
+          </Link>
           <Button
             color="default"
             style={!chooseMode ? { visibility: "hidden" } : {}}

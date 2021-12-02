@@ -13,7 +13,7 @@ import facilitiesApi from "../../../js/api/facilities";
 import ModalComponent from "../../ModalComponent/ModalComponent";
 import Button from "../../UIKit/Button/Button";
 
-const List = ({ type }) => {
+const List = ({ type, title }) => {
   const [data, setData] = useState();
   const [searchQuery, setSearchQuery] = useState("");
   const [requests, setRequests] = useState({});
@@ -22,6 +22,7 @@ const List = ({ type }) => {
   const [page, setPage] = useState(1);
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
   const [showEntitySelect, setShowEntitySelect] = useState(true);
+  const [showView, setShowView] = useState(true);
   const [totalRows, setTotalRows] = useState(Math.ceil(0));
   const [entityNames, setEntityNames] = useState();
   const [mode, setMode] = useState();
@@ -102,6 +103,7 @@ const List = ({ type }) => {
         setRequests({ list: customersApi.getCustomers });
         setChooseMode(true);
         setShowEntitySelect(false);
+        setShowView(true);
         break;
       case "facilities":
         setRequests({
@@ -110,6 +112,7 @@ const List = ({ type }) => {
         });
         setChooseMode(false);
         setShowEntitySelect(true);
+        setShowView(true);
         break;
       case "locations":
         setRequests({
@@ -118,6 +121,7 @@ const List = ({ type }) => {
         });
         setChooseMode(false);
         setShowEntitySelect(true);
+        setShowView(true);
         break;
       case "equipment":
         setRequests({
@@ -126,15 +130,25 @@ const List = ({ type }) => {
         });
         setChooseMode(false);
         setShowEntitySelect(true);
+        setShowView(true);
         break;
       case "gateways":
+      case "nodes":
+      case "motes":
+      case "routers":
+      case "sensors":
+        setChooseMode(false);
+        setShowEntitySelect(false);
+        setShowView(false);
         setRequests({
           list: (limit, page, search) => {
             let url =
               process.env.REACT_APP_SERVER_URL +
               "/api/customer/" +
               selectedCustomer.id +
-              "/gateway?access-token=" +
+              "/" +
+              type.entity +
+              "?access-token=" +
               localStorage.getItem("token");
             if (limit) url += "&limit=" + limit;
             if (page) url += "&page=" + page;
@@ -143,6 +157,7 @@ const List = ({ type }) => {
             return fetch(url).then((res) => res.json());
           },
         });
+        break;
       default:
         break;
     }
@@ -171,7 +186,7 @@ const List = ({ type }) => {
     }
 
     if (requests.ref)
-      requests.ref().then((res) => {
+      requests.ref(-1).then((res) => {
         const formattedNames = formatNames(res[type.ref]);
         setEntityNames(formattedNames);
         if (
@@ -220,7 +235,7 @@ const List = ({ type }) => {
       <div className="list">
         <div className="list__header">
           <div className="list__title">
-            <h3>{pageTitle}</h3>
+            <h3>{title || pageTitle}</h3>
             <button
               className="list__add-btn"
               onClick={() => {
@@ -288,6 +303,7 @@ const List = ({ type }) => {
                   setMode={setMode}
                   chooseMode={chooseMode}
                   changeCustomer={changeCustomer}
+                  showView={showView}
                 />
               ) : (
                 <div
@@ -308,10 +324,13 @@ const List = ({ type }) => {
                         chooseMode={chooseMode}
                         selected={record[1].id === selectedCustomer.id}
                         changeCustomer={changeCustomer}
+                        showView={showView}
                       />
                     ))
                   ) : (
-                    <p>No records found.</p>
+                    <p style={{ display: "flex", justifyContent: "center" }}>
+                      No records found.
+                    </p>
                   )}
                 </div>
               )}

@@ -20,6 +20,7 @@ const TableView = ({
   setMode,
   chooseMode,
   changeCustomer,
+  showView,
 }) => {
   const [listData, setListData] = useState([]);
   const [fieldTitle, setFieldTitle] = useState("Title");
@@ -65,6 +66,7 @@ const TableView = ({
           <Link
             className="table-view_btn me-2"
             to={`/dashboard/${type.entity}/${row.id}`}
+            style={!showView ? { visibility: "hidden" } : {}}
           >
             View
           </Link>

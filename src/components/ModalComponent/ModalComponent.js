@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  FormGroup,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-} from "reactstrap";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import CustomerCreate from "../pages/CustomerCreate/CustomerCreate";
 import FacilityCreate from "../pages/FacilityCreate/FacilityCreate";
 import LocationCreate from "../pages/LocationCreate/LocationCreate";
@@ -16,6 +8,9 @@ import EditCustomer from "../pages/EditCustomer/EditCustomer";
 import FacilityEdit from "../pages/FacilityEdit/FacilityEdit";
 import EquipmentEdit from "../pages/EquipmentEdit/EquipmentEdit";
 import LocationEdit from "../pages/LocationEdit/LocationEdit";
+import GatewayCreate from "../pages/GatewayCreate/GatewayCreate";
+import NodeCreate from "../pages/NodeCreate/NodeCreate";
+
 const ModalComponent = ({ toggle, modal, type, mode }) => {
   const [FormComponent, setFormComponent] = useState();
   const [formTitle, setFormTitle] = useState();
@@ -39,6 +34,14 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
           case "equipment":
             setFormComponent(<EquipmentCreate />);
             setFormTitle("Equipment create");
+            break;
+          case "gateways":
+            setFormComponent(<GatewayCreate />);
+            setFormTitle("Gateway create");
+            break;
+          case "nodes":
+            setFormComponent(<NodeCreate />);
+            setFormTitle("Node create");
             break;
           default:
             break;
