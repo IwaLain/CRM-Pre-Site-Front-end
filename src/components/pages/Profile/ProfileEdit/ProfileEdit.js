@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
-import Global from '../../../../js/api/global';
+import Profile from '../../../../js/api/profile';
 import User from '../../../../js/api/users';
 import { alert } from '../../../../js/helpers/alert';
 import InputForm from '../../../../js/helpers/input';
@@ -42,7 +42,7 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
             'role': currentUser.role,
         }
 
-        Global.updateProfile(currentUser.id, data).then(data => {
+        Profile.updateProfile(currentUser.id, data).then(data => {
             if (!data) {
                 alert('error', 'Something went wrong')
             } else {

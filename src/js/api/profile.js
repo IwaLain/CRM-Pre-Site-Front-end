@@ -2,7 +2,7 @@ import { getToken } from '../helpers/helpers'
 import { apiRequest } from './api'
 import { BASE_URL } from './constants'
 
-const Global = {
+const Profile = {
     loginRequest: async ( data ) => {
         return apiRequest( 'POST', BASE_URL + '/api/login', data, {
             'Content-Type': 'application/json'
@@ -47,4 +47,4 @@ const Global = {
     }
 }
 
-export default Global
+export default Profile

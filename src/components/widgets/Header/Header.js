@@ -6,7 +6,7 @@ import {
 } from "reactstrap";
 import { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import Global from "../../../js/api/global";
+import Profile from "../../../js/api/profile";
 import { GlobalContext } from "../../../context";
 
 const Header = () => {
@@ -21,7 +21,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    Global.logoutRequest().then(() => {
+    Profile.logoutRequest().then(() => {
       localStorage.removeItem("token");
       window.location.reload();
       history.push("/");

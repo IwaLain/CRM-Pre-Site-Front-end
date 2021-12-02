@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { GlobalContext } from "../../../context";
-import Global from "../../../js/api/global";
 import "../../../scss/dashboard-page.scss";
 
 const Dashboard = () => {

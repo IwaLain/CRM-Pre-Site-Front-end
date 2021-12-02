@@ -40,13 +40,13 @@ const locationApi = {
       );
   },
 
-  editLocation: async (locationId, data) => {
+  editLocation: async (id, data) => {
     const token = getToken();
 
     if (token)
       return apiRequest(
         "PUT",
-        BASE_URL + `/api/location/update/${locationId}?access-token=${token}`,
+        BASE_URL + `/api/location/update/${id}?access-token=${token}`,
         data,
         {
           "Content-Type": "application/json",
@@ -54,25 +54,25 @@ const locationApi = {
       );
   },
 
-  deleteLocation: async (locationId) => {
+  deleteLocation: async (id) => {
     const token = getToken();
 
     if (token)
       return apiRequest(
         "DELETE",
-        BASE_URL + `/api/location/delete/${locationId}?access-token=${token}`,
+        BASE_URL + `/api/location/delete/${id}?access-token=${token}`,
         {},
         {}
       );
   },
 
-  getLocation: async (locationId) => {
+  getLocation: async (id) => {
     const token = getToken();
 
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/location/${locationId}?access-token=${token}`,
+        BASE_URL + `/api/location/${id}?access-token=${token}`,
         {},
         {}
       );
@@ -89,13 +89,13 @@ const locationApi = {
     if (token) return apiRequest("GET", BASE_URL + url, {}, {});
   },
 
-  updateLocationsAPI: async (locationId, data) => {
+  updateLocationsAPI: async (id, data) => {
     const token = getToken();
 
     if (token)
       return apiRequest(
         "PUT",
-        BASE_URL + `/api/customer/update/${locationId}?access-token=${token}`,
+        BASE_URL + `/api/customer/update/${id}?access-token=${token}`,
         data,
         {
           "Content-Type": "application/json",

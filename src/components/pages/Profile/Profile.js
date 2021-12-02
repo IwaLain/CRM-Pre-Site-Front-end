@@ -2,7 +2,7 @@ import { Button, Col, Label, Row } from "reactstrap"
 import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
 import { useContext, useEffect, useState } from "react"
-import Global from "../../../js/api/global"
+import Profile from "../../../js/api/profile"
 import convertToBase64 from "../../../js/helpers/convertImage"
 import UserModal from "../Users/UserModal/UserModal"
 import { GlobalContext } from "../../../context"
@@ -13,7 +13,7 @@ const ProfilePage = () => {
     const { userProfile, setUserProfile } = useContext(GlobalContext)
     const [profile, setProfile] = useState(userProfile);
     useEffect(() => {
-        Global.getProfile()
+        Profile.getProfile()
         .then(data => {
             setProfile(data.user)
             setLoadedImg(
@@ -26,7 +26,7 @@ const ProfilePage = () => {
         let data = {
             'img': img
         }
-        Global.updateProfile(profile.id, data)
+        Profile.updateProfile(profile.id, data)
     }
         
     const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
@@ -58,7 +58,7 @@ const ProfilePage = () => {
                                     <img 
                                         className='profile__img' 
                                         src={
-                                            loadedImg === '' ? placeholder : loadedImg
+                                            profile.img === null ? placeholder : loadedImg
                                         } 
                                         alt="Avatar"
                                         

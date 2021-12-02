@@ -4,189 +4,191 @@ import { BASE_URL } from "./constants"
 
 
 const networkApi = {
-    create: {
-        gataway: async (data) => {
+    gataway: {
+        create: async (data) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('POST', BASE_URL + `/api/gateway/create?access-token=${token}`, data, {
+            if ( token ) return await apiRequest('POST', BASE_URL + `/api/gateway/create?access-token=${token}`, data, {
                 'Content-Type':'application/json'
             })
         },
-    
-        node: async (data) => {
+
+        update: async (id, data) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('POST', BASE_URL + `/api/node/create?access-token=${token}`, data, {
+            if ( token ) return await apiRequest('PUT', BASE_URL + `/api/gateway/update/${id}?access-token=${token}`, data, {
                 'Content-Type':'application/json'
             })
         },
-    
-        mote: async (data) => {
+
+        get: async (id) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('POST', BASE_URL + `/api/mote/create?access-token=${token}`, data, {
-                'Content-Type':'application/json'
-            })
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/gateway/${id}?access-token=${token}`, {}, {})
         },
-    
-        router: async (data) => {
+
+        getAll: async () => {
             const token = getToken()
 
-            if ( token ) return apiRequest('POST', BASE_URL + `/api/router/create?access-token=${token}`, data, {
-                'Content-Type':'application/json'
-            })
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/gateway/list?access-token=${token}`, {}, {})
         },
-    
-        sensor: async (data) => {
+
+        getByCustomer: async (id) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('POST', BASE_URL + `/api/sensor/create?access-token=${token}`, data, {
-                'Content-Type':'application/json'
-            })
-        }
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/customer/${id}/gateway?access-token=${token}`, {}, {})
+        },
+
+        delete: async (id) => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('DELETE', BASE_URL + `/api/gateway/delete/${id}?access-token=${token}`, {}, {})
+        },
     },
 
-    update: {
-        gataway: async (id, data) => {
+    node: {
+        create: async (data) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('PUT', BASE_URL + `/api/gateway/update/${id}?access-token=${token}`, data, {
+            if ( token ) return await apiRequest('POST', BASE_URL + `/api/node/create?access-token=${token}`, data, {
                 'Content-Type':'application/json'
             })
         },
-    
-        node: async (id, data) => {
+        
+        update: async (id, data) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('PUT', BASE_URL + `/api/node/update/${id}?access-token=${token}`, data, {
+            if ( token ) return await apiRequest('PUT', BASE_URL + `/api/node/update/${id}?access-token=${token}`, data, {
                 'Content-Type':'application/json'
             })
         },
-    
-        mote: async (id, data) => {
+
+        get: async (id) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('PUT', BASE_URL + `/api/mote/update/${id}?access-token=${token}`, data, {
-                'Content-Type':'application/json'
-            })
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/node/${id}?access-token=${token}`, {}, {})
         },
-    
-        router: async (id, data) => {
+
+        getAll: async () => {
             const token = getToken()
 
-            if ( token ) return apiRequest('PUT', BASE_URL + `/api/router/update/${id}?access-token=${token}`, data, {
-                'Content-Type':'application/json'
-            })
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/node/list?access-token=${token}`, {}, {})
         },
-    
-        sensor: async (id, data) => {
+
+        delete: async (id) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('PUT', BASE_URL + `/api/sensor/update/${id}?access-token=${token}`, data, {
-                'Content-Type':'application/json'
-            })
-        }
+            if ( token ) return await apiRequest('DELETE', BASE_URL + `/api/delete/delete/${id}?access-token=${token}`, {}, {})
+        },
     },
 
-    get: {
-        allGataways: async () => {
+    mote: {
+        create: async (data) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/gateway/list?access-token=${token}`, {}, {})
-        },
-    
-        allNodes: async () => {
-            const token = getToken()
-
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/node/list?access-token=${token}`, {}, {})
-        },
-    
-        allMotes: async () => {
-            const token = getToken()
-
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/mote/list?access-token=${token}`, {}, {})
-        },
-    
-        allRouters: async () => {
-            const token = getToken()
-
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/routers/list?access-token=${token}`, {}, {})
-        },
-    
-        allSensors: async () => {
-            const token = getToken()
-
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/sensors/list?access-token=${token}`, {}, {})
+            if ( token ) return await apiRequest('POST', BASE_URL + `/api/mote/create?access-token=${token}`, data, {
+                'Content-Type':'application/json'
+            })
         },
 
-        gataway: async (id) => {
+        update: async (id, data) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/gateway/${id}?access-token=${token}`, {}, {})
-        },
-    
-        node: async (id) => {
-            const token = getToken()
-
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/node/${id}?access-token=${token}`, {}, {})
-        },
-    
-        mote: async (id) => {
-            const token = getToken()
-
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/mote/${id}?access-token=${token}`, {}, {})
-        },
-    
-        router: async (id) => {
-            const token = getToken()
-
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/router/${id}?access-token=${token}`, {}, {})
-        },
-    
-        sensor: async (id) => {
-            const token = getToken()
-
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/sensor/${id}?access-token=${token}`, {}, {})
+            if ( token ) return await apiRequest('PUT', BASE_URL + `/api/mote/update/${id}?access-token=${token}`, data, {
+                'Content-Type':'application/json'
+            })
         },
 
-        gatawayByCustomer: async (id) => {
+        get: async (id) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('GET', BASE_URL + `/api/customer/${id}/gateway?access-token=${token}`, {}, {})
-        }
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/mote/${id}?access-token=${token}`, {}, {})
+        },
+
+        getAll: async () => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/mote/list?access-token=${token}`, {}, {})
+        },
+
+        delete: async (id) => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('DELETE', BASE_URL + `/api/mote/delete/${id}?access-token=${token}`, {}, {})
+        },
     },
 
-    delete: {
-        gataway: async (id) => {
+    router: {
+        create: async (data) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('DELETE', BASE_URL + `/api/gateway/delete/${id}?access-token=${token}`, {}, {})
+            if ( token ) return await apiRequest('POST', BASE_URL + `/api/router/create?access-token=${token}`, data, {
+                'Content-Type':'application/json'
+            })
         },
-    
-        node: async (id) => {
+
+        update: async (id, data) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('DELETE', BASE_URL + `/api/delete/delete/${id}?access-token=${token}`, {}, {})
+            if ( token ) return await apiRequest('PUT', BASE_URL + `/api/router/update/${id}?access-token=${token}`, data, {
+                'Content-Type':'application/json'
+            })
         },
-    
-        mote: async (id) => {
+
+        get: async (id) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('DELETE', BASE_URL + `/api/mote/delete/${id}?access-token=${token}`, {}, {})
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/router/${id}?access-token=${token}`, {}, {})
         },
-    
-        router: async (id) => {
+
+        getAll: async () => {
             const token = getToken()
 
-            if ( token ) return apiRequest('DELETE', BASE_URL + `/api/router/delete/${id}?access-token=${token}`, {}, {})
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/routers/list?access-token=${token}`, {}, {})
         },
-    
-        sensor: async (id) => {
+
+        delete: async (id) => {
             const token = getToken()
 
-            if ( token ) return apiRequest('DELETE', BASE_URL + `/api/sensor/delete/${id}?access-token=${token}`, {}, {})
+            if ( token ) return await apiRequest('DELETE', BASE_URL + `/api/router/delete/${id}?access-token=${token}`, {}, {})
+        },
+    },
+
+    sensor: {
+        create: async (data) => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('POST', BASE_URL + `/api/sensor/create?access-token=${token}`, data, {
+                'Content-Type':'application/json'
+            })
+        },
+
+        update: async (id, data) => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('PUT', BASE_URL + `/api/sensor/update/${id}?access-token=${token}`, data, {
+                'Content-Type':'application/json'
+            })
+        },
+
+        get: async (id) => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/sensor/${id}?access-token=${token}`, {}, {})
+        },
+
+        getAll: async () => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/sensors/list?access-token=${token}`, {}, {})
+        },
+
+        delete: async (id) => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('DELETE', BASE_URL + `/api/sensor/delete/${id}?access-token=${token}`, {}, {})
         }
-    }
+    },
 }
 
 export default networkApi

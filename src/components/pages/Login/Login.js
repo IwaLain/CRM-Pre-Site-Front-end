@@ -13,8 +13,7 @@ import { Card,
        } from 'reactstrap'
 import { alert } from '../../../js/helpers/alert';
 import { ToastContainer } from 'react-toastify';
-import Global from '../../../js/api/global';
-
+import Profile from '../../../js/api/profile';
 import InputForm from '../../../js/helpers/input';
 import { GlobalContext } from '../../../context';
 import { useContext } from 'react';
@@ -42,7 +41,7 @@ const LoginPage = () => {
       password: e.password,
     };
 
-    Global.loginRequest(data).then((data) => {
+    Profile.loginRequest(data).then((data) => {
       if (data.errors) {
         alert("error", data.errors);
       } else {
@@ -53,7 +52,7 @@ const LoginPage = () => {
       const token = getToken()
       
       if(token) {
-        Global.getProfile()
+        Profile.getProfile()
         .then(data => {
           setUserProfile(data.user)
         })
