@@ -50,7 +50,7 @@ const customersApi = {
 
   addCustomerImage: async (customerId, data) => {
     const token = getToken();
-    console.log(data);
+
     if (token)
       return apiRequest(
         "POST",

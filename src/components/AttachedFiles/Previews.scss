@@ -22,6 +22,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+
   margin: top 16px;
 }
 
@@ -38,6 +39,8 @@
 
 .thumbInner {
   display: flex;
+  justify-content: center;
+  align-items: center;
   min-width: 0;
   overflow: hidden;
   width: 100%;
@@ -54,13 +57,21 @@
   }
 }
 .dropzone {
+  margin-top: 50px;
+  position: relative;
   padding: 10px;
   background: white;
   border-radius: 5px;
   border: 2px dashed rgb(0, 135, 247);
   border-image: none;
-  min-width: 500px;
+  min-width: 200px;
+  max-width: 390px;
   min-height: 150px;
-  margin-left: auto;
+
   margin-right: auto;
+}
+.upload-file--btn {
+  top: -45px;
+  left: 0;
+  position: absolute;
 }

@@ -6,119 +6,49 @@ import "./Previews.scss";
 
 const AttachedFiles = ({
   type,
-  title,
+  name,
   onAddFile,
   attachedFiles,
   onRemoveFile,
+  accepted,
 }) => {
   const [files, setFiles] = useState([]);
   const [confirmModal, setConfirmModal] = useState(false);
   const [removeFile, setRemoveFile] = useState();
-  const [newFiles, setNewFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
+    accept: accepted,
     onDrop: async (acceptedFiles) => {
-      // const newAcceptedFiles = acceptedFiles.map(function (file) {
-      //   const newObj = {
-      //     preview: URL.createObjectURL(file),
-      //     id: file.name,
-      //   };
-      //   return newObj;
-      // });
-      // setFiles((oldFiles) => {
-      //   let newArr = oldFiles.concat(newAcceptedFiles);
+      const newAcceptedFiles = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      );
 
-      //   return newArr;
-      // });
-      // setNewFiles((oldFiles) => {
-      //   let newArr = oldFiles.concat(acceptedFiles);
-
-      //   return newArr;
-      // });
-
-      onAddFile(acceptedFiles, "1");
-
-      // const newAcceptedFiles = acceptedFiles.map(function (file) {
-      //   const newObj = {
-      //     preview: URL.createObjectURL(file),
-      //     id: file.name,
-      //   };
-      //   return newObj;
-      // });
-
-      // setFiles((oldFiles) => {
-      //   let newArr = oldFiles.concat(newAcceptedFiles);
-
-      //   return newArr;
-      // });
-      // setNewFiles((oldFiles) => {
-      //   let newArr = oldFiles.concat(acceptedFiles);
-
-      //   return newArr;
-      // });
+      onAddFile(newAcceptedFiles, type);
     },
   });
   const toggleConfirmModal = () => {
     setConfirmModal(!confirmModal);
   };
-  // const thumbs = files.map((file) => (
-  //   <div className="thumb" key={file.id}>
-  //     <span
-  //       className="attached--remove-img"
-  //       onClick={() => {
-  //         setRemoveFile(file);
-  //         toggleConfirmModal();
-  //       }}
-  //     ></span>
-  //     <div className="thumbInner">
-  //       <img src={file.preview} className="attached--img" alt="..." />
-  //     </div>
-  //   </div>
-  // ));
 
   useEffect(() => {
-    switch (type) {
-      case "image":
-        break;
-      case "pdf":
-        break;
-      case "schema":
-        break;
-      default:
-        break;
-    }
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach((file) => URL.revokeObjectURL(file.preview));
 
     setFiles([
       ...attachedFiles.map((file) => {
+        const fileExtension = file.img.substring(file.img.lastIndexOf("."));
+        const imageTypes = [".jpeg", ".png", ".jpg"];
+        const isImage = imageTypes.some((el) => fileExtension.includes(el));
         return {
           name: file.img,
           preview: process.env.REACT_APP_SERVER_URL + "/" + file.img,
           id: file.id,
+          isImage: isImage,
         };
       }),
     ]);
   }, [attachedFiles]);
-  // const uploadFiles = async (newFiles, addFileFunc) => {
-  //   if (newFiles.length > 0) {
-  //     const arr = [...newFiles];
-  //     for (let i = 0; i < arr.length; i++) {
-  //       let base64Format = await toBase64(arr[i]);
-  //       await addFileFunc(base64Format, "image");
-  //     }
-  //     setNewFiles([]);
-  //   } else {
-  //     console.log("Dont have files to upload");
-  //   }
-  // };
-
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
 
   return (
     <>
@@ -127,25 +57,35 @@ const AttachedFiles = ({
         toggleModal={toggleConfirmModal}
         title="Remove image"
         handleSubmit={() => {
-          onRemoveFile(removeFile);
+          onRemoveFile(removeFile, type);
         }}
         modalText={`Are you sure you want to DELETE file`}
       />
-      <div className="">
-        <h2 className="page-subtitle">{title && title}</h2>
+      <h2 className="page-subtitle">
+        {name ? `Attached ${name}` : "Attached Files"}
+      </h2>
+      <div {...getRootProps({ className: "dropzone" })}>
         <Button
+          className="upload-file--btn"
           onClick={(e) => {
             e.preventDefault();
           }}
         >
-          Upload Files
+          Upload {name}
         </Button>
-        <div {...getRootProps({ className: "dropzone" })}>
-          <input {...getInputProps()} />
-          {/* Add {type && type} */}
+        <input {...getInputProps()} />
+        {/* Add {type && type} */}{" "}
+        <div className="thumbsContainer">
           {files &&
             files.map((file) => (
-              <div className="thumb" key={file.id}>
+              <div
+                className="thumb"
+                key={file.id}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+              >
                 <span
                   className="attached--remove-img"
                   onClick={(e) => {
@@ -156,12 +96,19 @@ const AttachedFiles = ({
                   }}
                 ></span>
                 <div className="thumbInner">
-                  <img src={file.preview} className="attached--img" alt="..." />
+                  {file.isImage === true ? (
+                    <img
+                      src={file.preview}
+                      className="attached--img"
+                      alt="..."
+                    />
+                  ) : (
+                    <i class="far fa-file  fa-4x"></i>
+                  )}
                 </div>
               </div>
             ))}
         </div>
-        <div className="thumbsContainer"></div>
       </div>
     </>
   );

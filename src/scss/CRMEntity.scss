@@ -56,10 +56,20 @@
 }
 .attached-files--list {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  max-width: 1500px;
-  justify-content: space-between;
 }
-.attached-files--item:not(:last-child) {
-  margin-right: 20px;
+.attached-files--item {
+  margin-bottom: 20px;
+}
+@media screen and (min-width: 1280px) {
+  .attached-files--list {
+    flex-direction: row;
+  }
+  .attached-files--item:not(:last-child) {
+    margin-right: 20px;
+  }
+  .attached-files--item {
+    margin-bottom: 0px;
+  }
 }
