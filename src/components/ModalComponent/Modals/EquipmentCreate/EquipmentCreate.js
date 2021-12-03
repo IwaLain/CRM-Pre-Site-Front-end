@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
-import "../../../scss/customer-create-page.scss";
-import star from "../../../assets/img/star.svg";
+import "../../../../scss/customer-create-page.scss";
+import star from "../../../../assets/img/star.svg";
 import { Form, FormGroup, Label, Col } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import equipmentApi from "../../../js/api/equipment";
-import { GlobalContext } from "../../../context";
-import convertToBase64 from "../../../js/helpers/convertImage";
-import placeholder from "../../../assets/img/company.png";
+import { alert } from "../../../../js/helpers/alert";
+import equipmentApi from "../../../../js/api/equipment";
+import { GlobalContext } from "../../../../context";
+import convertToBase64 from "../../../../js/helpers/convertImage";
+import placeholder from "../../../../assets/img/company.png";
 
 const EquipmentCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);

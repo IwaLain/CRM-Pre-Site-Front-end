@@ -1,19 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import "../../../scss/customer-create-page.scss";
+import "../../../../scss/customer-create-page.scss";
 import { Form, FormGroup, Label, Col, Input } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import { GlobalContext } from "../../../context";
-import placeholder from "../../../assets/img/company.png";
+import { alert } from "../../../../js/helpers/alert";
+import { GlobalContext } from "../../../../context";
+import placeholder from "../../../../assets/img/company.png";
 
-const MoteCreate = () => {
+const RouterCreate = () => {
   const [facilitiesNames, setFacilitiesNames] = useState([]);
   const [gatewaysNames, setGatewaysNames] = useState([]);
-  const [equipmentNames, setEquipmentNames] = useState([]);
   const [facilityID, setFacilityID] = useState();
   const [gatewayID, setGatewayID] = useState();
-  const [equipmentID, setEquipmentID] = useState();
-  const { setShowFormModal, selectedCustomer } = useContext(GlobalContext);
+  const { setShowFormModal, selectedCustomer, customerStructure } =
+    useContext(GlobalContext);
 
   const {
     register,
@@ -29,8 +28,6 @@ const MoteCreate = () => {
       case "gateway":
         setGatewayID(e.target.value);
         break;
-      case "equipment":
-        setEquipmentID(e.target.value);
       default:
         break;
     }
@@ -40,34 +37,35 @@ const MoteCreate = () => {
     const formattedNames = [];
 
     for (const [key, value] of Object.entries(data)) {
-      formattedNames.push({ id: value.id, name: value.name });
+      formattedNames.push({ id: key, name: value.name });
     }
 
     return formattedNames;
   };
 
   const onSubmit = (data) => {
-    const formData = new FormData();
-    if (selectedCustomer.id)
-      formData.append("customer_id", selectedCustomer.id);
-    if (facilityID) formData.append("facility_id", facilityID);
-    if (gatewayID) formData.append("gateway_id", gatewayID);
-    if (equipmentID) formData.append("equipment_id", equipmentID);
-    if (data.name) formData.append("name", data.name);
+    const body = {};
+
+    if (selectedCustomer.id) body["customer_id"] = selectedCustomer.id;
+    if (facilityID) body["facility_id"] = facilityID;
+    if (gatewayID) body["gateway_id"] = gatewayID;
+    body["name"] = "name";
+    if (data.info) body["location_info"] = data.info;
 
     fetch(
       process.env.REACT_APP_SERVER_URL +
-        "/api/mote/create?access-token=" +
+        "/api/router/create?access-token=" +
         localStorage.getItem("token"),
       {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       }
     )
       .then((res) => res.json())
       .then((response) => {
         if (response.status === "Successfully created")
-          alert("success", "Node created.");
+          alert("success", "Router created.");
         else alert("error", "Request error.");
       });
 
@@ -77,19 +75,11 @@ const MoteCreate = () => {
   };
 
   useEffect(() => {
-    fetch(
-      process.env.REACT_APP_SERVER_URL +
-        "/api/customer/" +
-        selectedCustomer.id +
-        "/facilities?access-token=" +
-        localStorage.getItem("token") +
-        "&limit=-1"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setFacilitiesNames(formatNames(data["facilities"]));
-        setFacilityID(Object.keys(data["facilities"])[0]);
-      });
+    setFacilitiesNames(formatNames(customerStructure["facilities"]));
+    setFacilityID(Object.keys(customerStructure["facilities"])[0]);
+
+    setGatewaysNames(formatNames(customerStructure["gateways"]));
+    setGatewayID(Object.keys(customerStructure["gateways"])[0]);
   }, []);
 
   return (
@@ -122,7 +112,7 @@ const MoteCreate = () => {
           <Label for="gatewayID-field">Gateway</Label>
           <Col sm={12}>
             <Input
-              id="select-facility"
+              id="select-gateway"
               onChange={(e) => handleSelect(e, "gateway")}
               type="select"
             >
@@ -130,23 +120,6 @@ const MoteCreate = () => {
                 gatewaysNames.map((gateway) => (
                   <option key={gateway.id} value={gateway.id}>
                     {gateway.id}. {gateway.name}
-                  </option>
-                ))}
-            </Input>
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Label for="gatewayID-field">Equipment</Label>
-          <Col sm={12}>
-            <Input
-              id="select-facility"
-              onChange={(e) => handleSelect(e, "equipment")}
-              type="select"
-            >
-              {equipmentNames &&
-                equipmentNames.map((equip) => (
-                  <option key={equip.id} value={equip.id}>
-                    {equip.id}. {equip.name}
                   </option>
                 ))}
             </Input>
@@ -176,7 +149,7 @@ const MoteCreate = () => {
           <Label for="info-field">Location info</Label>
           <Col sm={12}>
             <textarea
-              className={`form-control ${errors.name ? "is-invalid" : ""}`}
+              className={`form-control ${errors.info ? "is-invalid" : ""}`}
               id="info-field"
               placeholder="Enter info."
               {...register("info")}
@@ -188,4 +161,4 @@ const MoteCreate = () => {
   );
 };
 
-export default MoteCreate;
+export default RouterCreate;

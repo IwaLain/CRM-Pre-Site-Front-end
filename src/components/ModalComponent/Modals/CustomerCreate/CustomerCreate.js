@@ -1,21 +1,20 @@
-import React, { useState, useContext } from "react";
-import "../../../scss/customer-create-page.scss";
+import React, { useContext, useState } from "react";
+import "../../../../scss/customer-create-page.scss";
 import { Form, FormGroup, Label, Col } from "reactstrap";
-import star from "../../../assets/img/star.svg";
+import star from "../../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import convertToBase64 from "../../../js/helpers/convertImage";
-import { GlobalContext } from "../../../context";
-import facilitiesApi from "../../../js/api/facilities";
-import placeholder from "../../../assets/img/company.png";
+import { alert } from "../../../../js/helpers/alert";
+import customersApi from "../../../../js/api/customer";
+import convertToBase64 from "../../../../js/helpers/convertImage";
+import { GlobalContext } from "../../../../context";
+import placeholder from "../../../../assets/img/company.png";
 
-const FacilityCreate = () => {
+const CustomerCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();
   const [img, setImg] = useState();
-  const { setShowFormModal } = useContext(GlobalContext);
 
-  const { entityID } = useContext(GlobalContext);
+  const { setShowFormModal } = useContext(GlobalContext);
 
   const {
     register,
@@ -47,18 +46,19 @@ const FacilityCreate = () => {
   const onSubmit = (data) => {
     const body = {};
 
-    if (data.customerID) body["customer_id"] = data.customerID;
     if (data.name) body["name"] = data.name;
-    if (data.lat) body["lat"] = data.lat;
-    if (data.lng) body["lng"] = data.lng;
+    if (data.email) body["email"] = data.email;
+    if (data.phone) body["phone"] = data.phone;
     if (data.address) body["address"] = data.address;
+    if (data.activity) body["activity"] = data.activity;
+    if (data.headname) body["head_name"] = data.headname;
     if (img) body["img"] = img;
     else
       body["img"] = getBase64Image(document.querySelector("#placeholder-img"));
 
-    facilitiesApi.addFacilities(body).then((res) => {
+    customersApi.addCustomer(body).then((res) => {
       if (res.status === "Successfully created")
-        alert("success", "Facility created.");
+        alert("success", "Customer created.");
       else alert("error", "Request error.");
     });
     document.querySelector("#form").reset();
@@ -76,24 +76,12 @@ const FacilityCreate = () => {
       />
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
         <FormGroup>
-          <Label for="customerID-field">Customer ID</Label>
-          <Col sm={12}>
-            <input
-              className="form-control"
-              id="customerID-field"
-              value={entityID}
-              {...register("customerID")}
-              readOnly
-            />
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Label for="title-field">Title</Label>
+          <Label for="name-field">Name</Label>
           <Col sm={12}>
             <input
               className={`form-control ${errors.name ? "is-invalid" : ""}`}
-              id="title-field"
-              placeholder="Enter factory title."
+              id="name-field"
+              placeholder="Enter customer name."
               {...register("name", {
                 required: {
                   value: true,
@@ -108,40 +96,40 @@ const FacilityCreate = () => {
           </Col>
         </FormGroup>
         <FormGroup>
-          <Label for="lat-field">Lat</Label>
+          <Label for="email-field">Email</Label>
           <Col sm={12}>
             <input
-              className={`form-control ${errors.lat ? "is-invalid" : ""}`}
-              id="lat-field"
-              placeholder="Enter lat cord."
-              {...register("lat", {
+              className={`form-control ${errors.email ? "is-invalid" : ""}`}
+              id="email-field"
+              placeholder="Enter customer email."
+              {...register("email", {
                 required: {
                   value: true,
-                  message: "lat is required.",
+                  message: "Email is required.",
                 },
                 pattern: {
-                  value: /^-?[0-9]\d*\.?\d*$/,
-                  message: "Lat is number only.",
+                  value: /^[\w-.]+@([\w-]+.)+[\w-]{1,10}$/,
+                  message: "Email is not valid. Example: alex@gmail.com",
                 },
               })}
             />
           </Col>
         </FormGroup>
         <FormGroup>
-          <Label for="lng-field">Lng</Label>
+          <Label for="phone-field">Phone</Label>
           <Col sm={12}>
             <input
-              className={`form-control ${errors.lng ? "is-invalid" : ""}`}
-              id="lng-field"
-              placeholder="Enter lng cord."
-              {...register("lng", {
+              className={`form-control ${errors.phone ? "is-invalid" : ""}`}
+              id="phone-field"
+              placeholder="Enter customer phone."
+              {...register("phone", {
                 required: {
                   value: true,
-                  message: "Lng is required.",
+                  message: "Phone is required.",
                 },
                 pattern: {
-                  value: /^-?[0-9]\d*\.?\d*$/,
-                  message: "Lng is number only.",
+                  value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
+                  message: "Phone is not valid. Example: +123456789098",
                 },
               })}
             />
@@ -153,7 +141,7 @@ const FacilityCreate = () => {
             <input
               className={`form-control ${errors.address ? "is-invalid" : ""}`}
               id="address-field"
-              placeholder="Enter factory address."
+              placeholder="Enter customer address."
               {...register("address", {
                 required: {
                   value: true,
@@ -162,6 +150,46 @@ const FacilityCreate = () => {
                 minLength: {
                   value: 3,
                   message: "Address should contain at least 3 symbols.",
+                },
+              })}
+            />
+          </Col>
+        </FormGroup>
+        <FormGroup>
+          <Label for="activity-field">Activity</Label>
+          <Col sm={12}>
+            <input
+              className={`form-control ${errors.activity ? "is-invalid" : ""}`}
+              id="activity-field"
+              placeholder="Enter customer activity."
+              {...register("activity", {
+                required: {
+                  value: true,
+                  message: "Activity is required.",
+                },
+                minLength: {
+                  value: 3,
+                  message: "Activity should contain at least 3 symbols.",
+                },
+              })}
+            />
+          </Col>
+        </FormGroup>
+        <FormGroup>
+          <Label for="headname-field">Head name</Label>
+          <Col sm={12}>
+            <input
+              className={`form-control ${errors.headname ? "is-invalid" : ""}`}
+              id="headname-field"
+              placeholder="Enter customer head name."
+              {...register("headname", {
+                required: {
+                  value: true,
+                  message: "Headname is required.",
+                },
+                minLength: {
+                  value: 3,
+                  message: "Headname should contain at least 3 symbols.",
                 },
               })}
             />
@@ -194,4 +222,4 @@ const FacilityCreate = () => {
   );
 };
 
-export default FacilityCreate;
+export default CustomerCreate;

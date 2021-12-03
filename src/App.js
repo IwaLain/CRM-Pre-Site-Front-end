@@ -21,6 +21,7 @@ const App = () => {
   const [editId, setEditId] = useState();
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState({});
+  const [customerStructure, setCustomerStructure] = useState({});
   const [userProfile, setUserProfile] = useState({});
 
   return (
@@ -42,6 +43,8 @@ const App = () => {
         setUserProfile,
         selectedCustomer,
         setSelectedCustomer,
+        customerStructure,
+        setCustomerStructure,
       }}
     >
       <Router>

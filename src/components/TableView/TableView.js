@@ -22,6 +22,7 @@ const TableView = ({
   changeCustomer,
   showView,
 }) => {
+  const [cols, setCols] = useState([]);
   const [listData, setListData] = useState([]);
   const [fieldTitle, setFieldTitle] = useState("Title");
   const [showProgress, setShowProgress] = useState(true);
@@ -30,27 +31,19 @@ const TableView = ({
 
   const { setEditId, selectedCustomer } = useContext(GlobalContext);
 
-  const columns = [
-    {
-      cell: (row) => (
-        <Input
-          type="checkbox"
-          checked={row.id === selectedCustomer.id}
-          onChange={() => changeCustomer(row.id)}
-          style={!chooseMode ? { visibility: "hidden" } : {}}
-        />
-      ),
-      width: "0px",
-    },
-    {
-      name: fieldTitle,
-      selector: (row) => row.name,
-    },
-    {
-      name: subEntity,
-      selector: (row) => row[subEntity.toLowerCase()],
-      width: "100px",
-    },
+  const staticColsStart = {
+    cell: (row) => (
+      <Input
+        type="checkbox"
+        checked={row.id === selectedCustomer.id}
+        onChange={() => changeCustomer(row.id)}
+        style={!chooseMode ? { visibility: "hidden" } : {}}
+      />
+    ),
+    width: "0px",
+  };
+
+  const staticColsEnd = [
     {
       name: progressField,
       cell: (row) => (
@@ -115,20 +108,46 @@ const TableView = ({
   }, [showProgress]);
 
   useEffect(() => {
-    if (data) {
+    if (
+      data &&
+      (data.length > 0 || Object.keys(data).length > 0) &&
+      data[type.entity] &&
+      (data[type.entity].length > 0 ||
+        Object.keys(data[type.entity]).length > 0)
+    ) {
       const newData = [];
       for (const [key, value] of Object.entries(data[type.entity])) {
         const obj = {};
+
         obj["id"] = value.id;
-        obj["name"] = value.name;
+        if (value.name) obj["name"] = value.name;
+        if (value.serial) obj["serial"] = value.serial;
         if (value.facilities) obj["facilities"] = value.facilities.length;
         if (value.locations) obj["locations"] = value.locations.length;
         if (value.equipments) obj["equipments"] = value.equipments.length;
         if (value.equipment) obj["equipment"] = value.equipment.length;
+        if (value["location_info"])
+          obj["location_info"] = value["location_info"];
+        if (value["created_at"]) obj["created_at"] = value["created_at"];
+        if (value["updated_at"]) obj["updated_at"] = value["updated_at"];
         newData.push(obj);
       }
       setListData(newData);
+
+      const columns = [];
+
+      Object.keys(newData[0]).forEach((key) => {
+        if (key !== "id") {
+          columns.push({
+            name: key,
+            selector: (row) => row[key],
+          });
+        }
+      });
+
+      setCols(columns);
     }
+    console.log(data);
   }, [data]);
 
   useEffect(() => {
@@ -160,7 +179,7 @@ const TableView = ({
 
   return (
     <DataTable
-      columns={columns}
+      columns={[staticColsStart, ...cols, ...staticColsEnd]}
       data={listData}
       pagination
       paginationServer

@@ -19,6 +19,7 @@ const List = ({ type, title }) => {
   const [requests, setRequests] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [view, setView] = useState(true);
+  const [isSetViewNeeded, setIsSetViewNeeded] = useState(true);
   const [page, setPage] = useState(1);
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
   const [showEntitySelect, setShowEntitySelect] = useState(true);
@@ -40,6 +41,7 @@ const List = ({ type, title }) => {
     setShowFormModal,
     selectedCustomer,
     setSelectedCustomer,
+    setCustomerStructure,
   } = useContext(GlobalContext);
 
   const match = useRouteMatch();
@@ -95,6 +97,17 @@ const List = ({ type, title }) => {
     )
       .then((res) => res.json())
       .then((customer) => setSelectedCustomer(customer.customer[id]));
+    fetch(
+      process.env.REACT_APP_SERVER_URL +
+        "/api/customer/" +
+        id +
+        "/construct?access-token=" +
+        localStorage.getItem("token")
+    )
+      .then((res) => res.json())
+      .then((customerStructure) =>
+        setCustomerStructure(customerStructure["customerConstruct"][id])
+      );
   };
 
   useEffect(() => {
@@ -104,6 +117,7 @@ const List = ({ type, title }) => {
         setChooseMode(true);
         setShowEntitySelect(false);
         setShowView(true);
+        setIsSetViewNeeded(true);
         break;
       case "facilities":
         setRequests({
@@ -113,6 +127,7 @@ const List = ({ type, title }) => {
         setChooseMode(false);
         setShowEntitySelect(true);
         setShowView(true);
+        setIsSetViewNeeded(true);
         break;
       case "locations":
         setRequests({
@@ -122,6 +137,7 @@ const List = ({ type, title }) => {
         setChooseMode(false);
         setShowEntitySelect(true);
         setShowView(true);
+        setIsSetViewNeeded(true);
         break;
       case "equipment":
         setRequests({
@@ -131,6 +147,7 @@ const List = ({ type, title }) => {
         setChooseMode(false);
         setShowEntitySelect(true);
         setShowView(true);
+        setIsSetViewNeeded(true);
         break;
       case "gateways":
       case "nodes":
@@ -140,6 +157,7 @@ const List = ({ type, title }) => {
         setChooseMode(false);
         setShowEntitySelect(false);
         setShowView(false);
+        setIsSetViewNeeded(false);
         setRequests({
           list: (limit, page, search) => {
             let url =
@@ -274,18 +292,20 @@ const List = ({ type, title }) => {
               placeholder="Search..."
               onInput={handleSearch}
             />
-            <div className="list__options_btns">
-              <Button
-                type="list-view"
-                onClick={() => setView(true)}
-                className={view ? "active" : ""}
-              ></Button>
-              <Button
-                type="block-view"
-                onClick={() => setView(false)}
-                className={!view ? "active" : ""}
-              ></Button>
-            </div>
+            {isSetViewNeeded && (
+              <div className="list__options_btns">
+                <Button
+                  type="list-view"
+                  onClick={() => setView(true)}
+                  className={view ? "active" : ""}
+                ></Button>
+                <Button
+                  type="block-view"
+                  onClick={() => setView(false)}
+                  className={!view ? "active" : ""}
+                ></Button>
+              </div>
+            )}
           </div>
         </div>
         <div className="list__content">

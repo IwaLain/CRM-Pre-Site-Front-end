@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import "../../../scss/customer-create-page.scss";
-import star from "../../../assets/img/star.svg";
+import "../../../../scss/customer-create-page.scss";
+import star from "../../../../assets/img/star.svg";
 import { Form, FormGroup, Label, Col, Input } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import { GlobalContext } from "../../../context";
-import convertToBase64 from "../../../js/helpers/convertImage";
-import placeholder from "../../../assets/img/company.png";
+import { alert } from "../../../../js/helpers/alert";
+import { GlobalContext } from "../../../../context";
+import convertToBase64 from "../../../../js/helpers/convertImage";
+import placeholder from "../../../../assets/img/company.png";
 
 const GatewayCreate = () => {
   const [locationImgIsLoaded, setLocationImgIsLoaded] = useState(false);
@@ -17,7 +17,8 @@ const GatewayCreate = () => {
   const [equipmentImg, setEquipmentImg] = useState();
   const [facilitiesNames, setFacilitiesNames] = useState([]);
   const [facilityID, setFacilityID] = useState();
-  const { setShowFormModal, selectedCustomer } = useContext(GlobalContext);
+  const { setShowFormModal, selectedCustomer, customerStructure } =
+    useContext(GlobalContext);
 
   const {
     register,
@@ -33,7 +34,7 @@ const GatewayCreate = () => {
     const formattedNames = [];
 
     for (const [key, value] of Object.entries(data)) {
-      formattedNames.push({ id: value.id, name: value.name });
+      formattedNames.push({ id: key, name: value.name });
     }
 
     return formattedNames;
@@ -72,12 +73,12 @@ const GatewayCreate = () => {
   };
 
   const onSubmit = (data) => {
-    const formData = new FormData();
-    if (selectedCustomer.id)
-      formData.append("customer_id", selectedCustomer.id);
-    if (facilityID) formData.append("facility_id", facilityID);
-    if (data.name) formData.append("name", data.name);
-    if (data.serial) formData.append("serial", data.serial);
+    const body = {};
+
+    if (selectedCustomer.id) body["customer_id"] = selectedCustomer.id;
+    if (facilityID) body["facility_id"] = facilityID;
+    body["name"] = "name";
+    if (data.serial) body["serial"] = data.serial;
     const img = [];
     if (locationImg) img.push({ type_id: 1, img: locationImg });
     else
@@ -91,17 +92,16 @@ const GatewayCreate = () => {
         type_id: 2,
         img: getBase64Image(document.querySelector("#placeholder-img")),
       });
-    if (Object.keys(img).length > 0)
-      formData.append("img", JSON.stringify(img));
-    console.log(JSON.stringify(img));
-    if (data.info) formData.append("location-info", data.info);
+    if (Object.keys(img).length > 0) body["img"] = img;
+    if (data.info) body["location-info"] = data.info;
     fetch(
       process.env.REACT_APP_SERVER_URL +
         "/api/gateway/create?access-token=" +
         localStorage.getItem("token"),
       {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       }
     )
       .then((res) => res.json())
@@ -117,19 +117,8 @@ const GatewayCreate = () => {
   };
 
   useEffect(() => {
-    fetch(
-      process.env.REACT_APP_SERVER_URL +
-        "/api/customer/" +
-        selectedCustomer.id +
-        "/facilities?access-token=" +
-        localStorage.getItem("token") +
-        "&limit=-1"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setFacilitiesNames(formatNames(data["facilities"]));
-        setFacilityID(Object.keys(data["facilities"])[0]);
-      });
+    setFacilitiesNames(formatNames(customerStructure["facilities"]));
+    setFacilityID(Object.keys(customerStructure["facilities"])[0]);
   }, []);
 
   return (

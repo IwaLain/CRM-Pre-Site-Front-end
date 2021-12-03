@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "../../../scss/customer-create-page.scss";
+import "../../../../scss/customer-create-page.scss";
 import {
   Form,
   FormGroup,
@@ -12,9 +12,9 @@ import {
   ModalFooter,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import location from "../../../js/api/locations";
-import { GlobalContext } from "../../../context";
+import { alert } from "../../../../js/helpers/alert";
+import location from "../../../../js/api/locations";
+import { GlobalContext } from "../../../../context";
 
 const LocationCreate = () => {
   const { setShowFormModal, entityID } = useContext(GlobalContext);

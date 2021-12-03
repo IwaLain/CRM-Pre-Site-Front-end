@@ -33,7 +33,6 @@ const Network = () => {
     <div>
       <section className="dashboard-page__section">
         <h3>Network</h3>
-        <div className="dashboard-page__block-wrapper"></div>
         <div className="dashboard-page__block-wrapper">
           <div className="accordion" id="myAccordion">
             <div className="accordion__headers">
@@ -66,10 +65,10 @@ const Network = () => {
                   <div
                     key={index}
                     id={`collapse-${index}`}
-                    class="accordion-collapse collapse"
+                    className="accordion-collapse collapse"
                     data-bs-parent="#myAccordion"
                   >
-                    <div class="card-body">
+                    <div className="card-body">
                       {selectedBlock === index && (
                         <List
                           type={{ entity: Object.keys(block)[0].toLowerCase() }}

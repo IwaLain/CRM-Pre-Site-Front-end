@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import CustomerCreate from "../pages/CustomerCreate/CustomerCreate";
-import FacilityCreate from "../pages/FacilityCreate/FacilityCreate";
-import LocationCreate from "../pages/LocationCreate/LocationCreate";
-import EquipmentCreate from "../pages/EquipmentCreate/EquipmentCreate";
+import CustomerCreate from "./Modals/CustomerCreate/CustomerCreate";
+import FacilityCreate from "./Modals/FacilityCreate/FacilityCreate";
+import LocationCreate from "./Modals/LocationCreate/LocationCreate";
+import EquipmentCreate from "./Modals/EquipmentCreate/EquipmentCreate";
 import EditCustomer from "../pages/EditCustomer/EditCustomer";
 import FacilityEdit from "../pages/FacilityEdit/FacilityEdit";
 import EquipmentEdit from "../pages/EquipmentEdit/EquipmentEdit";
 import LocationEdit from "../pages/LocationEdit/LocationEdit";
-import GatewayCreate from "../pages/GatewayCreate/GatewayCreate";
-import NodeCreate from "../pages/NodeCreate/NodeCreate";
-import MoteCreate from "../pages/MoteCreate/MoteCreate";
-import RouterCreate from "../pages/RouterCreate/RouterCreate";
+import GatewayCreate from "./Modals/GatewayCreate/GatewayCreate";
+import NodeCreate from "./Modals/NodeCreate/NodeCreate";
+import MoteCreate from "./Modals/MoteCreate/MoteCreate";
+import RouterCreate from "./Modals/RouterCreate/RouterCreate";
+import SensorCreate from "./Modals/SensorCreate/SensorCreate";
 
 const ModalComponent = ({ toggle, modal, type, mode }) => {
   const [FormComponent, setFormComponent] = useState();
@@ -53,6 +54,9 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
             setFormComponent(<RouterCreate />);
             setFormTitle("Router create");
             break;
+          case "sensors":
+            setFormComponent(<SensorCreate />);
+            setFormTitle("Sensor create");
           default:
             break;
         }

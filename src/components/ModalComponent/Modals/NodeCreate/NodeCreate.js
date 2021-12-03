@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import "../../../scss/customer-create-page.scss";
+import "../../../../scss/customer-create-page.scss";
 import { Form, FormGroup, Label, Col, Input } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import { GlobalContext } from "../../../context";
-import placeholder from "../../../assets/img/company.png";
+import { alert } from "../../../../js/helpers/alert";
+import { GlobalContext } from "../../../../context";
+import placeholder from "../../../../assets/img/company.png";
 
-const RouterCreate = () => {
+const NodeCreate = () => {
   const [facilitiesNames, setFacilitiesNames] = useState([]);
   const [gatewaysNames, setGatewaysNames] = useState([]);
   const [facilityID, setFacilityID] = useState();
   const [gatewayID, setGatewayID] = useState();
-  const { setShowFormModal, selectedCustomer } = useContext(GlobalContext);
+  const { setShowFormModal, selectedCustomer, customerStructure } =
+    useContext(GlobalContext);
 
   const {
     register,
@@ -36,19 +37,20 @@ const RouterCreate = () => {
     const formattedNames = [];
 
     for (const [key, value] of Object.entries(data)) {
-      formattedNames.push({ id: value.id, name: value.name });
+      formattedNames.push({ id: key, name: value.name });
     }
 
     return formattedNames;
   };
 
   const onSubmit = (data) => {
-    const formData = new FormData();
-    if (selectedCustomer.id)
-      formData.append("customer_id", selectedCustomer.id);
-    if (facilityID) formData.append("facility_id", facilityID);
-    if (gatewayID) formData.append("gateway_id", gatewayID);
-    if (data.name) formData.append("name", data.name);
+    const body = {};
+
+    if (selectedCustomer.id) body["customer_id"] = selectedCustomer.id;
+    if (facilityID) body["facility_id"] = facilityID;
+    if (gatewayID) body["gateway_id"] = gatewayID;
+    if (data.serial) body["serial"] = data.serial;
+    body["name"] = "name";
 
     fetch(
       process.env.REACT_APP_SERVER_URL +
@@ -56,7 +58,8 @@ const RouterCreate = () => {
         localStorage.getItem("token"),
       {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       }
     )
       .then((res) => res.json())
@@ -72,19 +75,11 @@ const RouterCreate = () => {
   };
 
   useEffect(() => {
-    fetch(
-      process.env.REACT_APP_SERVER_URL +
-        "/api/customer/" +
-        selectedCustomer.id +
-        "/facilities?access-token=" +
-        localStorage.getItem("token") +
-        "&limit=-1"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setFacilitiesNames(formatNames(data["facilities"]));
-        setFacilityID(Object.keys(data["facilities"])[0]);
-      });
+    setFacilitiesNames(formatNames(customerStructure["facilities"]));
+    setFacilityID(Object.keys(customerStructure["facilities"])[0]);
+
+    setGatewaysNames(formatNames(customerStructure["gateways"]));
+    setGatewayID(Object.keys(customerStructure["gateways"])[0]);
   }, []);
 
   return (
@@ -166,4 +161,4 @@ const RouterCreate = () => {
   );
 };
 
-export default RouterCreate;
+export default NodeCreate;
