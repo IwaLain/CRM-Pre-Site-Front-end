@@ -27,14 +27,20 @@ const CRMEntity = ({ type }) => {
   let setMainEntityImageAPI;
   let deleteAllEntityImagesAPI;
   let subEntityName = "";
+
+  const informationFieldNames = ["address", "phone", "email"];
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
+
   const [entityObject, setEntityObject] = useState();
 
   const [mainImage, setMainImage] = useState();
+
   const [subEntity, setSubEntity] = useState();
+
   const [informationItems, setInformationItems] = useState([]);
-  const informationFieldNames = ["address", "phone", "email"];
+
   const [mode, setMode] = useState("edit");
+
   const [fileTypes, setFileTypes] = useState([
     {
       type_id: "1",
@@ -66,6 +72,7 @@ const CRMEntity = ({ type }) => {
         ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
     },
   ]);
+
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
     if (!mainImage) {
@@ -73,13 +80,13 @@ const CRMEntity = ({ type }) => {
     }
     return mainImage;
   };
+
   async function deleteAllEntityImages(type_id) {
     const fileTypeIndex = fileTypes.findIndex(
       (fileType) => fileType.type_id === type_id
     );
 
     if (fileTypeIndex > -1) {
-      console.log(deleteAllEntityImagesAPI);
       const response = await deleteAllEntityImagesAPI(id, type_id);
 
       if (response.success) {
@@ -89,6 +96,7 @@ const CRMEntity = ({ type }) => {
 
           return newFileTypes;
         });
+
         alert("success", `files deleted`);
       } else alert("error", response.message);
     } else {
@@ -120,25 +128,12 @@ const CRMEntity = ({ type }) => {
   }
 
   async function addEntityImage(files, type_id) {
-    // const fileBaseFormat = await convertToBase64(file);
     const newFiles = [...files];
 
     const fileTypeIndex = fileTypes.findIndex(
       (fileType) => fileType.type_id === type_id
     );
 
-    // function setDelay(i, data) {
-    //   setTimeout(async function () {
-    //     const response = await addEntityImageAPI(id, data);
-    //     if (response.success) {
-    //       setFileTypes((oldArr) => {
-    //         const newFileTypes = [...oldArr];
-    //         newFileTypes[fileTypeIndex].setFunc([...response[`${type}Images`]]);
-    //         return newFileTypes;
-    //       });
-    //     }
-    //   }, 1000 * i);
-    // }
     if (fileTypeIndex > -1) {
       for (let i = 0; i < newFiles.length; i++) {
         let base64Format = await convertToBase64(newFiles[i]);
@@ -200,9 +195,11 @@ const CRMEntity = ({ type }) => {
       subEntityName = "locations";
       break;
     case "location":
-      subEntityName = "equipment";
       getEntityAPI = locationApi.getLocation;
-
+      deleteEntityImageAPI = locationApi.deleteLocationImage;
+      addEntityImageAPI = locationApi.addLocationImage;
+      setMainEntityImageAPI = locationApi.setMainLocationImage;
+      subEntityName = "equipment";
       break;
     case "equipment":
       getEntityAPI = equipmentApi.getEquipment;
@@ -226,7 +223,6 @@ const CRMEntity = ({ type }) => {
         fileTypes.forEach((fileType) => {
           setFiles(data[`${type}Images`], fileType);
         });
-        // setAttachedImages([...data[`${type}Images`]]);
 
         const mainImage = getMainImage(data[`${type}Images`]);
         setMainImage(mainImage);
@@ -329,11 +325,11 @@ const CRMEntity = ({ type }) => {
 
       {entityObject && entityObject[`${type}Images`] && (
         <div className="entity-page--section">
-          <h2 className="page-subtitle">{`Attachment`}</h2>
-          <div className="attached-files--list">
+          <h2 className="page-subtitle">{`Attachments`}</h2>
+          <div className="row">
             {fileTypes &&
-              fileTypes.map((fileType) => (
-                <div className="attached-files--item">
+              fileTypes.map((fileType, i) => (
+                <div key={i} className="col ">
                   <AttachedFiles
                     type={fileType.type_id}
                     name={fileType.type_name}

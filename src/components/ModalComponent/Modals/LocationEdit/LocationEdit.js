@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "../../../scss/customer-create-page.scss";
+import "../../../../scss/customer-create-page.scss";
 import {
   Form,
   FormGroup,
@@ -12,11 +12,11 @@ import {
   ModalFooter,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import locationApi from "../../../js/api/locations";
-import { GlobalContext } from "../../../context";
-import "../../../scss/location-edit.scss";
-import ConfirmModal from "../../ConfirmModal/ConfirmModal";
+import { alert } from "../../../../js/helpers/alert";
+import locationApi from "../../../../js/api/locations";
+import { GlobalContext } from "../../../../context";
+import "../../../../scss/location-edit.scss";
+import ConfirmModal from "../../../ConfirmModal/ConfirmModal";
 const LocationEdit = () => {
   const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);
@@ -24,7 +24,7 @@ const LocationEdit = () => {
   const [addFieldModal, setAddFieldModal] = useState(false);
   const [removeFieldModal, setRemoveFieldModal] = useState(false);
   const [removeField, setRemoveField] = useState();
-  const [location, setlocation] = useState();
+
   const {
     register,
     unregister,
@@ -34,7 +34,6 @@ const LocationEdit = () => {
   } = useForm();
   useEffect(() => {
     locationApi.getLocation(editId).then((data) => {
-      setlocation(data.location);
       const jsonData = data.location["jsonData"];
 
       reset({ name: data.location["name"] });
@@ -148,23 +147,7 @@ const LocationEdit = () => {
           removeField && removeField.title
         }`}
       />
-      {/* <Modal isOpen={removeFieldModal} toggle={toggleRemoveFieldModal}>
-        <ModalHeader>Delete Field</ModalHeader>
-        <ModalBody>
-          <Form id="remove-field-form" onSubmit={handleRemoveFieldFormSubmit}>
-            <p>
-              Are you sure you want to DELETE {removeField && removeField.title}{" "}
-              field?
-            </p>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button onClick={toggleRemoveFieldModal}>Cancel</Button>
-          <Button form="remove-field-form" color="primary">
-            Delete
-          </Button>
-        </ModalFooter>
-      </Modal> */}
+
       <div className="create-form">
         <Form id="form" onSubmit={handleSubmit(onSubmit)}>
           <FormGroup row>

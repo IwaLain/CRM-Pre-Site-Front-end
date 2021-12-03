@@ -45,18 +45,18 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+
+  margin-bottom: -20px;
 }
 .attached-files--item {
   margin-bottom: 20px;
 }
-@media screen and (min-width: 1280px) {
-  .attached-files--list {
-    flex-direction: row;
-  }
-  .attached-files--item:not(:last-child) {
+@media screen and (min-width: 1024px) {
+  .attached-files--item {
+    max-width: 380px;
     margin-right: 20px;
   }
-  .attached-files--item {
-    margin-bottom: 0px;
+  .attached-files--list {
+    flex-direction: row;
   }
 }
