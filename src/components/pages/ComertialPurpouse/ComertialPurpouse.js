@@ -19,12 +19,11 @@ const ComertialPurpouse = () => {
 
     const current = (row) => console.log(row)
     const didAmount = (quantity, rate, tax) => {
-        if (tax !== '') setAmount(quantity * rate * tax)
-        else setAmount(quantity * rate)
-        return amount
+        let result = 0
+        if (tax !== '') result = quantity * rate * tax
+        else result = quantity * rate
+        return setAmount(result)
     }
-
-
 
     useEffect(() => {
         console.log()
@@ -107,7 +106,6 @@ const ComertialPurpouse = () => {
             cell: row => <Input
                 onBlur={(e) => {
                     row['rate'] = Number(e.target.value)
-                    row['amount'] = didAmount(row['quantity'], row['rate'], 3)
                     current(row)
                 }}
             />
@@ -118,7 +116,7 @@ const ComertialPurpouse = () => {
         },
         {
             name: 'Amount',
-            selector: row => row['amount'],
+            cell: row => row['amount'] = row['quantity'] * row['rate'],
         },
     ];
 

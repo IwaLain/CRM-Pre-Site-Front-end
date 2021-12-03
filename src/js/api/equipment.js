@@ -65,14 +65,6 @@ const equipmentApi = {
 
         if ( token ) return apiRequest('GET', BASE_URL + url, {}, {})
     },
-
-    setMainEquipmentImage: async (equipmentId, imageId) => {
-        const token = getToken()
-
-        if ( token ) return apiRequest('PUT', BASE_URL +  `/api/equipment/${equipmentId}/set-main-image/${imageId}?access-token=${token}`, {}, {
-            'Content-Type':'application/json'
-        })
-    },
 }
 
 export default equipmentApi

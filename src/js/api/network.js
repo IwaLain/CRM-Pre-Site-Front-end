@@ -39,6 +39,18 @@ const networkApi = {
             if ( token ) return await apiRequest('GET', BASE_URL + `/api/customer/${id}/gateway?access-token=${token}`, {}, {})
         },
 
+        getByFacility: async (id) => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/facility/${id}/gateway?access-token=${token}`, {}, {})
+        },
+
+        getTypeImage: async (id) => {
+            const token = getToken()
+
+            if ( token ) return await apiRequest('GET', BASE_URL + `/api/gateway/type-images?access-token=${token}`, {}, {})
+        },
+
         delete: async (id) => {
             const token = getToken()
 
