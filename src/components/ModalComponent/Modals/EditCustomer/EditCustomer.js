@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../../../../scss/customer-create-page.scss";
-import { Button, Form, FormGroup, Label, Col } from "reactstrap";
+import { Form, FormGroup, Label, Col } from "reactstrap";
 import star from "../../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../../js/helpers/alert";
@@ -15,7 +15,6 @@ const EditCustomer = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
   } = useForm({ defaultValues: customer });
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();

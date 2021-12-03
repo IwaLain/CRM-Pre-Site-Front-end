@@ -147,23 +147,7 @@ const LocationEdit = () => {
           removeField && removeField.title
         }`}
       />
-      {/* <Modal isOpen={removeFieldModal} toggle={toggleRemoveFieldModal}>
-        <ModalHeader>Delete Field</ModalHeader>
-        <ModalBody>
-          <Form id="remove-field-form" onSubmit={handleRemoveFieldFormSubmit}>
-            <p>
-              Are you sure you want to DELETE {removeField && removeField.title}{" "}
-              field?
-            </p>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button onClick={toggleRemoveFieldModal}>Cancel</Button>
-          <Button form="remove-field-form" color="primary">
-            Delete
-          </Button>
-        </ModalFooter>
-      </Modal> */}
+
       <div className="create-form">
         <Form id="form" onSubmit={handleSubmit(onSubmit)}>
           <FormGroup row>

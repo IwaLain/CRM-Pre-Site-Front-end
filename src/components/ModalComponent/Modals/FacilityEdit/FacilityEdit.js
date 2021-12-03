@@ -1,13 +1,13 @@
-import React, { createFactory, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../../../scss/customer-create-page.scss";
-import { Button, Form, FormGroup, Label, Col } from "reactstrap";
+import { Form, FormGroup, Label, Col } from "reactstrap";
 import star from "../../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../../js/helpers/alert";
 import convertToBase64 from "../../../../js/helpers/convertImage";
 import { GlobalContext } from "../../../../context";
 import { useContext } from "react";
-import { useParams, useRouteMatch } from "react-router";
+
 import facilitiesApi from "../../../../js/api/facilities";
 const FacilityEdit = () => {
   const [imgLoaded, setImgLoaded] = useState(false);

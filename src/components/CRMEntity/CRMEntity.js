@@ -328,8 +328,8 @@ const CRMEntity = ({ type }) => {
           <h2 className="page-subtitle">{`Attachments`}</h2>
           <div className="attached-files--list">
             {fileTypes &&
-              fileTypes.map((fileType) => (
-                <div className="attached-files--item">
+              fileTypes.map((fileType, i) => (
+                <div key={i} className="attached-files--item">
                   <AttachedFiles
                     type={fileType.type_id}
                     name={fileType.type_name}
