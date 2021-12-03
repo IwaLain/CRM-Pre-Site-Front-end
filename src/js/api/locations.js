@@ -102,6 +102,48 @@ const locationApi = {
         }
       );
   },
+
+  addLocationImage: async (locationId, data) => {
+    const token = getToken();
+
+    if (token)
+      return apiRequest(
+        "POST",
+        BASE_URL +
+          `/api/location/${locationId}/image/create?access-token=${token}`,
+        data,
+        {
+          "Content-Type": "application/json",
+        }
+      );
+  },
+
+  deleteLocationImage: async (locationId, imageId) => {
+    const token = getToken();
+
+    if (token)
+      return apiRequest(
+        "DELETE",
+        BASE_URL +
+          `/api/location/${locationId}/image/delete/${imageId}?access-token=${token}`,
+        {},
+        {}
+      );
+  },
+  setMainLocationImage: async (locationId, imageId) => {
+    const token = getToken();
+
+    if (token)
+      return apiRequest(
+        "PUT",
+        BASE_URL +
+          `/api/location/${locationId}/set-main-image/${imageId}?access-token=${token}`,
+        {},
+        {
+          "Content-Type": "application/json",
+        }
+      );
+  },
 };
 
 export default locationApi;

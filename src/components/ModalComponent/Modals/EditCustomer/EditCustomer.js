@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import "../../../scss/customer-create-page.scss";
+import "../../../../scss/customer-create-page.scss";
 import { Button, Form, FormGroup, Label, Col } from "reactstrap";
-import star from "../../../assets/img/star.svg";
+import star from "../../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import customersApi from "../../../js/api/customer";
-import convertToBase64 from "../../../js/helpers/convertImage";
-import { GlobalContext } from "../../../context";
+import { alert } from "../../../../js/helpers/alert";
+import customersApi from "../../../../js/api/customer";
+import convertToBase64 from "../../../../js/helpers/convertImage";
+import { GlobalContext } from "../../../../context";
 const EditCustomer = () => {
   const { editId, setShowFormModal } = useContext(GlobalContext);
   const [customer, setCustomer] = useState();

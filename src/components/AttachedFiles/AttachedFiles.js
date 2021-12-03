@@ -10,24 +10,29 @@ const AttachedFiles = ({
   onAddFile,
   attachedFiles,
   onRemoveFile,
-  onDeleteAllFiles,
-  accepted,
+  accepted = ".jpg, .jpeg, .png",
+  multiple = false,
+  maxFiles = 1,
 }) => {
   const [files, setFiles] = useState([]);
   const [confirmModal, setConfirmModal] = useState(false);
   const [removeFile, setRemoveFile] = useState();
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: accepted,
-    noClick: true,
+    noClick: files.length > 0 ? true : false,
     noKeyboard: true,
+    multiple: multiple,
+    maxFiles: maxFiles,
     onDrop: (acceptedFiles) => {
-      const newAcceptedFiles = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      );
+      if (files.length < 1 || maxFiles === 0) {
+        const newAcceptedFiles = acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        );
 
-      onAddFile(newAcceptedFiles, type);
+        onAddFile(newAcceptedFiles, type);
+      }
     },
   });
   const toggleConfirmModal = () => {
@@ -57,14 +62,7 @@ const AttachedFiles = ({
     files &&
     files.length > 0 &&
     files.map((file) => (
-      <div
-        className="thumb"
-        key={file.id}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
+      <div className="thumb" key={file.id}>
         <span
           className="attached--remove-img"
           onClick={(e) => {
@@ -91,11 +89,7 @@ const AttachedFiles = ({
         toggleModal={toggleConfirmModal}
         title="Remove image"
         handleSubmit={() => {
-          if (removeFile === "all") {
-            onDeleteAllFiles(type);
-          } else {
-            onRemoveFile(removeFile, type);
-          }
+          onRemoveFile(removeFile, type);
         }}
         modalText={`Are you sure you want to DELETE file`}
       />
@@ -136,7 +130,7 @@ const AttachedFiles = ({
               Drag 'n' drop some files here, or click to select files
             </span>
           )}
-          {thumbs && (
+          {thumbs && maxFiles === 0 && (
             <div
               className="thumb"
               onClick={() => {

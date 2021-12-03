@@ -12,10 +12,10 @@ import CustomerCreate from "../pages/CustomerCreate/CustomerCreate";
 import FacilityCreate from "../pages/FacilityCreate/FacilityCreate";
 import LocationCreate from "../pages/LocationCreate/LocationCreate";
 import EquipmentCreate from "../pages/EquipmentCreate/EquipmentCreate";
-import EditCustomer from "../pages/EditCustomer/EditCustomer";
-import FacilityEdit from "../pages/FacilityEdit/FacilityEdit";
-import EquipmentEdit from "../pages/EquipmentEdit/EquipmentEdit";
-import LocationEdit from "../pages/LocationEdit/LocationEdit";
+import EditCustomer from "../ModalComponent/Modals/EditCustomer/EditCustomer";
+import FacilityEdit from "../ModalComponent/Modals/FacilityEdit/FacilityEdit";
+import EquipmentEdit from "../ModalComponent/Modals/EquipmentEdit/EquipmentEdit";
+import LocationEdit from "../ModalComponent/Modals/LocationEdit/LocationEdit";
 const ModalComponent = ({ toggle, modal, type, mode }) => {
   const [FormComponent, setFormComponent] = useState();
   const [formTitle, setFormTitle] = useState();

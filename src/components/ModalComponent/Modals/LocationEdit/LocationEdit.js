@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "../../../scss/customer-create-page.scss";
+import "../../../../scss/customer-create-page.scss";
 import {
   Form,
   FormGroup,
@@ -12,11 +12,11 @@ import {
   ModalFooter,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import locationApi from "../../../js/api/locations";
-import { GlobalContext } from "../../../context";
-import "../../../scss/location-edit.scss";
-import ConfirmModal from "../../ConfirmModal/ConfirmModal";
+import { alert } from "../../../../js/helpers/alert";
+import locationApi from "../../../../js/api/locations";
+import { GlobalContext } from "../../../../context";
+import "../../../../scss/location-edit.scss";
+import ConfirmModal from "../../../ConfirmModal/ConfirmModal";
 const LocationEdit = () => {
   const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);

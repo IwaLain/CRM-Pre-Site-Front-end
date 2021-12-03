@@ -59,8 +59,6 @@
   min-width: 300px;
   max-width: 390px;
   min-height: 150px;
-
-  margin-right: auto;
 }
 .attached--img {
   display: block;
@@ -89,9 +87,11 @@
   position: absolute;
 }
 .dropzone--placeholder {
+  justify-content: center;
   align-items: center;
 }
 .dropzone--placeholder-text {
+  max-width: 200px;
   opacity: 0.5;
 }
 .btn.dropzone--add-file-btn {
