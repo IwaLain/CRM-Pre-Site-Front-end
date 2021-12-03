@@ -43,8 +43,8 @@ const UserEdit = ({ currentUser, editeMethod }) => {
 
         User.editeUser(currentUser.id, data)
         .then(data => {
-            if(data.errors) {
-                alert('error', data.errors)
+            if(!data) {
+                alert('error', 'Something went wrong')
             } else {
                 alert('success', 'Edit User successful')
             }
@@ -89,7 +89,7 @@ const UserEdit = ({ currentUser, editeMethod }) => {
                                     <Label className=''>User Name:</Label>
                                     <InputForm
                                         type={'username'}
-                                        data={dataInput}
+                                        data={dataInput} 
                                         errors={errors.username}
                                     />
                                 </Col>
@@ -114,8 +114,11 @@ const UserEdit = ({ currentUser, editeMethod }) => {
                                     />
                                 </Col>
                                 <Col md={6}>
-                                    <Label className=''>Role:</Label>
-                                    <select className='form-control'>
+                                    <Label className='w-100'>Role:</Label>
+                                    <select 
+                                        className='ui-kit__select w-100'
+                                        {...register('role')}
+                                    >
                                         <option disabled selected> Select role</option>
                                         <option value='manager'>manager</option>
                                         <option value='member'>member</option>

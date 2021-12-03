@@ -2,7 +2,7 @@ import { getToken } from '../helpers/helpers'
 import { apiRequest } from './api'
 import { BASE_URL } from './constants'
 
-const Global = {
+const Profile = {
     loginRequest: async ( data ) => {
         return apiRequest( 'POST', BASE_URL + '/api/login', data, {
             'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ const Global = {
 
     updateProfile: async (id, data) => {
         const token = getToken()
-        if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
+        if ( token ) return await apiRequest( 'PUT', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Content-Type':'application/json'
         })
     },
@@ -47,4 +47,4 @@ const Global = {
     }
 }
 
-export default Global
+export default Profile

@@ -13,13 +13,14 @@ import { Card,
        } from 'reactstrap'
 import { alert } from '../../../js/helpers/alert';
 import { ToastContainer } from 'react-toastify';
-import Global from '../../../js/api/global';
-import { useHistory } from 'react-router';
-
+import Profile from '../../../js/api/profile';
 import InputForm from '../../../js/helpers/input';
+import { GlobalContext } from '../../../context';
+import { useContext } from 'react';
+import { getToken } from '../../../js/helpers/helpers';
 
 const LoginPage = () => {
-  let history = useHistory();
+  const { setUserProfile } = useContext(GlobalContext)
 
   const {
     register,
@@ -40,22 +41,29 @@ const LoginPage = () => {
       password: e.password,
     };
 
-    Global.loginRequest(data).then((data) => {
+    Profile.loginRequest(data).then((data) => {
       if (data.errors) {
         alert("error", data.errors);
       } else {
         localStorage.setItem("token", data.token);
         alert("success", "Login success");
-        window.location.reload();
-        history.push("/dashboard");
+      }
+
+      const token = getToken()
+      
+      if(token) {
+        Profile.getProfile()
+        .then(data => {
+          setUserProfile(data.user)
+        })
       }
     });
   };
-
+  
   return (
     <Container fluid className="login__bg">
       <Row className="vh-100 justify-content-sm-center align-items-center">
-        <Col sm={8} md={6} lg={4}>
+        <Col sm={8} md={6} lg={3}>
           <Card className="px-3">
             <CardBody>
               <div className="text-center">

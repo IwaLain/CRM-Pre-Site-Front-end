@@ -1,8 +1,6 @@
 .users-table__img {
     width: 16px;
     height: 16px;
-    padding-bottom: 1px;
-    border-bottom: 2px solid #000;
     cursor: pointer;
 }
 
@@ -18,21 +16,20 @@
     .table-responsive .table thead {
       display: none;
     }
-  
+
     .table-responsive .table tr {
       display: block;
     }
-  
+
     .table-responsive .table td {
       display: flex;
       justify-content: space-between;
       font-size: 14px;
     }
-  
+
     .table-responsive .table td::before {
       content: attr(data-label);
       font-weight: bold;
       margin-right: 20px;
     }
-  
   }

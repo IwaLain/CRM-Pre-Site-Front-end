@@ -1,12 +1,18 @@
-.profile {
+.profile__container {
     display: flex;
+    align-items: center;
     justify-content: center;
+}
+
+.profile {
+    padding-top: 20px;
+    padding: 10px;
     &__item {
         display: flex;
         align-items: center;
         padding-bottom: 5px;
-        margin-bottom: 15px;
-
+        margin-bottom: 20px;
+        
         .form-label {
             margin-bottom: 0;
             min-width: 100px;
@@ -32,6 +38,8 @@
 
     &__avatar {
         position: relative;
+        display: flex;
+        justify-content: center;
 
         & input[type="file"] {
             display: none;
@@ -46,15 +54,23 @@
         display: flex;
         justify-content: center;
         margin-top: 10px !important;
+
+        i {
+            margin-left: 5px;
+        }
+    }
+
+    &__lable {
+        min-width: 200px;
     }
 }
 
 .profile__img {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    
     width: 86px;
     height: 86px;
+    min-width: 86px;
+    min-height: 86px;
     border-radius: 50%;
     color: #000;
     background: #eeeeee;
@@ -62,6 +78,8 @@
     &-edit {
         .profile__placeholder {
             position: absolute;
+            display: flex;
+            align-items: center;
             width: 16px;
             height: 16px;
             z-index: 10;

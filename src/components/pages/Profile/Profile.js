@@ -1,33 +1,38 @@
 import { Button, Col, Label, Row } from "reactstrap"
 import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
-import { useEffect, useState } from "react"
-import Global from "../../../js/api/global"
+import { useContext, useEffect, useState } from "react"
+import Profile from "../../../js/api/profile"
 import convertToBase64 from "../../../js/helpers/convertImage"
 import UserModal from "../Users/UserModal/UserModal"
+import { GlobalContext } from "../../../context"
 const ProfilePage = () => {
     const [loadedImg, setLoadedImg] = useState('');
     const [img, setImg] = useState('');
     const [modalEditProfile, setModalEditProfile] = useState(false)
-    const [profile, setProfile] = useState({
-        id: '',
-        email: '',
-        username: '',
-        first_name: '',
-        last_name: '',
-        phone: '',
-        role: '',
-        img: placeholder
-    });
+    const { userProfile, setUserProfile } = useContext(GlobalContext)
+    const [profile, setProfile] = useState(userProfile);
     useEffect(() => {
-        Global.getProfile()
+        Profile.getProfile()
         .then(data => {
             setProfile(data.user)
+            setLoadedImg(
+                process.env.REACT_APP_SERVER_URL + "/" + profile.img
+            );
         })
-    }, [])
+    }, [userProfile])
 
+    const setNewImage = (img) => {
+        let data = {
+            'img': img
+        }
+        Profile.updateProfile(profile.id, data)
+    }
+         
     const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
-    const  editeProfile = (data) => setProfile(data)
+    const editeProfile = (data) => {
+        setProfile(data)
+    }
 
     const addImageHandler = (e) => {
         const file = e.target.files[0];
@@ -35,19 +40,30 @@ const ProfilePage = () => {
             convertToBase64(file).then((res) => setImg(res));
             const url = URL.createObjectURL(file);
             setLoadedImg(url);
+            setNewImage(img)
         }
     };
 
     return(
         <>
-            <h3>Profile</h3>
-            <Row className='profile'>
-                <Col className='p-5 pt-4'>
+            <h3>Profile</h3> 
+            <Row className='profile__container'>
+                <Col lg={4} md={8} sm={10} className='profile'>
                     <Row className='profile__item'>
-                        <Col lg={{offset: 2, size: 3}} className='d-flex justify-content-center profile__avatar'>
+                        <Col sm={4}></Col>
+                        <Col className='profile__avatar'>
                             <div className='profile__avatar'>
-                                <Label className="image-field" for="image-field">
-                                    <img className='profile__img' src={placeholder} alt="Avatar" />
+                                <Label 
+                                    className="image-field" 
+                                    for="image-field">
+                                    <img 
+                                        className='profile__img' 
+                                        src={
+                                            profile.img === null ? placeholder : loadedImg
+                                        } 
+                                        alt="Avatar"
+                                        
+                                    />
                                 </Label>
                                 <input
                                     className="form-control"
@@ -60,62 +76,65 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Username</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.username}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>First Name</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.first_name}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Last Name</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.last_name}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Email</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.email}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Phone</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.phone}
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col lg={2} md={2}>
+                        <Col sm={4}>
                             <Label className='profile__label'>Role</Label>
                         </Col>
-                        <Col className='profile__text' lg={3} md={3}>
+                        <Col className='profile__text'>
                             {profile.role}
                         </Col>
                     </Row>
                     <Row>
-                        <Col className='profile__button' lg={{offset: 2, size: 3}}>
+                        <Col sm={4}></Col>
+                        <Col className='profile__button'>
                             <Button
                                 className=''
                                 onClick={(e) => {
                                     e.preventDefault()
                                     toggleEditProfile(true)
-                                }}
-                            >Edite Profile</Button>
+                            }}>
+                                Edite Profile
+                                <i className="fas fa-user-edit"></i>
+                            </Button>
                         </Col>
                     </Row>
                 </Col>

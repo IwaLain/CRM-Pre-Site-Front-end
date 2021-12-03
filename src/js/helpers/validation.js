@@ -1,5 +1,5 @@
 const regex = {
-  password: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8})$/,
+  password: /^(?=.*[0-9])(?=.*[a-z])([a-zA-Z0-9]{4,15})$/,
   email: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
   phone: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
 }
@@ -20,6 +20,10 @@ export const validation = (type) => {
               minLength: {
                   value: 4,
                   message: "Minimum 4 simvols",
+              },
+              maxLength: {
+                  value: 15,
+                  message: "Minimum 15 simvols",
               },
               pattern: {
                   value: regex.password,
@@ -52,6 +56,14 @@ export const validation = (type) => {
                   value: 'Select role',
                   message: 'Please select role'
               }
+          }
+      case 'name':
+          return {
+            required: "Name is Required",
+              minLength: {
+                value: 3,
+                message: "Name should contain at least 3 symbols.",
+              },
           }
       default:
           break

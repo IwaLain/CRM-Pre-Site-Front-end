@@ -49,6 +49,12 @@ const Sidebar = ({ isMobile }) => {
               {!isMobile && "Network"}
             </Link>
           </li>
+          <li>
+            <Link to={`/dashboard/purpouse`}>
+              <i className="fas fa-file-pdf"></i>
+              {!isMobile && "Commertial Purpose"}
+            </Link>
+          </li>
         </ul>
       </nav>
     </aside>

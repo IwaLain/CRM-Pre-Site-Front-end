@@ -27,6 +27,18 @@ const equipmentApi = {
       );
   },
 
+  getEquipmentTypes: async () => {
+    const token = getToken();
+
+    if (token)
+      return apiRequest(
+        "GET",
+        BASE_URL + `/api/equipment/type?access-token=${token}`,
+        {},
+        {}
+      );
+  },
+
   addEquipment: async (data) => {
     const token = getToken();
 
@@ -67,14 +79,14 @@ const equipmentApi = {
       );
   },
 
-  deleteImageEquipment: async (equipmentId, equipmentImageId) => {
+  deleteImageEquipment: async (equipmentImageId) => {
     const token = getToken();
 
     if (token)
       return apiRequest(
         "DELETE",
         BASE_URL +
-          `/api/equipment/${equipmentId}/image/delete/${equipmentImageId}?access-token=${token}`,
+          `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`,
         {},
         {}
       );
@@ -85,13 +97,11 @@ const equipmentApi = {
 
     if (token)
       return apiRequest(
-        "POST",
+        "DELETE",
         BASE_URL +
           `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        {}
       );
   },
 
@@ -104,21 +114,6 @@ const equipmentApi = {
     if (search) url += `&s=${search}`;
 
     if (token) return apiRequest("GET", BASE_URL + url, {}, {});
-  },
-
-  setMainEquipmentImage: async (equipmentId, imageId) => {
-    const token = getToken();
-
-    if (token)
-      return apiRequest(
-        "PUT",
-        BASE_URL +
-          `/api/equipment/${equipmentId}/set-main-image/${imageId}?access-token=${token}`,
-        {},
-        {
-          "Content-Type": "application/json",
-        }
-      );
   },
 };
 

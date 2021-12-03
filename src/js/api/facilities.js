@@ -47,7 +47,7 @@ const facilitiesApi = {
     if (token)
       return apiRequest(
         "PUT",
-        BASE_URL + `/api/facilities/update/${facilityId}?access-token=${token}`,
+        BASE_URL + `/api/facility/update/${facilityId}?access-token=${token}`,
         data,
         {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const facilitiesApi = {
     if (token)
       return apiRequest(
         "DELETE",
-        BASE_URL + `/api/facilities/delete/${facilityId}?access-token=${token}`,
+        BASE_URL + `/api/facility/delete/${facilityId}?access-token=${token}`,
         {},
         {}
       );

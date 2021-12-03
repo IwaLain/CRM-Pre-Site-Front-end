@@ -7,6 +7,8 @@ import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
 import Dashboard from "./components/pages/Dashboard/Dashboard";
 import Network from "./components/pages/Network/Network";
+import UIKit from "./components/UIKit/UIKit";
+import ComertialPorpouse from "./components/pages/ComertialPurpouse/ComertialPurpouse";
 
 const routes = {
   auth: [
@@ -76,6 +78,11 @@ const routes = {
       path: "/dashboard/network",
       name: "Network",
       children: <Network />,
+    },
+    {
+      path: "/dashboard/purpouse",
+      name: "Commertial Purpose",
+      children: <ComertialPorpouse />,
     },
     {
       path: "/dashboard",
