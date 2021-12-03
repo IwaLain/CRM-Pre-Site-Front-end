@@ -119,11 +119,9 @@ const LocationEdit = () => {
         <ModalHeader>Add Field</ModalHeader>
         <ModalBody>
           <Form id="add-field-form" onSubmit={handleAddFieldFormSubmit}>
-            <FormGroup row>
-              <Label sm={3} for="add-field-field">
-                Field title
-              </Label>
-              <Col sm={9}>
+            <FormGroup>
+              <Label for="add-field-field">Field title</Label>
+              <Col sm={12}>
                 <input className="form-control" id="add-field-field" />
               </Col>
             </FormGroup>
@@ -150,11 +148,9 @@ const LocationEdit = () => {
 
       <div className="create-form">
         <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup row>
-            <Label sm={2} for="facilityID-field">
-              Facility ID
-            </Label>
-            <Col sm={10}>
+          <FormGroup>
+            <Label for="facilityID-field">Facility ID</Label>
+            <Col sm={12}>
               <input
                 className="form-control"
                 id="facilityID-field"
@@ -164,11 +160,9 @@ const LocationEdit = () => {
               />
             </Col>
           </FormGroup>
-          <FormGroup row>
-            <Label sm={2} for="name-field">
-              Name
-            </Label>
-            <Col sm={10}>
+          <FormGroup>
+            <Label for="name-field">Name</Label>
+            <Col sm={12}>
               <input
                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 id="name-field"
@@ -188,11 +182,9 @@ const LocationEdit = () => {
           </FormGroup>
           {fields &&
             fields.map(({ id, title, value }) => (
-              <FormGroup row key={id}>
-                <Label sm={2} for={`${id}-field`}>
-                  {title}
-                </Label>
-                <Col sm={10} className="delete-field">
+              <FormGroup key={id}>
+                <Label for={`${id}-field`}>{title}</Label>
+                <Col sm={12} className="delete-field">
                   <input
                     className={`form-control ${
                       errors[`${id}`] ? "is-invalid" : ""
@@ -215,8 +207,8 @@ const LocationEdit = () => {
                 </Col>
               </FormGroup>
             ))}
-          <FormGroup row>
-            <Col sm={4} className="offset-md-2">
+          <FormGroup>
+            <Col sm={12}>
               <Button color="primary" onClick={toggleAddFieldModal}>
                 Add Field
               </Button>
