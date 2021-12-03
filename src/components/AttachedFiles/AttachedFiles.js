@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "reactstrap";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import "./Previews.scss";
+import "../../scss/attachedFiles.scss";
 
 const AttachedFiles = ({
   type,
