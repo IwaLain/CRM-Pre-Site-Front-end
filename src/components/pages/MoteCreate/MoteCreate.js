@@ -6,11 +6,13 @@ import { alert } from "../../../js/helpers/alert";
 import { GlobalContext } from "../../../context";
 import placeholder from "../../../assets/img/company.png";
 
-const NodeCreate = () => {
+const MoteCreate = () => {
   const [facilitiesNames, setFacilitiesNames] = useState([]);
   const [gatewaysNames, setGatewaysNames] = useState([]);
+  const [equipmentNames, setEquipmentNames] = useState([]);
   const [facilityID, setFacilityID] = useState();
   const [gatewayID, setGatewayID] = useState();
+  const [equipmentID, setEquipmentID] = useState();
   const { setShowFormModal, selectedCustomer } = useContext(GlobalContext);
 
   const {
@@ -27,6 +29,8 @@ const NodeCreate = () => {
       case "gateway":
         setGatewayID(e.target.value);
         break;
+      case "equipment":
+        setEquipmentID(e.target.value);
       default:
         break;
     }
@@ -48,11 +52,12 @@ const NodeCreate = () => {
       formData.append("customer_id", selectedCustomer.id);
     if (facilityID) formData.append("facility_id", facilityID);
     if (gatewayID) formData.append("gateway_id", gatewayID);
+    if (equipmentID) formData.append("equipment_id", equipmentID);
     if (data.name) formData.append("name", data.name);
 
     fetch(
       process.env.REACT_APP_SERVER_URL +
-        "/api/node/create?access-token=" +
+        "/api/mote/create?access-token=" +
         localStorage.getItem("token"),
       {
         method: "POST",
@@ -117,7 +122,7 @@ const NodeCreate = () => {
           <Label for="gatewayID-field">Gateway</Label>
           <Col sm={12}>
             <Input
-              id="select-gateway"
+              id="select-facility"
               onChange={(e) => handleSelect(e, "gateway")}
               type="select"
             >
@@ -125,6 +130,23 @@ const NodeCreate = () => {
                 gatewaysNames.map((gateway) => (
                   <option key={gateway.id} value={gateway.id}>
                     {gateway.id}. {gateway.name}
+                  </option>
+                ))}
+            </Input>
+          </Col>
+        </FormGroup>
+        <FormGroup>
+          <Label for="gatewayID-field">Equipment</Label>
+          <Col sm={12}>
+            <Input
+              id="select-facility"
+              onChange={(e) => handleSelect(e, "equipment")}
+              type="select"
+            >
+              {equipmentNames &&
+                equipmentNames.map((equip) => (
+                  <option key={equip.id} value={equip.id}>
+                    {equip.id}. {equip.name}
                   </option>
                 ))}
             </Input>
@@ -154,7 +176,7 @@ const NodeCreate = () => {
           <Label for="info-field">Location info</Label>
           <Col sm={12}>
             <textarea
-              className={`form-control ${errors.info ? "is-invalid" : ""}`}
+              className={`form-control ${errors.name ? "is-invalid" : ""}`}
               id="info-field"
               placeholder="Enter info."
               {...register("info")}
@@ -166,4 +188,4 @@ const NodeCreate = () => {
   );
 };
 
-export default NodeCreate;
+export default MoteCreate;

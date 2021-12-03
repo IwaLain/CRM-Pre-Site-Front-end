@@ -4,7 +4,7 @@
 
 .accordion__headers {
   display: flex;
-  gap: 15px;
+  justify-content: space-between;
 }
 
 .card-body {

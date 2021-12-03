@@ -10,6 +10,8 @@ import EquipmentEdit from "../pages/EquipmentEdit/EquipmentEdit";
 import LocationEdit from "../pages/LocationEdit/LocationEdit";
 import GatewayCreate from "../pages/GatewayCreate/GatewayCreate";
 import NodeCreate from "../pages/NodeCreate/NodeCreate";
+import MoteCreate from "../pages/MoteCreate/MoteCreate";
+import RouterCreate from "../pages/RouterCreate/RouterCreate";
 
 const ModalComponent = ({ toggle, modal, type, mode }) => {
   const [FormComponent, setFormComponent] = useState();
@@ -42,6 +44,14 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
           case "nodes":
             setFormComponent(<NodeCreate />);
             setFormTitle("Node create");
+            break;
+          case "motes":
+            setFormComponent(<MoteCreate />);
+            setFormTitle("Mote create");
+            break;
+          case "routers":
+            setFormComponent(<RouterCreate />);
+            setFormTitle("Router create");
             break;
           default:
             break;
@@ -80,7 +90,6 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
       <ModalBody>{FormComponent}</ModalBody>
       <ModalFooter>
         <Button
-          className="me-3"
           onClick={(e) => {
             e.preventDefault();
             toggle();

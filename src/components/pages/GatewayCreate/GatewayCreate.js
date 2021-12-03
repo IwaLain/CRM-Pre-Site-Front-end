@@ -77,6 +77,7 @@ const GatewayCreate = () => {
       formData.append("customer_id", selectedCustomer.id);
     if (facilityID) formData.append("facility_id", facilityID);
     if (data.name) formData.append("name", data.name);
+    if (data.serial) formData.append("serial", data.serial);
     const img = [];
     if (locationImg) img.push({ type_id: 1, img: locationImg });
     else
@@ -87,13 +88,13 @@ const GatewayCreate = () => {
     if (equipmentImg) img.push({ type_id: 2, img: equipmentImg });
     else
       img.push({
-        type_id: 1,
+        type_id: 2,
         img: getBase64Image(document.querySelector("#placeholder-img")),
       });
     if (Object.keys(img).length > 0)
       formData.append("img", JSON.stringify(img));
+    console.log(JSON.stringify(img));
     if (data.info) formData.append("location-info", data.info);
-
     fetch(
       process.env.REACT_APP_SERVER_URL +
         "/api/gateway/create?access-token=" +
@@ -140,11 +141,9 @@ const GatewayCreate = () => {
         style={{ display: "none" }}
       />
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup row>
-          <Label sm={2} for="facilityID-field">
-            Facility
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="facilityID-field">Facility</Label>
+          <Col sm={12}>
             <Input
               id="select-facility"
               onChange={handleFacilitySelect}
@@ -159,53 +158,40 @@ const GatewayCreate = () => {
             </Input>
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="name-field">
-            Name
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="serial-field">Serial</Label>
+          <Col sm={12}>
             <input
-              className={`form-control ${errors.name ? "is-invalid" : ""}`}
-              id="name-field"
-              placeholder="Enter gateway name."
-              {...register("name", {
+              className={`form-control ${errors.serial ? "is-invalid" : ""}`}
+              id="serial-field"
+              placeholder="Enter serial number."
+              {...register("serial", {
                 required: {
                   value: true,
-                  message: "Name is required.",
+                  message: "Serial is required.",
                 },
-                minLength: {
-                  value: 3,
-                  message: "Name should contain at least 3 symbols.",
+                pattern: {
+                  value: /^[0-9]/,
+                  message: "Please enter number.",
                 },
               })}
             />
           </Col>
         </FormGroup>
-        <FormGroup row style={{ display: "flex", alignItems: "center" }}>
-          <Col sm={2}>Location Image</Col>
-          <Col sm={10}>
-            {!locationImgIsLoaded ? (
-              <Label className="image-field" for="image-location-field">
-                <img className="star" src={star} alt="star" />
-                <span>Add image</span>
-              </Label>
-            ) : (
-              <Label className="image-field" for="image-location-field">
-                <img src={loadedLocationImg} alt="customer-img" />
-              </Label>
-            )}
-            <input
-              className="form-control"
-              id="image-location-field"
-              type="file"
-              accept="image/*"
-              onChange={(e) => addImageHandler(e, "location")}
+        <FormGroup>
+          <Label for="info-field">Location info</Label>
+          <Col sm={12}>
+            <textarea
+              className={`form-control ${errors.info ? "is-invalid" : ""}`}
+              id="info-field"
+              placeholder="Enter location info."
+              {...register("info")}
             />
           </Col>
         </FormGroup>
-        <FormGroup row style={{ display: "flex", alignItems: "center" }}>
-          <Col sm={2}>Equipment Image</Col>
-          <Col sm={10}>
+        <FormGroup>
+          <Col>Equipment Image</Col>
+          <Col sm={12}>
             {!equipmentImgIsLoaded ? (
               <Label className="image-field" for="image-equipment-field">
                 <img className="star" src={star} alt="star" />
@@ -225,16 +211,25 @@ const GatewayCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="info-field">
-            Location info
-          </Label>
-          <Col sm={10}>
-            <textarea
-              className={`form-control ${errors.name ? "is-invalid" : ""}`}
-              id="info-field"
-              placeholder="Enter location info."
-              {...register("info")}
+        <FormGroup>
+          <Col>Location Image</Col>
+          <Col sm={12}>
+            {!locationImgIsLoaded ? (
+              <Label className="image-field" for="image-location-field">
+                <img className="star" src={star} alt="star" />
+                <span>Add image</span>
+              </Label>
+            ) : (
+              <Label className="image-field" for="image-location-field">
+                <img src={loadedLocationImg} alt="customer-img" />
+              </Label>
+            )}
+            <input
+              className="form-control"
+              id="image-location-field"
+              type="file"
+              accept="image/*"
+              onChange={(e) => addImageHandler(e, "location")}
             />
           </Col>
         </FormGroup>

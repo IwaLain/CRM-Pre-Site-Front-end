@@ -70,11 +70,9 @@ const EquipmentCreate = () => {
         style={{ display: "none" }}
       />
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup row>
-          <Label sm={2} for="locationID-field">
-            Location ID
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="locationID-field">Location ID</Label>
+          <Col sm={12}>
             <input
               className="form-control"
               id="locationID-field"
@@ -84,11 +82,9 @@ const EquipmentCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="name-field">
-            Name
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="name-field">Name</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.name ? "is-invalid" : ""}`}
               id="name-field"
@@ -106,9 +102,9 @@ const EquipmentCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row style={{ display: "flex", alignItems: "center" }}>
-          <Col sm={2}>Image</Col>
-          <Col sm={10}>
+        <FormGroup style={{ display: "flex", alignItems: "center" }}>
+          <Col>Image</Col>
+          <Col sm={12}>
             {!imgLoaded ? (
               <Label className="image-field" for="image-field">
                 <img className="star" src={star} alt="star" />

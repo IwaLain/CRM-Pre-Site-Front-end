@@ -75,11 +75,9 @@ const FacilityCreate = () => {
         style={{ display: "none" }}
       />
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup row>
-          <Label sm={2} for="customerID-field">
-            Customer ID
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="customerID-field">Customer ID</Label>
+          <Col sm={12}>
             <input
               className="form-control"
               id="customerID-field"
@@ -89,11 +87,9 @@ const FacilityCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="title-field">
-            Title
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="title-field">Title</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.name ? "is-invalid" : ""}`}
               id="title-field"
@@ -111,11 +107,9 @@ const FacilityCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="lat-field">
-            Lat
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="lat-field">Lat</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.lat ? "is-invalid" : ""}`}
               id="lat-field"
@@ -133,11 +127,9 @@ const FacilityCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="lng-field">
-            Lng
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="lng-field">Lng</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.lng ? "is-invalid" : ""}`}
               id="lng-field"
@@ -155,11 +147,9 @@ const FacilityCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="address-field">
-            Address
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="address-field">Address</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.address ? "is-invalid" : ""}`}
               id="address-field"
@@ -177,9 +167,9 @@ const FacilityCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row style={{ display: "flex", alignItems: "center" }}>
-          <Col sm={2}>Image</Col>
-          <Col sm={10}>
+        <FormGroup style={{ display: "flex", alignItems: "center" }}>
+          <Col>Image</Col>
+          <Col sm={12}>
             {!imgLoaded ? (
               <Label className="image-field" for="image-field">
                 <img className="star" src={star} alt="star" />

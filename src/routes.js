@@ -7,8 +7,6 @@ import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
 import Dashboard from "./components/pages/Dashboard/Dashboard";
 import Network from "./components/pages/Network/Network";
-import UIKit from "./components/UIKit/UIKit";
-import DataTablePage from "./components/DataTablePage/DataTablePage";
 
 const routes = {
   auth: [
@@ -19,14 +17,6 @@ const routes = {
     },
   ],
   dashboard: [
-    {
-      path: "/dashboard/data-table",
-      children: <DataTablePage />,
-    },
-    {
-      path: "/dashboard/ui-kit",
-      children: <UIKit />,
-    },
     {
       path: "/dashboard/users",
       name: "Users Page",

@@ -75,11 +75,9 @@ const CustomerCreate = () => {
         style={{ display: "none" }}
       />
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup row>
-          <Label sm={2} for="name-field">
-            Name
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="name-field">Name</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.name ? "is-invalid" : ""}`}
               id="name-field"
@@ -97,11 +95,9 @@ const CustomerCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="email-field">
-            Email
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="email-field">Email</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.email ? "is-invalid" : ""}`}
               id="email-field"
@@ -119,11 +115,9 @@ const CustomerCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="phone-field">
-            Phone
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="phone-field">Phone</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.phone ? "is-invalid" : ""}`}
               id="phone-field"
@@ -141,11 +135,9 @@ const CustomerCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="address-field">
-            Address
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="address-field">Address</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.address ? "is-invalid" : ""}`}
               id="address-field"
@@ -163,11 +155,9 @@ const CustomerCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="activity-field">
-            Activity
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="activity-field">Activity</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.activity ? "is-invalid" : ""}`}
               id="activity-field"
@@ -185,11 +175,9 @@ const CustomerCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label sm={2} for="headname-field">
-            Head name
-          </Label>
-          <Col sm={10}>
+        <FormGroup>
+          <Label for="headname-field">Head name</Label>
+          <Col sm={12}>
             <input
               className={`form-control ${errors.headname ? "is-invalid" : ""}`}
               id="headname-field"
@@ -207,9 +195,9 @@ const CustomerCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup row style={{ display: "flex", alignItems: "center" }}>
-          <Col sm={2}>Image</Col>
-          <Col sm={10}>
+        <FormGroup style={{ display: "flex", alignItems: "center" }}>
+          <Col>Image</Col>
+          <Col sm={12}>
             {!imgLoaded ? (
               <Label className="image-field" for="image-field">
                 <img className="star" src={star} alt="star" />

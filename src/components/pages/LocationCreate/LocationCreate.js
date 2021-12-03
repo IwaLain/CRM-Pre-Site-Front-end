@@ -89,11 +89,9 @@ const LocationCreate = () => {
         <ModalHeader>Add address</ModalHeader>
         <ModalBody>
           <Form id="add-field-form" onSubmit={handleAddFieldFormSubmit}>
-            <FormGroup row>
-              <Label sm={3} for="add-field-field">
-                Address title
-              </Label>
-              <Col sm={9}>
+            <FormGroup>
+              <Label for="add-field-field">Address title</Label>
+              <Col sm={12}>
                 <input className="form-control" id="add-field-field" />
               </Col>
             </FormGroup>
@@ -108,11 +106,9 @@ const LocationCreate = () => {
       </Modal>
       <div className="create-form">
         <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup row>
-            <Label sm={2} for="facilityID-field">
-              Facility ID
-            </Label>
-            <Col sm={10}>
+          <FormGroup>
+            <Label for="facilityID-field">Facility ID</Label>
+            <Col sm={12}>
               <input
                 className="form-control"
                 id="facilityID-field"
@@ -122,11 +118,9 @@ const LocationCreate = () => {
               />
             </Col>
           </FormGroup>
-          <FormGroup row>
-            <Label sm={2} for="name-field">
-              Name
-            </Label>
-            <Col sm={10}>
+          <FormGroup>
+            <Label for="name-field">Name</Label>
+            <Col sm={12}>
               <input
                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 id="name-field"
@@ -146,11 +140,9 @@ const LocationCreate = () => {
           </FormGroup>
           {fields &&
             fields.map(({ id, title }) => (
-              <FormGroup row key={id}>
-                <Label sm={2} for={`${id}-field`}>
-                  {title}
-                </Label>
-                <Col sm={10}>
+              <FormGroup key={id}>
+                <Label for={`${id}-field`}>{title}</Label>
+                <Col sm={12}>
                   <input
                     className={`form-control ${
                       errors[`${id}`] ? "is-invalid" : ""
@@ -171,8 +163,8 @@ const LocationCreate = () => {
                 </Col>
               </FormGroup>
             ))}
-          <FormGroup row>
-            <Col sm={2} className="offset-md-2">
+          <FormGroup>
+            <Col>
               <Button color="primary" onClick={toggleAddFieldModal}>
                 Add address
               </Button>

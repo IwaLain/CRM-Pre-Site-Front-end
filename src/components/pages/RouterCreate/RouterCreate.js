@@ -6,7 +6,7 @@ import { alert } from "../../../js/helpers/alert";
 import { GlobalContext } from "../../../context";
 import placeholder from "../../../assets/img/company.png";
 
-const NodeCreate = () => {
+const RouterCreate = () => {
   const [facilitiesNames, setFacilitiesNames] = useState([]);
   const [gatewaysNames, setGatewaysNames] = useState([]);
   const [facilityID, setFacilityID] = useState();
@@ -166,4 +166,4 @@ const NodeCreate = () => {
   );
 };
 
-export default NodeCreate;
+export default RouterCreate;
