@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Button } from "reactstrap";
+
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import "../../scss/attachedFiles.scss";
 
@@ -12,7 +12,7 @@ const AttachedFiles = ({
   onRemoveFile,
   accepted = ".jpg, .jpeg, .png",
   multiple = false,
-  maxFiles = 1,
+  maxFiles = 0,
 }) => {
   const [files, setFiles] = useState([]);
   const [confirmModal, setConfirmModal] = useState(false);

@@ -24,7 +24,7 @@ const LocationEdit = () => {
   const [addFieldModal, setAddFieldModal] = useState(false);
   const [removeFieldModal, setRemoveFieldModal] = useState(false);
   const [removeField, setRemoveField] = useState();
-  const [location, setlocation] = useState();
+
   const {
     register,
     unregister,
@@ -34,7 +34,6 @@ const LocationEdit = () => {
   } = useForm();
   useEffect(() => {
     locationApi.getLocation(editId).then((data) => {
-      setlocation(data.location);
       const jsonData = data.location["jsonData"];
 
       reset({ name: data.location["name"] });
