@@ -3,8 +3,10 @@
   flex-direction: row !important;
   max-height: 38px;
 }
-.delete-field--container {
+.btn.delete-field--container {
   border-radius: 5px;
+  border: 1px solid #ced4da;
+
   position: relative;
   padding: 0px;
   width: 38px;
@@ -18,7 +20,7 @@
   content: " ";
   height: 25px;
   width: 2px;
-  background-color: white;
+  background-color: red;
 }
 
 .delete-field--cross:before {

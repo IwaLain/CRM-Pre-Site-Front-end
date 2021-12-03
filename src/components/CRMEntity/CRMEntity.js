@@ -14,7 +14,6 @@ import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
-import DropzoneComponent from "../Dropzone/Dropzone";
 
 const CRMEntity = ({ type }) => {
   type = type.entity;
@@ -26,12 +25,11 @@ const CRMEntity = ({ type }) => {
   let getEntityAPI;
   let addEntityImageAPI;
   let setMainEntityImageAPI;
+  let deleteAllEntityImagesAPI;
   let subEntityName = "";
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
   const [entityObject, setEntityObject] = useState();
-  const [attachedImages, setAttachedImages] = useState([]);
-  const [attachedSchemas, setAttachedSchemas] = useState([]);
-  const [attachedDocs, setAttachedDocs] = useState([]);
+
   const [mainImage, setMainImage] = useState();
   const [subEntity, setSubEntity] = useState();
   const [informationItems, setInformationItems] = useState([]);
@@ -75,37 +73,50 @@ const CRMEntity = ({ type }) => {
     }
     return mainImage;
   };
-  async function deleteEntityImage(files, type_id) {
-    const newFiles = [files];
-
-    console.log(newFiles);
+  async function deleteAllEntityImages(type_id) {
     const fileTypeIndex = fileTypes.findIndex(
       (fileType) => fileType.type_id === type_id
     );
 
     if (fileTypeIndex > -1) {
-      for (let i = 0; i < newFiles.length; i++) {
-        const response = await deleteEntityImageAPI(id, newFiles[i].id);
+      console.log(deleteAllEntityImagesAPI);
+      const response = await deleteAllEntityImagesAPI(id, type_id);
 
-        if (response.success) {
-          const images = await response[`${type}Images`];
-          setFileTypes((oldArr) => {
-            const newFileTypes = [...oldArr];
+      if (response.success) {
+        setFileTypes((oldArr) => {
+          const newFileTypes = [...oldArr];
+          newFileTypes[fileTypeIndex].setFunc([]);
 
-            setFiles(images, newFileTypes[fileTypeIndex]);
-
-            return newFileTypes;
-          });
-          alert("success", `file deleted`);
-        } else alert("error", response.message);
-      }
+          return newFileTypes;
+        });
+        alert("success", `files deleted`);
+      } else alert("error", response.message);
     } else {
       alert("warning", "wrong type of file");
     }
+  }
+  async function deleteEntityImage(file, type_id) {
+    const fileTypeIndex = fileTypes.findIndex(
+      (fileType) => fileType.type_id === type_id
+    );
 
-    // deleteEntityImageAPI(id, file.id).then((res) => {
-    //   setAttachedImages(res[`${type}Images`]);
-    // });
+    if (fileTypeIndex > -1) {
+      const response = await deleteEntityImageAPI(id, file.id);
+
+      if (response.success) {
+        const images = await response[`${type}Images`];
+        setFileTypes((oldArr) => {
+          const newFileTypes = [...oldArr];
+
+          setFiles(images, newFileTypes[fileTypeIndex]);
+
+          return newFileTypes;
+        });
+        alert("success", `file deleted`);
+      } else alert("error", response.message);
+    } else {
+      alert("warning", "wrong type of file");
+    }
   }
 
   async function addEntityImage(files, type_id) {
@@ -132,8 +143,6 @@ const CRMEntity = ({ type }) => {
       for (let i = 0; i < newFiles.length; i++) {
         let base64Format = await convertToBase64(newFiles[i]);
         if (base64Format.length > 5) {
-          console.log(base64Format);
-
           let data = { type_id: type_id, img: base64Format };
 
           const response = await addEntityImageAPI(id, data);
@@ -180,6 +189,7 @@ const CRMEntity = ({ type }) => {
       deleteEntityImageAPI = customersApi.deleteCustomerImage;
       addEntityImageAPI = customersApi.addCustomerImage;
       setMainEntityImageAPI = customersApi.setMainCustomerImage;
+      deleteAllEntityImagesAPI = customersApi.deleteAllCustomerImages;
       subEntityName = "facilities";
       break;
     case "facility":
@@ -319,6 +329,7 @@ const CRMEntity = ({ type }) => {
 
       {entityObject && entityObject[`${type}Images`] && (
         <div className="entity-page--section">
+          <h2 className="page-subtitle">{`Attachment`}</h2>
           <div className="attached-files--list">
             {fileTypes &&
               fileTypes.map((fileType) => (
@@ -329,6 +340,7 @@ const CRMEntity = ({ type }) => {
                     onAddFile={addEntityImage}
                     accepted={fileType.fileExtensions}
                     onRemoveFile={deleteEntityImage}
+                    onDeleteAllFiles={deleteAllEntityImages}
                     attachedFiles={
                       fileType.attachedFiles ? fileType.attachedFiles : []
                     }

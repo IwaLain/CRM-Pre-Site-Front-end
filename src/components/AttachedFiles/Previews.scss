@@ -45,33 +45,58 @@
   overflow: hidden;
   width: 100%;
 }
+.dropzone {
+  display: flex;
 
+  text-align: center;
+  position: relative;
+
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  border: 2px dashed rgb(0, 135, 247);
+  border-image: none;
+  min-width: 300px;
+  max-width: 390px;
+  min-height: 150px;
+
+  margin-right: auto;
+}
 .attached--img {
   display: block;
   width: 100%;
   height: 100%;
 }
 @media screen and (max-width: 440px) {
+  .dropzone {
+    min-width: 250px;
+  }
   .thumbsContainer {
     justify-content: center;
   }
 }
-.dropzone {
-  margin-top: 50px;
-  position: relative;
-  padding: 10px;
-  background: white;
-  border-radius: 5px;
-  border: 2px dashed rgb(0, 135, 247);
-  border-image: none;
-  min-width: 200px;
-  max-width: 390px;
-  min-height: 150px;
 
-  margin-right: auto;
-}
 .upload-file--btn {
-  top: -45px;
+  top: -70px;
   left: 0;
   position: absolute;
+  max-width: 100px;
+}
+.delete-file--btn {
+  max-width: 100px;
+  top: -70px;
+  right: 0;
+  position: absolute;
+}
+.dropzone--placeholder {
+  align-items: center;
+}
+.dropzone--placeholder-text {
+  opacity: 0.5;
+}
+.btn.dropzone--add-file-btn {
+  width: 100%;
+}
+.add-file-btn--icon {
+  color: black;
 }

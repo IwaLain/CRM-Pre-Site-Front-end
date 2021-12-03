@@ -75,6 +75,18 @@ const customersApi = {
         {}
       );
   },
+  deleteAllCustomerImages: async (customerId, typeId) => {
+    const token = getToken();
+
+    if (token)
+      return apiRequest(
+        "DELETE",
+        BASE_URL +
+          `/api/customer/${customerId}/image/${typeId}/delete-all?access-token=${token}`,
+        {},
+        {}
+      );
+  },
 
   setMainCustomerImage: async (customerId, imageId) => {
     const token = getToken();

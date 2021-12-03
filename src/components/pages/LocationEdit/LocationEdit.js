@@ -219,15 +219,16 @@ const LocationEdit = () => {
                     {...register(`${id}`)}
                     defaultValue={value}
                   />
-                  <Button
-                    className="delete-field--container btn-secondary"
-                    onClick={() => {
+                  <button
+                    className="btn delete-field--container"
+                    onClick={(e) => {
+                      e.preventDefault();
                       setRemoveField({ id, title });
                       toggleRemoveFieldModal();
                     }}
                   >
                     <span className="delete-field--cross"></span>
-                  </Button>
+                  </button>
                 </Col>
               </FormGroup>
             ))}

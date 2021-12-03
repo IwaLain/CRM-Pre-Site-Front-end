@@ -10,14 +10,17 @@ const AttachedFiles = ({
   onAddFile,
   attachedFiles,
   onRemoveFile,
+  onDeleteAllFiles,
   accepted,
 }) => {
   const [files, setFiles] = useState([]);
   const [confirmModal, setConfirmModal] = useState(false);
   const [removeFile, setRemoveFile] = useState();
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, open } = useDropzone({
     accept: accepted,
-    onDrop: async (acceptedFiles) => {
+    noClick: true,
+    noKeyboard: true,
+    onDrop: (acceptedFiles) => {
       const newAcceptedFiles = acceptedFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
@@ -50,6 +53,37 @@ const AttachedFiles = ({
     ]);
   }, [attachedFiles]);
 
+  const thumbs =
+    files &&
+    files.length > 0 &&
+    files.map((file) => (
+      <div
+        className="thumb"
+        key={file.id}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
+        <span
+          className="attached--remove-img"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setRemoveFile(file);
+            toggleConfirmModal();
+          }}
+        ></span>
+        <div className="thumbInner">
+          {file.isImage === true ? (
+            <img src={file.preview} className="attached--img" alt="..." />
+          ) : (
+            <i className="far fa-file  fa-4x"></i>
+          )}
+        </div>
+      </div>
+    ));
+
   return (
     <>
       <ConfirmModal
@@ -57,14 +91,33 @@ const AttachedFiles = ({
         toggleModal={toggleConfirmModal}
         title="Remove image"
         handleSubmit={() => {
-          onRemoveFile(removeFile, type);
+          if (removeFile === "all") {
+            onDeleteAllFiles(type);
+          } else {
+            onRemoveFile(removeFile, type);
+          }
         }}
         modalText={`Are you sure you want to DELETE file`}
       />
-      <h2 className="page-subtitle">
-        {name ? `Attached ${name}` : "Attached Files"}
-      </h2>
-      <div {...getRootProps({ className: "dropzone" })}>
+      <h3 className="page-subtitle fw-normal">{name && name}</h3>
+      <div
+        {...getRootProps({
+          className:
+            "dropzone " +
+            (files && files.length > 0 ? "" : "dropzone--placeholder"),
+        })}
+      >
+        {/* <Button
+          className="delete-file--btn"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setRemoveFile("all");
+            toggleConfirmModal();
+          }}
+        >
+          Delete all {name}
+        </Button>
         <Button
           className="upload-file--btn"
           onClick={(e) => {
@@ -72,45 +125,67 @@ const AttachedFiles = ({
           }}
         >
           Upload {name}
-        </Button>
+        </Button> */}
         <input {...getInputProps()} />
-        {/* Add {type && type} */}{" "}
+
         <div className="thumbsContainer">
-          {files &&
-            files.map((file) => (
-              <div
-                className="thumb"
-                key={file.id}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-              >
-                <span
-                  className="attached--remove-img"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setRemoveFile(file);
-                    toggleConfirmModal();
-                  }}
-                ></span>
-                <div className="thumbInner">
-                  {file.isImage === true ? (
-                    <img
-                      src={file.preview}
-                      className="attached--img"
-                      alt="..."
-                    />
-                  ) : (
-                    <i class="far fa-file  fa-4x"></i>
-                  )}
-                </div>
-              </div>
-            ))}
+          {thumbs ? (
+            thumbs
+          ) : (
+            <span className="dropzone--placeholder-text">
+              Drag 'n' drop some files here, or click to select files
+            </span>
+          )}
+          {thumbs && (
+            <div
+              className="thumb"
+              onClick={() => {
+                open();
+              }}
+            >
+              <button className="dropzone--add-file-btn btn ">
+                <i class="fas fa-plus fa-2x add-file-btn--icon"></i>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
   );
 };
 export default AttachedFiles;
+// {
+//   files && files.length > 0 ? (
+//     files.map((file) => (
+//       <div
+//         className="thumb"
+//         key={file.id}
+//         onClick={(e) => {
+//           e.preventDefault();
+//           e.stopPropagation();
+//         }}
+//       >
+//         <span
+//           className="attached--remove-img"
+//           onClick={(e) => {
+//             e.preventDefault();
+//             e.stopPropagation();
+//             setRemoveFile(file);
+//             toggleConfirmModal();
+//           }}
+//         ></span>
+//         <div className="thumbInner">
+//           {file.isImage === true ? (
+//             <img src={file.preview} className="attached--img" alt="..." />
+//           ) : (
+//             <i className="far fa-file  fa-4x"></i>
+//           )}
+//         </div>
+//       </div>
+//     ))
+//   ) : (
+//     <span className="dropzone--placeholder-text">
+//       Drag 'n' drop some files here, or click to select files
+//     </span>
+//   );
+// }
