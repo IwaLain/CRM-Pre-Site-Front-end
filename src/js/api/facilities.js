@@ -59,7 +59,7 @@ const facilitiesApi = {
     const token = getToken();
 
     if (token)
-      apiRequest(
+      return apiRequest(
         "DELETE",
         BASE_URL + `/api/facilities/delete/${facilityId}?access-token=${token}`,
         {},
@@ -71,10 +71,10 @@ const facilitiesApi = {
     const token = getToken();
 
     if (token)
-      apiRequest(
+      return apiRequest(
         "DELETE",
         BASE_URL +
-          `/api/facilities/${facilityId}/image/delete/${imageId}?access-token=${token}`,
+          `/api/facility/${facilityId}/image/delete/${imageId}?access-token=${token}`,
         {},
         {}
       );
@@ -82,12 +82,12 @@ const facilitiesApi = {
 
   addFacilityImage: async (facilityId, data) => {
     const token = getToken();
-
+    console.log(data);
     if (token)
-      apiRequest(
+      return apiRequest(
         "POST",
         BASE_URL +
-          `/api/facilities/${facilityId}/image/create?access-token=${token}`,
+          `/api/facility/${facilityId}/image/create?access-token=${token}`,
         data,
         {
           "Content-Type": "application/json",
@@ -99,10 +99,10 @@ const facilitiesApi = {
     const token = getToken();
 
     if (token)
-      apiRequest(
+      return apiRequest(
         "PUT",
         BASE_URL +
-          `/api/facilities/${facilityId}/set-main-image/${imageId}?access-token=${token}`,
+          `/api/facility/${facilityId}/set-main-image/${imageId}?access-token=${token}`,
         {},
         {
           "Content-Type": "application/json",

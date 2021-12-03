@@ -13,18 +13,21 @@ import {
 } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../js/helpers/alert";
-import { getLocationAPI, updateLocationsAPI } from "../../../js/api/locations";
 import locationApi from "../../../js/api/locations";
 import { GlobalContext } from "../../../context";
 import "../../../scss/location-edit.scss";
+import ConfirmModal from "../../ConfirmModal/ConfirmModal";
 const LocationEdit = () => {
   const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);
   const [fieldCount, setFieldCount] = useState(1);
   const [addFieldModal, setAddFieldModal] = useState(false);
+  const [removeFieldModal, setRemoveFieldModal] = useState(false);
+  const [removeField, setRemoveField] = useState();
   const [location, setlocation] = useState();
   const {
     register,
+    unregister,
     handleSubmit,
     formState: { errors },
     reset,
@@ -53,44 +56,49 @@ const LocationEdit = () => {
     });
   }, [reset]);
   const onSubmit = (data) => {
-    if (Object.keys(data).length > 2) {
-      const body = {};
-      const jsonData = [];
-      for (const [key, value] of Object.entries(data)) {
-        switch (key) {
-          case "facilityID":
-            body["facility_id"] = value;
-            break;
-          case "name":
-            body["name"] = value;
-            break;
-          default:
-            jsonData.push({
-              name: fields.filter((el) => el.id === key)[0].title,
-              value: value,
-            });
-            break;
-        }
+    console.log(data);
+
+    const body = {};
+    const jsonData = [];
+    for (const [key, value] of Object.entries(data)) {
+      switch (key) {
+        case "facilityID":
+          body["facility_id"] = value;
+          break;
+        case "name":
+          body["name"] = value;
+          break;
+        default:
+          jsonData.push({
+            name: fields.filter((el) => el.id === key)[0].title,
+            value: value,
+          });
+          break;
       }
-      body["jsonData"] = jsonData;
-
-      locationApi.editLocation(editId, body).then((res) => {
-        if (res.status === "Successfully updated")
-          alert("success", "Location updated.");
-        else alert("error", "Request error.");
-      });
-
-      document.querySelector("#form").reset();
-      setShowFormModal(false);
-    } else {
-      alert("error", "Location should contain at least 1 address.");
     }
+    body["jsonData"] = jsonData;
+
+    locationApi.editLocation(editId, body).then((res) => {
+      if (res.status === "Successfully updated")
+        alert("success", "Location updated.");
+      else alert("error", "Request error.");
+    });
+
+    document.querySelector("#form").reset();
+    setShowFormModal(false);
   };
 
   const toggleAddFieldModal = () => {
     setAddFieldModal(!addFieldModal);
   };
-
+  const toggleRemoveFieldModal = () => {
+    setRemoveFieldModal(!removeFieldModal);
+  };
+  const handleRemoveFieldFormSubmit = () => {
+    unregister(removeField.id);
+    setFields(fields.filter((field) => field.id !== removeField.id));
+    setRemoveField("");
+  };
   const handleAddFieldFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -109,12 +117,12 @@ const LocationEdit = () => {
   return (
     <>
       <Modal isOpen={addFieldModal} toggle={toggleAddFieldModal}>
-        <ModalHeader>Add address</ModalHeader>
+        <ModalHeader>Add Field</ModalHeader>
         <ModalBody>
           <Form id="add-field-form" onSubmit={handleAddFieldFormSubmit}>
             <FormGroup row>
               <Label sm={3} for="add-field-field">
-                Address title
+                Field title
               </Label>
               <Col sm={9}>
                 <input className="form-control" id="add-field-field" />
@@ -129,6 +137,34 @@ const LocationEdit = () => {
           </Button>
         </ModalFooter>
       </Modal>
+      <ConfirmModal
+        modal={removeFieldModal}
+        toggleModal={toggleRemoveFieldModal}
+        title="Delete Field"
+        handleSubmit={() => {
+          handleRemoveFieldFormSubmit();
+        }}
+        modalText={`Are you sure you want to DELETE ${
+          removeField && removeField.title
+        }`}
+      />
+      {/* <Modal isOpen={removeFieldModal} toggle={toggleRemoveFieldModal}>
+        <ModalHeader>Delete Field</ModalHeader>
+        <ModalBody>
+          <Form id="remove-field-form" onSubmit={handleRemoveFieldFormSubmit}>
+            <p>
+              Are you sure you want to DELETE {removeField && removeField.title}{" "}
+              field?
+            </p>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={toggleRemoveFieldModal}>Cancel</Button>
+          <Button form="remove-field-form" color="primary">
+            Delete
+          </Button>
+        </ModalFooter>
+      </Modal> */}
       <div className="create-form">
         <Form id="form" onSubmit={handleSubmit(onSubmit)}>
           <FormGroup row>
@@ -173,7 +209,7 @@ const LocationEdit = () => {
                 <Label sm={2} for={`${id}-field`}>
                   {title}
                 </Label>
-                <Col sm={9}>
+                <Col sm={10} className="delete-field">
                   <input
                     className={`form-control ${
                       errors[`${id}`] ? "is-invalid" : ""
@@ -183,16 +219,23 @@ const LocationEdit = () => {
                     {...register(`${id}`)}
                     defaultValue={value}
                   />
-                </Col>
-                <Col sm={1} className="delete-field--container">
-                  <Button className="delete-field--btn"></Button>
+                  <button
+                    className="btn delete-field--container"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setRemoveField({ id, title });
+                      toggleRemoveFieldModal();
+                    }}
+                  >
+                    <span className="delete-field--cross"></span>
+                  </button>
                 </Col>
               </FormGroup>
             ))}
           <FormGroup row>
-            <Col sm={2} className="offset-md-2">
+            <Col sm={4} className="offset-md-2">
               <Button color="primary" onClick={toggleAddFieldModal}>
-                Add address
+                Add Field
               </Button>
             </Col>
           </FormGroup>

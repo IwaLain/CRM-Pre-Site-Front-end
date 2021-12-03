@@ -8,12 +8,13 @@ import equipmentApi from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../InfoCard/InfoCard";
-
+import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
+
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
@@ -24,16 +25,47 @@ const CRMEntity = ({ type }) => {
   let getEntityAPI;
   let addEntityImageAPI;
   let setMainEntityImageAPI;
+  let deleteAllEntityImagesAPI;
   let subEntityName = "";
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
   const [entityObject, setEntityObject] = useState();
-  const [attachedImages, setAttachedImages] = useState();
+
   const [mainImage, setMainImage] = useState();
   const [subEntity, setSubEntity] = useState();
   const [informationItems, setInformationItems] = useState([]);
   const informationFieldNames = ["address", "phone", "email"];
   const [mode, setMode] = useState("edit");
-
+  const [fileTypes, setFileTypes] = useState([
+    {
+      type_id: "1",
+      setFunc(files) {
+        this.attachedFiles = [...files];
+      },
+      attachedFiles: [],
+      type_name: "image",
+      fileExtensions: ".jpg, .jpeg, .png",
+    },
+    {
+      type_id: "2",
+      setFunc(files) {
+        this.attachedFiles = [...files];
+      },
+      attachedFiles: [],
+      type_name: "schema",
+      fileExtensions:
+        ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+    },
+    {
+      type_id: "3",
+      setFunc(files) {
+        this.attachedFiles = [...files];
+      },
+      attachedFiles: [],
+      type_name: "doc",
+      fileExtensions:
+        ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+    },
+  ]);
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
     if (!mainImage) {
@@ -41,18 +73,103 @@ const CRMEntity = ({ type }) => {
     }
     return mainImage;
   };
-  const deleteEntityImage = (file) => {
-    deleteEntityImageAPI(id, file.id).then((res) => {
-      setAttachedImages(res[`${type}Images`]);
-    });
-  };
-  const addEntityImage = (file) => {
-    convertToBase64(file).then((baseFormat) => {
-      const data = { img: baseFormat };
-      addEntityImageAPI(id, data).then((res) => {
-        setAttachedImages(res[`${type}Images`]);
-      });
-    });
+  async function deleteAllEntityImages(type_id) {
+    const fileTypeIndex = fileTypes.findIndex(
+      (fileType) => fileType.type_id === type_id
+    );
+
+    if (fileTypeIndex > -1) {
+      console.log(deleteAllEntityImagesAPI);
+      const response = await deleteAllEntityImagesAPI(id, type_id);
+
+      if (response.success) {
+        setFileTypes((oldArr) => {
+          const newFileTypes = [...oldArr];
+          newFileTypes[fileTypeIndex].setFunc([]);
+
+          return newFileTypes;
+        });
+        alert("success", `files deleted`);
+      } else alert("error", response.message);
+    } else {
+      alert("warning", "wrong type of file");
+    }
+  }
+  async function deleteEntityImage(file, type_id) {
+    const fileTypeIndex = fileTypes.findIndex(
+      (fileType) => fileType.type_id === type_id
+    );
+
+    if (fileTypeIndex > -1) {
+      const response = await deleteEntityImageAPI(id, file.id);
+
+      if (response.success) {
+        const images = await response[`${type}Images`];
+        setFileTypes((oldArr) => {
+          const newFileTypes = [...oldArr];
+
+          setFiles(images, newFileTypes[fileTypeIndex]);
+
+          return newFileTypes;
+        });
+        alert("success", `file deleted`);
+      } else alert("error", response.message);
+    } else {
+      alert("warning", "wrong type of file");
+    }
+  }
+
+  async function addEntityImage(files, type_id) {
+    // const fileBaseFormat = await convertToBase64(file);
+    const newFiles = [...files];
+
+    const fileTypeIndex = fileTypes.findIndex(
+      (fileType) => fileType.type_id === type_id
+    );
+
+    // function setDelay(i, data) {
+    //   setTimeout(async function () {
+    //     const response = await addEntityImageAPI(id, data);
+    //     if (response.success) {
+    //       setFileTypes((oldArr) => {
+    //         const newFileTypes = [...oldArr];
+    //         newFileTypes[fileTypeIndex].setFunc([...response[`${type}Images`]]);
+    //         return newFileTypes;
+    //       });
+    //     }
+    //   }, 1000 * i);
+    // }
+    if (fileTypeIndex > -1) {
+      for (let i = 0; i < newFiles.length; i++) {
+        let base64Format = await convertToBase64(newFiles[i]);
+        if (base64Format.length > 5) {
+          let data = { type_id: type_id, img: base64Format };
+
+          const response = await addEntityImageAPI(id, data);
+
+          if (response.success) {
+            const images = await response[`${type}Images`];
+            setFileTypes((oldArr) => {
+              const newFileTypes = [...oldArr];
+
+              setFiles(images, newFileTypes[fileTypeIndex]);
+
+              return newFileTypes;
+            });
+          } else alert("error", response.message);
+        } else {
+          alert("warning", "file is empty");
+        }
+      }
+    } else {
+      alert("warning", "wrong type of file");
+    }
+  }
+  const setFiles = (files, fileType) => {
+    const newFiles = files.filter((el) => el.type_id == fileType.type_id);
+
+    fileType.setFunc(newFiles);
+    return fileType;
   };
   const setMainEntityImage = (imageId) => {
     setMainEntityImageAPI(id, imageId).then((res) => {
@@ -62,7 +179,7 @@ const CRMEntity = ({ type }) => {
   const setNewInformationItem = (fieldTitle, value) => {
     setInformationItems((oldArr) => {
       const newElement = { fieldTitle: fieldTitle, value: value };
-      console.log(newElement);
+
       return [...oldArr, newElement];
     });
   };
@@ -72,6 +189,7 @@ const CRMEntity = ({ type }) => {
       deleteEntityImageAPI = customersApi.deleteCustomerImage;
       addEntityImageAPI = customersApi.addCustomerImage;
       setMainEntityImageAPI = customersApi.setMainCustomerImage;
+      deleteAllEntityImagesAPI = customersApi.deleteAllCustomerImages;
       subEntityName = "facilities";
       break;
     case "facility":
@@ -105,13 +223,17 @@ const CRMEntity = ({ type }) => {
       }
       setEntityObject(data);
       if (data[`${type}Images`]) {
-        setAttachedImages(data[`${type}Images`]);
+        fileTypes.forEach((fileType) => {
+          setFiles(data[`${type}Images`], fileType);
+        });
+        // setAttachedImages([...data[`${type}Images`]]);
+
         const mainImage = getMainImage(data[`${type}Images`]);
         setMainImage(mainImage);
       }
       if (data.jsonData) {
         const customFields = data.jsonData;
-        console.log(customFields);
+
         customFields.forEach((el) => {
           if (el.value) {
             setNewInformationItem(el.name, el.value);
@@ -161,8 +283,8 @@ const CRMEntity = ({ type }) => {
             ></img>
             <DropdownImageEdit
               images={
-                attachedImages && attachedImages.length > 0
-                  ? attachedImages
+                fileTypes[0] && fileTypes[0].attachedFiles.length > 0
+                  ? fileTypes[0].attachedFiles
                   : []
               }
               setMainImage={setMainEntityImage}
@@ -204,14 +326,28 @@ const CRMEntity = ({ type }) => {
           </div>
         </div>
       )}
+
       {entityObject && entityObject[`${type}Images`] && (
         <div className="entity-page--section">
-          <AttachedFiles
-            title="Attached images"
-            onAddImage={addEntityImage}
-            onRemoveImage={deleteEntityImage}
-            attachedFiles={attachedImages ? attachedImages : []}
-          />
+          <h2 className="page-subtitle">{`Attachment`}</h2>
+          <div className="attached-files--list">
+            {fileTypes &&
+              fileTypes.map((fileType) => (
+                <div className="attached-files--item">
+                  <AttachedFiles
+                    type={fileType.type_id}
+                    name={fileType.type_name}
+                    onAddFile={addEntityImage}
+                    accepted={fileType.fileExtensions}
+                    onRemoveFile={deleteEntityImage}
+                    onDeleteAllFiles={deleteAllEntityImages}
+                    attachedFiles={
+                      fileType.attachedFiles ? fileType.attachedFiles : []
+                    }
+                  />
+                </div>
+              ))}
+          </div>
         </div>
       )}
     </>
