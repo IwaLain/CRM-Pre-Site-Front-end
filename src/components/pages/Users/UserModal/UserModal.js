@@ -60,7 +60,7 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                                 Cancel
                             </Button>
                         </Col>
-                        <Col md={6}>
+                        <Col md={6} className="d-flex justify-content-end">
                             <Button
                                 className='formUser__submit'
                                 form='form'>

@@ -84,7 +84,7 @@ const routes = {
       children: <Network />,
     },
     {
-      path: "/dashboard/porpouse",
+      path: "/dashboard/purpouse",
       name: "Commertial Purpose",
       children: <ComertialPorpouse />,
     },

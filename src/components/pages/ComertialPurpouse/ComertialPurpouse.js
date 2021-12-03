@@ -1,99 +1,253 @@
-import React from 'react'
-import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
+import React, { useEffect, useState } from 'react'
+import DataTable from 'react-data-table-component';
+import { Button, Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
 import Input from '../../UIKit/Input/Input'
+import Textarea from '../../UIKit/Textarea/Textarea'
+import './ComertialPurpouse.scss'
+import { useForm } from 'react-hook-form';
+
 const ComertialPurpouse = () => {
+    const [amount, setAmount] = useState()
+    const [summary, setSummary] = useState()
+    const date = new Date().toLocaleDateString('en-US')
+
+    const {
+        register,
+        handleSubmit,
+    } = useForm()
+
+    const current = (row) => console.log(row)
+    const didAmount = (quantity, rate, tax) => {
+        if (tax !== '') setAmount(quantity * rate * tax)
+        else setAmount(quantity * rate)
+        return amount
+    }
+
+
+
+    useEffect(() => {
+        console.log()
+    }, [])
+
+    const data = [
+        {
+            id: 1,
+            item: 'Gw2-1011',
+            descripyion: 'Gateway - weatherproof',
+            units: 'EA',
+            quantity: 4,
+            tax: 'Yes',
+            amount: '',
+            rate: ''
+        },
+        {
+            id: 2,
+            item: 'Gw2-1010',
+            descripyion: 'Gateway - weatherproof',
+            units: 'EA',
+            quantity: 3,
+            tax: 'Yes',
+            amount: '',
+            rate: ''
+        },
+        {
+            id: 3,
+            item: 'Gw2-1102',
+            descripyion: 'Gateway - weatherproof',
+            units: 'EA',
+            quantity: 200,
+            tax: 'Yes',
+            amount: '',
+            rate: ''
+        },
+        {
+            id: 4,
+            item: 'Gw2-1606',
+            descripyion: 'Gateway - weatherproof',
+            units: 'EA',
+            quantity: 5,
+            tax: 'Yes',
+            amount: '',
+            rate: ''
+        },
+        {
+            id: 5,
+            item: 'Gw2-1018',
+            descripyion: 'Gateway - weatherproof',
+            units: 'EA',
+            quantity: 6,
+            tax: 'Yes',
+            amount: '',
+            rate: ''
+        },
+    ]
     const columns = [
         {
             name: 'Item',
-            selector: row => row['first_name'],
+            selector: row => row['item'],
             sortable: true,
         },
         {
             name: 'Description',
-            selector: row => row['last_name'],
+            selector: row => row['descripyion'],
             sortable: true,
             grow: 2
         },
         {
             name: 'Units',
-            selector: row => row['username'],
-            sortable: true,
+            selector: row => row['units'],
         },
         {
             name: 'Quantity',
-            selector: row => row['username'],
+            selector: row => row['quantity'],
         },
         {
             name: 'Rate',
-            cell: <Input/>
+            cell: row => <Input
+                onBlur={(e) => {
+                    row['rate'] = Number(e.target.value)
+                    row['amount'] = didAmount(row['quantity'], row['rate'], 3)
+                    current(row)
+                }}
+            />
         },
         {
             name: 'Tax',
-            selector: row => row['username'],
+            selector: row => row['tax'],
         },
         {
-            right: true,
-            grow: 0
+            name: 'Amount',
+            selector: row => row['amount'],
         },
     ];
 
+    const onSubmit = (e) => {
+        const data = {
+            'bill': e.bill,
+            'ship': e.ship,
+            'expires': e.expires,
+            'memo': e.memo,
+        }
+
+        console.log(e)
+    }
+
     return (
         <div className="purpose">
-            <Form>
+            <Form id='form' onSubmit={handleSubmit(onSubmit)}>
                 <Row>
-                    <Col className="purpose__title">
-                        <Row>
+                    <Col lg={3} md={4} sm={6} className="purpose__title">
+                        <FormGroup>
                             <h3>Commertial Purpose</h3>
                             <div>
                                 <img src={logo} alt="logo" />
                             </div>
-                        </Row>
+                        </FormGroup>
                         <Row>
-                            <FormGroup>
-                                <Label>
-                                    Quote #
-                                </Label>
-                                <Input/>
+                            <FormGroup className='purpose__quote'>
+                                <Col>
+                                    <h3>
+                                        Quote #
+                                    </h3>
+                                </Col>
+                                <Input
+                                    type='text'
+                                    name='quote'
+                                    disabled
+                                />
                             </FormGroup>
-                            <FormGroup>
-                                <Label>
+                            <FormGroup className='purpose__ship'>
+                                <Label md={12}>
                                     Bill to
                                 </Label>
-                                <Input/>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>
+                                <Textarea
+                                    name='bill'
+                                    {...register('bill')}
+                                />
+                                <Label md={12}>
                                     Ship to
                                 </Label>
-                                <Input/>
+                                <Textarea
+                                    name='ship'
+                                    {...register('ship')}
+                                />
                             </FormGroup>
                         </Row>
                     </Col>
-                    <Col md={4} className="purpose__description">
-                        <p>
-                            Waites Sensor Techologies, Inc.
-                            20 W. 11th St. Suite 200 Covington, KY 41011
+                    <Col lg={3} md={{offset:1, size:4}} sm={6} className="purpose__description">
+                        <Row>
+                            <Col className='purpose__adress'>
+                                Waites Sensor Techologies, Inc.<br/>
+                                20 W. 11th St. Suite 200 Covington, KY 41011<br/>
 
-                            (800) 574-9248                www.waites.net
-                        </p>
-                        <p>
-                            Date 01/14/2021
-                            Expires <Input/>
-                            Memo <Input/>
-                        </p>
+                                <div className="mt-3">(800)574-9248 www.waites.net</div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Row className='purpose__info'>
+                                <Col>
+                                    <Label>
+                                        Date
+                                    </Label>
+                                </Col>
+                                {date}
+                            </Row>
+                            <Row className='purpose__info my-2'>
+                                <Col>
+                                    <Label>
+                                        Expires
+                                    </Label>
+                                </Col>
+                                <Input
+                                    type='text'
+                                    name='expires'
+                                    {...register('expires')}
+                                />
+                            </Row>
+                            <Row className='purpose__info'>
+                                <Col>
+                                    <Label>
+                                        Memo
+                                    </Label>
+                                </Col>
+                                <Input
+                                    type='text'
+                                    name='memo'
+                                    {...register('memo')}
+                                />
+                            </Row>
+                        </Row>
                     </Col>
                 </Row>
-                <Row>
+                <FormGroup className="purpose__table">
                     <Col>
                         <Label>Email orders to orders@waites.net</Label>
-                        {/* <DataTable
+                        <DataTable
+                            dense
                             direction="auto"
                             columns={columns}
-                            data={filteredItems}
-                        /> */}
+                            data={data}
+                        />
                     </Col>
-                </Row>
+                </FormGroup>
+                <FormGroup className='purpose__buttons'>
+                    <Col md={1}>
+                        <Button
+                            form='form'
+                            onClick={(e) =>{
+                                e.preventDefault()
+                            }}>
+                            Preview
+                        </Button>
+                    </Col>
+                    <Col md={1}>
+                        <Button
+                            form='form'>
+                            Create PDF
+                        </Button>
+                    </Col>
+                </FormGroup>
             </Form>
         </div>
     )

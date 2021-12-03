@@ -9,10 +9,10 @@ const User = {
         if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user?access-token=${token}`, {}, {})
     },
 
-    editUserRole: (userId, data) => {
+    editUserRole: (id, data) => {
         const token = getToken()
 
-        if ( token ) return apiRequest('POST', BASE_URL + `/api/role/assign-role/${userId}?access-token=${token}`, data, {
+        if ( token ) return apiRequest('POST', BASE_URL + `/api/role/assign-role/${id}?access-token=${token}`, data, {
             'Content-Type':'application/json'
         })
     },
@@ -25,18 +25,18 @@ const User = {
         })
     },
 
-    editeUser: (userId, data) => {
+    editeUser: (id, data) => {
         const token = getToken()
 
-        if ( token ) return apiRequest('PUT', BASE_URL + `/api/user/update/${userId}?access-token=${token}`, data, {
+        if ( token ) return apiRequest('PUT', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Content-Type':'application/json'
         })
     },
 
-    deleteUser: (userId) => {
+    deleteUser: (id) => {
         const token = getToken()
 
-        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/user/delete/${userId}?access-token=${token}`, {}, {})
+        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/user/delete/${id}?access-token=${token}`, {}, {})
     }
 }
 
