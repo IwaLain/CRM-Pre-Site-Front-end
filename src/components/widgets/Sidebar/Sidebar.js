@@ -51,7 +51,7 @@ const Sidebar = ({ isMobile }) => {
           </li>
           <li>
             <Link to={`/dashboard/purpouse`}>
-              <i className="fab fa-hubspot"></i>
+              <i className="fas fa-file-pdf"></i>
               {!isMobile && "Commertial Purpose"}
             </Link>
           </li>

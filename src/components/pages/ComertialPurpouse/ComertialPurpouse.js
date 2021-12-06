@@ -4,7 +4,7 @@ import { Button, Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
 import Input from '../../UIKit/Input/Input'
 import Textarea from '../../UIKit/Textarea/Textarea'
-import './ComertialPurpose.scss'
+import './ComertialPurpouse.scss'
 import { useForm } from 'react-hook-form';
 
 const ComertialPurpouse = () => {
@@ -17,6 +17,7 @@ const ComertialPurpouse = () => {
         handleSubmit,
     } = useForm()
 
+    const current = (row) => console.log(row)
     const didAmount = (quantity, rate, tax) => {
         let result = 0
         if (tax !== '') result = quantity * rate * tax
@@ -102,10 +103,10 @@ const ComertialPurpouse = () => {
         },
         {
             name: 'Rate',
-            selector: row => row['rate'],
             cell: row => <Input
                 onBlur={(e) => {
                     row['rate'] = Number(e.target.value)
+                    current(row)
                 }}
             />
         },
@@ -115,8 +116,7 @@ const ComertialPurpouse = () => {
         },
         {
             name: 'Amount',
-            selector: row => row['quantity'] * row['rate'],
-            cell: row => row['quantity'] * row['rate']
+            cell: row => row['amount'] = row['quantity'] * row['rate'],
         },
     ];
 
@@ -133,24 +133,16 @@ const ComertialPurpouse = () => {
 
     return (
         <div className="purpose">
-            <Row>
-                <Col lg={4} md={5} sm={6} className="purpose__title">
-                    <h3>Commertial Purpose</h3>
-                    <div>
-                        <img src={logo} alt="logo" />
-                    </div>
-                </Col>
-                <Col lg={{offset:1, size:4}} md={5} sm={6} className='purpose__adress'>
-                    Waites Sensor Techologies, Inc.<br/>
-                    20 W. 11th St. Suite 200 Covington, KY 41011<br/>
-
-                    <div className="mt-3">(800)574-9248 www.waites.net</div>
-                </Col>
-            </Row>
-            <Row>
-                <Form id='form' onSubmit={handleSubmit(onSubmit)}>
-                    <Row>
-                        <Col lg={4} md={5}>
+            <Form id='form' onSubmit={handleSubmit(onSubmit)}>
+                <Row>
+                    <Col className="purpose__title">
+                        <FormGroup>
+                            <h3>Commertial Purpose</h3>
+                            <div>
+                                <img src={logo} alt="logo" />
+                            </div>
+                        </FormGroup>
+                        <Row>
                             <FormGroup className='purpose__quote'>
                                 <Col>
                                     <h3>
@@ -162,7 +154,19 @@ const ComertialPurpouse = () => {
                                     name='quote'
                                     disabled
                                 />
+
+                                    <Col className='purpose__adress'>
+                                        Waites Sensor Techologies, Inc.<br/>
+                                        20 W. 11th St. Suite 200 Covington, KY 41011<br/>
+
+                                        <div className="mt-3">(800)574-9248 www.waites.net</div>
+                                    </Col>
+
                             </FormGroup>
+                        </Row>
+                    </Col>
+                    <Col lg={3} md={{offset:1, size:4}} sm={6} className="purpose__description">
+                        <Row>
                             <FormGroup className='purpose__ship'>
                                 <Label md={12}>
                                     Bill to
@@ -179,8 +183,6 @@ const ComertialPurpouse = () => {
                                     {...register('ship')}
                                 />
                             </FormGroup>
-                        </Col>
-                        <Col lg={{offset:1, size:4}} md={5} className="purpose__description">
                             <Row className='purpose__info'>
                                 <Col>
                                     <Label>
@@ -213,39 +215,38 @@ const ComertialPurpouse = () => {
                                     {...register('memo')}
                                 />
                             </Row>
-                        </Col>
-                    </Row>
-
-                    <FormGroup className="purpose__table">
-                        <Col>
-                            <Label>Email orders to orders@waites.net</Label>
-                            <DataTable
-                                dense
-                                direction="auto"
-                                columns={columns}
-                                data={data}
-                            />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup className='purpose__buttons'>
-                        <Col md={2}>
-                            <Button
-                                form='form'
-                                onClick={(e) =>{
-                                    e.preventDefault()
-                                }}>
-                                Preview
-                            </Button>
-                        </Col>
-                        <Col md={2}>
-                            <Button
-                                form='form'>
-                                Create PDF
-                            </Button>
-                        </Col>
-                    </FormGroup>
-                </Form>
-            </Row>
+                        </Row>
+                    </Col>
+                </Row>
+                <FormGroup className="purpose__table">
+                    <Col>
+                        <Label>Email orders to orders@waites.net</Label>
+                        <DataTable
+                            dense
+                            direction="auto"
+                            columns={columns}
+                            data={data}
+                        />
+                    </Col>
+                </FormGroup>
+                <FormGroup className='purpose__buttons'>
+                    <Col md={1}>
+                        <Button
+                            form='form'
+                            onClick={(e) =>{
+                                e.preventDefault()
+                            }}>
+                            Preview
+                        </Button>
+                    </Col>
+                    <Col md={1}>
+                        <Button
+                            form='form'>
+                            Create PDF
+                        </Button>
+                    </Col>
+                </FormGroup>
+            </Form>
         </div>
     )
 }

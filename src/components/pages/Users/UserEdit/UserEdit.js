@@ -114,9 +114,9 @@ const UserEdit = ({ currentUser, editeMethod }) => {
                                     />
                                 </Col>
                                 <Col md={6}>
-                                    <Label className=''>Role:</Label>
+                                    <Label className='w-100'>Role:</Label>
                                     <select 
-                                        className='form-control'
+                                        className='ui-kit__select w-100'
                                         {...register('role')}
                                     >
                                         <option disabled selected> Select role</option>

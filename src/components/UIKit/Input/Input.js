@@ -7,6 +7,7 @@ const Input = ({
   value,
   checked,
   defaultChecked,
+  onBlur,
 }) => {
   return (
     <input
@@ -19,6 +20,7 @@ const Input = ({
       disabled={disabled}
       checked={checked}
       defaultChecked={defaultChecked}
+      onBlur={onBlur}
     />
   );
 };
