@@ -89,7 +89,7 @@ const SensorCreate = () => {
 
     setEquipmentNames(formatNames(customerStructure["equipment"]));
     setEquipmentID(Object.keys(customerStructure["equipment"])[0]);
-  }, []);
+  }, [customerStructure]);
 
   return (
     <div className="create-form">

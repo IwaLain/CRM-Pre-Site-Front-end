@@ -22,9 +22,9 @@ const Dashboard = () => {
       )
         .then((res) => res.json())
         .then((network) => {
-          setNetwork(network.Network);
+          setNetwork(Object.entries(network.Network));
         });
-  }, []);
+  }, [history, selectedCustomer]);
 
   return (
     <div className="dashboard-page">
@@ -68,8 +68,8 @@ const Dashboard = () => {
           {network &&
             network.map((block, index) => (
               <div key={index} className="dashboard-page__block">
-                <h5>{Object.keys(block)[0]}</h5>
-                <span>{block[Object.keys(block)[0]]}</span>
+                <h5>{block[0]}</h5>
+                <span>{block[1]}</span>
               </div>
             ))}
         </div>

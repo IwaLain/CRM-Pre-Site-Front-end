@@ -1,10 +1,10 @@
 import "../../../scss/list.scss";
 import { useContext, useEffect, useState } from "react";
-import { useParams, useRouteMatch } from "react-router";
+import { useRouteMatch } from "react-router";
 import TableView from "../../TableView/TableView";
 import InfoCard from "../../InfoCard/InfoCard";
 import Pagination from "../../widgets/Pagination/Pagination";
-import { Spinner, Input, Label } from "reactstrap";
+import { Spinner, Label } from "reactstrap";
 import { GlobalContext } from "../../../context";
 import customersApi from "../../../js/api/customer";
 import locationApi from "../../../js/api/locations";
@@ -12,6 +12,7 @@ import equipmentApi from "../../../js/api/equipment";
 import facilitiesApi from "../../../js/api/facilities";
 import ModalComponent from "../../ModalComponent/ModalComponent";
 import Button from "../../UIKit/Button/Button";
+import Select from "../../UIKit/Select/Select";
 
 const List = ({ type, title }) => {
   const [data, setData] = useState();
@@ -50,7 +51,7 @@ const List = ({ type, title }) => {
     const formattedNames = [];
 
     for (const [key, value] of Object.entries(data)) {
-      formattedNames.push({ id: value.id, name: value.name });
+      formattedNames.push({ id: value.id, name: value.name, key });
     }
 
     return formattedNames;
@@ -60,14 +61,13 @@ const List = ({ type, title }) => {
     setSearchQuery(e.target.value);
 
     setIsLoading(true);
-    requests
-      .list(RECORDS_PER_PAGE, page, e.target.value, entityID)
-      .then((res) => {
-        setData(res);
-        setTotalRows(res.total);
-        setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
-        setIsLoading(false);
-      });
+    setPage(1);
+    requests.list(RECORDS_PER_PAGE, 1, e.target.value, entityID).then((res) => {
+      setData(res);
+      setTotalRows(res.total);
+      setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
+      setIsLoading(false);
+    });
   };
 
   const handleResize = () => {
@@ -106,7 +106,7 @@ const List = ({ type, title }) => {
     )
       .then((res) => res.json())
       .then((customerStructure) =>
-        setCustomerStructure(customerStructure["customerConstruct"][id])
+        setCustomerStructure(customerStructure["customerConstruct"])
       );
   };
 
@@ -170,7 +170,7 @@ const List = ({ type, title }) => {
               localStorage.getItem("token");
             if (limit) url += "&limit=" + limit;
             if (page) url += "&page=" + page;
-            if (search) url += "&s=" + search;
+            if (search) url += "&search=" + search;
 
             return fetch(url).then((res) => res.json());
           },
@@ -268,11 +268,7 @@ const List = ({ type, title }) => {
             {showEntitySelect && (
               <div className="list__select-entity">
                 <Label for="select-entity">{type.ref}:</Label>
-                <Input
-                  id="select-entity"
-                  onChange={handleEntitySelect}
-                  type="select"
-                >
+                <Select id="select-entity" onChange={handleEntitySelect}>
                   {entityNames &&
                     entityNames.map((entity) => (
                       <option
@@ -280,10 +276,10 @@ const List = ({ type, title }) => {
                         value={entity.id}
                         selected={entity.id === selectedCustomer.id}
                       >
-                        {entity.id}. {entity.name}
+                        {entity.name}
                       </option>
                     ))}
-                </Input>
+                </Select>
               </div>
             )}
             <input

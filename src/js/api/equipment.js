@@ -111,7 +111,7 @@ const equipmentApi = {
 
     if (limit) url += `&limit=${limit}`;
     if (page) url += `&page=${page}`;
-    if (search) url += `&s=${search}`;
+    if (search) url += `&search=${search}`;
 
     if (token) return apiRequest("GET", BASE_URL + url, {}, {});
   },

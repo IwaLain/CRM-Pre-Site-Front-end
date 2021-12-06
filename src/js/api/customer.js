@@ -9,7 +9,7 @@ const customersApi = {
     let url = `/api/customer?access-token=${token}`;
     if (limit) url += `&limit=${limit}`;
     if (page) url += `&page=${page}`;
-    if (search) url += `&s=${search}`;
+    if (search) url += `&search=${search}`;
 
     if (token)
       return apiRequest(
@@ -122,7 +122,7 @@ const customersApi = {
     let url = `/api/customer/${customerId}/facilities?access-token=${token}`;
     if (limit) url += `&limit=${limit}`;
     if (page) url += `&page=${page}`;
-    if (search) url += `&s=${search}`;
+    if (search) url += `&search=${search}`;
 
     if (token) return apiRequest("GET", BASE_URL + url, {}, {});
   },

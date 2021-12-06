@@ -42,8 +42,8 @@ const InfoCard = ({
       case "locations":
         setSubEntity("Equipment");
         break;
-      case "Equipment":
-        setSubEntity("Equipment");
+      case "equipment":
+        setSubEntity(["Sensors", "Mote"]);
         break;
       default:
         setSubEntity("");
@@ -86,9 +86,18 @@ const InfoCard = ({
       />
       <div className="info-card__body">
         <h4>{data.name}</h4>
-        {subEntity && (
-          <span>{`${subEntity}: ${data[subEntity.toLowerCase()].length}`}</span>
-        )}
+        {type !== "equipment"
+          ? subEntity && (
+              <span>{`${subEntity}: ${
+                data[subEntity.toLowerCase()].length
+              }`}</span>
+            )
+          : subEntity && (
+              <span>{`${subEntity[0]}/${subEntity[1]}: ${
+                data[subEntity[0].toLowerCase()].length +
+                data[subEntity[1].toLowerCase()].length
+              }`}</span>
+            )}
         <Progress
           style={!progress ? { visibility: "hidden" } : {}}
           value={progress}

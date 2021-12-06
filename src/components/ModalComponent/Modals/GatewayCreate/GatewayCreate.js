@@ -119,7 +119,7 @@ const GatewayCreate = () => {
   useEffect(() => {
     setFacilitiesNames(formatNames(customerStructure["facilities"]));
     setFacilityID(Object.keys(customerStructure["facilities"])[0]);
-  }, []);
+  }, [customerStructure]);
 
   return (
     <div className="create-form">

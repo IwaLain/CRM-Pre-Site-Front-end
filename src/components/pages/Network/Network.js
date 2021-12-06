@@ -25,9 +25,9 @@ const Network = () => {
       )
         .then((res) => res.json())
         .then((network) => {
-          setNetwork(network.Network);
+          setNetwork(Object.entries(network.Network));
         });
-  }, []);
+  }, [history, selectedCustomer]);
 
   return (
     <div>
@@ -44,8 +44,8 @@ const Network = () => {
                     id={`heading-${index}`}
                   >
                     <div key={index} className="dashboard-page__block">
-                      <h5>{Object.keys(block)[0]}</h5>
-                      <span>{block[Object.keys(block)[0]]}</span>
+                      <h5>{block[0]}</h5>
+                      <span>{block[1]}</span>
                       <Button
                         className="dashboard-page__block-view accorion-button collapsed"
                         color="primary"
@@ -71,8 +71,8 @@ const Network = () => {
                     <div className="card-body">
                       {selectedBlock === index && (
                         <List
-                          type={{ entity: Object.keys(block)[0].toLowerCase() }}
-                          title={Object.keys(block)[0]}
+                          type={{ entity: block[0].toLowerCase() }}
+                          title={block[0]}
                         />
                       )}
                     </div>
@@ -82,9 +82,7 @@ const Network = () => {
           </div>
         </div>
       </section>
-      <section>
-
-      </section>
+      <section></section>
     </div>
   );
 };

@@ -80,7 +80,7 @@ const RouterCreate = () => {
 
     setGatewaysNames(formatNames(customerStructure["gateways"]));
     setGatewayID(Object.keys(customerStructure["gateways"])[0]);
-  }, []);
+  }, [customerStructure]);
 
   return (
     <div className="create-form">

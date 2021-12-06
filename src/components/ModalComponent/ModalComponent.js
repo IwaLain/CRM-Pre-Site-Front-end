@@ -57,6 +57,7 @@ const ModalComponent = ({ toggle, modal, type, mode }) => {
           case "sensors":
             setFormComponent(<SensorCreate />);
             setFormTitle("Sensor create");
+            break;
           default:
             break;
         }

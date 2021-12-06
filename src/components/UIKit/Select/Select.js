@@ -1,13 +1,12 @@
-const Select = ({ children, defaultValue }) => {
+const Select = ({ children, defaultValue, onChange, id }) => {
   return (
     <select
+      id={id}
       className="ui-kit__select"
-      defaultValue={defaultValue ? defaultValue : ""}
+      defaultValue={defaultValue}
+      onChange={onChange}
       required
     >
-      <option value="" disabled hidden>
-        Select
-      </option>
       {children}
     </select>
   );

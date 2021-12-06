@@ -4,8 +4,6 @@ import Badge from "../UIKit/Badge/Badge";
 import Input from "../UIKit/Input/Input";
 import Select from "../UIKit/Select/Select";
 import Textarea from "./Textarea/Textarea";
-import listView from "../../assets/img/list-view.svg";
-import blockView from "../../assets/img/block-view.svg";
 
 const UIKit = () => {
   return (

@@ -29,46 +29,42 @@ const LocationCreate = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    if (Object.keys(data).length > 2) {
-      const body = {};
-      const jsonData = [];
+    const body = {};
+    const jsonData = [];
 
-      for (const [key, value] of Object.entries(data)) {
-        switch (key) {
-          case "facilityID":
-            body["facility_id"] = value;
-            break;
-          case "name":
-            body["name"] = value;
-            break;
-          default:
-            jsonData.push({
-              name: fields.filter((el) => el.id === key)[0].title,
-              value: value,
-            });
-            break;
-        }
+    for (const [key, value] of Object.entries(data)) {
+      switch (key) {
+        case "facilityID":
+          body["facility_id"] = value;
+          break;
+        case "name":
+          body["name"] = value;
+          break;
+        default:
+          jsonData.push({
+            name: fields.filter((el) => el.id === key)[0].title,
+            value: value,
+          });
+          break;
       }
-      body["jsonData"] = jsonData;
-
-      location.addLocation(body).then((res) => {
-        if (res.status === "Successfully created")
-          alert("success", "Location created.");
-        else alert("error", "Request error.");
-      });
-
-      document.querySelector("#form").reset();
-      setShowFormModal(false);
-    } else {
-      alert("error", "Location should contain at least 1 address.");
     }
+    body["jsonData"] = jsonData;
+
+    location.addLocation(body).then((res) => {
+      if (res.status === "Successfully created")
+        alert("success", "Location created.");
+      else alert("error", "Request error.");
+    });
+
+    document.querySelector("#form").reset();
+    setShowFormModal(false);
   };
 
   const toggleAddFieldModal = () => {
     setAddFieldModal(!addFieldModal);
   };
 
-  const handleAddFieldFormSubmit = async (e) => {
+  const handleAddFieldFormSubmit = (e) => {
     e.preventDefault();
 
     const newFields = fields;

@@ -41,7 +41,7 @@ const DashboardLayout = ({ children }) => {
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-  }, []);
+  }, [setPageTitle]);
 
   return (
     <div className="dashboard container-fluid">
