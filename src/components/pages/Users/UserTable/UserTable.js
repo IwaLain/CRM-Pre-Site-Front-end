@@ -25,7 +25,7 @@ const UserTable = ( { users, editeTable, changeTable }) => {
         })
     }
 
-    const isEmpty = (cell) => cell === null ? '--' : cell
+    const isEmpty = (cell) => cell === null ? '--' : cell === '' ? '--' : cell
 
     const customStyles = {
         rows: {

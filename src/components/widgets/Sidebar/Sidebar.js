@@ -50,7 +50,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/dashboard/purpouse`}>
+            <Link to={`/dashboard/purpose`}>
               <i className="fas fa-file-pdf"></i>
               {!isMobile && "Commertial Purpose"}
             </Link>

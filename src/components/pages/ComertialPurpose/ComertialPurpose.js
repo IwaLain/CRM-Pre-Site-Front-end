@@ -1,95 +1,138 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, 
+      useEffect, 
+      useState 
+    } from 'react'
 import DataTable from 'react-data-table-component';
-import { Button, Col, Form, FormGroup, Label, Row } from 'reactstrap';
+import { 
+        Button, 
+        Col, 
+        Form, 
+        FormGroup, 
+        Label, 
+        Row 
+    } from 'reactstrap';
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
-import Input from '../../UIKit/Input/Input'
-import Textarea from '../../UIKit/Textarea/Textarea'
 import './ComertialPurpose.scss'
 import { useForm } from 'react-hook-form';
+import jsPDF from 'jspdf'
+import customersApi from '../../../js/api/customer';
+import { GlobalContext } from '../../../context';
 
 const ComertialPurpouse = () => {
-    const [amount, setAmount] = useState()
-    const [summary, setSummary] = useState()
+    const [amount, setAmount] = useState(0)
+    const [total, setTotal] = useState(0)
     const date = new Date().toLocaleDateString('en-US')
+    const { userProfile } = useContext(GlobalContext)
 
-    const {
+    const getQuote = () => Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
+
+    const { 
         register,
         handleSubmit,
-    } = useForm()
-
-    const didAmount = (quantity, rate, tax) => {
-        let result = 0
-        if (tax !== '') result = quantity * rate * tax
-        else result = quantity * rate
-        return setAmount(result)
-    }
+    } = useForm({
+        defaultValues: {
+            quote: 'Q' + getQuote()
+        }
+    })
 
     useEffect(() => {
-        console.log()
+        customersApi.getNetwork(userProfile.id)
+        .then(data => {
+            console.log(data)
+        })
     }, [])
+
+    const summary = (amount) => setTotal(Number(total + amount))
+
+    const updateObjectInArray = (array, index, updateItem) => {
+        return array.map((item, i) => {
+            if (i !== index) {
+                return item
+            }
+            return {
+                ...item,
+                ...updateItem
+            }
+        })
+    }
+
+    const jsPdfGenerator = () => {
+        let doc = new jsPDF('p', 'pt', 'a4')
+        doc.html(document.querySelector("#purpose"), {
+            callback: (pdf) => {
+                pdf.save("weites.pdf")
+            }
+        })
+    }
 
     const data = [
         {
             id: 1,
             item: 'Gw2-1011',
-            descripyion: 'Gateway - weatherproof',
+            description: '',
             units: 'EA',
             quantity: 4,
             tax: 'Yes',
-            amount: '',
-            rate: ''
+            amount: 0,
+            rate: 0
         },
         {
             id: 2,
             item: 'Gw2-1010',
-            descripyion: 'Gateway - weatherproof',
+            description: '',
             units: 'EA',
             quantity: 3,
             tax: 'Yes',
-            amount: '',
-            rate: ''
+            amount: 0,
+            rate: 0
         },
         {
             id: 3,
             item: 'Gw2-1102',
-            descripyion: 'Gateway - weatherproof',
+            description: '',
             units: 'EA',
             quantity: 200,
             tax: 'Yes',
-            amount: '',
-            rate: ''
+            amount: 0,
+            rate: 0
         },
         {
             id: 4,
             item: 'Gw2-1606',
-            descripyion: 'Gateway - weatherproof',
+            description: '',
             units: 'EA',
             quantity: 5,
             tax: 'Yes',
-            amount: '',
-            rate: ''
+            amount: 0,
+            rate: 0
         },
         {
             id: 5,
             item: 'Gw2-1018',
-            descripyion: 'Gateway - weatherproof',
+            description: '',
             units: 'EA',
             quantity: 6,
             tax: 'Yes',
-            amount: '',
-            rate: ''
+            amount: 0,
+            rate: 0
         },
     ]
     const columns = [
         {
             name: 'Item',
             selector: row => row['item'],
-            sortable: true,
         },
         {
             name: 'Description',
-            selector: row => row['descripyion'],
-            sortable: true,
+            selector: row => row['description'],
+            cell: row => <input
+                name='description'
+                className="ui-kit__input"
+                onBlur={(e) => {
+                    row['description'] = e.target.value
+                    updateObjectInArray(data, row['id'], row['description'])
+                }}
+            />,
             grow: 2
         },
         {
@@ -103,9 +146,14 @@ const ComertialPurpouse = () => {
         {
             name: 'Rate',
             selector: row => row['rate'],
-            cell: row => <Input
+            cell: row => <input
+                name='rate'
+                className="ui-kit__input"
                 onBlur={(e) => {
                     row['rate'] = Number(e.target.value)
+                    row['amount'] = row['quantity'] * row['rate']
+                    updateObjectInArray(data, row['id'], row['amount'])
+                    summary(Number(row['amount']))
                 }}
             />
         },
@@ -115,34 +163,37 @@ const ComertialPurpouse = () => {
         },
         {
             name: 'Amount',
-            selector: row => row['quantity'] * row['rate'],
-            cell: row => row['quantity'] * row['rate']
+            selector: row => row['amount'],
+            cell: row => row['amount']
         },
     ];
 
     const onSubmit = (e) => {
         const data = {
+            'quote': e.quote,
             'bill': e.bill,
             'ship': e.ship,
             'expires': e.expires,
             'memo': e.memo,
+            'rate': e.rate,
+            'description': e.description
         }
-
-        console.log(e)
+        jsPdfGenerator()
+        console.log(data)
     }
 
     return (
-        <div className="purpose">
-            <Row>
-                <Col lg={4} md={5} sm={6} className="purpose__title">
+        <div className="purpose" id="purpose">
+            <Row className='purpose__title-print'>
+                <Col lg={3} md={5} sm={6} className="purpose__title">
                     <h3>Commertial Purpose</h3>
                     <div>
                         <img src={logo} alt="logo" />
                     </div>
                 </Col>
-                <Col lg={{offset:1, size:4}} md={5} sm={6} className='purpose__adress'>
+                <Col lg={{offset:1, size:3}} md={5} sm={6} className='purpose__adress'>
                     Waites Sensor Techologies, Inc.<br/>
-                    20 W. 11th St. Suite 200 Covington, KY 41011<br/>
+                    20 W. 11th St. Suite 200<br/> Covington, KY 41011<br/>
 
                     <div className="mt-3">(800)574-9248 www.waites.net</div>
                 </Col>
@@ -150,37 +201,41 @@ const ComertialPurpouse = () => {
             <Row>
                 <Form id='form' onSubmit={handleSubmit(onSubmit)}>
                     <Row>
-                        <Col lg={4} md={5}>
+                        <Col lg={3} md={5}>
                             <FormGroup className='purpose__quote'>
                                 <Col>
                                     <h3>
                                         Quote #
                                     </h3>
                                 </Col>
-                                <Input
+                                <input
                                     type='text'
                                     name='quote'
                                     disabled
+                                    className="ui-kit__input"
+                                    {...register('quote')}
                                 />
                             </FormGroup>
                             <FormGroup className='purpose__ship'>
                                 <Label md={12}>
                                     Bill to
                                 </Label>
-                                <Textarea
+                                <textarea
                                     name='bill'
+                                    className="ui-kit__textarea"
                                     {...register('bill')}
                                 />
                                 <Label md={12}>
                                     Ship to
                                 </Label>
-                                <Textarea
+                                <textarea
                                     name='ship'
+                                    className="ui-kit__textarea"
                                     {...register('ship')}
                                 />
                             </FormGroup>
                         </Col>
-                        <Col lg={{offset:1, size:4}} md={5} className="purpose__description">
+                        <Col lg={{offset:1, size:3}} md={5} className="purpose__description">
                             <Row className='purpose__info'>
                                 <Col>
                                     <Label>
@@ -195,9 +250,10 @@ const ComertialPurpouse = () => {
                                         Expires
                                     </Label>
                                 </Col>
-                                <Input
+                                <input
                                     type='text'
                                     name='expires'
+                                    className="ui-kit__input"
                                     {...register('expires')}
                                 />
                             </Row>
@@ -207,9 +263,10 @@ const ComertialPurpouse = () => {
                                         Memo
                                     </Label>
                                 </Col>
-                                <Input
+                                <input
                                     type='text'
                                     name='memo'
+                                    className="ui-kit__input"
                                     {...register('memo')}
                                 />
                             </Row>
@@ -227,8 +284,13 @@ const ComertialPurpouse = () => {
                             />
                         </Col>
                     </FormGroup>
+                    <Col 
+                        md={2} 
+                        className='purpose__total'>
+                            Total: {'$' + total}
+                    </Col>
                     <FormGroup className='purpose__buttons'>
-                        <Col md={2}>
+                        <Col lg={1} md={2}>
                             <Button
                                 form='form'
                                 onClick={(e) =>{
@@ -237,7 +299,7 @@ const ComertialPurpouse = () => {
                                 Preview
                             </Button>
                         </Col>
-                        <Col md={2}>
+                        <Col lg={1} md={2}>
                             <Button
                                 form='form'>
                                 Create PDF
