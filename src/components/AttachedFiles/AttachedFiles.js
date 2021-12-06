@@ -11,7 +11,7 @@ const AttachedFiles = ({
   attachedFiles,
   onRemoveFile,
   accepted = ".jpg, .jpeg, .png",
-  multiple = false,
+  multiple = true,
   maxFiles = 0,
 }) => {
   const [files, setFiles] = useState([]);
@@ -40,18 +40,31 @@ const AttachedFiles = ({
   };
 
   useEffect(() => {
+    console.log("render");
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach((file) => URL.revokeObjectURL(file.preview));
 
     setFiles([
-      ...attachedFiles.map((file) => {
+      ...attachedFiles.map((file, i) => {
         const fileExtension = file.img.substring(file.img.lastIndexOf("."));
         const imageTypes = [".jpeg", ".png", ".jpg"];
         const isImage = imageTypes.some((el) => fileExtension.includes(el));
+        let preview;
+        let id;
+        if (file.preview) {
+          preview = file.preview;
+        } else {
+          preview = process.env.REACT_APP_SERVER_URL + "/" + file.img;
+        }
+        if (file.id) {
+          id = file.id;
+        } else {
+          id = i;
+        }
         return {
           name: file.img,
-          preview: process.env.REACT_APP_SERVER_URL + "/" + file.img,
-          id: file.id,
+          preview: preview,
+          id: id,
           isImage: isImage,
         };
       }),
@@ -128,7 +141,10 @@ const AttachedFiles = ({
             {maxFiles === 0 && (
               <div
                 className="thumb"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+
                   open();
                 }}
               >

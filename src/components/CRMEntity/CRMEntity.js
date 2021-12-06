@@ -237,7 +237,21 @@ const CRMEntity = ({ type }) => {
         });
       }
       if (subEntityName.length !== 0) {
-        setSubEntity(data[subEntityName]);
+        if (subEntityName === "equipment") {
+          fetch(
+            process.env.REACT_APP_SERVER_URL +
+              "/api/location/" +
+              id +
+              "/equipment?access-token=" +
+              localStorage.getItem("token")
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              setSubEntity(data[subEntityName]);
+            });
+        } else {
+          setSubEntity(data[subEntityName]);
+        }
       }
 
       informationFieldNames.forEach((field) => {
