@@ -14,6 +14,7 @@ import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
+import TableView from "../TableView/TableView";
 
 const CRMEntity = ({ type }) => {
   type = type.entity;
@@ -31,18 +32,13 @@ const CRMEntity = ({ type }) => {
   let subEntityNames = [];
 
   const informationFieldNames = ["address", "phone", "email"];
+
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
-
   const [entityObject, setEntityObject] = useState();
-
   const [mainImage, setMainImage] = useState();
-
   const [subEntity, setSubEntity] = useState([]);
-
   const [informationItems, setInformationItems] = useState([]);
-
   const [mode, setMode] = useState("edit");
-
   const [fileTypes, setFileTypes] = useState([
     {
       type_id: "1",
@@ -301,6 +297,12 @@ const CRMEntity = ({ type }) => {
     window.addEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    subEntity.map((el) => {
+      console.log(el[Object.keys(el)[0]]);
+    });
+  }, [subEntity]);
+
   return (
     <>
       <ModalComponent
@@ -376,6 +378,7 @@ const CRMEntity = ({ type }) => {
                     type={Object.keys(el)[0]}
                     toggleModal={toggleModal}
                     setMode={setMode}
+                    showView={type === "equipment" && false}
                   />
                 ))
               ) : (
