@@ -17,34 +17,108 @@ import { useForm } from 'react-hook-form';
 import jsPDF from 'jspdf'
 import customersApi from '../../../js/api/customer';
 import { GlobalContext } from '../../../context';
-import { Document, Page, PDFViewer, Text, View } from '@react-pdf/renderer';
-import { render } from 'react-dom';
 import Profile from '../../../js/api/profile';
 import { alert } from '../../../js/helpers/alert';
+import Previews from './Preview/Preview';
+import { PDFViewer } from '@react-pdf/renderer';
+
+const data = [
+    {
+        id: 1,
+        item: 'Gw2-1011',
+        description: '',
+        units: 'EA',
+        quantity: 4,
+        tax: 'Yes',
+        amount: 0,
+        rate: 0
+    },
+    {
+        id: 2,
+        item: 'Gw2-1010',
+        description: '',
+        units: 'EA',
+        quantity: 3,
+        tax: 'Yes',
+        amount: 0,
+        rate: 0
+    },
+    {
+        id: 3,
+        item: 'Gw2-1102',
+        description: '',
+        units: 'EA',
+        quantity: 200,
+        tax: 'Yes',
+        amount: 0,
+        rate: 0
+    },
+    {
+        id: 4,
+        item: 'Gw2-1606',
+        description: '',
+        units: 'EA',
+        quantity: 5,
+        tax: 'Yes',
+        amount: 0,
+        rate: 0
+    },
+    {
+        id: 5,
+        item: 'Gw2-1018',
+        description: '',
+        units: 'EA',
+        quantity: 6,
+        tax: 'Yes',
+        amount: 0,
+        rate: 0
+    },
+    {
+        id: 6,
+        item: 'Gw2-1018',
+        description: '',
+        units: 'EA',
+        quantity: 6,
+        tax: 'Yes',
+        amount: 0,
+        rate: 0
+    },
+    {
+        id: 7,
+        item: 'Gw2-1018',
+        description: '',
+        units: 'EA',
+        quantity: 6,
+        tax: 'Yes',
+        amount: 0,
+        rate: 0
+    },
+]
 
 const ComertialPurpouse = () => {
+    const [currentData, setCurrentData] = useState(data)
     const [amount, setAmount] = useState(0)
     const [total, setTotal] = useState(0)
     const [barcode, setBarcode] = useState('')
+    const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1)))
     const date = new Date().toLocaleDateString('en-US')
     const { userProfile } = useContext(GlobalContext)
 
-    const getQuote = () => Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
 
     const { 
         register,
-        handleSubmit,
+        handleSubmit, 
     } = useForm({
         defaultValues: {
-            quote: 'Q' + getQuote()
+            quote: quote
         }
     })
 
     useEffect(() => {
-        customersApi.getNetwork(userProfile.id)
-        .then(data => {
-            console.log(data)
-        })
+        // customersApi.getNetwork(userProfile.id)
+        // .then(data => {
+        //     console.log(data)
+        // })
     }, [])
 
     const summary = (amount) => setTotal(Number(total + amount))
@@ -70,59 +144,6 @@ const ComertialPurpouse = () => {
         })
     }
 
-
-    const data = [
-        {
-            id: 1,
-            item: 'Gw2-1011',
-            description: '',
-            units: 'EA',
-            quantity: 4,
-            tax: 'Yes',
-            amount: 0,
-            rate: 0
-        },
-        {
-            id: 2,
-            item: 'Gw2-1010',
-            description: '',
-            units: 'EA',
-            quantity: 3,
-            tax: 'Yes',
-            amount: 0,
-            rate: 0
-        },
-        {
-            id: 3,
-            item: 'Gw2-1102',
-            description: '',
-            units: 'EA',
-            quantity: 200,
-            tax: 'Yes',
-            amount: 0,
-            rate: 0
-        },
-        {
-            id: 4,
-            item: 'Gw2-1606',
-            description: '',
-            units: 'EA',
-            quantity: 5,
-            tax: 'Yes',
-            amount: 0,
-            rate: 0
-        },
-        {
-            id: 5,
-            item: 'Gw2-1018',
-            description: '',
-            units: 'EA',
-            quantity: 6,
-            tax: 'Yes',
-            amount: 0,
-            rate: 0
-        },
-    ]
     const columns = [
         {
             name: 'Item',
@@ -136,11 +157,9 @@ const ComertialPurpouse = () => {
                 className="ui-kit__input"
                 onBlur={(e) => {
                     row['description'] = e.target.value
-                    updateObjectInArray(data, row['id'], row['description'])
+                    updateObjectInArray(currentData, row['id'], row['description'])
                 }}
-                {...register('description')}
             />,
-            grow: 2
         },
         {
             name: 'Units',
@@ -159,15 +178,10 @@ const ComertialPurpouse = () => {
                 onBlur={(e) => {
                     row['rate'] = Number(e.target.value)
                     row['amount'] = row['quantity'] * row['rate']
-                    updateObjectInArray(data, row['id'], row['amount'])
+                    updateObjectInArray(currentData, row['id'], row['amount'])
                     summary(Number(row['amount']))
                 }}
-                {...register('rate')}
             />
-        },
-        {
-            name: 'Tax',
-            selector: row => row['tax'],
         },
         {
             name: 'Amount',
@@ -177,10 +191,18 @@ const ComertialPurpouse = () => {
     ];
 
     const onSubmit = (e) => {
-        const data = {
+        const tableData = {
             'rate': e.rate,
             'description': e.description,
             'total': total,
+            'amount': e.amount
+        }
+
+        const formData = {
+            'bill': e.bill,
+            'ship': e.ship,
+            'expires': e.expires,
+            'memo': e.memo
         }
 
         const quote = {
@@ -199,7 +221,7 @@ const ComertialPurpouse = () => {
         })
         
         // jsPdfGenerator()
-        console.log(data)
+        console.log(currentData)
     }
 
     return (
@@ -221,7 +243,7 @@ const ComertialPurpouse = () => {
             <Row>
                 <Form id='form' onSubmit={handleSubmit(onSubmit)}>
                     <Row className='purpose__form'>
-                        <Col lg={3} md={5}>
+                        <Col lg={3} md={5} className='purpose__form-quote'>
                             <FormGroup className='purpose__quote'>
                                 <Col>
                                     <h3>
@@ -237,7 +259,7 @@ const ComertialPurpouse = () => {
                                 />
                             </FormGroup>
                             <FormGroup className='purpose__ship'>
-                                <Label md={12}>
+                                <Label>
                                     Bill to
                                 </Label>
                                 <textarea
@@ -245,7 +267,7 @@ const ComertialPurpouse = () => {
                                     className="ui-kit__textarea"
                                     {...register('bill')}
                                 />
-                                <Label md={12}>
+                                <Label>
                                     Ship to
                                 </Label>
                                 <textarea
@@ -300,7 +322,7 @@ const ComertialPurpouse = () => {
                                 dense
                                 direction="auto"
                                 columns={columns}
-                                data={data}
+                                data={currentData}
                             />
                         </Col>
                     </FormGroup>
@@ -327,6 +349,13 @@ const ComertialPurpouse = () => {
                         </Col>
                     </FormGroup>
                 </Form>
+                <div className='purpose__barcode'>
+                    <img  src={barcode} alt="barcode" />
+                    {quote}
+                </div>
+                <PDFViewer>
+                    <Previews/>
+                </PDFViewer>
             </Row>
         </div>
     )

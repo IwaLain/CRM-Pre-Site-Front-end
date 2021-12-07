@@ -75,6 +75,10 @@
             display: flex;
         }
     }
+
+    &__barcode {
+        display: none;
+    }
 }
 
 @media print {
@@ -115,6 +119,7 @@
         position: absolute;
         top: 0;
         left: 0;
+        height: 120vh;
     }
 
     .purpose__title-print {
@@ -149,6 +154,28 @@
     }
 
     .purpose__form {
-        width: 40% !important;
+        display: flex !important;
+    }
+
+    .purpose__form-quote {
+        width: 45% !important;
+    }
+
+    .purpose__description {
+        width: 45% !important;
+    }
+
+    .purpose__barcode {
+        display: block;
+        max-width: 100px !important;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+        font-size: 14px;
+
+        img {
+            width: 100%;
+        }
     }
 }

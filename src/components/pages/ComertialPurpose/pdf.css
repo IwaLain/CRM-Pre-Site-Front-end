@@ -1,0 +1,144 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+* {
+    box-shadow: none;
+    text-shadow: none;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  padding-right: 0 !important;
+}
+
+.purpose {
+    padding: 20px;
+}
+
+.purpose_title {
+    justify-content: space-between;
+    width: 100%;
+}
+
+.purpose_logo {
+    float: left;
+    width: 40%;
+    margin-right: 40px;
+}
+
+.purpose_logo img {
+    width: 280px;
+    margin-bottom: 20px;
+}
+
+.purpose_adress {
+    float: right;
+    width: 40%;
+}
+
+.purpose_contact {
+    margin: 20px 0;
+}
+
+.purpose_contact-braek {
+    display: inline-block;
+    width: 25px;
+}
+
+.purpose_quote {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.purpose_quote .quote {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.purpose_form {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.purpose_shipment {
+    width: 40%;
+    margin-right: 40px;
+}
+
+.purpose_shipment-title {
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.purpose_shipment-desc {
+    margin-bottom: 20px;
+}
+
+.purpose_ship {
+    min-height: 100px;
+    margin-top: 10px;
+}
+
+.purpose_info {
+    align-items: center;
+    justify-content: space-between;
+    max-width: 250px;
+    margin-bottom: 20px;
+}
+
+.purpose_info-title {
+    float: right;
+    font-weight: 700;
+}
+
+.purpose_info label{
+    float: right;
+    min-width: 100px;
+}
+
+.purpose_description {
+    float: right;
+    width: 40%;
+}
+
+.purpose_table-title {
+    margin-bottom: 10px;
+    margin-top: 40px;
+    font-weight: 700;
+}
+
+.total {
+    width: 100%;
+    margin-top: 20px;
+    text-align: right;
+}
+
+.purpose_barcode {
+    position: absolute; 
+    left: 0;
+    bottom: 0;
+    text-align: center;
+}
+
+.purpose_subadress {
+    position: absolute;
+    bottom: 20px;
+    left: 30%;
+    width: 150px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 2px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
