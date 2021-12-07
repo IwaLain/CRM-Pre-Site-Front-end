@@ -14,7 +14,6 @@ import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
-import TableView from "../TableView/TableView";
 
 const CRMEntity = ({ type }) => {
   type = type.entity;
@@ -296,12 +295,6 @@ const CRMEntity = ({ type }) => {
 
     window.addEventListener("resize", handleResize);
   }, []);
-
-  useEffect(() => {
-    subEntity.map((el) => {
-      console.log(el[Object.keys(el)[0]]);
-    });
-  }, [subEntity]);
 
   return (
     <>
