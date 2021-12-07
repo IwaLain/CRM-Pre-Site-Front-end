@@ -17,6 +17,8 @@ import locationApi from "../../../../js/api/locations";
 import { GlobalContext } from "../../../../context";
 import "../../../../scss/location-edit.scss";
 import ConfirmModal from "../../../ConfirmModal/ConfirmModal";
+
+import AttachmentList from "../../../AttachmentList/AttachmentList";
 const LocationEdit = () => {
   const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);
@@ -24,7 +26,54 @@ const LocationEdit = () => {
   const [addFieldModal, setAddFieldModal] = useState(false);
   const [removeFieldModal, setRemoveFieldModal] = useState(false);
   const [removeField, setRemoveField] = useState();
+  const [files, setFiles] = useState();
+  // const deleteEntityImageAPI = locationApi.deleteLocationImage;
+  // const addEntityImageAPI = locationApi.addLocationImage;
 
+  async function addLocationImageServer(files) {
+    let newFiles = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const response = await locationApi.addLocationImage(editId, files[i]);
+
+      if (response.success) {
+        const respImage = await response[`image`];
+        newFiles.push(respImage);
+      } else alert("error", response.message);
+    }
+
+    return newFiles;
+  }
+  async function deleteLocationImageServer(fileId) {
+    const response = await locationApi.deleteLocationImage(editId, fileId);
+    if (response.success) {
+      alert("success", `file deleted`);
+      return true;
+    } else alert("error", response.message);
+    return false;
+  }
+
+  // const fileTypes = [
+  //   {
+  //     type_id: "1",
+  //     type_name: "image",
+  //     fileExtensions: ".jpg, .jpeg, .png",
+  //   },
+  //   {
+  //     type_id: "2",
+
+  //     type_name: "schema",
+  //     fileExtensions:
+  //       ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+  //   },
+  //   {
+  //     type_id: "3",
+
+  //     type_name: "doc",
+  //     fileExtensions:
+  //       ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+  //   },
+  // ];
   const {
     register,
     unregister,
@@ -35,7 +84,7 @@ const LocationEdit = () => {
   useEffect(() => {
     locationApi.getLocation(editId).then((data) => {
       const jsonData = data.location["jsonData"];
-
+      const locationFiles = data.location["locationImages"];
       reset({ name: data.location["name"] });
       if (jsonData) {
         let newFields = [];
@@ -52,11 +101,12 @@ const LocationEdit = () => {
 
         setFields(newFields);
       }
+      if (locationFiles) {
+        setFiles(locationFiles);
+      }
     });
-  }, [reset]);
+  }, []);
   const onSubmit = (data) => {
-    console.log(data);
-
     const body = {};
     const jsonData = [];
     for (const [key, value] of Object.entries(data)) {
@@ -86,7 +136,18 @@ const LocationEdit = () => {
     document.querySelector("#form").reset();
     setShowFormModal(false);
   };
+  // const addFilesHandler = (files, type) => {
+  //   setFiles((oldArr) => {
+  //     let id = Number.parseInt(oldArr[oldArr.length - 1].id);
+  //     id = id + 1 + "";
 
+  //     const newFiles = files.map((file) => {
+  //       return { type_id: type, preview: file.preview, img: file.path, id };
+  //     });
+  //     const newArr = [...oldArr, ...newFiles];
+  //     return newArr;
+  //   });
+  // };
   const toggleAddFieldModal = () => {
     setAddFieldModal(!addFieldModal);
   };
@@ -214,6 +275,14 @@ const LocationEdit = () => {
               </Button>
             </Col>
           </FormGroup>
+
+          {files && (
+            <AttachmentList
+              attachedFiles={files}
+              onAddFileServer={addLocationImageServer}
+              onRemoveFileServer={deleteLocationImageServer}
+            />
+          )}
         </Form>
       </div>
     </>
