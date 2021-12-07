@@ -296,7 +296,9 @@ const CRMEntity = ({ type }) => {
         setEntityImages(
           data[`${type}Images`].filter((el) => el.type_id == "1")
         );
-        const mainImage = getMainImage(data[`${type}Images`]);
+        const mainImage = getMainImage(
+          data[`${type}Images`].filter((el) => el.type_id == "1")
+        );
         setMainImage(mainImage);
       }
 
