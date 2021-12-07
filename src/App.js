@@ -21,13 +21,8 @@ const App = () => {
   const [editId, setEditId] = useState();
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState({});
+  const [customerStructure, setCustomerStructure] = useState({});
   const [userProfile, setUserProfile] = useState({});
-
-  useEffect(() => {
-    window.addEventListener("storage", (e) => {
-      console.log(1);
-    });
-  }, []);
 
   return (
     <GlobalContext.Provider
@@ -48,6 +43,8 @@ const App = () => {
         setUserProfile,
         selectedCustomer,
         setSelectedCustomer,
+        customerStructure,
+        setCustomerStructure,
       }}
     >
       <Router>

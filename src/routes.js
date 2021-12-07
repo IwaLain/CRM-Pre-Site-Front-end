@@ -1,7 +1,7 @@
 import LoginPage from "./components/pages/Login/Login";
 import UsersPage from "./components/pages/Users/Users";
 import Profile from "./components/pages/Profile/Profile";
-import CustomerCreate from "./components/pages/CustomerCreate/CustomerCreate";
+import CustomerCreate from "./components/ModalComponent/Modals/CustomerCreate/CustomerCreate";
 import List from "./components/pages/List/List";
 import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
@@ -19,10 +19,6 @@ const routes = {
     },
   ],
   dashboard: [
-    {
-      path: "/dashboard/ui-kit",
-      children: <UIKit />,
-    },
     {
       path: "/dashboard/users",
       name: "Users Page",

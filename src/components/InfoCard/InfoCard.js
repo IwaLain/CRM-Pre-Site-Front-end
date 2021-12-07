@@ -1,9 +1,10 @@
 import placeholder from "../../assets/img/company.png";
-import { Progress, Button, FormGroup, Input } from "reactstrap";
+import { Progress, FormGroup, Input } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../../scss/info-card.scss";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context";
+import Button from "../UIKit/Button/Button";
 
 const InfoCard = ({
   data,
@@ -13,6 +14,7 @@ const InfoCard = ({
   selected,
   changeCustomer,
   setMode,
+  showView,
 }) => {
   const [subEntity, setSubEntity] = useState("");
   const [progress, setProgress] = useState(0);
@@ -63,6 +65,7 @@ const InfoCard = ({
         </FormGroup>
       ) : (
         <Button
+          color="default"
           className="info-card__edit"
           onClick={() => {
             setMode("edit");
@@ -91,8 +94,14 @@ const InfoCard = ({
           value={progress}
         />
         <div className="info-card__btns">
-          <Link to={`/dashboard/${type}/${data.id}`}>View</Link>
+          <Link
+            to={`/dashboard/${type}/${data.id}`}
+            style={!showView ? { visibility: "hidden" } : {}}
+          >
+            View
+          </Link>
           <Button
+            color="default"
             style={!chooseMode ? { visibility: "hidden" } : {}}
             onClick={() => {
               setMode("edit");

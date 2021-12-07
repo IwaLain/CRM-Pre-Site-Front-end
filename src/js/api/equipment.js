@@ -3,68 +3,118 @@ import { apiRequest } from "./api";
 import { BASE_URL } from "./constants";
 
 const equipmentApi = {
-    getEquipments: async () => {
-        const token = getToken()
+  getEquipments: async () => {
+    const token = getToken();
 
-        if ( token ) return apiRequest('GET', BASE_URL + `/api/equipment?access-token=${token}`, {}, {})
-    },
+    if (token)
+      return apiRequest(
+        "GET",
+        BASE_URL + `/api/equipment?access-token=${token}`,
+        {},
+        {}
+      );
+  },
 
-    getEquipment: async (equipmentId) => {
-        const token = getToken()
+  getEquipment: async (equipmentId) => {
+    const token = getToken();
 
-        if ( token ) return apiRequest('GET', BASE_URL + `/api/equipment/${equipmentId}?access-token=${token}`, {}, {})
-    },
+    if (token)
+      return apiRequest(
+        "GET",
+        BASE_URL + `/api/equipment/${equipmentId}?access-token=${token}`,
+        {},
+        {}
+      );
+  },
 
-    getEquipmentTypes: async () => {
-        const token = getToken()
+  getEquipmentTypes: async () => {
+    const token = getToken();
 
-        if ( token ) return apiRequest('GET', BASE_URL + `/api/equipment/type?access-token=${token}`, {}, {})
-    },
+    if (token)
+      return apiRequest(
+        "GET",
+        BASE_URL + `/api/equipment/type?access-token=${token}`,
+        {},
+        {}
+      );
+  },
 
-    addEquipment: async (data) => {
-        const token = getToken()
+  addEquipment: async (data) => {
+    const token = getToken();
 
-        if ( token ) return apiRequest('POST', BASE_URL + `/api/equipment/create?access-token=${token}`, data, {
-            'Content-Type':'application/json'
-        })
-    },
+    if (token)
+      return apiRequest(
+        "POST",
+        BASE_URL + `/api/equipment/create?access-token=${token}`,
+        data,
+        {
+          "Content-Type": "application/json",
+        }
+      );
+  },
 
-    editEquipment: async (equipmentId, data) => {
-        const token = getToken()
+  editEquipment: async (equipmentId, data) => {
+    const token = getToken();
 
-        if ( token ) return apiRequest('PUT', BASE_URL + `/api/equipment/update/${equipmentId}?access-token=${token}`, data, {
-            'Content-Type':'application/json'
-        })
-    },
+    if (token)
+      return apiRequest(
+        "PUT",
+        BASE_URL + `/api/equipment/update/${equipmentId}?access-token=${token}`,
+        data,
+        {
+          "Content-Type": "application/json",
+        }
+      );
+  },
 
-    deleteEquipment: async (equipmentId) => {
-        const token = getToken()
+  deleteEquipment: async (equipmentId) => {
+    const token = getToken();
 
-        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/equipment/delete/${equipmentId}?access-token=${token}`, {}, {})
-    },
+    if (token)
+      return apiRequest(
+        "DELETE",
+        BASE_URL + `/api/equipment/delete/${equipmentId}?access-token=${token}`,
+        {},
+        {}
+      );
+  },
 
-    deleteImageEquipment: async (equipmentImageId) => {
-        const token = getToken()
+  deleteImageEquipment: async (equipmentImageId) => {
+    const token = getToken();
 
-        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`, {}, {})
-    },
+    if (token)
+      return apiRequest(
+        "DELETE",
+        BASE_URL +
+          `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`,
+        {},
+        {}
+      );
+  },
 
-    createImageEquipment: async (equipmentImageId, data) => {
-        const token = getToken()
+  createImageEquipment: async (equipmentImageId, data) => {
+    const token = getToken();
 
-        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`, data, {})
-    },
+    if (token)
+      return apiRequest(
+        "DELETE",
+        BASE_URL +
+          `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`,
+        data,
+        {}
+      );
+  },
 
-    getLocationEquipment: async (limit, page, search, locationId) => {
-        const token = getToken()
-        let url = `/api/location/${locationId}/equipment?access-token=${token}`;
+  getLocationEquipment: async (limit, page, search, locationId) => {
+    const token = getToken();
+    let url = `/api/location/${locationId}/equipment?access-token=${token}`;
 
-        if (limit) url += `&limit=${limit}`;
-        if (page) url += `&page=${page}`;
-        if (search) url += `&s=${search}`;
+    if (limit) url += `&limit=${limit}`;
+    if (page) url += `&page=${page}`;
+    if (search) url += `&s=${search}`;
 
-        if ( token ) return apiRequest('GET', BASE_URL + url, {}, {})
-    },
-}
+    if (token) return apiRequest("GET", BASE_URL + url, {}, {});
+  },
+};
 
-export default equipmentApi
+export default equipmentApi;

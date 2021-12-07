@@ -1,7 +1,7 @@
 .entity-page--header {
   width: 100%;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid;
 }
 .entity-page--section {
@@ -29,6 +29,7 @@
   letter-spacing: 0em;
 }
 .page-subtitle {
+  text-transform: capitalize;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -36,20 +37,26 @@
   letter-spacing: 0em;
   text-align: left;
 }
-.information--item {
-  padding: 5px 15px;
-  background: #dedede;
-  border: 1px solid #ced4da;
-  box-sizing: border-box;
-  border-radius: 4px;
-}
-.information--list {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  font-size: 14px;
-}
 
 .page-subtitle {
   margin-bottom: 20px;
+}
+.attached-files--list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  margin-bottom: -20px;
+}
+.attached-files--item {
+  margin-bottom: 20px;
+}
+@media screen and (min-width: 1024px) {
+  .attached-files--item {
+    max-width: 380px;
+    margin-right: 20px;
+  }
+  .attached-files--list {
+    flex-direction: row;
+  }
 }

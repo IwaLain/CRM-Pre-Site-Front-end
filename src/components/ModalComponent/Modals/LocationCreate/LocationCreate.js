@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "../../../scss/customer-create-page.scss";
+import "../../../../scss/customer-create-page.scss";
 import {
   Form,
   FormGroup,
@@ -12,50 +12,27 @@ import {
   ModalFooter,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { alert } from "../../../js/helpers/alert";
-import { getLocationAPI, updateLocationsAPI } from "../../../js/api/locations";
-import locationApi from "../../../js/api/locations";
-import { GlobalContext } from "../../../context";
-import "../../../scss/location-edit.scss";
-const LocationEdit = () => {
-  const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
+import { alert } from "../../../../js/helpers/alert";
+import location from "../../../../js/api/locations";
+import { GlobalContext } from "../../../../context";
+
+const LocationCreate = () => {
+  const { setShowFormModal, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);
   const [fieldCount, setFieldCount] = useState(1);
   const [addFieldModal, setAddFieldModal] = useState(false);
-  const [location, setlocation] = useState();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
-  useEffect(() => {
-    locationApi.getLocation(editId).then((data) => {
-      setlocation(data.location);
-      const jsonData = data.location["jsonData"];
 
-      reset({ name: data.location["name"] });
-      if (jsonData) {
-        let newFields = [];
-        let newCount = 1;
-        jsonData.forEach((el) => {
-          newFields.push({
-            id: `field${newCount}`,
-            title: el.name,
-            value: el.value,
-          });
-          newCount += 1;
-        });
-        setFieldCount(newCount);
-
-        setFields(newFields);
-      }
-    });
-  }, [reset]);
   const onSubmit = (data) => {
     if (Object.keys(data).length > 2) {
       const body = {};
       const jsonData = [];
+
       for (const [key, value] of Object.entries(data)) {
         switch (key) {
           case "facilityID":
@@ -74,9 +51,9 @@ const LocationEdit = () => {
       }
       body["jsonData"] = jsonData;
 
-      locationApi.editLocation(editId, body).then((res) => {
-        if (res.status === "Successfully updated")
-          alert("success", "Location updated.");
+      location.addLocation(body).then((res) => {
+        if (res.status === "Successfully created")
+          alert("success", "Location created.");
         else alert("error", "Request error.");
       });
 
@@ -112,11 +89,9 @@ const LocationEdit = () => {
         <ModalHeader>Add address</ModalHeader>
         <ModalBody>
           <Form id="add-field-form" onSubmit={handleAddFieldFormSubmit}>
-            <FormGroup row>
-              <Label sm={3} for="add-field-field">
-                Address title
-              </Label>
-              <Col sm={9}>
+            <FormGroup>
+              <Label for="add-field-field">Address title</Label>
+              <Col sm={12}>
                 <input className="form-control" id="add-field-field" />
               </Col>
             </FormGroup>
@@ -131,11 +106,9 @@ const LocationEdit = () => {
       </Modal>
       <div className="create-form">
         <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup row>
-            <Label sm={2} for="facilityID-field">
-              Facility ID
-            </Label>
-            <Col sm={10}>
+          <FormGroup>
+            <Label for="facilityID-field">Facility ID</Label>
+            <Col sm={12}>
               <input
                 className="form-control"
                 id="facilityID-field"
@@ -145,11 +118,9 @@ const LocationEdit = () => {
               />
             </Col>
           </FormGroup>
-          <FormGroup row>
-            <Label sm={2} for="name-field">
-              Name
-            </Label>
-            <Col sm={10}>
+          <FormGroup>
+            <Label for="name-field">Name</Label>
+            <Col sm={12}>
               <input
                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 id="name-field"
@@ -168,29 +139,32 @@ const LocationEdit = () => {
             </Col>
           </FormGroup>
           {fields &&
-            fields.map(({ id, title, value }) => (
-              <FormGroup row key={id}>
-                <Label sm={2} for={`${id}-field`}>
-                  {title}
-                </Label>
-                <Col sm={9}>
+            fields.map(({ id, title }) => (
+              <FormGroup key={id}>
+                <Label for={`${id}-field`}>{title}</Label>
+                <Col sm={12}>
                   <input
                     className={`form-control ${
                       errors[`${id}`] ? "is-invalid" : ""
                     }`}
                     id={`${id}-field`}
                     placeholder="Enter address."
-                    {...register(`${id}`)}
-                    defaultValue={value}
+                    {...register(`${id}`, {
+                      required: {
+                        value: true,
+                        message: "Address is required.",
+                      },
+                      minLength: {
+                        value: 3,
+                        message: "Address should contain at least 3 symbols.",
+                      },
+                    })}
                   />
-                </Col>
-                <Col sm={1} className="delete-field--container">
-                  <Button className="delete-field--btn"></Button>
                 </Col>
               </FormGroup>
             ))}
-          <FormGroup row>
-            <Col sm={2} className="offset-md-2">
+          <FormGroup>
+            <Col>
               <Button color="primary" onClick={toggleAddFieldModal}>
                 Add address
               </Button>
@@ -202,4 +176,4 @@ const LocationEdit = () => {
   );
 };
 
-export default LocationEdit;
+export default LocationCreate;

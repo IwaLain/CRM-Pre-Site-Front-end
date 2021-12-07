@@ -12,3 +12,8 @@ input {
 ul {
   list-style: none;
 }
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
