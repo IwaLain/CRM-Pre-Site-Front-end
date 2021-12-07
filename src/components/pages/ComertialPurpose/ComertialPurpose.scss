@@ -135,7 +135,9 @@
     }
 
     .purpose__quote {
-        min-width: 30% !important; 
+        input {
+            text-align: right;
+        }
     }
 
     .purpose__buttons {
@@ -144,5 +146,9 @@
 
     .purpose__tables {
         width: 600px;
+    }
+
+    .purpose__form {
+        width: 40% !important;
     }
 }

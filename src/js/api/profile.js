@@ -44,6 +44,13 @@ const Profile = {
         if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Authorization': 'Bearer' + token
         })
+    },
+
+    createBarcode: async (data) => {
+        const token = getToken()
+        if ( token ) return await apiRequest('POST', BASE_URL + `/api/commercial-purpose/barcode?access-token=${token}`, data, {
+            'Content-Type':'application/json'
+        })
     }
 }
 

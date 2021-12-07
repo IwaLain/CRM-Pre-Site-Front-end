@@ -17,10 +17,15 @@ import { useForm } from 'react-hook-form';
 import jsPDF from 'jspdf'
 import customersApi from '../../../js/api/customer';
 import { GlobalContext } from '../../../context';
+import { Document, Page, PDFViewer, Text, View } from '@react-pdf/renderer';
+import { render } from 'react-dom';
+import Profile from '../../../js/api/profile';
+import { alert } from '../../../js/helpers/alert';
 
 const ComertialPurpouse = () => {
     const [amount, setAmount] = useState(0)
     const [total, setTotal] = useState(0)
+    const [barcode, setBarcode] = useState('')
     const date = new Date().toLocaleDateString('en-US')
     const { userProfile } = useContext(GlobalContext)
 
@@ -64,6 +69,7 @@ const ComertialPurpouse = () => {
             }
         })
     }
+
 
     const data = [
         {
@@ -132,6 +138,7 @@ const ComertialPurpouse = () => {
                     row['description'] = e.target.value
                     updateObjectInArray(data, row['id'], row['description'])
                 }}
+                {...register('description')}
             />,
             grow: 2
         },
@@ -155,6 +162,7 @@ const ComertialPurpouse = () => {
                     updateObjectInArray(data, row['id'], row['amount'])
                     summary(Number(row['amount']))
                 }}
+                {...register('rate')}
             />
         },
         {
@@ -170,15 +178,27 @@ const ComertialPurpouse = () => {
 
     const onSubmit = (e) => {
         const data = {
-            'quote': e.quote,
-            'bill': e.bill,
-            'ship': e.ship,
-            'expires': e.expires,
-            'memo': e.memo,
             'rate': e.rate,
-            'description': e.description
+            'description': e.description,
+            'total': total,
         }
-        jsPdfGenerator()
+
+        const quote = {
+            'quote': e.quote,
+        }
+
+        Profile.createBarcode(quote)
+        .then(data => {
+            setBarcode(process.env.REACT_APP_SERVER_URL + '/' + data.barcode)
+
+            if (data.status) {
+                alert('success', data.status)
+            } else {
+                alert('error', 'Something was wrong')
+            }
+        })
+        
+        // jsPdfGenerator()
         console.log(data)
     }
 
@@ -200,7 +220,7 @@ const ComertialPurpouse = () => {
             </Row>
             <Row>
                 <Form id='form' onSubmit={handleSubmit(onSubmit)}>
-                    <Row>
+                    <Row className='purpose__form'>
                         <Col lg={3} md={5}>
                             <FormGroup className='purpose__quote'>
                                 <Col>
