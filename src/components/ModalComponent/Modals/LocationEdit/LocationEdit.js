@@ -17,9 +17,8 @@ import locationApi from "../../../../js/api/locations";
 import { GlobalContext } from "../../../../context";
 import "../../../../scss/location-edit.scss";
 import ConfirmModal from "../../../ConfirmModal/ConfirmModal";
-import AttachedFiles from "../../../AttachedFiles/AttachedFiles";
-import convertToBase64 from "../../../../js/helpers/convertImage";
 
+import AttachmentList from "../../../AttachmentList/AttachmentList";
 const LocationEdit = () => {
   const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);
@@ -28,27 +27,53 @@ const LocationEdit = () => {
   const [removeFieldModal, setRemoveFieldModal] = useState(false);
   const [removeField, setRemoveField] = useState();
   const [files, setFiles] = useState();
-  const fileTypes = [
-    {
-      type_id: "1",
-      type_name: "image",
-      fileExtensions: ".jpg, .jpeg, .png",
-    },
-    {
-      type_id: "2",
+  // const deleteEntityImageAPI = locationApi.deleteLocationImage;
+  // const addEntityImageAPI = locationApi.addLocationImage;
 
-      type_name: "schema",
-      fileExtensions:
-        ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-    },
-    {
-      type_id: "3",
+  async function addLocationImageServer(files) {
+    let newFiles = [];
 
-      type_name: "doc",
-      fileExtensions:
-        ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-    },
-  ];
+    for (let i = 0; i < files.length; i++) {
+      const response = await locationApi.addLocationImage(editId, files[i]);
+
+      if (response.success) {
+        const respImage = await response[`image`];
+        newFiles.push(respImage);
+      } else alert("error", response.message);
+    }
+
+    return newFiles;
+  }
+  async function deleteLocationImageServer(fileId) {
+    const response = await locationApi.deleteLocationImage(editId, fileId);
+    if (response.success) {
+      alert("success", `file deleted`);
+      return true;
+    } else alert("error", response.message);
+    return false;
+  }
+
+  // const fileTypes = [
+  //   {
+  //     type_id: "1",
+  //     type_name: "image",
+  //     fileExtensions: ".jpg, .jpeg, .png",
+  //   },
+  //   {
+  //     type_id: "2",
+
+  //     type_name: "schema",
+  //     fileExtensions:
+  //       ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+  //   },
+  //   {
+  //     type_id: "3",
+
+  //     type_name: "doc",
+  //     fileExtensions:
+  //       ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+  //   },
+  // ];
   const {
     register,
     unregister,
@@ -80,10 +105,8 @@ const LocationEdit = () => {
         setFiles(locationFiles);
       }
     });
-  }, [reset]);
+  }, []);
   const onSubmit = (data) => {
-    console.log(data);
-
     const body = {};
     const jsonData = [];
     for (const [key, value] of Object.entries(data)) {
@@ -113,18 +136,18 @@ const LocationEdit = () => {
     document.querySelector("#form").reset();
     setShowFormModal(false);
   };
-  const addFilesHandler = (files, type) => {
-    setFiles((oldArr) => {
-      let id = Number.parseInt(oldArr[oldArr.length - 1].id);
-      id = id + 1 + "";
+  // const addFilesHandler = (files, type) => {
+  //   setFiles((oldArr) => {
+  //     let id = Number.parseInt(oldArr[oldArr.length - 1].id);
+  //     id = id + 1 + "";
 
-      const newFiles = files.map((file) => {
-        return { type_id: type, preview: file.preview, img: file.path, id };
-      });
-      const newArr = [...oldArr, ...newFiles];
-      return newArr;
-    });
-  };
+  //     const newFiles = files.map((file) => {
+  //       return { type_id: type, preview: file.preview, img: file.path, id };
+  //     });
+  //     const newArr = [...oldArr, ...newFiles];
+  //     return newArr;
+  //   });
+  // };
   const toggleAddFieldModal = () => {
     setAddFieldModal(!addFieldModal);
   };
@@ -253,23 +276,12 @@ const LocationEdit = () => {
             </Col>
           </FormGroup>
 
-          {files && fileTypes && (
-            <div className="row">
-              {fileTypes.map((fileType, i) => (
-                <div key={i} className="col ">
-                  <AttachedFiles
-                    type={fileType.type_id}
-                    name={fileType.type_name}
-                    accepted={fileType.fileExtensions}
-                    onAddFile={addFilesHandler}
-                    // accepted={fileType.fileExtensions}
-                    attachedFiles={files.filter(
-                      (el) => el.type_id == fileType.type_id
-                    )}
-                  />
-                </div>
-              ))}
-            </div>
+          {files && files.length > 0 && (
+            <AttachmentList
+              attachedFiles={files}
+              onAddFileServer={addLocationImageServer}
+              onRemoveFileServer={deleteLocationImageServer}
+            />
           )}
         </Form>
       </div>

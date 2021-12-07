@@ -44,31 +44,18 @@ const AttachedFiles = ({
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach((file) => URL.revokeObjectURL(file.preview));
 
-    setFiles([
-      ...attachedFiles.map((file, i) => {
+    setFiles(
+      attachedFiles.map((file) => {
         const fileExtension = file.img.substring(file.img.lastIndexOf("."));
+
         const imageTypes = [".jpeg", ".png", ".jpg"];
         const isImage = imageTypes.some((el) => fileExtension.includes(el));
-        let preview;
-        let id;
-        if (file.preview) {
-          preview = file.preview;
-        } else {
-          preview = process.env.REACT_APP_SERVER_URL + "/" + file.img;
-        }
-        if (file.id) {
-          id = file.id;
-        } else {
-          id = i;
-        }
         return {
-          name: file.img,
-          preview: preview,
-          id: id,
+          ...file,
           isImage: isImage,
         };
-      }),
-    ]);
+      })
+    );
   }, [attachedFiles]);
 
   const thumbs =
@@ -142,8 +129,8 @@ const AttachedFiles = ({
               <div
                 className="thumb"
                 onClick={(e) => {
-                  e.stopPropagation();
                   e.preventDefault();
+                  e.stopPropagation();
 
                   open();
                 }}
