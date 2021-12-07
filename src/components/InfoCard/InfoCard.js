@@ -14,7 +14,7 @@ const InfoCard = ({
   selected,
   changeCustomer,
   setMode,
-  showView,
+  showView = true,
 }) => {
   const [subEntity, setSubEntity] = useState("");
   const [progress, setProgress] = useState(0);

@@ -18,6 +18,8 @@ import convertToBase64 from "../../js/helpers/convertImage";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
+  const [showFormModal2, setShowFormModal2] = useState(false);
+  const [typeName, setTypeName] = useState();
   const { showFormModal, setShowFormModal, setEntityID } =
     useContext(GlobalContext);
 
@@ -26,7 +28,7 @@ const CRMEntity = ({ type }) => {
   let addEntityImageAPI;
   let setMainEntityImageAPI;
   let deleteAllEntityImagesAPI;
-  let subEntityName = "";
+  let subEntityNames = [];
 
   const informationFieldNames = ["address", "phone", "email"];
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
@@ -35,7 +37,7 @@ const CRMEntity = ({ type }) => {
 
   const [mainImage, setMainImage] = useState();
 
-  const [subEntity, setSubEntity] = useState();
+  const [subEntity, setSubEntity] = useState([]);
 
   const [informationItems, setInformationItems] = useState([]);
 
@@ -103,6 +105,7 @@ const CRMEntity = ({ type }) => {
       alert("warning", "wrong type of file");
     }
   }
+
   async function deleteEntityImage(file, type_id) {
     const fileTypeIndex = fileTypes.findIndex(
       (fileType) => fileType.type_id === type_id
@@ -160,17 +163,20 @@ const CRMEntity = ({ type }) => {
       alert("warning", "wrong type of file");
     }
   }
+
   const setFiles = (files, fileType) => {
     const newFiles = files.filter((el) => el.type_id == fileType.type_id);
 
     fileType.setFunc(newFiles);
     return fileType;
   };
+
   const setMainEntityImage = (imageId) => {
     setMainEntityImageAPI(id, imageId).then((res) => {
       setMainImage(res["main-image"]);
     });
   };
+
   const setNewInformationItem = (fieldTitle, value) => {
     setInformationItems((oldArr) => {
       const newElement = { fieldTitle: fieldTitle, value: value };
@@ -178,6 +184,7 @@ const CRMEntity = ({ type }) => {
       return [...oldArr, newElement];
     });
   };
+
   switch (type) {
     case "customer":
       getEntityAPI = customersApi.getCustomer;
@@ -185,31 +192,44 @@ const CRMEntity = ({ type }) => {
       addEntityImageAPI = customersApi.addCustomerImage;
       setMainEntityImageAPI = customersApi.setMainCustomerImage;
       deleteAllEntityImagesAPI = customersApi.deleteAllCustomerImages;
-      subEntityName = "facilities";
+      subEntityNames = ["facilities"];
       break;
     case "facility":
       getEntityAPI = facilitiesApi.getFacility;
       deleteEntityImageAPI = facilitiesApi.deleteFacilityImage;
       addEntityImageAPI = facilitiesApi.addFacilityImage;
       setMainEntityImageAPI = facilitiesApi.setMainFacilityImage;
-      subEntityName = "locations";
+      subEntityNames = ["locations"];
       break;
     case "location":
       getEntityAPI = locationApi.getLocation;
       deleteEntityImageAPI = locationApi.deleteLocationImage;
       addEntityImageAPI = locationApi.addLocationImage;
       setMainEntityImageAPI = locationApi.setMainLocationImage;
-      subEntityName = "equipment";
+      subEntityNames = ["equipment"];
       break;
     case "equipment":
       getEntityAPI = equipmentApi.getEquipment;
       deleteEntityImageAPI = equipmentApi.deleteImageEquipment;
       addEntityImageAPI = equipmentApi.createImageEquipment;
       setMainEntityImageAPI = equipmentApi.setMainEquipmentImage;
+      subEntityNames = ["sensors", "motes"];
       break;
     default:
       break;
   }
+
+  const handleResize = () => {
+    SetScreenSize(window.innerWidth);
+  };
+
+  const toggleModal = () => {
+    setShowFormModal(!showFormModal);
+  };
+
+  const toggleModal2 = () => {
+    setShowFormModal2(!showFormModal2);
+  };
 
   useEffect(() => {
     getEntityAPI(id).then((data) => {
@@ -227,6 +247,21 @@ const CRMEntity = ({ type }) => {
         const mainImage = getMainImage(data[`${type}Images`]);
         setMainImage(mainImage);
       }
+
+      if (data["type_id"]) {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/equipment/type?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((types) => {
+            setTypeName(
+              types["type"].filter((el) => el.id === data["type_id"])[0].name
+            );
+          });
+      }
+
       if (data.jsonData) {
         const customFields = data.jsonData;
 
@@ -236,8 +271,22 @@ const CRMEntity = ({ type }) => {
           }
         });
       }
-      if (subEntityName.length !== 0) {
-        setSubEntity(data[subEntityName]);
+      if (subEntityNames && subEntityNames.length > 0) {
+        const names = subEntityNames;
+
+        Promise.all(
+          names.map(async (name) => {
+            let res = await fetch(
+              `${
+                process.env.REACT_APP_SERVER_URL
+              }/api/${type}/${id}/${name}?access-token=${localStorage.getItem(
+                "token"
+              )}`
+            );
+            let data = await res.json();
+            return await data;
+          })
+        ).then((res) => setSubEntity(res));
       }
 
       informationFieldNames.forEach((field) => {
@@ -251,20 +300,23 @@ const CRMEntity = ({ type }) => {
 
     window.addEventListener("resize", handleResize);
   }, []);
-  const handleResize = () => {
-    SetScreenSize(window.innerWidth);
-  };
-  const toggleModal = () => {
-    setShowFormModal(!showFormModal);
-  };
+
   return (
     <>
       <ModalComponent
         modal={showFormModal}
         toggle={toggleModal}
-        type={{ entity: subEntityName }}
+        type={{ entity: subEntityNames[0] }}
         mode={mode}
       />
+      {subEntityNames && subEntityNames.length > 0 && (
+        <ModalComponent
+          modal={showFormModal2}
+          toggle={toggleModal2}
+          type={{ entity: subEntityNames[1] }}
+          mode={mode}
+        />
+      )}
       <div className="d-flex align-items-center entity-page--header">
         {entityObject && entityObject[`${type}Images`] && (
           <div className="main-img--container">
@@ -290,6 +342,13 @@ const CRMEntity = ({ type }) => {
         <h1 className="page-title">{entityObject && entityObject.name}</h1>
       </div>
 
+      {typeName && (
+        <h4 className="d-flex align-items-center">
+          <span className="me-1">Type:</span>
+          <div className="information--item">{typeName}</div>
+        </h4>
+      )}
+
       {entityObject && informationItems.length > 0 && (
         <div className="entity-page--section">
           <InformationComponent
@@ -299,29 +358,32 @@ const CRMEntity = ({ type }) => {
         </div>
       )}
 
-      {entityObject && subEntityName.length > 0 && (
-        <div className="info-page--section">
-          <h2 className="page-subtitle">{`${type} ${subEntityName}`}</h2>
-          <div
-            className={
-              screenSize > 440 ? "info-card_group" : "info-card_group dense"
-            }
-          >
-            {subEntity && subEntity.length > 0 ? (
-              subEntity.map((subEnt) => (
-                <InfoCard
-                  data={subEnt}
-                  type={subEntityName}
-                  toggleModal={toggleModal}
-                  setMode={setMode}
-                />
-              ))
-            ) : (
-              <p>No {subEntityName} found.</p>
-            )}
+      {subEntity &&
+        subEntity.length > 0 &&
+        subEntity.map((el, index) => (
+          <div key={index} className="info-page--section mb-2">
+            <h2 className="page-subtitle">{`${Object.keys(el)[0]}`}</h2>
+            <div
+              className={
+                screenSize > 440 ? "info-card_group" : "info-card_group dense"
+              }
+            >
+              {el[Object.keys(el)[0]].length > 0 ? (
+                el[Object.keys(el)[0]].map((subEnt, index) => (
+                  <InfoCard
+                    key={index}
+                    data={subEnt}
+                    type={Object.keys(el)[0]}
+                    toggleModal={toggleModal}
+                    setMode={setMode}
+                  />
+                ))
+              ) : (
+                <p>No {Object.keys(el)[0]} found.</p>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        ))}
 
       {entityObject && entityObject[`${type}Images`] && (
         <div className="entity-page--section">
