@@ -15,13 +15,14 @@ import { useForm } from "react-hook-form";
 import { alert } from "../../../../js/helpers/alert";
 import location from "../../../../js/api/locations";
 import { GlobalContext } from "../../../../context";
-
+import AttachmentList from "../../../AttachmentList/AttachmentList";
 const LocationCreate = () => {
   const { setShowFormModal, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);
   const [fieldCount, setFieldCount] = useState(1);
   const [addFieldModal, setAddFieldModal] = useState(false);
-
+  const [files, setFiles] = useState([]);
+  const [createdFiles, setCreatedFiles] = useState([]);
   const {
     register,
     handleSubmit,
@@ -49,7 +50,9 @@ const LocationCreate = () => {
       }
     }
     body["jsonData"] = jsonData;
-
+    if (createdFiles.length > 0) {
+      body["img"] = createdFiles;
+    }
     location.addLocation(body).then((res) => {
       if (res.status === "Successfully created")
         alert("success", "Location created.");
@@ -166,6 +169,14 @@ const LocationCreate = () => {
               </Button>
             </Col>
           </FormGroup>
+          {files && (
+            <AttachmentList
+              attachedFiles={files}
+              // onAddFileServer={addLocationImageServer}
+              // onRemoveFileServer={deleteLocationImageServer}
+              setCreatedFiles={setCreatedFiles}
+            />
+          )}
         </Form>
       </div>
     </>

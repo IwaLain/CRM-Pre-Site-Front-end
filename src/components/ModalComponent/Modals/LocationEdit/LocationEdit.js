@@ -27,6 +27,7 @@ const LocationEdit = () => {
   const [removeFieldModal, setRemoveFieldModal] = useState(false);
   const [removeField, setRemoveField] = useState();
   const [files, setFiles] = useState();
+  const [createdFiles, setCreatedFiles] = useState([]);
   // const deleteEntityImageAPI = locationApi.deleteLocationImage;
   // const addEntityImageAPI = locationApi.addLocationImage;
 
@@ -281,6 +282,7 @@ const LocationEdit = () => {
               attachedFiles={files}
               onAddFileServer={addLocationImageServer}
               onRemoveFileServer={deleteLocationImageServer}
+              setCreatedFiles={setCreatedFiles}
             />
           )}
         </Form>
