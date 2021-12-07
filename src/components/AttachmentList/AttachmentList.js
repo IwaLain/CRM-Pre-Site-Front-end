@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
 const AttachmentList = ({
-  attachedFiles,
+  attachedFiles = [{ type_id: "1", attachedFiles: [{ img: "asdasd" }] }],
   onAddFileServer = null,
   onRemoveFileServer = null,
+  setCreatedFiles,
 }) => {
   const [attachedImages, setAttachedImages] = useState([]);
   const [attachedSchemas, setAttachedSchemas] = useState([]);
   const [attachedDocs, setAttachedDocs] = useState([]);
-  let newFiles;
 
   async function onAddImage(files, type) {
     let setFilesFunction;
+    let newFiles;
+
     if (type == "1") {
       setFilesFunction = setAttachedImages;
     } else if (type == "2") {
@@ -55,25 +57,27 @@ const AttachmentList = ({
         };
       })
     ).then(async (res) => {
-      if (onAddFileServer) {
-        let responseData = await onAddFileServer(
-          res.map((file) => {
-            return { type_id: type, img: file.base64 };
-          }),
-          type
-        );
-        if (responseData && responseData.length) {
-          newFiles = responseData.map((file) => {
-            return {
-              img: file.img,
-              preview: process.env.REACT_APP_SERVER_URL + "/" + file.img,
-              type_id: file.type_id,
-              id: file.id,
-            };
-          });
+      newFiles = res;
+      if (onAddFileServer || setCreatedFiles) {
+        const data = res.map((file) => {
+          return { type_id: type, img: file.base64 };
+        });
+        if (onAddFileServer) {
+          let responseData = await onAddFileServer(data, type);
+          if (responseData && responseData.length) {
+            newFiles = responseData.map((file) => {
+              return {
+                img: file.img,
+                preview: process.env.REACT_APP_SERVER_URL + "/" + file.img,
+                type_id: file.type_id,
+                id: file.id,
+              };
+            });
+          }
         }
-      } else {
-        newFiles = res;
+        if (setCreatedFiles) {
+          setCreatedFiles((state) => [...state, ...data]);
+        }
       }
       setFilesFunction((state) => [...state, ...newFiles]);
     });
@@ -91,6 +95,8 @@ const AttachmentList = ({
     }
     if (onRemoveFileServer) {
       isDeleted = await onRemoveFileServer(file.id, type);
+    } else {
+      setCreatedFiles((state) => state.filter((el) => el.id !== file.id));
     }
     if (isDeleted) {
       setFilesFunction((state) => {
