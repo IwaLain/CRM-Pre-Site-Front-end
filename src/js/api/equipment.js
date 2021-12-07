@@ -79,14 +79,14 @@ const equipmentApi = {
       );
   },
 
-  deleteImageEquipment: async (equipmentImageId) => {
+  deleteImageEquipment: async (equipmentId, equipmentImageId) => {
     const token = getToken();
 
     if (token)
       return apiRequest(
         "DELETE",
         BASE_URL +
-          `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`,
+          `/api/equipment/${equipmentId}/image/delete/${equipmentImageId}?access-token=${token}`,
         {},
         {}
       );
@@ -97,11 +97,13 @@ const equipmentApi = {
 
     if (token)
       return apiRequest(
-        "DELETE",
+        "POST",
         BASE_URL +
           `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`,
         data,
-        {}
+        {
+          "Content-Type": "application/json",
+        }
       );
   },
 

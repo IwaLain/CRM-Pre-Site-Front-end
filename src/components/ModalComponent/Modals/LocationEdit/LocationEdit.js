@@ -276,7 +276,7 @@ const LocationEdit = () => {
             </Col>
           </FormGroup>
 
-          {files && files.length > 0 && (
+          {files && (
             <AttachmentList
               attachedFiles={files}
               onAddFileServer={addLocationImageServer}
