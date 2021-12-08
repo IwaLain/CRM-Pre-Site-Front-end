@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
+import { Spinner } from "reactstrap";
 const AttachmentList = ({
   titleNeeded = true,
   multiple = true,
@@ -11,6 +12,7 @@ const AttachmentList = ({
   onRemoveFileServer = null,
   setCreatedFiles,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [attachedImages, setAttachedImages] = useState([]);
   const [attachedSchemas, setAttachedSchemas] = useState([]);
   const [attachedDocs, setAttachedDocs] = useState([]);

@@ -12,9 +12,9 @@ import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
-import AttachedFiles from "../AttachedFiles/AttachedFiles";
-import convertToBase64 from "../../js/helpers/convertImage";
+
 import AttachmentList from "../AttachmentList/AttachmentList";
+import { Spinner } from "reactstrap";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
@@ -25,10 +25,12 @@ const CRMEntity = ({ type }) => {
   let getEntityAPI;
   let addEntityImageAPI;
   let setMainEntityImageAPI;
-  let deleteAllEntityImagesAPI;
-  let subEntityName = "";
 
-  const informationFieldNames = ["address", "phone", "email"];
+  let subEntityName = "";
+  const [isLoading, setIsLoading] = useState(false);
+
+  let informationFieldNames = [];
+
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
 
   const [entityObject, setEntityObject] = useState();
@@ -40,39 +42,10 @@ const CRMEntity = ({ type }) => {
   const [informationItems, setInformationItems] = useState([]);
 
   const [mode, setMode] = useState("edit");
+
   const [attachedFiles, setAttachedFiles] = useState();
+
   const [entityImages, setEntityImages] = useState();
-  // const [fileTypes, setFileTypes] = useState([
-  //   {
-  //     type_id: "1",
-  //     setFunc(files) {
-  //       this.attachedFiles = [...files];
-  //     },
-  //     attachedFiles: [],
-  //     type_name: "image",
-  //     fileExtensions: ".jpg, .jpeg, .png",
-  //   },
-  //   {
-  //     type_id: "2",
-  //     setFunc(files) {
-  //       this.attachedFiles = [...files];
-  //     },
-  //     attachedFiles: [],
-  //     type_name: "schema",
-  //     fileExtensions:
-  //       ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-  //   },
-  //   {
-  //     type_id: "3",
-  //     setFunc(files) {
-  //       this.attachedFiles = [...files];
-  //     },
-  //     attachedFiles: [],
-  //     type_name: "doc",
-  //     fileExtensions:
-  //       ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-  //   },
-  // ]);
 
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
@@ -82,51 +55,6 @@ const CRMEntity = ({ type }) => {
     return mainImage;
   };
 
-  // async function deleteAllEntityImages(type_id) {
-  //   const fileTypeIndex = fileTypes.findIndex(
-  //     (fileType) => fileType.type_id === type_id
-  //   );
-
-  //   if (fileTypeIndex > -1) {
-  //     const response = await deleteAllEntityImagesAPI(id, type_id);
-
-  //     if (response.success) {
-  //       setFileTypes((oldArr) => {
-  //         const newFileTypes = [...oldArr];
-  //         newFileTypes[fileTypeIndex].setFunc([]);
-
-  //         return newFileTypes;
-  //       });
-
-  //       alert("success", `files deleted`);
-  //     } else alert("error", response.message);
-  //   } else {
-  //     alert("warning", "wrong type of file");
-  //   }
-  // }
-  // async function deleteEntityImage(file, type_id) {
-  //   const fileTypeIndex = fileTypes.findIndex(
-  //     (fileType) => fileType.type_id === type_id
-  //   );
-
-  //   if (fileTypeIndex > -1) {
-  //     const response = await deleteEntityImageAPI(id, file.id);
-
-  //     if (response.success) {
-  //       const images = await response[`${type}Images`];
-  //       setFileTypes((oldArr) => {
-  //         const newFileTypes = [...oldArr];
-
-  //         setFiles(images, newFileTypes[fileTypeIndex]);
-
-  //         return newFileTypes;
-  //       });
-  //       alert("success", `file deleted`);
-  //     } else alert("error", response.message);
-  //   } else {
-  //     alert("warning", "wrong type of file");
-  //   }
-  // }
   async function deleteEntityImageServer(fileId, type_id) {
     const response = await deleteEntityImageAPI(id, fileId);
     if (response.success) {
@@ -140,57 +68,9 @@ const CRMEntity = ({ type }) => {
       return false;
     }
   }
-  //   let newFiles = [];
-  //   const response = await deleteEntityImageAPI(id, file.id);
-  //   if (response.success) {
-  //     const respImages = await response[`${type}Images`];
-  //     newFiles = respImages.filter((el) => el.type_id == type_id);
-
-  //     alert("success", `file deleted`);
-  //   } else alert("error", response.message);
-
-  //   return newFiles;
-  // }
-  // async function addEntityImage(files, type_id) {
-  //   const newFiles = [...files];
-
-  //   const fileTypeIndex = fileTypes.findIndex(
-  //     (fileType) => fileType.type_id === type_id
-  //   );
-
-  //   if (fileTypeIndex > -1) {
-  //     for (let i = 0; i < newFiles.length; i++) {
-  //       let base64Format = await convertToBase64(newFiles[i]);
-  //       if (base64Format.length > 5) {
-  //         let data = { type_id: type_id, img: base64Format };
-
-  //         const response = await addEntityImageAPI(id, data);
-
-  //         if (response.success) {
-  //           const images = await response[`${type}Images`];
-  //           setFileTypes((oldArr) => {
-  //             const newFileTypes = [...oldArr];
-
-  //             setFiles(images, newFileTypes[fileTypeIndex]);
-
-  //             return newFileTypes;
-  //           });
-  //         } else alert("error", response.message);
-  //       } else {
-  //         alert("warning", "file is empty");
-  //       }
-  //     }
-  //   } else {
-  //     alert("warning", "wrong type of file");
-  //   }
-  // }
 
   async function addEntityImageServer(files, type_id) {
-    // const newFiles = [...files];
     let newFiles = [];
-    // const fileTypeIndex = fileTypes.findIndex(
-    //   (fileType) => fileType.type_id === type_id
-    // );
 
     for (let i = 0; i < files.length; i++) {
       const response = await addEntityImageAPI(id, files[i]);
@@ -198,14 +78,6 @@ const CRMEntity = ({ type }) => {
       if (response.success) {
         const respImage = await response[`image`];
         newFiles.push(respImage);
-
-        // setFileTypes((oldArr) => {
-        //   const newFileTypes = [...oldArr];
-
-        //   setFiles(images, newFileTypes[fileTypeIndex]);
-
-        //   return newFileTypes;
-        // });
       } else alert("error", response.message);
     }
     if (type_id == "1") {
@@ -214,58 +86,58 @@ const CRMEntity = ({ type }) => {
     return newFiles;
   }
 
-  // const setFiles = (files, fileType) => {
-  //   const newFiles = files.filter((el) => el.type_id == fileType.type_id);
-
-  //   fileType.attachedFiles = newFiles;
-  //   return fileType;
-  // };
   const setMainEntityImage = (imageId) => {
     setMainEntityImageAPI(id, imageId).then((res) => {
       setMainImage(res["main-image"]);
     });
   };
-  const setNewInformationItem = (fieldTitle, value) => {
-    setInformationItems((oldArr) => {
-      const newElement = { fieldTitle: fieldTitle, value: value };
 
-      return [...oldArr, newElement];
-    });
-  };
   switch (type) {
     case "customer":
       getEntityAPI = customersApi.getCustomer;
       deleteEntityImageAPI = customersApi.deleteCustomerImage;
       addEntityImageAPI = customersApi.addCustomerImage;
       setMainEntityImageAPI = customersApi.setMainCustomerImage;
-      // deleteAllEntityImagesAPI = customersApi.deleteAllCustomerImages;
+
       subEntityName = "facilities";
+
+      informationFieldNames = ["address", "phone", "email"];
+
       break;
     case "facility":
       getEntityAPI = facilitiesApi.getFacility;
       deleteEntityImageAPI = facilitiesApi.deleteFacilityImage;
       addEntityImageAPI = facilitiesApi.addFacilityImage;
       setMainEntityImageAPI = facilitiesApi.setMainFacilityImage;
+
       subEntityName = "locations";
+
+      informationFieldNames = ["address"];
+
       break;
     case "location":
       getEntityAPI = locationApi.getLocation;
       deleteEntityImageAPI = locationApi.deleteLocationImage;
       addEntityImageAPI = locationApi.addLocationImage;
       setMainEntityImageAPI = locationApi.setMainLocationImage;
+
       subEntityName = "equipment";
+
       break;
     case "equipment":
       getEntityAPI = equipmentApi.getEquipment;
       deleteEntityImageAPI = equipmentApi.deleteImageEquipment;
       addEntityImageAPI = equipmentApi.createImageEquipment;
       setMainEntityImageAPI = equipmentApi.setMainEquipmentImage;
+
       break;
     default:
       break;
   }
 
   useEffect(() => {
+    setIsLoading(true);
+
     getEntityAPI(id).then((data) => {
       if (type === "customer" || type === "facility") {
         data = data[type][id];
@@ -273,26 +145,38 @@ const CRMEntity = ({ type }) => {
         data = data[type];
       }
       setEntityObject(data);
+
       if (data[`${type}Images`]) {
-        // fileTypes.forEach((fileType) => {
-        //   setFiles(data[`${type}Images`], fileType);
-        // });
         setAttachedFiles(data[`${type}Images`]);
+
         setEntityImages(
           data[`${type}Images`].filter((el) => el.type_id == "1")
         );
+
         const mainImage = getMainImage(
           data[`${type}Images`].filter((el) => el.type_id == "1")
         );
+
         setMainImage(mainImage);
       }
-      if (data.jsonData) {
-        const customFields = data.jsonData;
-
-        customFields.forEach((el) => {
-          if (el.value) {
-            setNewInformationItem(el.name, el.value);
+      if (informationFieldNames.length > 0) {
+        let infoFields = informationFieldNames.map((el) => {
+          if (data[el]) {
+            return { fieldTitle: el, value: data[el] };
           }
+        });
+
+        setInformationItems((state) => {
+          return [...state, ...infoFields];
+        });
+      }
+      if (data.jsonData) {
+        const customFields = data.jsonData.map((el) => {
+          return { fieldTitle: el.name, value: el.value };
+        });
+
+        setInformationItems((state) => {
+          return [...state, ...customFields];
         });
       }
       if (subEntityName.length !== 0) {
@@ -313,11 +197,7 @@ const CRMEntity = ({ type }) => {
         }
       }
 
-      informationFieldNames.forEach((field) => {
-        if (data[field]) {
-          setNewInformationItem(field, data[field]);
-        }
-      });
+      setIsLoading(false);
     });
 
     setEntityID(id);
@@ -338,91 +218,79 @@ const CRMEntity = ({ type }) => {
         type={{ entity: subEntityName }}
         mode={mode}
       />
-      <div className="d-flex align-items-center entity-page--header">
-        {entityObject && entityObject[`${type}Images`] && (
-          <div className="main-img--container">
-            <img
-              src={
-                mainImage && mainImage.img
-                  ? process.env.REACT_APP_SERVER_URL + "/" + mainImage.img
-                  : logo
-              }
-              alt="company img"
-              className="entity-page--img"
-            ></img>
-            <DropdownImageEdit
-              images={
-                entityImages && entityImages.length > 0 ? entityImages : []
-              }
-              setMainImage={setMainEntityImage}
-            ></DropdownImageEdit>
-          </div>
-        )}
-        <h1 className="page-title">{entityObject && entityObject.name}</h1>
-      </div>
-
-      {entityObject && informationItems.length > 0 && (
-        <div className="entity-page--section">
-          <InformationComponent
-            items={informationItems}
-            title={`Information ${type}`}
-          ></InformationComponent>
-        </div>
-      )}
-
-      {entityObject && subEntityName.length > 0 && (
-        <div className="info-page--section">
-          <h2 className="page-subtitle">{`${type} ${subEntityName}`}</h2>
-          <div
-            className={
-              screenSize > 440 ? "info-card_group" : "info-card_group dense"
-            }
-          >
-            {subEntity && subEntity.length > 0 ? (
-              subEntity.map((subEnt) => (
-                <InfoCard
-                  data={subEnt}
-                  type={subEntityName}
-                  toggleModal={toggleModal}
-                  setMode={setMode}
-                />
-              ))
-            ) : (
-              <p>No {subEntityName} found.</p>
+      {!isLoading ? (
+        <>
+          <div className="d-flex align-items-center entity-page--header">
+            {entityObject && entityObject[`${type}Images`] && (
+              <div className="main-img--container">
+                <img
+                  src={
+                    mainImage && mainImage.img
+                      ? process.env.REACT_APP_SERVER_URL + "/" + mainImage.img
+                      : logo
+                  }
+                  alt="company img"
+                  className="entity-page--img"
+                ></img>
+                <DropdownImageEdit
+                  images={
+                    entityImages && entityImages.length > 0 ? entityImages : []
+                  }
+                  setMainImage={setMainEntityImage}
+                ></DropdownImageEdit>
+              </div>
             )}
+            <h1 className="page-title">{entityObject && entityObject.name}</h1>
           </div>
-        </div>
-      )}
 
-      {entityObject && entityObject[`${type}Images`] && (
-        <div className="entity-page--section">
-          <h2 className="page-subtitle">{`Attachments`}</h2>
-          {attachedFiles && (
-            <AttachmentList
-              attachedFiles={attachedFiles}
-              onAddFileServer={addEntityImageServer}
-              onRemoveFileServer={deleteEntityImageServer}
-            />
+          {entityObject && informationItems.length > 0 && (
+            <div className="entity-page--section">
+              <InformationComponent
+                items={informationItems}
+                title={`Information ${type}`}
+              ></InformationComponent>
+            </div>
           )}
-          {/* <div className="row">
-            {fileTypes &&
-              fileTypes.map((fileType, i) => (
-                <div key={i} className="col ">
-                  <AttachedFiles
-                    type={fileType.type_id}
-                    name={fileType.type_name}
-                    onAddFile={addEntityImage}
-                    accepted={fileType.fileExtensions}
-                    onRemoveFile={deleteEntityImage}
-                    onDeleteAllFiles={deleteAllEntityImages}
-                    attachedFiles={
-                      fileType.attachedFiles ? fileType.attachedFiles : []
-                    }
-                  />
-                </div>
-              ))}
-          </div> */}
-        </div>
+
+          {entityObject && subEntityName.length > 0 && (
+            <div className="info-page--section">
+              <h2 className="page-subtitle">{`${type} ${subEntityName}`}</h2>
+              <div
+                className={
+                  screenSize > 440 ? "info-card_group" : "info-card_group dense"
+                }
+              >
+                {subEntity && subEntity.length > 0 ? (
+                  subEntity.map((subEnt) => (
+                    <InfoCard
+                      data={subEnt}
+                      type={subEntityName}
+                      toggleModal={toggleModal}
+                      setMode={setMode}
+                    />
+                  ))
+                ) : (
+                  <p>No {subEntityName} found.</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {entityObject && entityObject[`${type}Images`] && (
+            <div className="entity-page--section">
+              <h2 className="page-subtitle">{`Attachments`}</h2>
+              {attachedFiles && (
+                <AttachmentList
+                  attachedFiles={attachedFiles}
+                  onAddFileServer={addEntityImageServer}
+                  onRemoveFileServer={deleteEntityImageServer}
+                />
+              )}
+            </div>
+          )}
+        </>
+      ) : (
+        <Spinner />
       )}
     </>
   );
