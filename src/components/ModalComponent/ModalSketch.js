@@ -24,7 +24,9 @@ const ModalSketch = ({ toggle, modal, type, mode = "create" }) => {
 
   const [formTitle, setFormTitle] = useState();
   const [modalFields, setModalFields] = useState([]);
-  const [createdFiles, setCreatedFiles] = useState([]);
+  const [AnyImg, setAnyImg] = useState([]);
+  const [locationImg, setLocationImg] = useState([]);
+  const [equipmentImg, setEquipmentImg] = useState([]);
   let submitRequest;
 
   useEffect(() => {
@@ -67,7 +69,17 @@ const ModalSketch = ({ toggle, modal, type, mode = "create" }) => {
               },
               {
                 inputType: "images",
+                fileType: "equipment",
                 fieldType: "component",
+                mode: "single",
+                types: [{ typeID: "1" }],
+              },
+              {
+                inputType: "images",
+                fileType: "location",
+                fieldType: "component",
+                mode: "single",
+                types: [{ typeID: "1" }],
               },
             ]);
             break;
@@ -131,9 +143,6 @@ const ModalSketch = ({ toggle, modal, type, mode = "create" }) => {
     if (data.address) body["address"] = data.address;
     if (data.activity) body["activity"] = data.activity;
     if (data.headname) body["head_name"] = data.headname;
-    if (createdFiles.length > 0) {
-      body["img"] = createdFiles;
-    }
 
     submitRequest(body).then((res) => {
       if (res.status === "Successfully created")
@@ -173,7 +182,19 @@ const ModalSketch = ({ toggle, modal, type, mode = "create" }) => {
                 </Col>
               </FormGroup>
             ) : field.inputType === "images" ? (
-              <AttachmentList />
+              <AttachmentList
+                attachedFiles={[]}
+                multiple={field.mode !== "single"}
+                maxFiles={field.mode === "single" ? 1 : 0}
+                types={field.types}
+                setCreatedFiles={
+                  field.fileType === "location"
+                    ? setLocationImg
+                    : field.fileType === "equipment"
+                    ? setEquipmentImg
+                    : setAnyImg
+                }
+              />
             ) : (
               <div>1</div>
             )
