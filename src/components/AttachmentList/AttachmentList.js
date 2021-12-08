@@ -134,6 +134,7 @@ const AttachmentList = ({
     setAttachedSchemas(updatedFiles.filter((el) => el.type_id == "2"));
     setAttachedDocs(updatedFiles.filter((el) => el.type_id == "3"));
   }, [attachedFiles]);
+
   return (
     <>
       <img

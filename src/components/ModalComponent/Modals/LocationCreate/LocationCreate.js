@@ -21,8 +21,10 @@ const LocationCreate = () => {
   const [fields, setFields] = useState([]);
   const [fieldCount, setFieldCount] = useState(1);
   const [addFieldModal, setAddFieldModal] = useState(false);
+  const [facilityName, setFacilityName] = useState();
   const [files, setFiles] = useState([]);
   const [createdFiles, setCreatedFiles] = useState([]);
+
   const {
     register,
     handleSubmit,
@@ -36,7 +38,7 @@ const LocationCreate = () => {
     for (const [key, value] of Object.entries(data)) {
       switch (key) {
         case "facilityID":
-          body["facility_id"] = value;
+          body["facility_id"] = entityID;
           break;
         case "name":
           body["name"] = value;
@@ -82,6 +84,20 @@ const LocationCreate = () => {
     toggleAddFieldModal();
   };
 
+  useEffect(() => {
+    fetch(
+      process.env.REACT_APP_SERVER_URL +
+        "/api/facility/" +
+        entityID +
+        "?access-token=" +
+        localStorage.getItem("token")
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setFacilityName(data.facility[entityID].name);
+      });
+  }, [entityID]);
+
   return (
     <>
       <Modal isOpen={addFieldModal} toggle={toggleAddFieldModal}>
@@ -106,12 +122,12 @@ const LocationCreate = () => {
       <div className="create-form">
         <Form id="form" onSubmit={handleSubmit(onSubmit)}>
           <FormGroup>
-            <Label for="facilityID-field">Facility ID</Label>
+            <Label for="facilityID-field">Facility</Label>
             <Col sm={12}>
               <input
                 className="form-control"
                 id="facilityID-field"
-                value={entityID}
+                value={facilityName}
                 {...register("facilityID")}
                 readOnly
               />
@@ -172,8 +188,6 @@ const LocationCreate = () => {
           {files && (
             <AttachmentList
               attachedFiles={files}
-              // onAddFileServer={addLocationImageServer}
-              // onRemoveFileServer={deleteLocationImageServer}
               setCreatedFiles={setCreatedFiles}
             />
           )}

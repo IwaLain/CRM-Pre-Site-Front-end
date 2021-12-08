@@ -1,22 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../../../../scss/customer-create-page.scss";
-import star from "../../../../assets/img/star.svg";
 import { Form, FormGroup, Label, Col, Input } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../../js/helpers/alert";
 import { GlobalContext } from "../../../../context";
-import convertToBase64 from "../../../../js/helpers/convertImage";
 import placeholder from "../../../../assets/img/company.png";
+import AttachmentList from "../../../AttachmentList/AttachmentList";
 
 const GatewayCreate = () => {
-  const [locationImgIsLoaded, setLocationImgIsLoaded] = useState(false);
-  const [equipmentImgIsLoaded, setEquipmentImgIsLoaded] = useState(false);
-  const [loadedLocationImg, setLoadedLocationImg] = useState();
-  const [loadedEquipmentImg, setLoadedEquipmentImg] = useState();
+  const [files, setFiles] = useState([]);
+  const [files2, setFiles2] = useState([]);
   const [locationImg, setLocationImg] = useState();
   const [equipmentImg, setEquipmentImg] = useState();
   const [facilitiesNames, setFacilitiesNames] = useState([]);
   const [facilityID, setFacilityID] = useState();
+
   const { setShowFormModal, selectedCustomer, customerStructure } =
     useContext(GlobalContext);
 
@@ -40,38 +38,6 @@ const GatewayCreate = () => {
     return formattedNames;
   };
 
-  const addImageHandler = (e, type) => {
-    const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      switch (type) {
-        case "location":
-          convertToBase64(file).then((res) => setLocationImg(res));
-          setLoadedLocationImg(url);
-          setLocationImgIsLoaded(true);
-          break;
-        case "equipment":
-          convertToBase64(file).then((res) => setEquipmentImg(res));
-          setLoadedEquipmentImg(url);
-          setEquipmentImgIsLoaded(true);
-          break;
-        default:
-          break;
-      }
-    }
-  };
-
-  const getBase64Image = (img) => {
-    let canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    let ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    let dataURL = canvas.toDataURL("image/png");
-
-    return dataURL;
-  };
-
   const onSubmit = (data) => {
     const body = {};
 
@@ -79,21 +45,11 @@ const GatewayCreate = () => {
     if (facilityID) body["facility_id"] = facilityID;
     body["name"] = "name";
     if (data.serial) body["serial"] = data.serial;
+    if (data.info) body["location-info"] = data.info;
     const img = [];
     if (locationImg) img.push({ type_id: 1, img: locationImg });
-    else
-      img.push({
-        type_id: 1,
-        img: getBase64Image(document.querySelector("#placeholder-img")),
-      });
     if (equipmentImg) img.push({ type_id: 2, img: equipmentImg });
-    else
-      img.push({
-        type_id: 2,
-        img: getBase64Image(document.querySelector("#placeholder-img")),
-      });
-    if (Object.keys(img).length > 0) body["img"] = img;
-    if (data.info) body["location-info"] = data.info;
+
     fetch(
       process.env.REACT_APP_SERVER_URL +
         "/api/gateway/create?access-token=" +
@@ -178,50 +134,18 @@ const GatewayCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup>
-          <Col>Equipment Image</Col>
-          <Col sm={12}>
-            {!equipmentImgIsLoaded ? (
-              <Label className="image-field" for="image-equipment-field">
-                <img className="star" src={star} alt="star" />
-                <span>Add image</span>
-              </Label>
-            ) : (
-              <Label className="image-field" for="image-equipment-field">
-                <img src={loadedEquipmentImg} alt="customer-img" />
-              </Label>
-            )}
-            <input
-              className="form-control"
-              id="image-equipment-field"
-              type="file"
-              accept="image/*"
-              onChange={(e) => addImageHandler(e, "equipment")}
-            />
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col>Location Image</Col>
-          <Col sm={12}>
-            {!locationImgIsLoaded ? (
-              <Label className="image-field" for="image-location-field">
-                <img className="star" src={star} alt="star" />
-                <span>Add image</span>
-              </Label>
-            ) : (
-              <Label className="image-field" for="image-location-field">
-                <img src={loadedLocationImg} alt="customer-img" />
-              </Label>
-            )}
-            <input
-              className="form-control"
-              id="image-location-field"
-              type="file"
-              accept="image/*"
-              onChange={(e) => addImageHandler(e, "location")}
-            />
-          </Col>
-        </FormGroup>
+        {files && (
+          <AttachmentList
+            attachedFiles={files}
+            setCreatedFiles={setEquipmentImg}
+          />
+        )}
+        {files2 && (
+          <AttachmentList
+            attachedFiles={files2}
+            setCreatedFiles={setLocationImg}
+          />
+        )}
       </Form>
     </div>
   );

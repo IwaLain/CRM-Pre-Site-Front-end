@@ -13,6 +13,7 @@ import facilitiesApi from "../../../js/api/facilities";
 import ModalComponent from "../../ModalComponent/ModalComponent";
 import Button from "../../UIKit/Button/Button";
 import Select from "../../UIKit/Select/Select";
+import ModalSketch from "../../ModalComponent/ModalSketch";
 
 const List = ({ type, title }) => {
   const [data, setData] = useState();
@@ -30,6 +31,8 @@ const List = ({ type, title }) => {
   const [mode, setMode] = useState();
   const [chooseMode, setChooseMode] = useState(false);
   const [totalPages, setTotalPages] = useState();
+
+  const [testModal, setTestModal] = useState();
 
   const RECORDS_PER_PAGE = 10;
 
@@ -242,6 +245,10 @@ const List = ({ type, title }) => {
     }
   }, [entityID]);
 
+  const testToggle = () => {
+    setTestModal(!testModal);
+  };
+
   return (
     <>
       <ModalComponent
@@ -249,6 +256,11 @@ const List = ({ type, title }) => {
         toggle={toggleModal}
         type={type}
         mode={mode}
+      />
+      <ModalSketch
+        type={{ entity: "customers" }}
+        modal={testModal}
+        toggle={testToggle}
       />
       <div className="list">
         <div className="list__header">
@@ -264,6 +276,7 @@ const List = ({ type, title }) => {
               +
             </button>
           </div>
+          <button onClick={testToggle}>Test Modal</button>
           <div className="list__options">
             {showEntitySelect && (
               <div className="list__select-entity">

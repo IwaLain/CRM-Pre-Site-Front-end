@@ -19,6 +19,7 @@ import equipmentApi from "../../../../js/api/equipment";
 import { GlobalContext } from "../../../../context";
 import convertToBase64 from "../../../../js/helpers/convertImage";
 import placeholder from "../../../../assets/img/company.png";
+import AttachmentList from "../../../AttachmentList/AttachmentList";
 
 const EquipmentCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -30,6 +31,8 @@ const EquipmentCreate = () => {
   const [fieldCount, setFieldCount] = useState(1);
   const [addFieldModal, setAddFieldModal] = useState(false);
   const [locationName, setLocationName] = useState();
+  const [files, setFiles] = useState([]);
+  const [createdFiles, setCreatedFiles] = useState([]);
 
   const { setShowFormModal, entityID } = useContext(GlobalContext);
 
@@ -83,14 +86,9 @@ const EquipmentCreate = () => {
     body["type_id"] = equipmentTypeID;
     if (data.name) body["name"] = data.name;
     body["jsonData"] = jsonData;
-    if (img) body["img"] = img;
-    else
-      body["img"] = [
-        {
-          type_id: 1,
-          img: getBase64Image(document.querySelector("#placeholder-img")),
-        },
-      ];
+    if (createdFiles.length > 0) {
+      body["img"] = createdFiles;
+    }
 
     equipmentApi.addEquipment(body).then((res) => {
       if (res.status === "Successfully created")
@@ -259,28 +257,12 @@ const EquipmentCreate = () => {
               </Button>
             </Col>
           </FormGroup>
-          <FormGroup style={{ display: "flex", alignItems: "center" }}>
-            <Col>Image</Col>
-            <Col sm={12}>
-              {!imgLoaded ? (
-                <Label className="image-field" for="image-field">
-                  <img className="star" src={star} alt="star" />
-                  <span>Add image</span>
-                </Label>
-              ) : (
-                <Label className="image-field" for="image-field">
-                  <img src={loadedImg} alt="customer-img" />
-                </Label>
-              )}
-              <input
-                className="form-control"
-                id="image-field"
-                type="file"
-                accept="image/*"
-                onChange={addImageHandler}
-              />
-            </Col>
-          </FormGroup>
+          {files && (
+            <AttachmentList
+              attachedFiles={files}
+              setCreatedFiles={setCreatedFiles}
+            />
+          )}
         </Form>
       </div>
     </>

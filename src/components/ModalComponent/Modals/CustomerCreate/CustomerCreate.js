@@ -8,11 +8,14 @@ import customersApi from "../../../../js/api/customer";
 import convertToBase64 from "../../../../js/helpers/convertImage";
 import { GlobalContext } from "../../../../context";
 import placeholder from "../../../../assets/img/company.png";
+import AttachmentList from "../../../AttachmentList/AttachmentList";
 
 const CustomerCreate = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loadedImg, setLoadedImg] = useState();
   const [img, setImg] = useState();
+  const [files, setFiles] = useState([]);
+  const [createdFiles, setCreatedFiles] = useState([]);
 
   const { setShowFormModal } = useContext(GlobalContext);
 
@@ -52,9 +55,9 @@ const CustomerCreate = () => {
     if (data.address) body["address"] = data.address;
     if (data.activity) body["activity"] = data.activity;
     if (data.headname) body["head_name"] = data.headname;
-    if (img) body["img"] = img;
-    else
-      body["img"] = getBase64Image(document.querySelector("#placeholder-img"));
+    if (createdFiles.length > 0) {
+      body["img"] = createdFiles;
+    }
 
     customersApi.addCustomer(body).then((res) => {
       if (res.status === "Successfully created")
@@ -195,28 +198,12 @@ const CustomerCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup style={{ display: "flex", alignItems: "center" }}>
-          <Col>Image</Col>
-          <Col sm={12}>
-            {!imgLoaded ? (
-              <Label className="image-field" for="image-field">
-                <img className="star" src={star} alt="star" />
-                <span>Add image</span>
-              </Label>
-            ) : (
-              <Label className="image-field" for="image-field">
-                <img src={loadedImg} alt="customer-img" />
-              </Label>
-            )}
-            <input
-              className="form-control"
-              id="image-field"
-              type="file"
-              accept="image/*"
-              onChange={addImageHandler}
-            />
-          </Col>
-        </FormGroup>
+        {files && (
+          <AttachmentList
+            attachedFiles={files}
+            setCreatedFiles={setCreatedFiles}
+          />
+        )}
       </Form>
     </div>
   );

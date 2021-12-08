@@ -13,6 +13,7 @@ const SensorCreate = () => {
   const [facilityID, setFacilityID] = useState();
   const [nodeID, setNodeID] = useState();
   const [equipmentID, setEquipmentID] = useState();
+
   const { setShowFormModal, selectedCustomer, customerStructure } =
     useContext(GlobalContext);
 
