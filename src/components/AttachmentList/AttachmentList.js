@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
 const AttachmentList = ({
-  attachedFiles = [{ type_id: "1", attachedFiles: [{ img: "asdasd" }] }],
+  multiple = false,
+  maxFiles = 0,
+  types = [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
+  attachedFiles,
   onAddFileServer = null,
   onRemoveFileServer = null,
   setCreatedFiles,
@@ -121,7 +124,7 @@ const AttachmentList = ({
   useEffect(() => {
     let updatedFiles = attachedFiles.map((file) => {
       const preview = process.env.REACT_APP_SERVER_URL + "/" + file.img;
-      document.querySelector("#placeholder-img").src = preview;
+
       return {
         img: file.img,
         preview,
@@ -129,50 +132,61 @@ const AttachmentList = ({
         id: file.id,
       };
     });
-
-    setAttachedImages(updatedFiles.filter((el) => el.type_id == "1"));
-    setAttachedSchemas(updatedFiles.filter((el) => el.type_id == "2"));
-    setAttachedDocs(updatedFiles.filter((el) => el.type_id == "3"));
+    types.forEach((type) => {
+      if (type.typeID == "1") {
+        setAttachedImages(updatedFiles.filter((el) => el.type_id == "1"));
+      } else if (type.typeID == "2") {
+        setAttachedSchemas(updatedFiles.filter((el) => el.type_id == "2"));
+      } else if (type.typeID == "3") {
+        setAttachedDocs(updatedFiles.filter((el) => el.type_id == "3"));
+      }
+    });
   }, [attachedFiles]);
   return (
     <>
-      <img
-        id="placeholder-img"
-        src=""
-        alt="placeholder err"
-        style={{ display: "none" }}
-      />
       <div className="row">
-        <div className="col">
-          <AttachedFiles
-            type="1"
-            name="Images"
-            accepted=".jpg, .jpeg, .png"
-            onAddFile={onAddImage}
-            onRemoveFile={onRemoveImage}
-            attachedFiles={attachedImages}
-          />
-        </div>
-        <div className="col">
-          <AttachedFiles
-            type="2"
-            name="Shemas"
-            accepted=".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-            onAddFile={onAddImage}
-            onRemoveFile={onRemoveImage}
-            attachedFiles={attachedSchemas}
-          />
-        </div>
-        <div className="col">
-          <AttachedFiles
-            type="3"
-            name="Docs"
-            accepted=".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-            attachedFiles={attachedDocs}
-            onAddFile={onAddImage}
-            onRemoveFile={onRemoveImage}
-          />
-        </div>
+        {types && types.find((el) => el.typeID == "1") && (
+          <div className="col">
+            <AttachedFiles
+              type="1"
+              name="Images"
+              accepted=".jpg, .jpeg, .png"
+              onAddFile={onAddImage}
+              onRemoveFile={onRemoveImage}
+              attachedFiles={attachedImages}
+              multiple={multiple}
+              maxFiles={maxFiles}
+            />
+          </div>
+        )}
+        {types && types.find((el) => el.typeID == "2") && (
+          <div className="col">
+            <AttachedFiles
+              type="2"
+              name="Shemas"
+              accepted=".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              onAddFile={onAddImage}
+              onRemoveFile={onRemoveImage}
+              attachedFiles={attachedSchemas}
+              multiple={multiple}
+              maxFiles={maxFiles}
+            />
+          </div>
+        )}
+        {types && types.find((el) => el.typeID == "3") && (
+          <div className="col">
+            <AttachedFiles
+              type="3"
+              name="Docs"
+              accepted=".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              attachedFiles={attachedDocs}
+              onAddFile={onAddImage}
+              onRemoveFile={onRemoveImage}
+              multiple={multiple}
+              maxFiles={maxFiles}
+            />
+          </div>
+        )}
       </div>
     </>
   );
