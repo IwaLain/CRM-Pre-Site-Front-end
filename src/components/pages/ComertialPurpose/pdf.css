@@ -47,30 +47,37 @@ body {
 }
 
 .purpose_quote {
-    display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
+.purpose_quote-title {
+    float: left;
+}
+
 .purpose_quote .quote {
+    float: right;
     font-size: 20px;
     font-weight: 700;
 }
 
 .purpose_form {
-    display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
 .purpose_shipment {
+    float: left;
     width: 40%;
     margin-right: 40px;
 }
 
 .purpose_shipment-title {
+    float: left;
+    width: 100%;
     margin-bottom: 10px;
+    margin-top: 10px;
     font-weight: 700;
 }
 
@@ -84,15 +91,21 @@ body {
 }
 
 .purpose_info {
-    align-items: center;
-    justify-content: space-between;
     max-width: 250px;
     margin-bottom: 20px;
 }
 
 .purpose_info-title {
-    float: right;
+    float: left;
     font-weight: 700;
+    min-width: 100px;
+}
+
+.purpose_info-desc {
+    float: right;
+    margin-left: auto;
+    max-width: 200px;
+    text-align: right;
 }
 
 .purpose_info label{
@@ -106,25 +119,31 @@ body {
 }
 
 .purpose_table-title {
+    float: left;
+    width: 100%;
+    margin-right: auto;
     margin-bottom: 10px;
     margin-top: 40px;
     font-weight: 700;
 }
 
 .total {
+    float: right;
     width: 100%;
     margin-top: 20px;
     text-align: right;
 }
 
 .purpose_barcode {
-    position: absolute; 
+    float: left;
+    position: absolute;
     left: 0;
     bottom: 0;
     text-align: center;
 }
 
 .purpose_subadress {
+    float: right;
     position: absolute;
     bottom: 20px;
     left: 30%;
@@ -132,6 +151,7 @@ body {
 }
 
 table {
+    float: left;
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
