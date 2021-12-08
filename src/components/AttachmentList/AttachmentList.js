@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
 const AttachmentList = ({
+  titleNeeded = true,
   multiple = true,
   maxFiles = 0,
   types = [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
@@ -153,7 +154,7 @@ const AttachmentList = ({
           <div className="col">
             <AttachedFiles
               type="1"
-              name="Images"
+              name={titleNeeded ? "Images" : ""}
               accepted=".jpg, .jpeg, .png"
               onAddFile={onAddImage}
               onRemoveFile={onRemoveImage}
@@ -167,7 +168,7 @@ const AttachmentList = ({
           <div className="col">
             <AttachedFiles
               type="2"
-              name="Shemas"
+              name={titleNeeded ? "Shemas" : ""}
               accepted=".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
               onAddFile={onAddImage}
               onRemoveFile={onRemoveImage}
@@ -181,7 +182,7 @@ const AttachmentList = ({
           <div className="col">
             <AttachedFiles
               type="3"
-              name="Docs"
+              name={titleNeeded ? "Docs" : ""}
               accepted=".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
               attachedFiles={attachedDocs}
               onAddFile={onAddImage}

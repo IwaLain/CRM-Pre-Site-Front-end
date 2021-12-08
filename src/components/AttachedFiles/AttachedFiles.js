@@ -93,7 +93,7 @@ const AttachedFiles = ({
         }}
         modalText={`Are you sure you want to DELETE file`}
       />
-      <h3 className="page-subtitle fw-normal">{name && name}</h3>
+      {name && <h3 className="page-subtitle fw-normal">{name}</h3>}
       <div
         {...getRootProps({
           className:
