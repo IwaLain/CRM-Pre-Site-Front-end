@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
 const AttachmentList = ({
-  multiple = false,
+  multiple = true,
   maxFiles = 0,
   types = [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
   attachedFiles,
@@ -82,6 +82,7 @@ const AttachmentList = ({
           setCreatedFiles((state) => [...state, ...data]);
         }
       }
+
       setFilesFunction((state) => [...state, ...newFiles]);
     });
     // }
@@ -122,25 +123,27 @@ const AttachmentList = ({
   // };
 
   useEffect(() => {
-    let updatedFiles = attachedFiles.map((file) => {
-      const preview = process.env.REACT_APP_SERVER_URL + "/" + file.img;
+    if (attachedFiles.length > 0) {
+      let updatedFiles = attachedFiles.map((file) => {
+        const preview = process.env.REACT_APP_SERVER_URL + "/" + file.img;
 
-      return {
-        img: file.img,
-        preview,
-        type_id: file.type_id,
-        id: file.id,
-      };
-    });
-    types.forEach((type) => {
-      if (type.typeID == "1") {
-        setAttachedImages(updatedFiles.filter((el) => el.type_id == "1"));
-      } else if (type.typeID == "2") {
-        setAttachedSchemas(updatedFiles.filter((el) => el.type_id == "2"));
-      } else if (type.typeID == "3") {
-        setAttachedDocs(updatedFiles.filter((el) => el.type_id == "3"));
-      }
-    });
+        return {
+          img: file.img,
+          preview,
+          type_id: file.type_id,
+          id: file.id,
+        };
+      });
+      types.forEach((type) => {
+        if (type.typeID == "1") {
+          setAttachedImages(updatedFiles.filter((el) => el.type_id == "1"));
+        } else if (type.typeID == "2") {
+          setAttachedSchemas(updatedFiles.filter((el) => el.type_id == "2"));
+        } else if (type.typeID == "3") {
+          setAttachedDocs(updatedFiles.filter((el) => el.type_id == "3"));
+        }
+      });
+    }
   }, [attachedFiles]);
   return (
     <>

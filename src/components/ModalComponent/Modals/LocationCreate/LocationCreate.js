@@ -173,14 +173,14 @@ const LocationCreate = () => {
               </Button>
             </Col>
           </FormGroup>
-          {files && (
+          {
             <AttachmentList
-              attachedFiles={files}
+              attachedFiles={[]}
               // onAddFileServer={addLocationImageServer}
               // onRemoveFileServer={deleteLocationImageServer}
               setCreatedFiles={setCreatedFiles}
             />
-          )}
+          }
         </Form>
       </div>
     </>
