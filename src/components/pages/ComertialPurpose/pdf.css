@@ -47,15 +47,22 @@ body {
 }
 
 .purpose_quote {
-    display: flex;
+    width: 100%;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
+.purpose_quote-title {
+    float: left;
+    width: 50%;
+}
+
 .purpose_quote .quote {
+    float: right;
+    width: 50%;
+    text-align: right;
     font-size: 20px;
-    font-weight: 700;
 }
 
 .purpose_form {
@@ -65,17 +72,20 @@ body {
 }
 
 .purpose_shipment {
+    float: left;
     width: 40%;
     margin-right: 40px;
 }
 
 .purpose_shipment-title {
+    float: left;
+    width: 100%;
+    margin-top: 20px;
     margin-bottom: 10px;
-    font-weight: 700;
 }
 
 .purpose_shipment-desc {
-    margin-bottom: 20px;
+    float: left;
 }
 
 .purpose_ship {
@@ -84,15 +94,21 @@ body {
 }
 
 .purpose_info {
-    align-items: center;
-    justify-content: space-between;
     max-width: 250px;
-    margin-bottom: 20px;
 }
 
 .purpose_info-title {
-    float: right;
-    font-weight: 700;
+    padding: 10px 0;
+    float: left;
+    text-align: left;
+    width: 30%;
+}
+
+.purpose_info-desc {
+    padding: 10px 0;
+    width: 70%;
+    text-align: right;
+    margin-left: auto;
 }
 
 .purpose_info label{
@@ -108,7 +124,6 @@ body {
 .purpose_table-title {
     margin-bottom: 10px;
     margin-top: 40px;
-    font-weight: 700;
 }
 
 .total {
@@ -117,28 +132,59 @@ body {
     text-align: right;
 }
 
+.purpose__bottom {
+    margin-top: 100px;
+    max-width: 400px;
+}
+
 .purpose_barcode {
-    position: absolute; 
-    left: 0;
-    bottom: 0;
-    text-align: center;
+    float: left;
+    max-width: 200px;
+    margin-top: 40px;
+}
+
+.barcode {
+    margin-left: 30px;
 }
 
 .purpose_subadress {
-    position: absolute;
-    bottom: 20px;
-    left: 30%;
+    float: right;
     width: 150px;
+    margin-left: 100px;
 }
 
 table {
-    font-family: arial, sans-serif;
+    width: 100%; 
+    font-size: 10pt; 
     border-collapse: collapse;
-    width: 100%;
 }
 
-td, th {
-    border: 2px solid #dddddd;
-    text-align: left;
-    padding: 8px;
+table.items {
+	border: 0.1mm solid #000000;
+}
+td { vertical-align: top; }
+.items td {
+    padding: 5px;
+	border-left: 0.1mm solid #000000;
+	border-right: 0.1mm solid #000000;
+}
+table thead td { background-color: #EEEEEE;
+	text-align: center;
+	border: 0.1mm solid #000000;
+	font-variant: small-caps;
+}
+.items td.blanktotal {
+	background-color: #EEEEEE;
+	border: 0.1mm solid #000000;
+	background-color: #FFFFFF;
+	border: 0mm none #000000;
+	border-top: 0.1mm solid #000000;
+	border-right: 0.1mm solid #000000;
+}
+.items td.totals {
+	
+	border: 0.1mm solid #000000;
+}
+.items td.cost {
+	text-align: "." center;
 }

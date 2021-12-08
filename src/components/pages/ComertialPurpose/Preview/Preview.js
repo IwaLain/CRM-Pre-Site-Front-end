@@ -4,8 +4,7 @@ import React from 'react'
 const Previews = () => {
     return (
         <Document 
-            file='../../../../assets/img/sample.pdf'
-            options={{ workerSrc: "/pdf.worker.js" }}>
+            file='sample.pdf'>
             <Page size="A4"/>
         </Document>
     )
