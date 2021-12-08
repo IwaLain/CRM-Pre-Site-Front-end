@@ -54,27 +54,6 @@ const LocationEdit = () => {
     return false;
   }
 
-  // const fileTypes = [
-  //   {
-  //     type_id: "1",
-  //     type_name: "image",
-  //     fileExtensions: ".jpg, .jpeg, .png",
-  //   },
-  //   {
-  //     type_id: "2",
-
-  //     type_name: "schema",
-  //     fileExtensions:
-  //       ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-  //   },
-  //   {
-  //     type_id: "3",
-
-  //     type_name: "doc",
-  //     fileExtensions:
-  //       ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-  //   },
-  // ];
   const {
     register,
     unregister,
