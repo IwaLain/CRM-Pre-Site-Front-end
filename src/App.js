@@ -23,28 +23,39 @@ const App = () => {
   const [selectedCustomer, setSelectedCustomer] = useState({});
   const [customerStructure, setCustomerStructure] = useState({});
   const [userProfile, setUserProfile] = useState({});
+  const [equipmentTypeList, setEquipmentTypeList] = useState([]);
 
   return (
     <GlobalContext.Provider
       value={{
         pageTitle,
         setPageTitle,
+
         pageType,
         setPageType,
+
         pagePath,
         setPagePath,
+
         editId,
         setEditId,
+
         entityID,
         setEntityID,
+
         showFormModal,
         setShowFormModal,
+
         userProfile,
         setUserProfile,
+
         selectedCustomer,
         setSelectedCustomer,
         customerStructure,
         setCustomerStructure,
+
+        equipmentTypeList,
+        setEquipmentTypeList,
       }}
     >
       <Router>

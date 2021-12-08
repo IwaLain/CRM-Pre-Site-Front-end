@@ -46,6 +46,7 @@ const List = ({ type, title }) => {
     selectedCustomer,
     setSelectedCustomer,
     setCustomerStructure,
+    setEquipmentTypeList,
   } = useContext(GlobalContext);
 
   const match = useRouteMatch();
@@ -151,6 +152,13 @@ const List = ({ type, title }) => {
         setShowEntitySelect(true);
         setShowView(true);
         setIsSetViewNeeded(true);
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/equipment/type?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((list) => setEquipmentTypeList(list["type"]));
         break;
       case "gateways":
       case "nodes":
@@ -258,7 +266,8 @@ const List = ({ type, title }) => {
         mode={mode}
       />
       <ModalSketch
-        type={{ entity: "customers" }}
+        entity={type && type.entity}
+        subEntity={type && type.ref}
         modal={testModal}
         toggle={testToggle}
       />

@@ -10,6 +10,7 @@ const AttachmentList = ({
   onAddFileServer = null,
   onRemoveFileServer = null,
   setCreatedFiles,
+  style,
 }) => {
   const [attachedImages, setAttachedImages] = useState([]);
   const [attachedSchemas, setAttachedSchemas] = useState([]);
@@ -149,7 +150,7 @@ const AttachmentList = ({
 
   return (
     <>
-      <div className="row">
+      <div className="row" style={style}>
         {types && types.find((el) => el.typeID == "1") && (
           <div className="col">
             <AttachedFiles
