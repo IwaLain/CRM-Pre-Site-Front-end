@@ -15,13 +15,7 @@ import { useForm } from "react-hook-form";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 
-const ModalSketch = ({ toggle, modal, entity, subEntity, mode = "create" }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
+const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const [formTitle, setFormTitle] = useState();
 
   const [entityName, setEntityName] = useState();
@@ -51,321 +45,22 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode = "create" }) => {
   const [nodesNames, setNodesNames] = useState([]);
   const [nodeID, setNodeID] = useState();
 
-  const { setShowFormModal, entityID, equipmentTypeList, customerStructure } =
-    useContext(GlobalContext);
+  const [defaultEntity, setDefaultEntity] = useState([]);
 
-  useEffect(() => {
-    switch (mode) {
-      case "create":
-        switch (entity) {
-          case "customers":
-            setFormTitle("Customer Create");
-            setEntityName("customer");
-            setModalFields([
-              {
-                title: "Name",
-                inputType: "text",
-                fieldType: "form",
-              },
-              {
-                title: "Email",
-                inputType: "email",
-                fieldType: "form",
-              },
-              {
-                title: "Phone",
-                inputType: "phone",
-                fieldType: "form",
-              },
-              {
-                title: "Address",
-                inputType: "text",
-                fieldType: "form",
-              },
-              {
-                title: "Activity",
-                inputType: "text",
-                fieldType: "form",
-              },
-              {
-                title: "Headname",
-                inputType: "text",
-                fieldType: "form",
-              },
-              {
-                fieldType: "images",
-                types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
-                titleNeeded: true,
-              },
-            ]);
-            break;
-          case "facilities":
-            setFormTitle("Facility Create");
-            setEntityName("facility");
-            setModalFields([
-              {
-                title: "Customer",
-                fieldType: "form-ref-select",
-              },
-              {
-                title: "Title",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                title: "Lat",
-                fieldType: "form",
-                inputType: "number",
-              },
-              {
-                title: "Lan",
-                fieldType: "form",
-                inputType: "number",
-              },
-              {
-                title: "Address",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                fieldType: "images",
-                types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
-                titleNeeded: true,
-              },
-            ]);
-            break;
-          case "locations":
-            setFormTitle("Location create");
-            setModalFields([
-              {
-                title: "Facility",
-                fieldType: "form-ref-select",
-              },
-              {
-                title: "Name",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                fieldType: "custom-fields",
-              },
-              {
-                fieldType: "images",
-                types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
-                titleNeeded: true,
-              },
-            ]);
-            break;
-          case "equipment":
-            setFormTitle("Equipment create");
-            setModalFields([
-              {
-                title: "Location",
-                fieldType: "form-ref-select",
-              },
-              {
-                title: "Name",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                title: "Type",
-                fieldType: "form-type-select",
-              },
-              {
-                fieldType: "custom-fields",
-              },
-              {
-                fieldType: "images",
-                types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
-                titleNeeded: true,
-              },
-            ]);
-            break;
-          case "gateways":
-            setFormTitle("Gateway create");
-            setModalFields([
-              {
-                title: "Facility",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Name",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                title: "Serial",
-                fieldType: "form",
-                inputType: "number",
-              },
-              {
-                title: "Location info",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                fieldType: "images",
-                fileType: "equipment",
-                mode: "single",
-                types: [{ typeID: "1" }],
-                titleNeeded: false,
-              },
-              {
-                fieldType: "images",
-                fileType: "location",
-                mode: "single",
-                types: [{ typeID: "1" }],
-                titleNeeded: false,
-              },
-            ]);
-            break;
-          case "nodes":
-            setFormTitle("Node create");
-            setModalFields([
-              {
-                title: "Facility",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Gateway",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Name",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                title: "Serial",
-                fieldType: "form",
-                inputType: "number",
-              },
-              {
-                title: "Location info",
-                fieldType: "form",
-                inputType: "text",
-              },
-            ]);
-            break;
-          case "motes":
-            setFormTitle("Mote create");
-            setModalFields([
-              {
-                title: "Facility",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Equipment",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Gateway",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Name",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                title: "Serial",
-                fieldType: "form",
-                inputType: "number",
-              },
-              {
-                title: "Location info",
-                fieldType: "form",
-                inputType: "text",
-              },
-            ]);
-            break;
-          case "routers":
-            setFormTitle("Router create");
-            setModalFields([
-              {
-                title: "Facility",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Gateway",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Name",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                title: "Serial",
-                fieldType: "form",
-                inputType: "number",
-              },
-              {
-                title: "Location info",
-                fieldType: "form",
-                inputType: "text",
-              },
-            ]);
-            break;
-          case "sensors":
-            setFormTitle("Sensor create");
-            setModalFields([
-              {
-                title: "Facility",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Equipment",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Node",
-                fieldType: "form-customer-entity-select",
-              },
-              {
-                title: "Name",
-                fieldType: "form",
-                inputType: "text",
-              },
-              {
-                title: "Serial",
-                fieldType: "form",
-                inputType: "number",
-              },
-              {
-                title: "Location info",
-                fieldType: "form",
-                inputType: "text",
-              },
-            ]);
-            break;
-          default:
-            break;
-        }
-        break;
-      case "edit":
-        switch (entity) {
-          case "customers":
-            setFormTitle("Customer Edit");
-            break;
-          case "facilities":
-            setFormTitle("Facility Edit");
-            break;
-          case "equipment":
-            setFormTitle("Equipment Edit");
-            break;
-          case "locations":
-            setFormTitle("Location Edit");
-            break;
-          default:
-            break;
-        }
-        break;
-      default:
-        break;
-    }
-  }, [entity, mode]);
+  const {
+    setShowFormModal,
+    entityID,
+    equipmentTypeList,
+    customerStructure,
+    editId,
+  } = useContext(GlobalContext);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   let formattedRouteName;
 
@@ -400,6 +95,420 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode = "create" }) => {
     default:
       break;
   }
+
+  const formatNames = (list, type) => {
+    const newList = [];
+    switch (type) {
+      case "object":
+        for (const [, value] of Object.entries(list)) {
+          newList.push({ id: value.id, name: value.name || value.serial });
+        }
+        break;
+      case "array":
+        console.log(list);
+        break;
+      default:
+        break;
+    }
+
+    return newList;
+  };
+
+  const onSubmit = (data) => {
+    const body = {};
+
+    if (data["Name"]) body["name"] = data["Name"];
+    if (data["Serial"]) body["serial"] = data["Serial"];
+    if (data["Email"]) body["email"] = data["Email"];
+    if (data["Phone"]) body["phone"] = data["Phone"];
+    if (data["Address"]) body["address"] = data["Address"];
+    if (data["Activity"]) body["activity"] = data["Activity"];
+    if (data["Headname"]) body["head_name"] = data["Headname"];
+    body["img"] = [
+      {
+        type_id: 1,
+        img: locationImg[0].img,
+      },
+      {
+        type_id: 2,
+        img: equipmentImg[0].img,
+      },
+    ];
+
+    fetch(
+      process.env.REACT_APP_SERVER_URL +
+        "/api/" +
+        entityName +
+        "/create?access-token=" +
+        localStorage.getItem("token"),
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+
+    document.querySelector("#form").reset();
+  };
+
+  const handleRefSelect = (e) => {
+    setRefID(e.target.value);
+  };
+
+  const handleTypeSelect = (e) => {
+    setTypeID(e.target.value);
+  };
+
+  const handleFacilitySelect = (e) => {
+    setFacilityID(e.target.value);
+  };
+
+  const handleEquipmentSelect = (e) => {
+    setEquipmentID(e.target.value);
+  };
+
+  const handleGatewaySelect = (e) => {
+    setGatewayID(e.target.value);
+  };
+
+  const toggleAddFieldModal = () => {
+    setAddFieldModal(!addFieldModal);
+  };
+
+  const handleAddFieldFormSubmit = (e, fields, fieldCount) => {
+    e.preventDefault();
+
+    const newFields = fields;
+
+    newFields.push({
+      id: `field${fieldCount + 1}`,
+      title: e.target.elements["add-field-field"].value,
+    });
+
+    setCustomFieldsCount(fieldCount + 1);
+    setCustomFields(newFields);
+
+    toggleAddFieldModal();
+  };
+
+  useEffect(() => {
+    console.log(1);
+    if (editId && entityName) {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/" +
+          entityName +
+          "/" +
+          editId +
+          "?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setDefaultEntity(data[entityName][editId]);
+          reset({
+            ...data[entityName][editId],
+            headname: data[entityName][editId]["head_name"],
+          });
+        });
+    }
+  }, [entity]);
+
+  useEffect(() => {
+    let name = "";
+
+    switch (entity) {
+      case "customers":
+        setFormTitle("Customer Create");
+        name = "customer";
+        setModalFields([
+          {
+            title: "Name",
+            inputType: "text",
+            fieldType: "form",
+          },
+          {
+            title: "Email",
+            inputType: "email",
+            fieldType: "form",
+          },
+          {
+            title: "Phone",
+            inputType: "phone",
+            fieldType: "form",
+          },
+          {
+            title: "Address",
+            inputType: "text",
+            fieldType: "form",
+          },
+          {
+            title: "Activity",
+            inputType: "text",
+            fieldType: "form",
+          },
+          {
+            title: "Headname",
+            inputType: "text",
+            fieldType: "form",
+          },
+          {
+            fieldType: "images",
+            types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
+            titleNeeded: true,
+          },
+        ]);
+        break;
+      case "facilities":
+        setFormTitle("Facility Create");
+        name = "facility";
+        setModalFields([
+          {
+            title: "Customer",
+            fieldType: "form-ref-select",
+          },
+          {
+            title: "Name",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            title: "Lat",
+            fieldType: "form",
+            inputType: "number",
+          },
+          {
+            title: "Lng",
+            fieldType: "form",
+            inputType: "number",
+          },
+          {
+            title: "Address",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            fieldType: "images",
+            types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
+            titleNeeded: true,
+          },
+        ]);
+        break;
+      case "locations":
+        setFormTitle("Location create");
+        setModalFields([
+          {
+            title: "Facility",
+            fieldType: "form-ref-select",
+          },
+          {
+            title: "Name",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            fieldType: "custom-fields",
+          },
+          {
+            fieldType: "images",
+            types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
+            titleNeeded: true,
+          },
+        ]);
+        break;
+      case "equipment":
+        setFormTitle("Equipment create");
+        setModalFields([
+          {
+            title: "Location",
+            fieldType: "form-ref-select",
+          },
+          {
+            title: "Name",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            title: "Type",
+            fieldType: "form-type-select",
+          },
+          {
+            fieldType: "custom-fields",
+          },
+          {
+            fieldType: "images",
+            types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
+            titleNeeded: true,
+          },
+        ]);
+        break;
+      case "sensors":
+        setFormTitle("Sensor create");
+        setModalFields([
+          {
+            title: "Facility",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Equipment",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Node",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Name",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            title: "Serial",
+            fieldType: "form",
+            inputType: "number",
+          },
+          {
+            title: "Location info",
+            fieldType: "form",
+            inputType: "text",
+          },
+        ]);
+        break;
+      case "motes":
+        setFormTitle("Mote create");
+        setModalFields([
+          {
+            title: "Facility",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Equipment",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Gateway",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Name",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            title: "Serial",
+            fieldType: "form",
+            inputType: "number",
+          },
+          {
+            title: "Location info",
+            fieldType: "form",
+            inputType: "text",
+          },
+        ]);
+        break;
+      case "nodes":
+        setFormTitle("Node create");
+        setModalFields([
+          {
+            title: "Facility",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Gateway",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Name",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            title: "Serial",
+            fieldType: "form",
+            inputType: "number",
+          },
+          {
+            title: "Location info",
+            fieldType: "form",
+            inputType: "text",
+          },
+        ]);
+        break;
+      case "routers":
+        setFormTitle("Router create");
+        setModalFields([
+          {
+            title: "Facility",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Gateway",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Name",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            title: "Serial",
+            fieldType: "form",
+            inputType: "number",
+          },
+          {
+            title: "Location info",
+            fieldType: "form",
+            inputType: "text",
+          },
+        ]);
+        break;
+      case "gateways":
+        setFormTitle("Gateway create");
+        setModalFields([
+          {
+            title: "Facility",
+            fieldType: "form-customer-entity-select",
+          },
+          {
+            title: "Name",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            title: "Serial",
+            fieldType: "form",
+            inputType: "number",
+          },
+          {
+            title: "Location info",
+            fieldType: "form",
+            inputType: "text",
+          },
+          {
+            fieldType: "images",
+            fileType: "equipment",
+            mode: "single",
+            types: [{ typeID: "1" }],
+            titleNeeded: false,
+          },
+          {
+            fieldType: "images",
+            fileType: "location",
+            mode: "single",
+            types: [{ typeID: "1" }],
+            titleNeeded: false,
+          },
+        ]);
+        break;
+      default:
+        break;
+    }
+    setFormTitle(`${name.charAt(0).toUpperCase() + name.slice(1)} ${mode}`);
+    setEntityName(name);
+  }, [entity]);
 
   useEffect(() => {
     if (customerStructure) {
@@ -486,102 +595,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode = "create" }) => {
     }
   }, [customerStructure, subEntity, entity]);
 
-  const formatNames = (list, type) => {
-    const newList = [];
-    switch (type) {
-      case "object":
-        for (const [, value] of Object.entries(list)) {
-          newList.push({ id: value.id, name: value.name || value.serial });
-        }
-        break;
-      case "array":
-        console.log(list);
-        break;
-      default:
-        break;
-    }
-
-    return newList;
-  };
-
-  const onSubmit = (data) => {
-    const body = {};
-
-    if (data["Name"]) body["name"] = data.name;
-    if (data["Email"]) body["email"] = data.email;
-    if (data["Phone"]) body["phone"] = data.phone;
-    if (data["Address"]) body["address"] = data.address;
-    if (data["Activity"]) body["activity"] = data.activity;
-    if (data["Headname"]) body["head_name"] = data.headname;
-    body["img"] = [
-      {
-        type_id: 1,
-        img: locationImg[0].img,
-      },
-      {
-        type_id: 2,
-        img: equipmentImg[0].img,
-      },
-    ];
-
-    fetch(
-      process.env.REACT_APP_SERVER_URL +
-        "/api/" +
-        entityName +
-        "/create?access-token=" +
-        localStorage.getItem("token"),
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-
-    document.querySelector("#form").reset();
-  };
-
-  const handleRefSelect = (e) => {
-    setRefID(e.target.value);
-  };
-
-  const handleTypeSelect = (e) => {
-    setTypeID(e.target.value);
-  };
-
-  const handleFacilitySelect = (e) => {
-    setFacilityID(e.target.value);
-  };
-
-  const handleEquipmentSelect = (e) => {
-    setEquipmentID(e.target.value);
-  };
-
-  const handleGatewaySelect = (e) => {
-    setGatewayID(e.target.value);
-  };
-
-  const toggleAddFieldModal = () => {
-    setAddFieldModal(!addFieldModal);
-  };
-
-  const handleAddFieldFormSubmit = (e, fields, fieldCount) => {
-    e.preventDefault();
-
-    const newFields = fields;
-
-    newFields.push({
-      id: `field${fieldCount + 1}`,
-      title: e.target.elements["add-field-field"].value,
-    });
-
-    setCustomFieldsCount(fieldCount + 1);
-    setCustomFields(newFields);
-
-    toggleAddFieldModal();
-  };
-
   useEffect(() => {
     if (equipmentTypeList && equipmentTypeList.length > 0) {
       setTypeID(equipmentTypeList[0].id);
@@ -630,7 +643,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode = "create" }) => {
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
-                        {...register(field.title, {
+                        {...register(field.title.toLowerCase(), {
                           required: {
                             value: true,
                             message: `${field.title.toLowerCase()} is required.`,
@@ -653,7 +666,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode = "create" }) => {
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
-                        {...register(field.title, {
+                        {...register(field.title.toLowerCase(), {
                           required: {
                             value: true,
                             message: `${field.title} is required.`,
@@ -677,7 +690,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode = "create" }) => {
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
-                        {...register(field.title, {
+                        {...register(field.title.toLowerCase(), {
                           required: {
                             value: true,
                             message: `${field.title} is required.`,
@@ -700,7 +713,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode = "create" }) => {
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
-                        {...register(field.title, {
+                        {...register(field.title.toLowerCase(), {
                           required: {
                             value: true,
                             message: `${field.title} is required.`,
@@ -727,8 +740,15 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode = "create" }) => {
                     >
                       {refListNames &&
                         refListNames.map((ref) => (
-                          <option key={ref.id} value={ref.id}>
-                            {ref.id}. {ref.name}
+                          <option
+                            key={ref.id}
+                            value={ref.id}
+                            selected={
+                              ref.id ===
+                              defaultEntity[formattedRouteName + "_id"]
+                            }
+                          >
+                            {ref.name}
                           </option>
                         ))}
                     </Input>

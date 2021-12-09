@@ -27,7 +27,7 @@ const EquipmentEdit = () => {
       setLoadedImg(process.env.REACT_APP_SERVER_URL + "/" + data.img);
       setImgLoaded(true);
     });
-  }, [reset]);
+  }, []);
   const addImageHandler = (e) => {
     const file = e.target.files[0];
     if (file) {

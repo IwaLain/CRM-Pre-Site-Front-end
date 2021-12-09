@@ -47,6 +47,7 @@ const List = ({ type, title }) => {
     setSelectedCustomer,
     setCustomerStructure,
     setEquipmentTypeList,
+    setEditId,
   } = useContext(GlobalContext);
 
   const match = useRouteMatch();
@@ -268,8 +269,9 @@ const List = ({ type, title }) => {
       <ModalSketch
         entity={type && type.entity}
         subEntity={type && type.ref}
-        modal={testModal}
-        toggle={testToggle}
+        modal={showFormModal}
+        toggle={toggleModal}
+        mode={mode}
       />
       <div className="list">
         <div className="list__header">
@@ -285,7 +287,15 @@ const List = ({ type, title }) => {
               +
             </button>
           </div>
-          <button onClick={testToggle}>Test Modal</button>
+          <button
+            onClick={() => {
+              setMode("edit");
+              setEditId(4);
+              toggleModal();
+            }}
+          >
+            Test Modal
+          </button>
           <div className="list__options">
             {showEntitySelect && (
               <div className="list__select-entity">
