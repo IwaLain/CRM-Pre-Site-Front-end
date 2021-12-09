@@ -194,30 +194,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   };
 
   useEffect(() => {
-    console.log(1);
-    if (editId && entityName) {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/" +
-          entityName +
-          "/" +
-          editId +
-          "?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setDefaultEntity(data[entityName][editId]);
-          reset({
-            ...data[entityName][editId],
-            headname: data[entityName][editId]["head_name"],
-          });
-        });
-    }
-  }, [entity]);
-
-  useEffect(() => {
     let name = "";
 
     switch (entity) {
@@ -594,7 +570,30 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       }
     }
   }, [customerStructure, subEntity, entity]);
-
+  useEffect(() => {
+    console.log(1);
+    console.log("entity");
+    if (editId && entityName && entity) {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/" +
+          entityName +
+          "/" +
+          editId +
+          "?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setDefaultEntity(data[entityName][editId]);
+          reset({
+            ...data[entityName][editId],
+            headname: data[entityName][editId]["head_name"],
+          });
+        });
+    }
+  }, [editId, entityName, entity, reset]);
   useEffect(() => {
     if (equipmentTypeList && equipmentTypeList.length > 0) {
       setTypeID(equipmentTypeList[0].id);
