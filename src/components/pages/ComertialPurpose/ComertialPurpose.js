@@ -23,37 +23,67 @@ import Previews from './Preview/Preview';
 import { PDFViewer } from '@react-pdf/renderer';
 import { validation } from '../../../js/helpers/validation';
 
-const data = [
-    {
-        id: 1,
-        item: 'Gw2-1011',
-        description: '',
-        units: 'EA',
-        quantity: 4,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 2,
-        item: 'Gw2-1010',
-        description: '',
-        units: 'EA',
-        quantity: 3,
-        amount: 0,
-        rate: 0
-    },
-]
-
 const ComertialPurpouse = () => {
-    const [currentData, setCurrentData] = useState(data)
+    const [currentData, setCurrentData] = useState([])
     const [cols, setCols] = useState([])
     const [amount, setAmount] = useState(0)
     const [total, setTotal] = useState(0)
     const [barcode, setBarcode] = useState('') 
-    const quote = 'Q' + Math.floor(Math.random() * (9999 - 1000 + 1))
+    const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1)))
     const date = new Date().toLocaleDateString('en-US')
     const { selectedCustomer } = useContext(GlobalContext)
     const newData = []
+
+    const columns = [
+        // {
+            // name: 'Description',
+            // selector: row => row['Sensors'], 
+            // cell: row => <input
+            //     name='description'
+            //     className="ui-kit__input"
+            //     onBlur={(e) => {
+            //         row['description'] = e.target.value
+            //         updateObjectInArray(currentData, row['id'], row['description'])
+            //     }}
+            // />,
+        // },
+        // {
+        //     name: 'Units',
+        //     selector: row => row['Routers'],
+        // },
+        // {
+            // name: 'Rate',
+            // selector: row => row['rate'],
+            // cell: row => <input
+            //     name='rate'
+            //     className="ui-kit__input"
+            //     onBlur={(e) => {
+            //         row['rate'] = Number(e.target.value)
+            //         row['amount'] = row['quantity'] * row['rate']
+            //         updateObjectInArray(currentData, row['id'], row['amount'])
+            //         summary(Number(row['amount']))
+            //     }}
+            // />
+        // },
+        // {
+        //     name: 'Amount',
+        //     selector: row => row['amount'],
+        //     cell: row => row['amount']
+        // },
+    ];
+
+    const updateObjectInArray = (array, index, updateItem) => {
+        return array.map((item, i) => {
+            if (i !== index) {
+                console.log(item)
+                return item
+            }
+            return {
+                ...item,
+                ...updateItem
+            }
+        })
+    }
 
     const { 
         register,
@@ -66,123 +96,116 @@ const ComertialPurpouse = () => {
 
     const summary = (amount) => setTotal(Number(total + amount))
 
-    const updateObjectInArray = (array, index, updateItem) => {
-        return array.map((item, i) => {
-            if (i !== index) {
-                return item
-            }
-            return {
-                ...item,
-                ...updateItem
-            }
-        })
-    }
-
-    const columns = [
-        {
-            name: 'Item',
-            selector: row => row['item']
-        },
-        {
-            name: 'Description',
-            selector: row => row['Sensors'], 
-            cell: row => <input
-                name='description'
-                className="ui-kit__input"
-                onBlur={(e) => {
-                    row['description'] = e.target.value
-                    updateObjectInArray(currentData, row['id'], row['description'])
-                }}
-            />,
-        },
-        {
-            name: 'Units',
-            selector: row => row['Routers'],
-        },
-        {
-            name: 'Quantity',
-            selector: row => row,
-        },
-        {
-            name: 'Rate',
-            selector: row => row['rate'],
-            cell: row => <input
-                name='rate'
-                className="ui-kit__input"
-                onBlur={(e) => {
-                    row['rate'] = Number(e.target.value)
-                    row['amount'] = row['quantity'] * row['rate']
-                    updateObjectInArray(currentData, row['id'], row['amount'])
-                    summary(Number(row['amount']))
-                }}
-            />
-        },
-        {
-            name: 'Amount',
-            selector: row => row['amount'],
-            cell: row => row['amount']
-        },
-    ];
-
-    const onSubmit = (e) => {
-        const tableData = {
-            'rate': e.rate,
-            'description': e.description,
-            'total': total,
-            'amount': e.amount
-        }
-
-        const formData = {
-            'bill': e.bill,
-            'ship': e.ship,
-            'expires': e.expires,
-            'memo': e.memo
-        }
-
-        const quote = {
-            'quote': e.quote,
-        }
-
-        Profile.createBarcode(quote)
-        .then(data => {
-            setBarcode(process.env.REACT_APP_SERVER_URL + '/' + data.barcode)
-
-            if (data.status) {
-                alert('success', data.status)
-            } else {
-                alert('error', 'Something was wrong')
-            }
-        })
-    }
-
     useEffect(() => {
         customersApi.getNetwork(selectedCustomer.id)
         .then(data => {
             setCurrentData(data.Network)
-        })
-        
-        
-        // setCurrentData(newData);
 
-        Object.keys(currentData).forEach(key => {
-            if (key !== 'id') {
-                columns.push({
-                    name: key,
-                    selector: row => row[key] 
-                })
+            let index = 0;
+            for (const [key, value] of Object.entries(data.Network)) {
+                const obj = {}
+
+                obj['item'] = key
+                obj['description'] = ''
+                obj['units'] = 'EA'
+                obj['quantity'] = Number(value)
+                obj['rate'] = 0
+                obj['amount'] = 0
+                newData.unshift(obj)
+                index++
             }
-            console.log(currentData[key])
-        }) 
 
-        for (let i in currentData) {
-            let o = new Object()
-            o[i] = currentData[i]
-            newData.push(o)
-            debugger
-        }
-        console.log(newData)
-        
+            setCurrentData(newData)
+
+            Object.keys(newData[0]).forEach(key => {
+                if ( key === 'item' || key === 'units' || key === 'quantity' ) {
+                    columns.push({
+                        name: key,
+                        selector: row => row[key]
+                    })
+                }
+                if ( key === 'description') {
+                    columns.push({
+                        name: key,
+                        selector: row => row[key], 
+                        cell: row => <input
+                            name={key}
+                            className="ui-kit__input"
+                            onBlur={(e) => {
+                                row[key] = e.target.value
+                                // updateObjectInArray(currentData, row['id'], row[key])
+                            }}
+                        />,
+                    })
+                }
+                if ( key === 'rate') {
+                    columns.push({
+                        name: key,
+                        selector: row => row[key],
+                        cell: row => <input
+                            name={key}
+                            className="ui-kit__input"
+                            onBlur={(e) => {
+                                row[key] = Number(e.target.value)
+                                row['amount'] = row['quantity'] * row['rate']
+                                // updateObjectInArray(currentData, row['id'], row['amount'])
+                                summary(Number(row['amount']))
+                            }}
+                        />
+                    })
+                }
+                if ( key === 'amount') {
+                    columns.push({
+                        name: key,
+                        selector: row => row['amount'],
+                        cell: row => row['amount']
+                    })
+                }
+            })
+
+            setCols(columns) 
+        })
     }, [])
+
+    // const jsPdfGenerator = (path) => {
+    //     let doc = new jsPDF('p', 'pt', 'a4')
+    //     doc.html(document.querySelector("#purpose"), {
+    //         callback: (pdf) => {
+    //             pdf.save(process.env.REACT_APP_SERVER_URL + "/" + path)
+    //         }
+    //     })
+    // }
+
+    const onSubmit = (e) => {
+        const data = {
+            'billTo': e.bill,
+            'shipTo': e.ship,
+            'expires': e.expires,
+            'memo': e.memo,
+            'date': date,
+            'quote': quote,
+            items: currentData
+        }
+
+        Profile.createPdf(data)
+        .then(data => {
+            if (data.status) {
+                alert('success', data.status)
+                // jsPdfGenerator(data.pdf)
+                let a = document.createElement("a")
+                let url = process.env.REACT_APP_SERVER_URL + "/" + data.pdf
+                a.href = URL.createObjectURL(url)
+                a.setAttribute("download", 'ComertialPurpose')
+                a.setAttribute("target", "_blank")
+                a.click()
+            } else {
+                alert('error', 'Something was wrong')
+            }
+        })
+
+        console.log(data)
+        
+    }
 
     return (
         <div className="purpose" id="purpose">
@@ -195,8 +218,8 @@ const ComertialPurpouse = () => {
                 </Col>
                 <Col lg={{offset:1, size:3}} md={5} sm={6} className='purpose__adress'>
                     Waites Sensor Techologies, Inc.<br/>
-                    20 W. 11th St. Suite 200<br/> 
-                    Covington, KY 41011<br/>
+                    20 W. 11th St. Suite 200<br/> Covington, KY 41011<br/>
+
                     <div className="mt-3">(800)574-9248 www.waites.net</div>
                 </Col>
             </Row>
@@ -274,6 +297,7 @@ const ComertialPurpouse = () => {
                             </Row>
                         </Col>
                     </Row>
+
                     <FormGroup className="purpose__table">
                         <Col>
                             <Label>Email orders to orders@waites.net</Label>
@@ -304,6 +328,7 @@ const ComertialPurpouse = () => {
                         </Col>
                         <Col lg={1} md={2}>
                             <Button
+                                id='purpose'
                                 form='form'>
                                 Create PDF
                             </Button>
