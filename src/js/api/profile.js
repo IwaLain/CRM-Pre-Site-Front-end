@@ -46,9 +46,9 @@ const Profile = {
         })
     },
 
-    createBarcode: async (data) => {
+    createPdf: async (data) => {
         const token = getToken()
-        if ( token ) return await apiRequest('POST', BASE_URL + `/api/commercial-purpose/barcode?access-token=${token}`, data, {
+        if ( token ) return await apiRequest('POST', BASE_URL + `/api/commercial-purpose/create-pdf?access-token=${token}`, data, {
             'Content-Type':'application/json'
         })
     }

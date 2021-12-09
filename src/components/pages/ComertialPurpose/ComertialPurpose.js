@@ -23,87 +23,67 @@ import Previews from './Preview/Preview';
 import { PDFViewer } from '@react-pdf/renderer';
 import { validation } from '../../../js/helpers/validation';
 
-const data = [
-    {
-        id: 1,
-        item: 'Gw2-1011',
-        description: '',
-        units: 'EA',
-        quantity: 4,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 2,
-        item: 'Gw2-1010',
-        description: '',
-        units: 'EA',
-        quantity: 3,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 3,
-        item: 'Gw2-1102',
-        description: '',
-        units: 'EA',
-        quantity: 200,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 4,
-        item: 'Gw2-1606',
-        description: '',
-        units: 'EA',
-        quantity: 5,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 5,
-        item: 'Gw2-1018',
-        description: '',
-        units: 'EA',
-        quantity: 6,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 6,
-        item: 'Gw2-1018',
-        description: '',
-        units: 'EA',
-        quantity: 6,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 7,
-        item: 'Gw2-1018',
-        description: '',
-        units: 'EA',
-        quantity: 6,
-        amount: 0,
-        rate: 0
-    },
-]
-
 const ComertialPurpouse = () => {
-    const [currentData, setCurrentData] = useState()
+    const [currentData, setCurrentData] = useState([])
+    const [cols, setCols] = useState([])
     const [amount, setAmount] = useState(0)
     const [total, setTotal] = useState(0)
     const [barcode, setBarcode] = useState('') 
     const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1)))
     const date = new Date().toLocaleDateString('en-US')
-    const { userProfile, selectedCustomer } = useContext(GlobalContext)
+    const { selectedCustomer } = useContext(GlobalContext)
+    const newData = []
 
-    useEffect(() => {
-        customersApi.getNetwork(selectedCustomer.id)
-        .then(data => {
-            setCurrentData(data.Network)
+    const columns = [
+        // {
+            // name: 'Description',
+            // selector: row => row['Sensors'], 
+            // cell: row => <input
+            //     name='description'
+            //     className="ui-kit__input"
+            //     onBlur={(e) => {
+            //         row['description'] = e.target.value
+            //         updateObjectInArray(currentData, row['id'], row['description'])
+            //     }}
+            // />,
+        // },
+        // {
+        //     name: 'Units',
+        //     selector: row => row['Routers'],
+        // },
+        // {
+            // name: 'Rate',
+            // selector: row => row['rate'],
+            // cell: row => <input
+            //     name='rate'
+            //     className="ui-kit__input"
+            //     onBlur={(e) => {
+            //         row['rate'] = Number(e.target.value)
+            //         row['amount'] = row['quantity'] * row['rate']
+            //         updateObjectInArray(currentData, row['id'], row['amount'])
+            //         summary(Number(row['amount']))
+            //     }}
+            // />
+        // },
+        // {
+        //     name: 'Amount',
+        //     selector: row => row['amount'],
+        //     cell: row => row['amount']
+        // },
+    ];
+
+    const updateObjectInArray = (array, index, updateItem) => {
+        return array.map((item, i) => {
+            if (i !== index) {
+                console.log(item)
+                return item
+            }
+            return {
+                ...item,
+                ...updateItem
+            }
         })
-    }, [])
+    }
 
     const { 
         register,
@@ -114,98 +94,117 @@ const ComertialPurpouse = () => {
         }
     })
 
-    console.log(currentData)
-
     const summary = (amount) => setTotal(Number(total + amount))
 
-    const updateObjectInArray = (array, index, updateItem) => {
-        return array.map((item, i) => {
-            if (i !== index) {
-                return item
-            }
-            return {
-                ...item,
-                ...updateItem
-            }
-        })
-    }
+    useEffect(() => {
+        customersApi.getNetwork(selectedCustomer.id)
+        .then(data => {
+            setCurrentData(data.Network)
 
-    const columns = [
-        {
-            name: 'Item',
-        },
-        {
-            name: 'Description',
-            selector: row => row['Sensors'],
-            cell: row => <input
-                name='description'
-                className="ui-kit__input"
-                onBlur={(e) => {
-                    row['description'] = e.target.value
-                    updateObjectInArray(currentData, row['id'], row['description'])
-                }}
-            />,
-        },
-        {
-            name: 'Units',
-            selector: row => row['Routers'],
-        },
-        {
-            name: 'Quantity',
-            selector: row => row['quantity'],
-        },
-        {
-            name: 'Rate',
-            selector: row => row['rate'],
-            cell: row => <input
-                name='rate'
-                className="ui-kit__input"
-                onBlur={(e) => {
-                    row['rate'] = Number(e.target.value)
-                    row['amount'] = row['quantity'] * row['rate']
-                    updateObjectInArray(currentData, row['id'], row['amount'])
-                    summary(Number(row['amount']))
-                }}
-            />
-        },
-        {
-            name: 'Amount',
-            selector: row => row['amount'],
-            cell: row => row['amount']
-        },
-    ];
+            let index = 0;
+            for (const [key, value] of Object.entries(data.Network)) {
+                const obj = {}
+
+                obj['item'] = key
+                obj['description'] = ''
+                obj['units'] = 'EA'
+                obj['quantity'] = Number(value)
+                obj['rate'] = 0
+                obj['amount'] = 0
+                newData.unshift(obj)
+                index++
+            }
+
+            setCurrentData(newData)
+
+            Object.keys(newData[0]).forEach(key => {
+                if ( key === 'item' || key === 'units' || key === 'quantity' ) {
+                    columns.push({
+                        name: key,
+                        selector: row => row[key]
+                    })
+                }
+                if ( key === 'description') {
+                    columns.push({
+                        name: key,
+                        selector: row => row[key], 
+                        cell: row => <input
+                            name={key}
+                            className="ui-kit__input"
+                            onBlur={(e) => {
+                                row[key] = e.target.value
+                                // updateObjectInArray(currentData, row['id'], row[key])
+                            }}
+                        />,
+                    })
+                }
+                if ( key === 'rate') {
+                    columns.push({
+                        name: key,
+                        selector: row => row[key],
+                        cell: row => <input
+                            name={key}
+                            className="ui-kit__input"
+                            onBlur={(e) => {
+                                row[key] = Number(e.target.value)
+                                row['amount'] = row['quantity'] * row['rate']
+                                // updateObjectInArray(currentData, row['id'], row['amount'])
+                                summary(Number(row['amount']))
+                            }}
+                        />
+                    })
+                }
+                if ( key === 'amount') {
+                    columns.push({
+                        name: key,
+                        selector: row => row['amount'],
+                        cell: row => row['amount']
+                    })
+                }
+            })
+
+            setCols(columns) 
+        })
+    }, [])
+
+    // const jsPdfGenerator = (path) => {
+    //     let doc = new jsPDF('p', 'pt', 'a4')
+    //     doc.html(document.querySelector("#purpose"), {
+    //         callback: (pdf) => {
+    //             pdf.save(process.env.REACT_APP_SERVER_URL + "/" + path)
+    //         }
+    //     })
+    // }
 
     const onSubmit = (e) => {
-        const tableData = {
-            'rate': e.rate,
-            'description': e.description,
-            'total': total,
-            'amount': e.amount
-        }
-
-        const formData = {
-            'bill': e.bill,
-            'ship': e.ship,
+        const data = {
+            'billTo': e.bill,
+            'shipTo': e.ship,
             'expires': e.expires,
-            'memo': e.memo
+            'memo': e.memo,
+            'date': date,
+            'quote': quote,
+            items: currentData
         }
 
-        const quote = {
-            'quote': e.quote,
-        }
-
-        Profile.createBarcode(quote)
+        Profile.createPdf(data)
         .then(data => {
-            setBarcode(process.env.REACT_APP_SERVER_URL + '/' + data.barcode)
-
             if (data.status) {
                 alert('success', data.status)
+                // jsPdfGenerator(data.pdf)
+                let a = document.createElement("a")
+                let url = process.env.REACT_APP_SERVER_URL + "/" + data.pdf
+                a.href = URL.createObjectURL(url)
+                a.setAttribute("download", 'ComertialPurpose')
+                a.setAttribute("target", "_blank")
+                a.click()
             } else {
                 alert('error', 'Something was wrong')
             }
         })
+
+        console.log(data)
         
-        // jsPdfGenerator()
     }
 
     return (
@@ -305,7 +304,7 @@ const ComertialPurpouse = () => {
                             <DataTable
                                 dense
                                 direction="auto"
-                                columns={columns}
+                                columns={cols}
                                 data={currentData}
                             />
                         </Col>
@@ -329,6 +328,7 @@ const ComertialPurpouse = () => {
                         </Col>
                         <Col lg={1} md={2}>
                             <Button
+                                id='purpose'
                                 form='form'>
                                 Create PDF
                             </Button>
