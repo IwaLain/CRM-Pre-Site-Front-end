@@ -10,6 +10,7 @@ export const apiRequest = async (
         method: method,
       });
       const json = await response.json();
+
       return await json;
     } catch (error) {
       console.error("Error: ", error);
@@ -24,7 +25,9 @@ export const apiRequest = async (
 
       const json = await response.json();
 
-      return await json;
+      if (response !== undefined) {
+        return await json;
+      } 
     } catch (error) {
       console.error("Error: ", error);
     }

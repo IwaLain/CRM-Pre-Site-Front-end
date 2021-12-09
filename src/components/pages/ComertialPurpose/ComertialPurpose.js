@@ -42,68 +42,18 @@ const data = [
         amount: 0,
         rate: 0
     },
-    {
-        id: 3,
-        item: 'Gw2-1102',
-        description: '',
-        units: 'EA',
-        quantity: 200,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 4,
-        item: 'Gw2-1606',
-        description: '',
-        units: 'EA',
-        quantity: 5,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 5,
-        item: 'Gw2-1018',
-        description: '',
-        units: 'EA',
-        quantity: 6,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 6,
-        item: 'Gw2-1018',
-        description: '',
-        units: 'EA',
-        quantity: 6,
-        amount: 0,
-        rate: 0
-    },
-    {
-        id: 7,
-        item: 'Gw2-1018',
-        description: '',
-        units: 'EA',
-        quantity: 6,
-        amount: 0,
-        rate: 0
-    },
 ]
 
 const ComertialPurpouse = () => {
-    const [currentData, setCurrentData] = useState()
+    const [currentData, setCurrentData] = useState(data)
+    const [cols, setCols] = useState([])
     const [amount, setAmount] = useState(0)
     const [total, setTotal] = useState(0)
     const [barcode, setBarcode] = useState('') 
-    const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1)))
+    const quote = 'Q' + Math.floor(Math.random() * (9999 - 1000 + 1))
     const date = new Date().toLocaleDateString('en-US')
-    const { userProfile, selectedCustomer } = useContext(GlobalContext)
-
-    useEffect(() => {
-        customersApi.getNetwork(selectedCustomer.id)
-        .then(data => {
-            setCurrentData(data.Network)
-        })
-    }, [])
+    const { selectedCustomer } = useContext(GlobalContext)
+    const newData = []
 
     const { 
         register,
@@ -113,8 +63,6 @@ const ComertialPurpouse = () => {
             quote: quote
         }
     })
-
-    console.log(currentData)
 
     const summary = (amount) => setTotal(Number(total + amount))
 
@@ -133,10 +81,11 @@ const ComertialPurpouse = () => {
     const columns = [
         {
             name: 'Item',
+            selector: row => row['item']
         },
         {
             name: 'Description',
-            selector: row => row['Sensors'],
+            selector: row => row['Sensors'], 
             cell: row => <input
                 name='description'
                 className="ui-kit__input"
@@ -152,7 +101,7 @@ const ComertialPurpouse = () => {
         },
         {
             name: 'Quantity',
-            selector: row => row['quantity'],
+            selector: row => row,
         },
         {
             name: 'Rate',
@@ -204,9 +153,36 @@ const ComertialPurpouse = () => {
                 alert('error', 'Something was wrong')
             }
         })
-        
-        // jsPdfGenerator()
     }
+
+    useEffect(() => {
+        customersApi.getNetwork(selectedCustomer.id)
+        .then(data => {
+            setCurrentData(data.Network)
+        })
+        
+        
+        // setCurrentData(newData);
+
+        Object.keys(currentData).forEach(key => {
+            if (key !== 'id') {
+                columns.push({
+                    name: key,
+                    selector: row => row[key] 
+                })
+            }
+            console.log(currentData[key])
+        }) 
+
+        for (let i in currentData) {
+            let o = new Object()
+            o[i] = currentData[i]
+            newData.push(o)
+            debugger
+        }
+        console.log(newData)
+        
+    }, [])
 
     return (
         <div className="purpose" id="purpose">
@@ -219,8 +195,8 @@ const ComertialPurpouse = () => {
                 </Col>
                 <Col lg={{offset:1, size:3}} md={5} sm={6} className='purpose__adress'>
                     Waites Sensor Techologies, Inc.<br/>
-                    20 W. 11th St. Suite 200<br/> Covington, KY 41011<br/>
-
+                    20 W. 11th St. Suite 200<br/> 
+                    Covington, KY 41011<br/>
                     <div className="mt-3">(800)574-9248 www.waites.net</div>
                 </Col>
             </Row>
@@ -298,14 +274,13 @@ const ComertialPurpouse = () => {
                             </Row>
                         </Col>
                     </Row>
-
                     <FormGroup className="purpose__table">
                         <Col>
                             <Label>Email orders to orders@waites.net</Label>
                             <DataTable
                                 dense
                                 direction="auto"
-                                columns={columns}
+                                columns={cols}
                                 data={currentData}
                             />
                         </Col>
