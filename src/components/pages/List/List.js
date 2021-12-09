@@ -260,12 +260,12 @@ const List = ({ type, title }) => {
 
   return (
     <>
-      <ModalComponent
+      {/* <ModalComponent
         modal={showFormModal}
         toggle={toggleModal}
         type={type}
         mode={mode}
-      />
+      /> */}
       <ModalSketch
         entity={type && type.entity}
         subEntity={type && type.ref}

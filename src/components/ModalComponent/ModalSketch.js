@@ -117,39 +117,65 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const onSubmit = (data) => {
     const body = {};
 
-    if (data["Name"]) body["name"] = data["Name"];
-    if (data["Serial"]) body["serial"] = data["Serial"];
-    if (data["Email"]) body["email"] = data["Email"];
-    if (data["Phone"]) body["phone"] = data["Phone"];
-    if (data["Address"]) body["address"] = data["Address"];
-    if (data["Activity"]) body["activity"] = data["Activity"];
-    if (data["Headname"]) body["head_name"] = data["Headname"];
-    body["img"] = [
-      {
-        type_id: 1,
-        img: locationImg[0].img,
-      },
-      {
-        type_id: 2,
-        img: equipmentImg[0].img,
-      },
-    ];
+    // if (data["Name"]) body["name"] = data["Name"];
+    // if (data["Serial"]) body["serial"] = data["Serial"];
+    // if (data["Email"]) body["email"] = data["Email"];
+    // if (data["Phone"]) body["phone"] = data["Phone"];
+    // if (data["Address"]) body["address"] = data["Address"];
+    // if (data["Activity"]) body["activity"] = data["Activity"];
+    // if (data["Headname"]) body["head_name"] = data["Headname"];
+    body["name"] = data["name"];
+    body["serial"] = data["serial"];
+    body["email"] = data["email"];
+    body["phone"] = data["phone"];
+    body["address"] = data["address"];
+    body["activity"] = data["activity"];
+    body["head_name"] = data["headname"];
 
-    fetch(
-      process.env.REACT_APP_SERVER_URL +
-        "/api/" +
-        entityName +
-        "/create?access-token=" +
-        localStorage.getItem("token"),
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-
+    // body["img"] = [
+    //   {
+    //     type_id: 1,
+    //     img: locationImg[0].img,
+    //   },
+    //   {
+    //     type_id: 2,
+    //     img: equipmentImg[0].img,
+    //   },
+    // ];
+    console.log(anyImg);
+    if (mode === "create") {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/" +
+          entityName +
+          "/create?access-token=" +
+          localStorage.getItem("token"),
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+    } else if (mode === "edit") {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/" +
+          entityName +
+          "/update/" +
+          editId +
+          "?access-token=" +
+          localStorage.getItem("token"),
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+    }
     document.querySelector("#form").reset();
   };
 
@@ -524,6 +550,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             formatNames(customerStructure["equipment"], "object")
           );
           setEquipmentID(Object.keys(customerStructure["equipment"])[0]);
+          break;
         case "motes":
           setFacilitiesNames(
             formatNames(customerStructure["facilities"], "object")
@@ -539,6 +566,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             formatNames(customerStructure["equipment"], "object")
           );
           setEquipmentID(Object.keys(customerStructure["equipment"])[0]);
+          break;
         case "nodes":
           setFacilitiesNames(
             formatNames(customerStructure["facilities"], "object")
@@ -549,6 +577,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             formatNames(customerStructure["gateways"], "object")
           );
           setGatewayID(Object.keys(customerStructure["gateways"])[0]);
+          break;
         case "routers":
           setFacilitiesNames(
             formatNames(customerStructure["facilities"], "object")
@@ -559,6 +588,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             formatNames(customerStructure["gateways"], "object")
           );
           setGatewayID(Object.keys(customerStructure["gateways"])[0]);
+          break;
         case "gateways":
           setFacilitiesNames(
             formatNames(customerStructure["facilities"], "object")
