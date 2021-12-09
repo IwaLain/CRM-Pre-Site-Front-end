@@ -290,7 +290,7 @@ const List = ({ type, title }) => {
           <button
             onClick={() => {
               setMode("edit");
-              setEditId(31);
+              setEditId(4);
               toggleModal();
             }}
           >

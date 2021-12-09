@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
+import { Spinner } from "reactstrap";
 const AttachmentList = ({
   titleNeeded = true,
   multiple = true,
@@ -10,8 +11,8 @@ const AttachmentList = ({
   onAddFileServer = null,
   onRemoveFileServer = null,
   setCreatedFiles,
-  style,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [attachedImages, setAttachedImages] = useState([]);
   const [attachedSchemas, setAttachedSchemas] = useState([]);
   const [attachedDocs, setAttachedDocs] = useState([]);
@@ -65,7 +66,7 @@ const AttachmentList = ({
       newFiles = res;
       if (onAddFileServer || setCreatedFiles) {
         const data = res.map((file) => {
-          return { type_id: type, img: file.base64 };
+          return { type_id: type, img: file.base64, isDeleted: 0, id: file.id };
         });
         if (onAddFileServer) {
           let responseData = await onAddFileServer(data, type);
@@ -102,7 +103,24 @@ const AttachmentList = ({
     if (onRemoveFileServer) {
       isDeleted = await onRemoveFileServer(file.id, type);
     } else {
-      setCreatedFiles((state) => state.filter((el) => el.id !== file.id));
+      let fileToDelete;
+
+      fileToDelete = attachedFiles.find((el) => el.id == file.id);
+
+      if (fileToDelete) {
+        console.log(fileToDelete);
+        setCreatedFiles((state) => [
+          ...state,
+          {
+            isDeleted: 1,
+            imageID: fileToDelete.id,
+            type_id: fileToDelete.type_id,
+          },
+        ]);
+      } else {
+        console.log(file.id);
+        setCreatedFiles((state) => state.filter((el) => el.id !== file.id));
+      }
     }
     if (isDeleted) {
       setFilesFunction((state) => {
@@ -125,7 +143,7 @@ const AttachmentList = ({
   // };
 
   useEffect(() => {
-    if (attachedFiles.length > 0) {
+    if (attachedFiles && attachedFiles.length > 0) {
       let updatedFiles = attachedFiles.map((file) => {
         const preview = process.env.REACT_APP_SERVER_URL + "/" + file.img;
 
@@ -147,10 +165,9 @@ const AttachmentList = ({
       });
     }
   }, [attachedFiles]);
-
   return (
     <>
-      <div className="row" style={style}>
+      <div className="row">
         {types && types.find((el) => el.typeID == "1") && (
           <div className="col">
             <AttachedFiles
