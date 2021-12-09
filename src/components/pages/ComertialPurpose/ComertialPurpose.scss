@@ -79,6 +79,17 @@
     &__barcode {
         display: none;
     }
+
+    &__preview {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        visibility: hidden;
+
+        .visible {
+            visibility: visible;
+        }
+    }
 }
 
 @media print {

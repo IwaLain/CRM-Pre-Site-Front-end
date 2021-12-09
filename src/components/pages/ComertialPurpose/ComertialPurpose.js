@@ -21,6 +21,7 @@ import Profile from '../../../js/api/profile';
 import { alert } from '../../../js/helpers/alert';
 import Previews from './Preview/Preview';
 import { PDFViewer } from '@react-pdf/renderer';
+import { validation } from '../../../js/helpers/validation';
 
 const data = [
     {
@@ -29,7 +30,6 @@ const data = [
         description: '',
         units: 'EA',
         quantity: 4,
-        tax: 'Yes',
         amount: 0,
         rate: 0
     },
@@ -39,7 +39,6 @@ const data = [
         description: '',
         units: 'EA',
         quantity: 3,
-        tax: 'Yes',
         amount: 0,
         rate: 0
     },
@@ -49,7 +48,6 @@ const data = [
         description: '',
         units: 'EA',
         quantity: 200,
-        tax: 'Yes',
         amount: 0,
         rate: 0
     },
@@ -59,7 +57,6 @@ const data = [
         description: '',
         units: 'EA',
         quantity: 5,
-        tax: 'Yes',
         amount: 0,
         rate: 0
     },
@@ -69,7 +66,6 @@ const data = [
         description: '',
         units: 'EA',
         quantity: 6,
-        tax: 'Yes',
         amount: 0,
         rate: 0
     },
@@ -79,7 +75,6 @@ const data = [
         description: '',
         units: 'EA',
         quantity: 6,
-        tax: 'Yes',
         amount: 0,
         rate: 0
     },
@@ -89,37 +84,37 @@ const data = [
         description: '',
         units: 'EA',
         quantity: 6,
-        tax: 'Yes',
         amount: 0,
         rate: 0
     },
 ]
 
 const ComertialPurpouse = () => {
-    const [currentData, setCurrentData] = useState(data)
+    const [currentData, setCurrentData] = useState()
     const [amount, setAmount] = useState(0)
     const [total, setTotal] = useState(0)
-    const [barcode, setBarcode] = useState('')
+    const [barcode, setBarcode] = useState('') 
     const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1)))
     const date = new Date().toLocaleDateString('en-US')
-    const { userProfile } = useContext(GlobalContext)
+    const { userProfile, selectedCustomer } = useContext(GlobalContext)
 
+    useEffect(() => {
+        customersApi.getNetwork(selectedCustomer.id)
+        .then(data => {
+            setCurrentData(data.Network)
+        })
+    }, [])
 
     const { 
         register,
-        handleSubmit, 
+        handleSubmit,
     } = useForm({
         defaultValues: {
             quote: quote
         }
     })
 
-    useEffect(() => {
-        // customersApi.getNetwork(userProfile.id)
-        // .then(data => {
-        //     console.log(data)
-        // })
-    }, [])
+    console.log(currentData)
 
     const summary = (amount) => setTotal(Number(total + amount))
 
@@ -135,23 +130,13 @@ const ComertialPurpouse = () => {
         })
     }
 
-    const jsPdfGenerator = () => {
-        let doc = new jsPDF('p', 'pt', 'a4')
-        doc.html(document.querySelector("#purpose"), {
-            callback: (pdf) => {
-                pdf.save("weites.pdf")
-            }
-        })
-    }
-
     const columns = [
         {
             name: 'Item',
-            selector: row => row['item'],
         },
         {
             name: 'Description',
-            selector: row => row['description'],
+            selector: row => row['Sensors'],
             cell: row => <input
                 name='description'
                 className="ui-kit__input"
@@ -163,7 +148,7 @@ const ComertialPurpouse = () => {
         },
         {
             name: 'Units',
-            selector: row => row['units'],
+            selector: row => row['Routers'],
         },
         {
             name: 'Quantity',
@@ -221,7 +206,6 @@ const ComertialPurpouse = () => {
         })
         
         // jsPdfGenerator()
-        console.log(currentData)
     }
 
     return (
@@ -265,7 +249,7 @@ const ComertialPurpouse = () => {
                                 <textarea
                                     name='bill'
                                     className="ui-kit__textarea"
-                                    {...register('bill')}
+                                    {...register('bill', validation('address'))}
                                 />
                                 <Label>
                                     Ship to
@@ -273,7 +257,7 @@ const ComertialPurpouse = () => {
                                 <textarea
                                     name='ship'
                                     className="ui-kit__textarea"
-                                    {...register('ship')}
+                                    {...register('ship', validation('address'))}
                                 />
                             </FormGroup>
                         </Col>
@@ -296,7 +280,7 @@ const ComertialPurpouse = () => {
                                     type='text'
                                     name='expires'
                                     className="ui-kit__input"
-                                    {...register('expires')}
+                                    {...register('expires', validation('text'))}
                                 />
                             </Row>
                             <Row className='purpose__info'>
@@ -309,7 +293,7 @@ const ComertialPurpouse = () => {
                                     type='text'
                                     name='memo'
                                     className="ui-kit__input"
-                                    {...register('memo')}
+                                    {...register('memo', validation('text'))}
                                 />
                             </Row>
                         </Col>
@@ -337,6 +321,8 @@ const ComertialPurpouse = () => {
                                 form='form'
                                 onClick={(e) =>{
                                     e.preventDefault()
+                                    let pdf = document.querySelector('.purpose__preview')
+                                    pdf.classList.add('visible')
                                 }}>
                                 Preview
                             </Button>
@@ -353,10 +339,12 @@ const ComertialPurpouse = () => {
                     <img  src={barcode} alt="barcode" />
                     {quote}
                 </div>
+            </Row>
+            <div className='purpose__preview'>
                 <PDFViewer>
                     <Previews/>
                 </PDFViewer>
-            </Row>
+            </div>
         </div>
     )
 }

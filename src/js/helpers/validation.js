@@ -65,6 +65,22 @@ export const validation = (type) => {
                 message: "Name should contain at least 3 symbols.",
               },
           }
+      case 'address':
+          return {
+            required: "Address is Required",
+              minLength: {
+                value: 3,
+                message: "Address should contain at least 3 symbols.",
+              },
+          }
+      case 'text':
+          return {
+            required: `${type} is Required`,
+              minLength: {
+                value: 3,
+                message: `${type} should contain at least 3 symbols.`,
+              },
+          }
       default:
           break
   }

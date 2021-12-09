@@ -147,7 +147,6 @@ const TableView = ({
 
       setCols(columns);
     }
-    console.log(data);
   }, [data]);
 
   useEffect(() => {
