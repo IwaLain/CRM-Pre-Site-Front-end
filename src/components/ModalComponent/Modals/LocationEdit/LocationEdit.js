@@ -106,7 +106,9 @@ const LocationEdit = () => {
       }
     }
     body["jsonData"] = jsonData;
-
+    if (createdFiles && createdFiles.length > 0) {
+      body["img"] = createdFiles;
+    }
     locationApi.editLocation(editId, body).then((res) => {
       if (res.status === "Successfully updated")
         alert("success", "Location updated.");
@@ -259,8 +261,6 @@ const LocationEdit = () => {
           {files && (
             <AttachmentList
               attachedFiles={files}
-              onAddFileServer={addLocationImageServer}
-              onRemoveFileServer={deleteLocationImageServer}
               setCreatedFiles={setCreatedFiles}
             />
           )}

@@ -66,7 +66,7 @@ const AttachmentList = ({
       newFiles = res;
       if (onAddFileServer || setCreatedFiles) {
         const data = res.map((file) => {
-          return { type_id: type, img: file.base64 };
+          return { type_id: type, img: file.base64, isDeleted: 0, id: file.id };
         });
         if (onAddFileServer) {
           let responseData = await onAddFileServer(data, type);
@@ -103,7 +103,24 @@ const AttachmentList = ({
     if (onRemoveFileServer) {
       isDeleted = await onRemoveFileServer(file.id, type);
     } else {
-      setCreatedFiles((state) => state.filter((el) => el.id !== file.id));
+      let fileToDelete;
+
+      fileToDelete = attachedFiles.find((el) => el.id == file.id);
+
+      if (fileToDelete) {
+        console.log(fileToDelete);
+        setCreatedFiles((state) => [
+          ...state,
+          {
+            isDeleted: 1,
+            imageID: fileToDelete.id,
+            type_id: fileToDelete.type_id,
+          },
+        ]);
+      } else {
+        console.log(file.id);
+        setCreatedFiles((state) => state.filter((el) => el.id !== file.id));
+      }
     }
     if (isDeleted) {
       setFilesFunction((state) => {
