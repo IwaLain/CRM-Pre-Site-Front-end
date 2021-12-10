@@ -1,15 +1,15 @@
-import React, { useContext, 
-      useEffect, 
-      useState 
+import React, { useContext,
+      useEffect,
+      useState
     } from 'react'
 import DataTable from 'react-data-table-component';
-import { 
-        Button, 
-        Col, 
-        Form, 
-        FormGroup, 
-        Label, 
-        Row 
+import {
+        Button,
+        Col,
+        Form,
+        FormGroup,
+        Label,
+        Row
     } from 'reactstrap';
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
 import './ComertialPurpose.scss'
@@ -28,7 +28,7 @@ const ComertialPurpouse = () => {
     const [cols, setCols] = useState([])
     const [amount, setAmount] = useState(0)
     const [total, setTotal] = useState(0)
-    const [barcode, setBarcode] = useState('') 
+    const [barcode, setBarcode] = useState('')
     const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1)))
     const date = new Date().toLocaleDateString('en-US')
     const { selectedCustomer } = useContext(GlobalContext)
@@ -37,7 +37,7 @@ const ComertialPurpouse = () => {
     const columns = [
         // {
             // name: 'Description',
-            // selector: row => row['Sensors'], 
+            // selector: row => row['Sensors'],
             // cell: row => <input
             //     name='description'
             //     className="ui-kit__input"
@@ -85,7 +85,7 @@ const ComertialPurpouse = () => {
         })
     }
 
-    const { 
+    const {
         register,
         handleSubmit,
     } = useForm({
@@ -127,7 +127,7 @@ const ComertialPurpouse = () => {
                 if ( key === 'description') {
                     columns.push({
                         name: key,
-                        selector: row => row[key], 
+                        selector: row => row[key],
                         cell: row => <input
                             name={key}
                             className="ui-kit__input"
@@ -163,7 +163,7 @@ const ComertialPurpouse = () => {
                 }
             })
 
-            setCols(columns) 
+            setCols(columns)
         })
     }, [])
 
@@ -193,18 +193,19 @@ const ComertialPurpouse = () => {
                 alert('success', data.status)
                 // jsPdfGenerator(data.pdf)
                 let a = document.createElement("a")
-                let url = process.env.REACT_APP_SERVER_URL + "/" + data.pdf
-                a.href = URL.createObjectURL(url)
-                a.setAttribute("download", 'ComertialPurpose')
-                a.setAttribute("target", "_blank")
+                let url = `${process.env.REACT_APP_SERVER_URL}/${data.pdf}`
+                a.href = url
+                a.download = 'ComertialPurpose'
+                a.target = "_blank"
                 a.click()
+                a.remove()
             } else {
                 alert('error', 'Something was wrong')
             }
         })
 
         console.log(data)
-        
+
     }
 
     return (
@@ -309,8 +310,8 @@ const ComertialPurpouse = () => {
                             />
                         </Col>
                     </FormGroup>
-                    <Col 
-                        md={2} 
+                    <Col
+                        md={2}
                         className='purpose__total'>
                             Total: {'$' + total}
                     </Col>
@@ -326,7 +327,7 @@ const ComertialPurpouse = () => {
                                 Preview
                             </Button>
                         </Col>
-                        <Col lg={1} md={2}>
+                        <Col lg={2} md={2}>
                             <Button
                                 id='purpose'
                                 form='form'>
@@ -335,10 +336,6 @@ const ComertialPurpouse = () => {
                         </Col>
                     </FormGroup>
                 </Form>
-                <div className='purpose__barcode'>
-                    <img  src={barcode} alt="barcode" />
-                    {quote}
-                </div>
             </Row>
             <div className='purpose__preview'>
                 <PDFViewer>
