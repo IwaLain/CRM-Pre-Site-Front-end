@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Button,
         Col,
@@ -8,12 +8,10 @@ import './Users.scss'
 import User from '../../../js/api/users'
 import UserTable from './UserTable/UserTable'
 import UserModal from './UserModal/UserModal'
-import { GlobalContext } from '../../../context'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
     const [modalAddUser, setModalAddUser] = useState(false)
-    const {userProfile} = useContext(GlobalContext)
 
     const toggleAddUser = () => setModalAddUser(!modalAddUser)
 

@@ -14,75 +14,28 @@ import {
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
 import './ComertialPurpose.scss'
 import { useForm } from 'react-hook-form';
-import jsPDF from 'jspdf'
 import customersApi from '../../../js/api/customer';
 import { GlobalContext } from '../../../context';
-import Profile from '../../../js/api/profile';
 import { alert } from '../../../js/helpers/alert';
 import Previews from './Preview/Preview';
 import { PDFViewer } from '@react-pdf/renderer';
 import { validation } from '../../../js/helpers/validation';
+import { getToken } from '../../../js/helpers/helpers';
+import { BASE_URL } from '../../../js/api/constants';
+import { ToastContainer } from 'react-toastify';
 
 const ComertialPurpouse = () => {
+    const token = getToken()
     const [currentData, setCurrentData] = useState([])
     const [cols, setCols] = useState([])
-    const [amount, setAmount] = useState(0)
-    const [total, setTotal] = useState(0)
-    const [barcode, setBarcode] = useState('')
-    const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1)))
-    const date = new Date().toLocaleDateString('en-US')
     const { selectedCustomer } = useContext(GlobalContext)
+    const quote = 'Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000)
+    const date = new Date().toLocaleDateString('en-US')
     const newData = []
+    const columns = []    
 
-    const columns = [
-        // {
-            // name: 'Description',
-            // selector: row => row['Sensors'],
-            // cell: row => <input
-            //     name='description'
-            //     className="ui-kit__input"
-            //     onBlur={(e) => {
-            //         row['description'] = e.target.value
-            //         updateObjectInArray(currentData, row['id'], row['description'])
-            //     }}
-            // />,
-        // },
-        // {
-        //     name: 'Units',
-        //     selector: row => row['Routers'],
-        // },
-        // {
-            // name: 'Rate',
-            // selector: row => row['rate'],
-            // cell: row => <input
-            //     name='rate'
-            //     className="ui-kit__input"
-            //     onBlur={(e) => {
-            //         row['rate'] = Number(e.target.value)
-            //         row['amount'] = row['quantity'] * row['rate']
-            //         updateObjectInArray(currentData, row['id'], row['amount'])
-            //         summary(Number(row['amount']))
-            //     }}
-            // />
-        // },
-        // {
-        //     name: 'Amount',
-        //     selector: row => row['amount'],
-        //     cell: row => row['amount']
-        // },
-    ];
-
-    const updateObjectInArray = (array, index, updateItem) => {
-        return array.map((item, i) => {
-            if (i !== index) {
-                console.log(item)
-                return item
-            }
-            return {
-                ...item,
-                ...updateItem
-            }
-        })
+    const handlerAmount = (array, itemName, data) => {
+        setCurrentData(array.map(itemData => itemData.item === itemName ? {...itemData, itemName: data} : itemData))
     }
 
     const {
@@ -94,14 +47,11 @@ const ComertialPurpouse = () => {
         }
     })
 
-    const summary = (amount) => setTotal(Number(total + amount))
-
     useEffect(() => {
         customersApi.getNetwork(selectedCustomer.id)
         .then(data => {
             setCurrentData(data.Network)
 
-            let index = 0;
             for (const [key, value] of Object.entries(data.Network)) {
                 const obj = {}
 
@@ -110,12 +60,9 @@ const ComertialPurpouse = () => {
                 obj['units'] = 'EA'
                 obj['quantity'] = Number(value)
                 obj['rate'] = 0
-                obj['amount'] = 0
+                obj['amount'] = 0.00
                 newData.unshift(obj)
-                index++
             }
-
-            setCurrentData(newData)
 
             Object.keys(newData[0]).forEach(key => {
                 if ( key === 'item' || key === 'units' || key === 'quantity' ) {
@@ -133,7 +80,7 @@ const ComertialPurpouse = () => {
                             className="ui-kit__input"
                             onBlur={(e) => {
                                 row[key] = e.target.value
-                                // updateObjectInArray(currentData, row['id'], row[key])
+                                handlerAmount(newData, row['item'], row[key])
                             }}
                         />,
                     })
@@ -147,9 +94,8 @@ const ComertialPurpouse = () => {
                             className="ui-kit__input"
                             onBlur={(e) => {
                                 row[key] = Number(e.target.value)
-                                row['amount'] = row['quantity'] * row['rate']
-                                // updateObjectInArray(currentData, row['id'], row['amount'])
-                                summary(Number(row['amount']))
+                                row['amount'] = row['quantity'] * row[key]
+                                handlerAmount(newData, row['item'], row['amount'])
                             }}
                         />
                     })
@@ -163,18 +109,10 @@ const ComertialPurpouse = () => {
                 }
             })
 
+            setCurrentData(newData)
             setCols(columns)
         })
     }, [])
-
-    // const jsPdfGenerator = (path) => {
-    //     let doc = new jsPDF('p', 'pt', 'a4')
-    //     doc.html(document.querySelector("#purpose"), {
-    //         callback: (pdf) => {
-    //             pdf.save(process.env.REACT_APP_SERVER_URL + "/" + path)
-    //         }
-    //     })
-    // }
 
     const onSubmit = (e) => {
         const data = {
@@ -187,25 +125,28 @@ const ComertialPurpouse = () => {
             items: currentData
         }
 
-        Profile.createPdf(data)
+        fetch(BASE_URL + `/api/commercial-purpose/create-pdf?access-token=${token}`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(data)
+        })
         .then(data => {
-            if (data.status) {
-                alert('success', data.status)
-                // jsPdfGenerator(data.pdf)
-                let a = document.createElement("a")
-                let url = `${process.env.REACT_APP_SERVER_URL}/${data.pdf}`
-                a.href = url
-                a.download = 'ComertialPurpose'
-                a.target = "_blank"
-                a.click()
-                a.remove()
+            if (data) {
+                alert('success', 'Download is success')
+                return data.blob()
             } else {
-                alert('error', 'Something was wrong')
+                alert('success', 'Download is denide')
             }
         })
-
-        console.log(data)
-
+        .then(blob => {
+            let url = window.URL.createObjectURL(blob)
+            let a = document.createElement('a')
+            a.href = url
+            a.download = 'Comertial_Purpose.pdf'
+            document.body.appendChild(a)
+            a.click()
+            a.remove()
+        })
     }
 
     return (
@@ -219,7 +160,8 @@ const ComertialPurpouse = () => {
                 </Col>
                 <Col lg={{offset:1, size:3}} md={5} sm={6} className='purpose__adress'>
                     Waites Sensor Techologies, Inc.<br/>
-                    20 W. 11th St. Suite 200<br/> Covington, KY 41011<br/>
+                    20 W. 11th St. Suite 200<br/> 
+                    Covington, KY 41011<br/>
 
                     <div className="mt-3">(800)574-9248 www.waites.net</div>
                 </Col>
@@ -298,7 +240,6 @@ const ComertialPurpouse = () => {
                             </Row>
                         </Col>
                     </Row>
-
                     <FormGroup className="purpose__table">
                         <Col>
                             <Label>Email orders to orders@waites.net</Label>
@@ -310,11 +251,6 @@ const ComertialPurpouse = () => {
                             />
                         </Col>
                     </FormGroup>
-                    <Col
-                        md={2}
-                        className='purpose__total'>
-                            Total: {'$' + total}
-                    </Col>
                     <FormGroup className='purpose__buttons'>
                         <Col lg={1} md={2}>
                             <Button
@@ -342,6 +278,7 @@ const ComertialPurpouse = () => {
                     <Previews/>
                 </PDFViewer>
             </div>
+            <ToastContainer position="bottom-right" />
         </div>
     )
 }
