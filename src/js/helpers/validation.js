@@ -81,6 +81,14 @@ export const validation = (type) => {
                 message: `${type} should contain at least 3 symbols.`,
               },
           }
+      case 'description':
+          return {
+            required: `${type} is Required`,
+            maxLength: {
+                value: 15,
+                message: "Max 15 simvols",
+            },
+          }
       default:
           break
   }

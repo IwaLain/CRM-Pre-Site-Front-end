@@ -78,7 +78,9 @@ const ComertialPurpouse = () => {
                     columns.push({
                         name: key,
                         selector: row => row[key],
-                        cell: row => <input
+                        cell: row => 
+                        <input
+                            type={key}
                             name={key}
                             className="ui-kit__input"
                             onBlur={(e) => {
@@ -260,8 +262,8 @@ const ComertialPurpouse = () => {
                                 form='form'
                                 onClick={(e) =>{
                                     e.preventDefault()
-                                    let pdf = document.querySelector('.purpose__preview')
-                                    pdf.classList.add('visible')
+                                    // let pdf = document.querySelector('.purpose__preview')
+                                    // pdf.classList.add('visible')
                                 }}>
                                 Preview
                             </Button>
@@ -276,11 +278,11 @@ const ComertialPurpouse = () => {
                     </FormGroup>
                 </Form>
             </Row>
-            <div className='purpose__preview'>
+            {/* <div className='purpose__preview'>
                 <PDFViewer>
                     <Previews/>
                 </PDFViewer>
-            </div>
+            </div> */}
             <ToastContainer position="bottom-right" />
         </div>
     )
