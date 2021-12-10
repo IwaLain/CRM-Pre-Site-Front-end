@@ -10,7 +10,6 @@ import customersApi from "../../../js/api/customer";
 import locationApi from "../../../js/api/locations";
 import equipmentApi from "../../../js/api/equipment";
 import facilitiesApi from "../../../js/api/facilities";
-import ModalComponent from "../../ModalComponent/ModalComponent";
 import Button from "../../UIKit/Button/Button";
 import Select from "../../UIKit/Select/Select";
 import ModalSketch from "../../ModalComponent/ModalSketch";
@@ -47,7 +46,6 @@ const List = ({ type, title }) => {
     setSelectedCustomer,
     setCustomerStructure,
     updateTrigger,
-    setUpdateTrigger,
   } = useContext(GlobalContext);
 
   const match = useRouteMatch();
@@ -248,10 +246,6 @@ const List = ({ type, title }) => {
         });
     }
   }, [entityID]);
-
-  const testToggle = () => {
-    setTestModal(!testModal);
-  };
 
   return (
     <>

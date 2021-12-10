@@ -11,7 +11,7 @@ import NotFound from "./components/pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
 import LoginPage from "./components/pages/Login/Login";
-import UIKit from "./components/UIKit/UIKit";
+import "./scss/ui-kit.scss";
 
 const App = () => {
   const [pageTitle, setPageTitle] = useState();
@@ -52,7 +52,7 @@ const App = () => {
           setCustomerStructure(customerStructure["customerConstruct"])
         );
     }
-  }, [updateTrigger]);
+  }, [selectedCustomer, updateTrigger]);
 
   return (
     <GlobalContext.Provider

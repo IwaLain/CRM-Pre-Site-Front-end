@@ -58,7 +58,6 @@ const FacilityEdit = () => {
       else alert("error", "Request error.");
     });
     setShowFormModal(false);
-    // document.querySelector("#form").reset();
   };
 
   return (

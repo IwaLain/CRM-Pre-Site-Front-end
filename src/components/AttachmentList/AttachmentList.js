@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
-import { Spinner } from "reactstrap";
 import { alert } from "../../js/helpers/alert";
 
 const AttachmentList = ({
@@ -15,7 +14,6 @@ const AttachmentList = ({
   setCreatedFiles,
   fileType,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [attachedImages, setAttachedImages] = useState([]);
   const [attachedSchemas, setAttachedSchemas] = useState([]);
   const [attachedDocs, setAttachedDocs] = useState([]);
@@ -31,31 +29,6 @@ const AttachmentList = ({
     } else if (type == "3") {
       setFilesFunction = setAttachedDocs;
     }
-    // if (onAddFileServer) {
-    //   const updatedFiles = await onAddFileServer(files, type);
-    //   console.log(updatedFiles);
-    //   setFilesFunction(
-    //     updatedFiles.map((file) => {
-    //       return {
-    //         img: file.img,
-    //         preview: process.env.REACT_APP_SERVER_URL + "/" + file.img,
-    //         type_id: file.type_id,
-    //         id: file.id,
-    //       };
-    //     })
-    //   );
-    // }
-    // for (let i = 0; i < files.length; i++) {
-    //   const base64 = await convertToBase64(files[i]);
-    //   const preview = files[i].preview;
-    //   const id = files[i].id;
-    //   const data = { base64, preview, id };
-    //   if (onAddFileServer) {
-    //     const fileData = { img: data.base64, type_id: type };
-    //     const response = await onAddFileServer(id, data);
-    //   }
-    // }
-    // else {
     Promise.all(
       files.map(async (img) => {
         return {
@@ -101,7 +74,6 @@ const AttachmentList = ({
 
       setFilesFunction((state) => [...state, ...newFiles]);
     });
-    // }
   }
   async function onRemoveImage(file, type) {
     let setFilesFunction;
@@ -121,7 +93,6 @@ const AttachmentList = ({
       fileToDelete = attachedFiles.find((el) => el.id == file.id);
 
       if (fileToDelete) {
-        console.log(fileToDelete);
         setCreatedFiles((state) => [
           ...state,
           {
@@ -131,7 +102,6 @@ const AttachmentList = ({
           },
         ]);
       } else {
-        console.log(file.id);
         setCreatedFiles((state) => state.filter((el) => el.id !== file.id));
       }
     }
@@ -143,23 +113,11 @@ const AttachmentList = ({
         } removed.`
       );
       setFilesFunction((state) => {
-        console.log(file.id);
         const updatedFiles = state.filter((el) => el.id !== file.id);
         return updatedFiles;
       });
     }
   }
-
-  // const urlToBase64 = (img) => {
-  //   let canvas = document.createElement("canvas");
-  //   canvas.width = img.width;
-  //   canvas.height = img.height;
-  //   let ctx = canvas.getContext("2d");
-  //   ctx.drawImage(img, 0, 0);
-  //   let dataURL = canvas.toDataURL("image/png");
-
-  //   return dataURL;
-  // };
 
   useEffect(() => {
     if (attachedFiles && attachedFiles.length > 0) {
@@ -176,7 +134,6 @@ const AttachmentList = ({
 
       updatedFiles = updatedFiles.map((file) => {
         const preview = process.env.REACT_APP_SERVER_URL + "/" + file.img;
-        console.log(preview);
 
         return {
           img: file.img,

@@ -82,7 +82,6 @@ const facilitiesApi = {
 
   addFacilityImage: async (facilityId, data) => {
     const token = getToken();
-    console.log(data);
     if (token)
       return apiRequest(
         "POST",

@@ -9,7 +9,6 @@ import {
   FormGroup,
   Col,
   Form,
-  Input,
 } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { GlobalContext } from "../../context";
@@ -54,7 +53,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     register,
     handleSubmit,
     reset,
-    getValues,
     formState: { errors },
   } = useForm();
 
@@ -101,7 +99,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         }
         break;
       case "array":
-        console.log(list);
         break;
       default:
         break;
@@ -186,8 +183,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     } else if (anyImg && anyImg.length > 0) {
       body["img"] = anyImg;
     }
-
-    console.log(body["img"]);
 
     if (mode === "create") {
       fetch(
@@ -665,7 +660,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           switch (entityName) {
             case "customer":
             case "facility":
@@ -676,7 +670,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
               });
               break;
             default:
-              console.log(data);
               setDefaultEntity(data[entityName]);
               let newFields = [];
 
@@ -757,10 +750,10 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         <ModalHeader>{formTitle}</ModalHeader>
         <ModalBody>
           <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-            {modalFields.map((field) =>
+            {modalFields.map((field, index) =>
               field.fieldType === "form" ? (
                 field.inputType === "email" ? (
-                  <FormGroup>
+                  <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
                     <Col sm={12}>
                       <input
@@ -783,7 +776,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     </Col>
                   </FormGroup>
                 ) : field.inputType === "phone" ? (
-                  <FormGroup>
+                  <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
                     <Col sm={12}>
                       <input
@@ -807,7 +800,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     </Col>
                   </FormGroup>
                 ) : field.inputType === "number" ? (
-                  <FormGroup>
+                  <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
                     <Col sm={12}>
                       <input
@@ -830,7 +823,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     </Col>
                   </FormGroup>
                 ) : (
-                  <FormGroup>
+                  <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
                     <Col sm={12}>
                       <input
@@ -854,7 +847,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   </FormGroup>
                 )
               ) : field.fieldType === "form-ref-select" ? (
-                <FormGroup>
+                <FormGroup key={index}>
                   <Label for="select-ref">
                     {subEntity.charAt(0).toUpperCase() + subEntity.slice(1)}
                   </Label>
@@ -910,9 +903,10 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   </FormGroup>
                 </>
               ) : field.fieldType === "images" ? (
-                <div>
+                <div key={index}>
                   {!field.titleNeeded && <span>{field.fileType} image</span>}
                   <AttachmentList
+                    key={index}
                     style={{}}
                     attachedFiles={
                       defaultEntity &&
@@ -934,12 +928,13 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   />
                 </div>
               ) : field.fieldType === "form-type-select" ? (
-                <FormGroup>
+                <FormGroup key={index}>
                   <Label for={`${field.title.toLowerCase()}-field`}>
                     {field.title}
                   </Label>
                   <Col sm={12}>
                     <select
+                      key={index}
                       id={`${field.title.toLowerCase()}-field`}
                       className="ui-kit__select"
                       {...register(field.subID)}
@@ -954,10 +949,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   </Col>
                 </FormGroup>
               ) : field.fieldType === "form-customer-entity-select" ? (
-                <FormGroup>
+                <FormGroup key={index}>
                   <Label for={`${field.title}-field`}>{field.title}</Label>
                   <Col sm={12}>
                     <select
+                      key={index}
                       id={`${field.title}-field`}
                       className="ui-kit__select"
                       {...register(field.subID)}
@@ -993,7 +989,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   </Col>
                 </FormGroup>
               ) : (
-                <div>Bad field</div>
+                <div key={index}>Bad field</div>
               )
             )}
           </Form>

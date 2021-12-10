@@ -68,7 +68,6 @@ const EquipmentCreate = () => {
     const jsonData = [];
 
     for (const [key, value] of Object.entries(data)) {
-      console.log(key);
       switch (key) {
         case "locationID":
         case "name":

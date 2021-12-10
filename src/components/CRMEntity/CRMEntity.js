@@ -10,7 +10,6 @@ import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../InfoCard/InfoCard";
 import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
-import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 import { Spinner } from "reactstrap";
@@ -19,13 +18,8 @@ import ModalSketch from "../ModalComponent/ModalSketch";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
-  const {
-    showFormModal,
-    setShowFormModal,
-    setEntityID,
-    updateTrigger,
-    setUpdateTrigger,
-  } = useContext(GlobalContext);
+  const { showFormModal, setShowFormModal, setEntityID } =
+    useContext(GlobalContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
@@ -155,16 +149,7 @@ const CRMEntity = ({ type }) => {
     case "equipment":
       entityPluralAlias = "equipment";
       break;
-  }
-
-  let subRef = "";
-
-  switch (entityPluralAlias) {
-    case "facilities":
-      subRef = "locations";
-      break;
-    case "locations":
-      subRef = "equipment";
+    default:
       break;
   }
 
@@ -197,6 +182,7 @@ const CRMEntity = ({ type }) => {
           if (data[el]) {
             return { fieldTitle: el, value: data[el] };
           }
+          return false;
         });
 
         setInformationItems((state) => {
@@ -301,8 +287,9 @@ const CRMEntity = ({ type }) => {
                 }
               >
                 {subEntity && subEntity.length > 0 ? (
-                  subEntity.map((subEnt) => (
+                  subEntity.map((subEnt, index) => (
                     <InfoCard
+                      key={index}
                       data={subEnt}
                       type={subEntityName}
                       toggleModal={toggleModal}

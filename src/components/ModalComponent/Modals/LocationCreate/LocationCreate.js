@@ -188,8 +188,6 @@ const LocationCreate = () => {
           {
             <AttachmentList
               attachedFiles={[]}
-              // onAddFileServer={addLocationImageServer}
-              // onRemoveFileServer={deleteLocationImageServer}
               setCreatedFiles={setCreatedFiles}
             />
           }

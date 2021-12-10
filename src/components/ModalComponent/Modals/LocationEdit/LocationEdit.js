@@ -28,8 +28,6 @@ const LocationEdit = () => {
   const [removeField, setRemoveField] = useState();
   const [files, setFiles] = useState();
   const [createdFiles, setCreatedFiles] = useState([]);
-  // const deleteEntityImageAPI = locationApi.deleteLocationImage;
-  // const addEntityImageAPI = locationApi.addLocationImage;
 
   async function addLocationImageServer(files) {
     let newFiles = [];
@@ -118,29 +116,21 @@ const LocationEdit = () => {
     document.querySelector("#form").reset();
     setShowFormModal(false);
   };
-  // const addFilesHandler = (files, type) => {
-  //   setFiles((oldArr) => {
-  //     let id = Number.parseInt(oldArr[oldArr.length - 1].id);
-  //     id = id + 1 + "";
 
-  //     const newFiles = files.map((file) => {
-  //       return { type_id: type, preview: file.preview, img: file.path, id };
-  //     });
-  //     const newArr = [...oldArr, ...newFiles];
-  //     return newArr;
-  //   });
-  // };
   const toggleAddFieldModal = () => {
     setAddFieldModal(!addFieldModal);
   };
+
   const toggleRemoveFieldModal = () => {
     setRemoveFieldModal(!removeFieldModal);
   };
+
   const handleRemoveFieldFormSubmit = () => {
     unregister(removeField.id);
     setFields(fields.filter((field) => field.id !== removeField.id));
     setRemoveField("");
   };
+
   const handleAddFieldFormSubmit = async (e) => {
     e.preventDefault();
 

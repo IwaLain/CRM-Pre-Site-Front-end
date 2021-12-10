@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  ModalFooter,
-  Button,
-} from "reactstrap";
+import React from "react";
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
 import "./../../scss/confirmModal.scss";
 const ConfirmModal = ({
   modal,
@@ -17,9 +10,6 @@ const ConfirmModal = ({
 }) => {
   const handleConfirmModalFormSubmit = async (e) => {
     e.preventDefault();
-    // unregister(removeField.id);
-    // setFields(fields.filter((field) => field.id !== removeField.id));
-    // setRemoveField("");
     handleSubmit();
     toggleModal();
   };

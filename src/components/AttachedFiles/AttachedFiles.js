@@ -44,8 +44,6 @@ const AttachedFiles = ({
 
   useEffect(() => {
     setIsLoading(false);
-    console.log("render");
-    // Make sure to revoke the data uris to avoid memory leaks
     files.forEach((file) => URL.revokeObjectURL(file.preview));
 
     setFiles(
@@ -132,7 +130,7 @@ const AttachedFiles = ({
                 }}
               >
                 <button className="dropzone--add-file-btn btn ">
-                  <i class="fas fa-plus fa-2x add-file-btn--icon"></i>
+                  <i className="fas fa-plus fa-2x add-file-btn--icon"></i>
                 </button>
               </div>
             )}

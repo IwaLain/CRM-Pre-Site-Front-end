@@ -52,7 +52,6 @@ const EditCustomer = () => {
     if (data.headname) body["head_name"] = data.headname;
 
     customersApi.updateCustomer(customer.id, body).then((res) => {
-      console.log(res);
       if (res.status === "Successfully updated")
         alert("success", "Customer updated.");
       else alert("error", "Request error.");
