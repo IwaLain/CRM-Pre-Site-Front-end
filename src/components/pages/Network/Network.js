@@ -6,7 +6,7 @@ import List from "../List/List";
 import "../../../scss/network.scss";
 
 const Network = () => {
-  const { selectedCustomer } = useContext(GlobalContext);
+  const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
   const [network, setNetwork] = useState([]);
   const [selectedBlock, setSelectedBlock] = useState();
 
@@ -27,7 +27,7 @@ const Network = () => {
         .then((network) => {
           setNetwork(Object.entries(network.Network));
         });
-  }, [history, selectedCustomer]);
+  }, [history, selectedCustomer, updateTrigger]);
 
   return (
     <div>

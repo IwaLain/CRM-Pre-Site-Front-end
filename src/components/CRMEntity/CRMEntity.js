@@ -12,14 +12,20 @@ import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
-
 import AttachmentList from "../AttachmentList/AttachmentList";
 import { Spinner } from "reactstrap";
+import ModalSketch from "../ModalComponent/ModalSketch";
+
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
-  const { showFormModal, setShowFormModal, setEntityID } =
-    useContext(GlobalContext);
+  const {
+    showFormModal,
+    setShowFormModal,
+    setEntityID,
+    updateTrigger,
+    setUpdateTrigger,
+  } = useContext(GlobalContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
@@ -58,7 +64,6 @@ const CRMEntity = ({ type }) => {
   async function deleteEntityImageServer(fileId, type_id) {
     const response = await deleteEntityImageAPI(id, fileId);
     if (response.success) {
-      alert("success", `file deleted`);
       if (type_id == "1") {
         setEntityImages((state) => state.filter((el) => el.id != fileId));
       }
@@ -132,6 +137,34 @@ const CRMEntity = ({ type }) => {
 
       break;
     default:
+      break;
+  }
+
+  let entityPluralAlias = "";
+
+  switch (type) {
+    case "customer":
+      entityPluralAlias = "customers";
+      break;
+    case "facility":
+      entityPluralAlias = "facilities";
+      break;
+    case "location":
+      entityPluralAlias = "locations";
+      break;
+    case "equipment":
+      entityPluralAlias = "equipment";
+      break;
+  }
+
+  let subRef = "";
+
+  switch (entityPluralAlias) {
+    case "facilities":
+      subRef = "locations";
+      break;
+    case "locations":
+      subRef = "equipment";
       break;
   }
 
@@ -212,10 +245,17 @@ const CRMEntity = ({ type }) => {
   };
   return (
     <>
-      <ModalComponent
+      {/* <ModalComponent
         modal={showFormModal}
         toggle={toggleModal}
-        type={{ entity: subEntityName }}
+        type={subEntityName}
+        mode={mode}
+      /> */}
+      <ModalSketch
+        entity={subEntityName}
+        subEntity={entityPluralAlias}
+        modal={showFormModal}
+        toggle={toggleModal}
         mode={mode}
       />
       {!isLoading ? (

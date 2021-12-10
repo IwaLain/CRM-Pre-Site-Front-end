@@ -14,16 +14,9 @@ import {
 import { useForm } from "react-hook-form";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
+import { alert } from "../../js/helpers/alert";
 
-const ModalSketch = ({
-  toggle,
-  modal,
-  entity,
-  subEntity,
-  mode,
-  updateTrigger,
-  setUpdateTrigger,
-}) => {
+const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const [formTitle, setFormTitle] = useState();
 
   const [entityName, setEntityName] = useState();
@@ -53,12 +46,15 @@ const ModalSketch = ({
     editId,
     setEditId,
     selectedCustomer,
+    updateTrigger,
+    setUpdateTrigger,
   } = useContext(GlobalContext);
 
   const {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -115,13 +111,14 @@ const ModalSketch = ({
   };
 
   const resetToggle = () => {
+    toggle();
     reset({});
     setDefaultEntity([]);
     setEditId(undefined);
     setAnyImg([]);
     setLocationImg([]);
     setEquipmentImg([]);
-    toggle();
+    setCustomFields([]);
   };
 
   const onSubmit = (data) => {
@@ -144,6 +141,19 @@ const ModalSketch = ({
     if (data["type_id"]) body["type_id"] = data["type_id"];
     if (data["node_id"]) body["node_id"] = data["node_id"];
     if (data["gateway_id"]) body["gateway_id"] = data["gateway_id"];
+
+    const jsonData = [];
+
+    for (const [key, value] of Object.entries(data)) {
+      if (key.includes("field")) {
+        jsonData.push({
+          name: customFields.filter((el) => el.id === key)[0].title,
+          value: value,
+        });
+      }
+    }
+
+    body["jsonData"] = jsonData;
 
     switch (entityName) {
       case "facility":
@@ -194,8 +204,14 @@ const ModalSketch = ({
       ).then((res) => {
         if (res.status === 200) {
           resetToggle();
+          alert(
+            "success",
+            `${
+              entityName.charAt(0).toUpperCase() + entityName.slice(1)
+            } created.`
+          );
           setUpdateTrigger(!updateTrigger);
-        }
+        } else alert("error", `Request error.`);
       });
     } else if (mode === "edit") {
       fetch(
@@ -215,7 +231,13 @@ const ModalSketch = ({
         if (res.status === 200) {
           resetToggle();
           setUpdateTrigger(!updateTrigger);
-        }
+          alert(
+            "success",
+            `${
+              entityName.charAt(0).toUpperCase() + entityName.slice(1)
+            } changed.`
+          );
+        } else alert("error", `Request error.`);
       });
     }
   };
@@ -399,11 +421,6 @@ const ModalSketch = ({
             inputType: "text",
           },
           {
-            title: "Serial",
-            fieldType: "form",
-            inputType: "number",
-          },
-          {
             title: "Location_info",
             fieldType: "form",
             inputType: "text",
@@ -556,6 +573,7 @@ const ModalSketch = ({
   }, [entity, mode]);
 
   useEffect(() => {
+    console.log(getValues());
     switch (subEntity) {
       case "customers":
       case "facilities":
@@ -661,10 +679,49 @@ const ModalSketch = ({
             default:
               console.log(data);
               setDefaultEntity(data[entityName]);
-              reset({
-                ...data[entityName],
-                headname: data[entityName]["head_name"],
+              let newFields = [];
+
+              if (
+                data[entityName]["jsonData"] &&
+                data[entityName]["jsonData"].length > 0 &&
+                data[entityName]["jsonData"] !== "null"
+              ) {
+                let newCount = 0;
+
+                const jsonData = data[entityName]["jsonData"];
+
+                jsonData.forEach((el) => {
+                  newFields.push({
+                    id: `field${newCount + 1}`,
+                    title: el.name,
+                    value: el.value,
+                  });
+                  newCount += 1;
+                });
+
+                setCustomFieldsCount(newCount);
+                setCustomFields(newFields);
+              }
+
+              let fieldsToReset = {};
+
+              newFields.forEach((field) => {
+                fieldsToReset[field.id] = field.value;
+                fieldsToReset[field.name] = field.name;
               });
+
+              if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
+                reset({
+                  ...data[entityName],
+                  ...fieldsToReset,
+                  headname: data[entityName]["head_name"],
+                });
+              } else {
+                reset({
+                  ...data[entityName],
+                  headname: data[entityName]["head_name"],
+                });
+              }
               break;
           }
         });

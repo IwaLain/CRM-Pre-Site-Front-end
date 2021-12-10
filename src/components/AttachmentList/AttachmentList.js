@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
 import { Spinner } from "reactstrap";
+import { alert } from "../../js/helpers/alert";
+
 const AttachmentList = ({
   titleNeeded = true,
   multiple = true,
@@ -65,26 +67,36 @@ const AttachmentList = ({
       })
     ).then(async (res) => {
       newFiles = res;
-      if (onAddFileServer || setCreatedFiles) {
-        const data = res.map((file) => {
-          return { type_id: type, img: file.base64, isDeleted: 0, id: file.id };
-        });
-        if (onAddFileServer) {
-          let responseData = await onAddFileServer(data, type);
-          if (responseData && responseData.length) {
-            newFiles = responseData.map((file) => {
-              return {
-                img: file.img,
-                preview: process.env.REACT_APP_SERVER_URL + "/" + file.img,
-                type_id: file.type_id,
-                id: file.id,
-              };
-            });
-          }
+      const data = res.map((file) => {
+        return { type_id: type, img: file.base64, isDeleted: 0, id: file.id };
+      });
+      if (onAddFileServer) {
+        let responseData = await onAddFileServer(data, type);
+        if (responseData && responseData.length) {
+          alert(
+            "success",
+            `${
+              type === "1" ? "Image" : type === "2" ? "Schema" : "Document"
+            } added.`
+          );
+          newFiles = responseData.map((file) => {
+            return {
+              img: file.img,
+              preview: process.env.REACT_APP_SERVER_URL + "/" + file.img,
+              type_id: file.type_id,
+              id: file.id,
+            };
+          });
         }
-        if (setCreatedFiles) {
-          setCreatedFiles((state) => [...state, ...data]);
-        }
+      }
+      if (setCreatedFiles) {
+        alert(
+          "success",
+          `${
+            type === "1" ? "Image" : type === "2" ? "Schema" : "Document"
+          } added.`
+        );
+        setCreatedFiles((state) => [...state, ...data]);
       }
 
       setFilesFunction((state) => [...state, ...newFiles]);
@@ -124,6 +136,12 @@ const AttachmentList = ({
       }
     }
     if (isDeleted) {
+      alert(
+        "success",
+        `${
+          type === "1" ? "Image" : type === "2" ? "Schema" : "Document"
+        } removed.`
+      );
       setFilesFunction((state) => {
         console.log(file.id);
         const updatedFiles = state.filter((el) => el.id !== file.id);

@@ -31,7 +31,6 @@ const List = ({ type, title }) => {
   const [mode, setMode] = useState();
   const [chooseMode, setChooseMode] = useState(false);
   const [totalPages, setTotalPages] = useState();
-  const [updateTrigger, setUpdateTrigger] = useState(false);
 
   const [testModal, setTestModal] = useState();
 
@@ -47,8 +46,8 @@ const List = ({ type, title }) => {
     selectedCustomer,
     setSelectedCustomer,
     setCustomerStructure,
-    setEquipmentTypeList,
-    setEditId,
+    updateTrigger,
+    setUpdateTrigger,
   } = useContext(GlobalContext);
 
   const match = useRouteMatch();
@@ -154,13 +153,6 @@ const List = ({ type, title }) => {
         setShowEntitySelect(true);
         setShowView(true);
         setIsSetViewNeeded(true);
-        fetch(
-          process.env.REACT_APP_SERVER_URL +
-            "/api/equipment/type?access-token=" +
-            localStorage.getItem("token")
-        )
-          .then((res) => res.json())
-          .then((list) => setEquipmentTypeList(list["type"]));
         break;
       case "gateways":
       case "nodes":
@@ -196,7 +188,7 @@ const List = ({ type, title }) => {
     setPagePath(match.path);
 
     if (requests.ref)
-      requests.ref().then((res) => {
+      requests.ref(-1).then((res) => {
         setEntityNames(formatNames(res[type.ref]));
       });
 
@@ -215,7 +207,9 @@ const List = ({ type, title }) => {
           setIsLoading(false);
         });
     }
+  }, [requests, updateTrigger]);
 
+  useEffect(() => {
     if (requests.ref)
       requests.ref(-1).then((res) => {
         const formattedNames = formatNames(res[type.ref]);
@@ -228,7 +222,7 @@ const List = ({ type, title }) => {
           setEntityID(selectedCustomer.id);
         else setEntityID(formattedNames[0].id);
       });
-  }, [requests, updateTrigger]);
+  }, [requests]);
 
   useEffect(() => {
     if (requests.list) {
@@ -267,8 +261,6 @@ const List = ({ type, title }) => {
         modal={showFormModal}
         toggle={toggleModal}
         mode={mode}
-        updateTrigger={updateTrigger}
-        setUpdateTrigger={setUpdateTrigger}
       />
       <div className="list">
         <div className="list__header">

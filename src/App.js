@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -24,6 +24,33 @@ const App = () => {
   const [customerStructure, setCustomerStructure] = useState({});
   const [userProfile, setUserProfile] = useState({});
   const [equipmentTypeList, setEquipmentTypeList] = useState([]);
+  const [updateTrigger, setUpdateTrigger] = useState(false);
+
+  useEffect(() => {
+    fetch(
+      process.env.REACT_APP_SERVER_URL +
+        "/api/equipment/type?access-token=" +
+        localStorage.getItem("token")
+    )
+      .then((res) => res.json())
+      .then((list) => setEquipmentTypeList(list["type"]));
+  }, []);
+
+  useEffect(() => {
+    if (selectedCustomer) {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/customer/" +
+          selectedCustomer.id +
+          "/construct?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((customerStructure) =>
+          setCustomerStructure(customerStructure["customerConstruct"])
+        );
+    }
+  }, [updateTrigger]);
 
   return (
     <GlobalContext.Provider
@@ -56,6 +83,9 @@ const App = () => {
 
         equipmentTypeList,
         setEquipmentTypeList,
+
+        updateTrigger,
+        setUpdateTrigger,
       }}
     >
       <Router>
@@ -92,9 +122,6 @@ const App = () => {
                     <LoginPage />
                   )}
                 </Route>
-                {/* // {routes.auth.map(({ path, children }, index) => {
-                //   return <Route key={index} path={path} children={children} />;
-                // })}  */}
                 <Route component={NotFound} />
               </Switch>
             </AuthLayout>
