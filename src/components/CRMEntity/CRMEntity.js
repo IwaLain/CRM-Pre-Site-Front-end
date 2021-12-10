@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import logo from "../../assets/img/company.png";
 import customersApi from "../../js/api/customer";

@@ -1,26 +1,27 @@
-import { useForm } from 'react-hook-form'
-import 'react-toastify/dist/ReactToastify.css';
-import './Login.scss';
-import logo from '../../../assets/img/top-logo-black.svg'
-import { Card,
-         Col,
-         Container,
-         Form,
-         FormGroup,
-         Row,
-         CardImg,
-         CardBody
-       } from 'reactstrap'
-import { alert } from '../../../js/helpers/alert';
-import { ToastContainer } from 'react-toastify';
-import Profile from '../../../js/api/profile';
-import InputForm from '../../../js/helpers/input';
-import { GlobalContext } from '../../../context';
-import { useContext } from 'react';
-import { getToken } from '../../../js/helpers/helpers';
+import { useForm } from "react-hook-form";
+import "react-toastify/dist/ReactToastify.css";
+import "./Login.scss";
+import logo from "../../../assets/img/top-logo-black.svg";
+import {
+  Card,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Row,
+  CardImg,
+  CardBody,
+} from "reactstrap";
+import { alert } from "../../../js/helpers/alert";
+import { ToastContainer } from "react-toastify";
+import Profile from "../../../js/api/profile";
+import InputForm from "../../../js/helpers/input";
+import { GlobalContext } from "../../../context";
+import { useContext } from "react";
+import { getToken } from "../../../js/helpers/helpers";
 
 const LoginPage = () => {
-  const { setUserProfile } = useContext(GlobalContext)
+  const { setUserProfile, setSelectedCustomer } = useContext(GlobalContext);
 
   const {
     register,
@@ -49,13 +50,25 @@ const LoginPage = () => {
         alert("success", "Login success");
       }
 
-      const token = getToken()
+      const token = getToken();
 
-      if(token) {
-        Profile.getProfile()
-        .then(data => {
-          setUserProfile(data.user)
-        })
+      if (token) {
+        Profile.getProfile().then((data) => {
+          setUserProfile(data.user);
+          if (data.user.last_customer) {
+            fetch(
+              process.env.REACT_APP_SERVER_URL +
+                "/api/customer/" +
+                data.user.last_customer +
+                "?access-token=" +
+                localStorage.getItem("token")
+            )
+              .then((res) => res.json())
+              .then((customer) => {
+                setSelectedCustomer(customer.customer[data.user.last_customer]);
+              });
+          }
+        });
       }
     });
   };
@@ -73,20 +86,20 @@ const LoginPage = () => {
                 <Row>
                   <FormGroup>
                     <InputForm
-                        type={'username'}
-                        data={dataInput}
-                        errors={errors.username}
-                        placeholder={'username...'}
+                      type={"username"}
+                      data={dataInput}
+                      errors={errors.username}
+                      placeholder={"username..."}
                     />
                   </FormGroup>
                 </Row>
                 <Row>
                   <FormGroup>
                     <InputForm
-                        type={'password'}
-                        data={dataInput}
-                        errors={errors.password}
-                        placeholder={'password...'}
+                      type={"password"}
+                      data={dataInput}
+                      errors={errors.password}
+                      placeholder={"password..."}
                     />
                   </FormGroup>
                 </Row>

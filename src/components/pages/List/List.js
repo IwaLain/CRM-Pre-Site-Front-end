@@ -46,6 +46,7 @@ const List = ({ type, title }) => {
     setSelectedCustomer,
     setCustomerStructure,
     updateTrigger,
+    userProfile,
   } = useContext(GlobalContext);
 
   const match = useRouteMatch();
@@ -111,6 +112,18 @@ const List = ({ type, title }) => {
       .then((customerStructure) =>
         setCustomerStructure(customerStructure["customerConstruct"])
       );
+    fetch(
+      process.env.REACT_APP_SERVER_URL +
+        "/api/user/last-customer/" +
+        id +
+        "?access-token=" +
+        localStorage.getItem("token"),
+      {
+        method: "PUT",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   };
 
   useEffect(() => {

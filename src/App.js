@@ -12,6 +12,7 @@ import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
 import LoginPage from "./components/pages/Login/Login";
 import "./scss/ui-kit.scss";
+import Profile from "./js/api/profile";
 
 const App = () => {
   const [pageTitle, setPageTitle] = useState();
@@ -36,6 +37,25 @@ const App = () => {
         .then((res) => res.json())
         .then((list) => setEquipmentTypeList(list["type"]));
     }
+
+    if (localStorage.getItem("token")) {
+      Profile.getProfile().then((data) => {
+        setUserProfile(data.user);
+        if (data.user.last_customer) {
+          fetch(
+            process.env.REACT_APP_SERVER_URL +
+              "/api/customer/" +
+              data.user.last_customer +
+              "?access-token=" +
+              localStorage.getItem("token")
+          )
+            .then((res) => res.json())
+            .then((customer) => {
+              setSelectedCustomer(customer.customer[data.user.last_customer]);
+            });
+        }
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -48,9 +68,9 @@ const App = () => {
           localStorage.getItem("token")
       )
         .then((res) => res.json())
-        .then((customerStructure) =>
-          setCustomerStructure(customerStructure["customerConstruct"])
-        );
+        .then((customerStructure) => {
+          setCustomerStructure(customerStructure["customerConstruct"]);
+        });
     }
   }, [selectedCustomer, updateTrigger]);
 
