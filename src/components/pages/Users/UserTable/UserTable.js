@@ -25,6 +25,8 @@ const UserTable = ( { users, editeTable, changeTable }) => {
         })
     }
 
+    const isEmpty = (cell) => cell === null ? '--' : cell === '' ? '--' : cell
+
     const customStyles = {
         rows: {
             style: {
@@ -41,30 +43,29 @@ const UserTable = ( { users, editeTable, changeTable }) => {
     const columns = [
         {
             name: 'First Name',
-            selector: row => row['first_name'],
-            sortable: true,
+            selector: row => isEmpty(row['first_name']),
         },
         {
             name: 'Last Name',
-            selector: row => row['last_name'],
-            sortable: true,
+            selector: row => isEmpty(row['last_name']),
+
         },
         {
             name: 'UserName',
-            selector: row => row['username'],
+            selector: row => isEmpty(row['username']),
             sortable: true,
         },
         {
             name: 'Email Address',
-            selector: row => row['email'],
+            selector: row => isEmpty(row['email']),
         },
         {
             name: 'Phone',
-            selector: row => row['phone'],
+            selector: row => isEmpty(row['phone']),
         },
         {
             name: 'Role',
-            selector: row => row['role'],
+            selector: row => isEmpty(row['role']),
         },
         {
             cell: row => <i
@@ -113,13 +114,13 @@ const UserTable = ( { users, editeTable, changeTable }) => {
                 <DataTable
                     direction="auto"
                     columns={columns}
-                    data={filteredItems}
+                    data={users}
                     defaultSortField="title"
                     progressComponent={<Loader />}
                     responsive
                     pagination
-                    subHeader
-                    subHeaderComponent={subHeaderComponent}
+                    // subHeader
+                    // subHeaderComponent={subHeaderComponent}
                     subHeaderAlign="right"
                     customStyles={customStyles}
                 />

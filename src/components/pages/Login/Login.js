@@ -9,7 +9,7 @@ import { Card,
          FormGroup,
          Row,
          CardImg,
-         CardBody 
+         CardBody
        } from 'reactstrap'
 import { alert } from '../../../js/helpers/alert';
 import { ToastContainer } from 'react-toastify';
@@ -50,7 +50,7 @@ const LoginPage = () => {
       }
 
       const token = getToken()
-      
+
       if(token) {
         Profile.getProfile()
         .then(data => {
@@ -59,7 +59,7 @@ const LoginPage = () => {
       }
     });
   };
-  
+
   return (
     <Container fluid className="login__bg">
       <Row className="vh-100 justify-content-sm-center align-items-center">

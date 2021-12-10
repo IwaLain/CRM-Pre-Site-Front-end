@@ -28,7 +28,7 @@ const ProfilePage = () => {
         }
         Profile.updateProfile(profile.id, data)
     }
-         
+
     const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
     const editeProfile = (data) => {
         setProfile(data)
@@ -46,23 +46,22 @@ const ProfilePage = () => {
 
     return(
         <>
-            <h3>Profile</h3> 
+            <h3>Profile</h3>
             <Row className='profile__container'>
                 <Col lg={4} md={8} sm={10} className='profile'>
                     <Row className='profile__item'>
-                        <Col sm={4}></Col>
                         <Col className='profile__avatar'>
                             <div className='profile__avatar'>
-                                <Label 
-                                    className="image-field" 
+                                <Label
+                                    className="image-field"
                                     for="image-field">
-                                    <img 
-                                        className='profile__img' 
+                                    <img
+                                        className='profile__img'
                                         src={
                                             profile.img === null ? placeholder : loadedImg
-                                        } 
+                                        }
                                         alt="Avatar"
-                                        
+
                                     />
                                 </Label>
                                 <input
@@ -76,7 +75,7 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col sm={4}>
+                        <Col md={5} sm={4}>
                             <Label className='profile__label'>Username</Label>
                         </Col>
                         <Col className='profile__text'>
@@ -84,7 +83,7 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col sm={4}>
+                        <Col md={5} sm={4}>
                             <Label className='profile__label'>First Name</Label>
                         </Col>
                         <Col className='profile__text'>
@@ -92,7 +91,7 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col sm={4}>
+                        <Col md={5} sm={4}>
                             <Label className='profile__label'>Last Name</Label>
                         </Col>
                         <Col className='profile__text'>
@@ -100,7 +99,7 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col sm={4}>
+                        <Col md={5} sm={4}>
                             <Label className='profile__label'>Email</Label>
                         </Col>
                         <Col className='profile__text'>
@@ -108,7 +107,7 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col sm={4}>
+                        <Col md={5} sm={4}>
                             <Label className='profile__label'>Phone</Label>
                         </Col>
                         <Col className='profile__text'>
@@ -116,7 +115,7 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     <Row className='profile__item'>
-                        <Col sm={4}>
+                        <Col md={5} sm={4}>
                             <Label className='profile__label'>Role</Label>
                         </Col>
                         <Col className='profile__text'>
@@ -124,7 +123,6 @@ const ProfilePage = () => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col sm={4}></Col>
                         <Col className='profile__button'>
                             <Button
                                 className=''

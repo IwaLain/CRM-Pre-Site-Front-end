@@ -573,7 +573,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   }, [entity, mode]);
 
   useEffect(() => {
-    console.log(getValues());
     switch (subEntity) {
       case "customers":
       case "facilities":

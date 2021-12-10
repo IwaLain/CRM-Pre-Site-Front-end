@@ -27,17 +27,19 @@ const App = () => {
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
-    fetch(
-      process.env.REACT_APP_SERVER_URL +
-        "/api/equipment/type?access-token=" +
-        localStorage.getItem("token")
-    )
-      .then((res) => res.json())
-      .then((list) => setEquipmentTypeList(list["type"]));
+    if (localStorage.getItem("token")) {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/equipment/type?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((list) => setEquipmentTypeList(list["type"]));
+    }
   }, []);
 
   useEffect(() => {
-    if (selectedCustomer) {
+    if (selectedCustomer.id) {
       fetch(
         process.env.REACT_APP_SERVER_URL +
           "/api/customer/" +
