@@ -23,6 +23,7 @@ import { validation } from '../../../js/helpers/validation';
 import { getToken } from '../../../js/helpers/helpers';
 import { BASE_URL } from '../../../js/api/constants';
 import { ToastContainer } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
 const ComertialPurpouse = () => {
     const token = getToken()
@@ -31,6 +32,7 @@ const ComertialPurpouse = () => {
     const { selectedCustomer } = useContext(GlobalContext)
     const quote = 'Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000)
     const date = new Date().toLocaleDateString('en-US')
+    const history = useHistory()
     const newData = []
     const columns = []    
 
@@ -48,7 +50,8 @@ const ComertialPurpouse = () => {
     })
 
     useEffect(() => {
-        customersApi.getNetwork(selectedCustomer.id)
+        if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) history.push("/dashboard/customers")
+        else customersApi.getNetwork(selectedCustomer.id)
         .then(data => {
             setCurrentData(data.Network)
 
