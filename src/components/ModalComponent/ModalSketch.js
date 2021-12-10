@@ -21,8 +21,8 @@ const ModalSketch = ({
   entity,
   subEntity,
   mode,
-  newRecordTrigger,
-  setNewRecordTrigger,
+  updateTrigger,
+  setUpdateTrigger,
 }) => {
   const [formTitle, setFormTitle] = useState();
 
@@ -192,7 +192,7 @@ const ModalSketch = ({
       ).then((res) => {
         if (res.status === 200) {
           resetToggle();
-          setNewRecordTrigger(!newRecordTrigger);
+          setUpdateTrigger(!updateTrigger);
         }
       });
     } else if (mode === "edit") {
@@ -210,7 +210,10 @@ const ModalSketch = ({
           body: JSON.stringify(body),
         }
       ).then((res) => {
-        if (res.status === 200) resetToggle();
+        if (res.status === 200) {
+          resetToggle();
+          setUpdateTrigger(!updateTrigger);
+        }
       });
     }
   };

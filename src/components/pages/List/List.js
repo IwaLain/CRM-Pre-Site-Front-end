@@ -31,7 +31,7 @@ const List = ({ type, title }) => {
   const [mode, setMode] = useState();
   const [chooseMode, setChooseMode] = useState(false);
   const [totalPages, setTotalPages] = useState();
-  const [newRecordTrigger, setNewRecordTrigger] = useState(false);
+  const [updateTrigger, setUpdateTrigger] = useState(false);
 
   const [testModal, setTestModal] = useState();
 
@@ -228,7 +228,7 @@ const List = ({ type, title }) => {
           setEntityID(selectedCustomer.id);
         else setEntityID(formattedNames[0].id);
       });
-  }, [requests, newRecordTrigger]);
+  }, [requests, updateTrigger]);
 
   useEffect(() => {
     if (requests.list) {
@@ -267,8 +267,8 @@ const List = ({ type, title }) => {
         modal={showFormModal}
         toggle={toggleModal}
         mode={mode}
-        newRecordTrigger={newRecordTrigger}
-        setNewRecordTrigger={setNewRecordTrigger}
+        updateTrigger={updateTrigger}
+        setUpdateTrigger={setUpdateTrigger}
       />
       <div className="list">
         <div className="list__header">
