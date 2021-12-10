@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import "../../scss/attachedFiles.scss";
+import { Spinner } from "reactstrap";
 
 const AttachedFiles = ({
   type,
@@ -14,6 +15,7 @@ const AttachedFiles = ({
   multiple = true,
   maxFiles = 0,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
   const [confirmModal, setConfirmModal] = useState(false);
   const [removeFile, setRemoveFile] = useState();
@@ -23,7 +25,8 @@ const AttachedFiles = ({
     noKeyboard: true,
     multiple: multiple,
     maxFiles: maxFiles,
-    onDrop: (acceptedFiles) => {
+    onDrop: async (acceptedFiles) => {
+      setIsLoading(true);
       if (files.length < 1 || maxFiles === 0) {
         const newAcceptedFiles = acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -31,7 +34,7 @@ const AttachedFiles = ({
           })
         );
 
-        onAddFile(newAcceptedFiles, type);
+        await onAddFile(newAcceptedFiles, type);
       }
     },
   });
@@ -40,6 +43,7 @@ const AttachedFiles = ({
   };
 
   useEffect(() => {
+    setIsLoading(false);
     console.log("render");
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach((file) => URL.revokeObjectURL(file.preview));
@@ -101,30 +105,22 @@ const AttachedFiles = ({
             (files && files.length > 0 ? "" : "dropzone--placeholder"),
         })}
       >
-        {/* <Button
-          className="delete-file--btn"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setRemoveFile("all");
-            toggleConfirmModal();
-          }}
-        >
-          Delete all {name}
-        </Button>
-        <Button
-          className="upload-file--btn"
-          onClick={(e) => {
-            e.preventDefault();
-          }}
-        >
-          Upload {name}
-        </Button> */}
         <input {...getInputProps()} />
 
         {thumbs ? (
           <div className="thumbsContainer">
             {thumbs}
+            {isLoading ? (
+              <>
+                <div className="thumb">
+                  <div className="thumbInner">
+                    <Spinner />
+                  </div>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
             {maxFiles === 0 && (
               <div
                 className="thumb"
