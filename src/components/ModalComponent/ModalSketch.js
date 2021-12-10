@@ -15,7 +15,15 @@ import { useForm } from "react-hook-form";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 
-const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
+const ModalSketch = ({
+  toggle,
+  modal,
+  entity,
+  subEntity,
+  mode,
+  newRecordTrigger,
+  setNewRecordTrigger,
+}) => {
   const [formTitle, setFormTitle] = useState();
 
   const [entityName, setEntityName] = useState();
@@ -37,7 +45,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const [gatewaysNames, setGatewaysNames] = useState([]);
   const [nodesNames, setNodesNames] = useState([]);
 
-  const [defaultEntity, setDefaultEntity] = useState([]);
+  const [defaultEntity, setDefaultEntity] = useState({});
 
   const {
     equipmentTypeList,
@@ -138,11 +146,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       case "facility":
         body["customer_id"] = data["customer_id"];
         break;
-      case "sensors":
-      case "motes":
-      case "routers":
-      case "nodes":
-      case "gateways":
+      case "sensor":
+      case "mote":
+      case "router":
+      case "node":
+      case "gateway":
         body["customer_id"] = selectedCustomer.id;
         break;
       default:
@@ -182,7 +190,10 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           body: JSON.stringify(body),
         }
       ).then((res) => {
-        if (res.status === 200) resetToggle();
+        if (res.status === 200) {
+          resetToggle();
+          setNewRecordTrigger(!newRecordTrigger);
+        }
       });
     } else if (mode === "edit") {
       fetch(
@@ -643,6 +654,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
               });
               break;
             default:
+              console.log(data);
               setDefaultEntity(data[entityName]);
               reset({
                 ...data[entityName],
@@ -849,10 +861,14 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                         : defaultEntity &&
                           Object.keys(defaultEntity).length > 0 &&
                           field.fileType === "location"
-                        ? defaultEntity[`${entityName}Images`].filter(
+                        ? defaultEntity &&
+                          Object.keys(defaultEntity).length > 0 &&
+                          defaultEntity[`${entityName}Images`].filter(
                             (img) => img["type_id"] === "1"
                           )
-                        : defaultEntity[`${entityName}Images`].filter(
+                        : defaultEntity &&
+                          Object.keys(defaultEntity).length > 0 &&
+                          defaultEntity[`${entityName}Images`].filter(
                             (img) => img["type_id"] === "2"
                           )
                     }

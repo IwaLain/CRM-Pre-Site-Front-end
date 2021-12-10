@@ -31,6 +31,7 @@ const List = ({ type, title }) => {
   const [mode, setMode] = useState();
   const [chooseMode, setChooseMode] = useState(false);
   const [totalPages, setTotalPages] = useState();
+  const [newRecordTrigger, setNewRecordTrigger] = useState(false);
 
   const [testModal, setTestModal] = useState();
 
@@ -227,7 +228,7 @@ const List = ({ type, title }) => {
           setEntityID(selectedCustomer.id);
         else setEntityID(formattedNames[0].id);
       });
-  }, [requests]);
+  }, [requests, newRecordTrigger]);
 
   useEffect(() => {
     if (requests.list) {
@@ -260,18 +261,14 @@ const List = ({ type, title }) => {
 
   return (
     <>
-      {/* <ModalComponent
-        modal={showFormModal}
-        toggle={toggleModal}
-        type={type}
-        mode={mode}
-      /> */}
       <ModalSketch
         entity={type && type.entity}
         subEntity={type && type.ref}
         modal={showFormModal}
         toggle={toggleModal}
         mode={mode}
+        newRecordTrigger={newRecordTrigger}
+        setNewRecordTrigger={setNewRecordTrigger}
       />
       <div className="list">
         <div className="list__header">
@@ -287,15 +284,6 @@ const List = ({ type, title }) => {
               +
             </button>
           </div>
-          <button
-            onClick={() => {
-              setMode("edit");
-              setEditId(4);
-              toggleModal();
-            }}
-          >
-            Test Modal
-          </button>
           <div className="list__options">
             {showEntitySelect && (
               <div className="list__select-entity">
