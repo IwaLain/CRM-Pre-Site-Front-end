@@ -118,6 +118,9 @@ const ModalSketch = ({
     reset({});
     setDefaultEntity([]);
     setEditId(undefined);
+    setAnyImg([]);
+    setLocationImg([]);
+    setEquipmentImg([]);
     toggle();
   };
 
@@ -157,25 +160,24 @@ const ModalSketch = ({
         break;
     }
 
-    if (
-      locationImg &&
-      locationImg.length > 0 &&
-      equipmentImg &&
-      equipmentImg.length > 0
-    )
+    body["img"] = [];
+
+    if (locationImg && locationImg.length > 0)
+      body["img"] = locationImg.map((image) => {
+        return { ...image, type_id: "1" };
+      });
+    if (equipmentImg && equipmentImg.length > 0) {
       body["img"] = [
-        {
-          type_id: 1,
-          img: locationImg[0].img,
-        },
-        {
-          type_id: 2,
-          img: equipmentImg[0].img,
-        },
+        ...body["img"],
+        ...equipmentImg.map((image) => {
+          return { ...image, type_id: "2" };
+        }),
       ];
-    else if (anyImg && anyImg.length > 0) {
+    } else if (anyImg && anyImg.length > 0) {
       body["img"] = anyImg;
     }
+
+    console.log(body["img"]);
 
     if (mode === "create") {
       fetch(
@@ -532,14 +534,14 @@ const ModalSketch = ({
           },
           {
             fieldType: "images",
-            fileType: "equipment",
+            fileType: "location",
             mode: "single",
             types: [{ typeID: "1" }],
             titleNeeded: false,
           },
           {
             fieldType: "images",
-            fileType: "location",
+            fileType: "equipment",
             mode: "single",
             types: [{ typeID: "1" }],
             titleNeeded: false,
@@ -857,28 +859,15 @@ const ModalSketch = ({
                   <AttachmentList
                     style={{}}
                     attachedFiles={
-                      entityName !== "gateway"
-                        ? defaultEntity &&
-                          Object.keys(defaultEntity).length > 0 &&
-                          defaultEntity[`${entityName}Images`]
-                        : defaultEntity &&
-                          Object.keys(defaultEntity).length > 0 &&
-                          field.fileType === "location"
-                        ? defaultEntity &&
-                          Object.keys(defaultEntity).length > 0 &&
-                          defaultEntity[`${entityName}Images`].filter(
-                            (img) => img["type_id"] === "1"
-                          )
-                        : defaultEntity &&
-                          Object.keys(defaultEntity).length > 0 &&
-                          defaultEntity[`${entityName}Images`].filter(
-                            (img) => img["type_id"] === "2"
-                          )
+                      defaultEntity &&
+                      Object.keys(defaultEntity).length > 0 &&
+                      defaultEntity[`${entityName}Images`]
                     }
                     titleNeeded={field.titleNeeded}
                     multiple={field.mode !== "single"}
                     maxFiles={field.mode === "single" ? 1 : 0}
                     types={field.types}
+                    fileType={field.fileType && field.fileType}
                     setCreatedFiles={
                       field.fileType === "location"
                         ? setLocationImg

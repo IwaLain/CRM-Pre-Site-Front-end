@@ -11,6 +11,7 @@ const AttachmentList = ({
   onAddFileServer = null,
   onRemoveFileServer = null,
   setCreatedFiles,
+  fileType,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [attachedImages, setAttachedImages] = useState([]);
@@ -144,8 +145,20 @@ const AttachmentList = ({
 
   useEffect(() => {
     if (attachedFiles && attachedFiles.length > 0) {
-      let updatedFiles = attachedFiles.map((file) => {
+      let updatedFiles = attachedFiles;
+      if (fileType && fileType === "location") {
+        updatedFiles = attachedFiles.filter((img) => img["type_id"] === "1");
+      } else if (fileType && fileType === "equipment") {
+        updatedFiles = attachedFiles
+          .filter((img) => img["type_id"] === "2")
+          .map((img) => {
+            return { ...img, type_id: "1" };
+          });
+      }
+
+      updatedFiles = updatedFiles.map((file) => {
         const preview = process.env.REACT_APP_SERVER_URL + "/" + file.img;
+        console.log(preview);
 
         return {
           img: file.img,
