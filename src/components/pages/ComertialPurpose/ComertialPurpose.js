@@ -34,7 +34,7 @@ const ComertialPurpouse = () => {
     const date = new Date().toLocaleDateString('en-US')
     const history = useHistory()
     const newData = []
-    const columns = []    
+    const columns = []
 
     const handlerAmount = (array, itemName, data) => {
         setCurrentData(array.map(itemData => itemData.item === itemName ? {...itemData, itemName: data} : itemData))
@@ -78,7 +78,7 @@ const ComertialPurpouse = () => {
                     columns.push({
                         name: key,
                         selector: row => row[key],
-                        cell: row => 
+                        cell: row =>
                         <input
                             type={key}
                             name={key}
@@ -157,7 +157,7 @@ const ComertialPurpouse = () => {
     return (
         <div className="purpose" id="purpose">
             <Row className='purpose__title-print'>
-                <Col lg={3} md={5} sm={6} className="purpose__title">
+                <Col lg={4} md={5} sm={6} className="purpose__title">
                     <h3>Commertial Purpose</h3>
                     <div>
                         <img src={logo} alt="logo" />
@@ -165,7 +165,7 @@ const ComertialPurpouse = () => {
                 </Col>
                 <Col lg={{offset:1, size:3}} md={5} sm={6} className='purpose__adress'>
                     Waites Sensor Techologies, Inc.<br/>
-                    20 W. 11th St. Suite 200<br/> 
+                    20 W. 11th St. Suite 200<br/>
                     Covington, KY 41011<br/>
 
                     <div className="mt-3">(800)574-9248 www.waites.net</div>
@@ -174,7 +174,7 @@ const ComertialPurpouse = () => {
             <Row>
                 <Form id='form' onSubmit={handleSubmit(onSubmit)}>
                     <Row className='purpose__form'>
-                        <Col lg={3} md={5} className='purpose__form-quote'>
+                        <Col lg={4} md={5} className='purpose__form-quote'>
                             <FormGroup className='purpose__quote'>
                                 <Col>
                                     <h3>
@@ -208,7 +208,7 @@ const ComertialPurpouse = () => {
                                 />
                             </FormGroup>
                         </Col>
-                        <Col lg={{offset:1, size:3}} md={5} className="purpose__description">
+                        <Col lg={{offset:1, size:4}} md={5} className="purpose__description">
                             <Row className='purpose__info'>
                                 <Col>
                                     <Label>
@@ -257,7 +257,7 @@ const ComertialPurpouse = () => {
                         </Col>
                     </FormGroup>
                     <FormGroup className='purpose__buttons'>
-                        <Col lg={1} md={2}>
+                        <Col lg={2} md={2}>
                             <Button
                                 form='form'
                                 onClick={(e) =>{
