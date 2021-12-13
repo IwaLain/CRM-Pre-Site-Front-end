@@ -26,7 +26,10 @@ export const validation = (type) => {
           value: 15,
           message: "Minimum 15 simvols",
         },
-        
+        // pattern: {
+        //   value: regex.password,
+        //   message: "Password should contain number and sinvols",
+        // },
       };
     case "email":
       return {

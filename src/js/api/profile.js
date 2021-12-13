@@ -19,7 +19,7 @@ const Profile = {
 
     getProfile: async () => {
         const token = getToken()
-        
+
         if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/profile?access-token=${token}`, {}, {
             'Content-Type':'application/json'
         })
@@ -35,6 +35,13 @@ const Profile = {
     lastCustomer: async (id) => {
         const token = getToken()
         if ( token ) return await apiRequest( 'GET', BASE_URL + `/api/user/last-customer/${id}?access-token=${token}`, {}, {
+            'Content-Type':'application/json'
+        })
+    },
+
+    setlastCustomer: async (id) => {
+        const token = getToken()
+        if ( token ) return await apiRequest( 'PUT', BASE_URL + `/api/user/last-customer/${id}?access-token=${token}`, {}, {
             'Content-Type':'application/json'
         })
     },

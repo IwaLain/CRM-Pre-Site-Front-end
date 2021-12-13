@@ -81,16 +81,16 @@
     }
 
     &__preview {
-        display: none;
+        visibility: hidden;
+
+        .visible {
+            visibility: visible;
+        }
 
         iframe {
-            height: 545px;
+            height: 550px;
             width: 390px;
         }
-    }
-
-    .visible {
-        display: block;
     }
 }
 

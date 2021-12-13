@@ -17,18 +17,19 @@ import { useForm } from 'react-hook-form';
 import customersApi from '../../../js/api/customer';
 import { GlobalContext } from '../../../context';
 import { alert } from '../../../js/helpers/alert';
+import Previews from './Preview/Preview';
+import { PDFViewer } from '@react-pdf/renderer';
 import { validation } from '../../../js/helpers/validation';
 import { getToken } from '../../../js/helpers/helpers';
 import { BASE_URL } from '../../../js/api/constants';
 import { ToastContainer } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
-import Previews from './Preview/Preview';
+
 const ComertialPurpouse = () => {
     const token = getToken()
     const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000))
     const [currentData, setCurrentData] = useState([])
     const [cols, setCols] = useState([])
-    const [preview, setPreview] = useState(false)
 
     const { selectedCustomer } = useContext(GlobalContext)
     const date = new Date().toLocaleDateString('en-US')
@@ -39,8 +40,6 @@ const ComertialPurpouse = () => {
     const handlerAmount = (array, itemName, data) => {
         setCurrentData(array.map(itemData => itemData.item === itemName ? {...itemData, itemName: data} : itemData))
     }
-
-    const pdfPreview = () => setPreview(!preview)
 
     const {
         register,
@@ -278,13 +277,10 @@ const ComertialPurpouse = () => {
                         <Col lg={2} md={2}>
                             <Button
                                 form='form'
-                                onClick={(e) => {
+                                onClick={(e) =>{
                                     e.preventDefault()
-                                    let pdf = document.querySelector('.purpose__preview')
-                                    pdfPreview()
-                                    preview
-                                    ? pdf.classList.add('visible')
-                                    : pdf.classList.remove('visible')
+                                    // let pdf = document.querySelector('.purpose__preview')
+                                    // pdf.classList.add('visible')
                                 }}>
                                 Preview
                             </Button>
@@ -299,10 +295,11 @@ const ComertialPurpouse = () => {
                     </FormGroup>
                 </Form>
             </Row>
-            <div className='purpose__preview'>
-                <iframe src={BASE_URL + '/' + 'image/pdf/d3040739cbb290c87cc57521991582b45cf6db2d.pdf?page=hsn#toolbar=0'} />
-            </div>
-            {/* <Previews/> */}
+            {/* <div className='purpose__preview'>
+                <PDFViewer>
+                    <Previews/>
+                </PDFViewer>
+            </div> */}
             <ToastContainer position="bottom-right" />
         </div>
     )

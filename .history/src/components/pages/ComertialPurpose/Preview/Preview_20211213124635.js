@@ -6,7 +6,7 @@ import logo from '../../../../assets/img/waites-block-logo-yellow-background.png
 const Previews = () => {
   return (
     <div>
-        <div class="purpose">
+        <div class="purpose__preview">
           <div class="purpose_title">
               <div class="purpose_logo">
                   <div>

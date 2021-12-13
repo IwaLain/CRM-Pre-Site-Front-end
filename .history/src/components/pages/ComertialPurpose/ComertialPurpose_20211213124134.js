@@ -159,7 +159,7 @@ const ComertialPurpouse = () => {
     }
 
     return (
-        <div className="purpose" id="purpose">
+        <div >
             <Row className='purpose__title-print'>
                 <Col lg={4} md={5} sm={6} className="purpose__title">
                     <h3>Commertial Purpose</h3>
@@ -302,7 +302,7 @@ const ComertialPurpouse = () => {
             <div className='purpose__preview'>
                 <iframe src={BASE_URL + '/' + 'image/pdf/d3040739cbb290c87cc57521991582b45cf6db2d.pdf?page=hsn#toolbar=0'} />
             </div>
-            {/* <Previews/> */}
+            <Previews/>
             <ToastContainer position="bottom-right" />
         </div>
     )

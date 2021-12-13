@@ -22,7 +22,6 @@ import { getToken } from '../../../js/helpers/helpers';
 import { BASE_URL } from '../../../js/api/constants';
 import { ToastContainer } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
-import Previews from './Preview/Preview';
 const ComertialPurpouse = () => {
     const token = getToken()
     const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000))
@@ -300,9 +299,9 @@ const ComertialPurpouse = () => {
                 </Form>
             </Row>
             <div className='purpose__preview'>
-                <iframe src={BASE_URL + '/' + 'image/pdf/d3040739cbb290c87cc57521991582b45cf6db2d.pdf?page=hsn#toolbar=0'} />
+                <iframe width="100%" height="1000" src={BASE_URL + '/' + 'image/pdf/d3040739cbb290c87cc57521991582b45cf6db2d.pdf?page=hsn#toolbar=0'} />
             </div>
-            {/* <Previews/> */}
+            
             <ToastContainer position="bottom-right" />
         </div>
     )

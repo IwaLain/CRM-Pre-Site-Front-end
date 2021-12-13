@@ -22,7 +22,6 @@ import { getToken } from '../../../js/helpers/helpers';
 import { BASE_URL } from '../../../js/api/constants';
 import { ToastContainer } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
-import Previews from './Preview/Preview';
 const ComertialPurpouse = () => {
     const token = getToken()
     const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000))
@@ -281,8 +280,8 @@ const ComertialPurpouse = () => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     let pdf = document.querySelector('.purpose__preview')
-                                    pdfPreview()
-                                    preview
+                                    setPreview()
+                                    preview === true
                                     ? pdf.classList.add('visible')
                                     : pdf.classList.remove('visible')
                                 }}>
@@ -302,7 +301,7 @@ const ComertialPurpouse = () => {
             <div className='purpose__preview'>
                 <iframe src={BASE_URL + '/' + 'image/pdf/d3040739cbb290c87cc57521991582b45cf6db2d.pdf?page=hsn#toolbar=0'} />
             </div>
-            {/* <Previews/> */}
+            
             <ToastContainer position="bottom-right" />
         </div>
     )

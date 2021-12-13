@@ -1,6 +1,6 @@
 import React from 'react';
-import './pdf.css'
-import logo from '../../../../assets/img/waites-block-logo-yellow-background.png'
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { BASE_URL } from '../../../../js/api/constants';
 
 // Create Document Component
 const Previews = () => {
@@ -10,7 +10,7 @@ const Previews = () => {
           <div class="purpose_title">
               <div class="purpose_logo">
                   <div>
-                      <img src={logo} alt="" />
+                      <img src="../../../assets/img/waites-block-logo-yellow-background.png" alt="">
                   </div>
               </div>
               <div class="purpose_adress">
@@ -117,7 +117,7 @@ const Previews = () => {
       </div>
       <div class="purpose__bottom">
           <div class="purpose_barcode">
-              <img src="../../../../assets/img/0f2e9792efcf90c199ac516320a35374317c1ce6.png" alt="" />
+              <img src="../../../assets/img/0f2e9792efcf90c199ac516320a35374317c1ce6.png" alt="">
               <div class="barcode">
                   Q4353
               </div>

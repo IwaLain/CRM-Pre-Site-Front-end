@@ -1,6 +1,6 @@
 import React from 'react';
 import './pdf.css'
-import logo from '../../../../assets/img/waites-block-logo-yellow-background.png'
+import logo from '../../../../assets/img/0f2e9792efcf90c199ac516320a35374317c1ce6.png'
 
 // Create Document Component
 const Previews = () => {

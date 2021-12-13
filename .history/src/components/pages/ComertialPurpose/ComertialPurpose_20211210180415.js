@@ -17,36 +17,32 @@ import { useForm } from 'react-hook-form';
 import customersApi from '../../../js/api/customer';
 import { GlobalContext } from '../../../context';
 import { alert } from '../../../js/helpers/alert';
+import Previews from './Preview/Preview';
+import { PDFViewer } from '@react-pdf/renderer';
 import { validation } from '../../../js/helpers/validation';
 import { getToken } from '../../../js/helpers/helpers';
 import { BASE_URL } from '../../../js/api/constants';
 import { ToastContainer } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
-import Previews from './Preview/Preview';
+
 const ComertialPurpouse = () => {
     const token = getToken()
-    const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000))
     const [currentData, setCurrentData] = useState([])
     const [cols, setCols] = useState([])
-    const [preview, setPreview] = useState(false)
-
     const { selectedCustomer } = useContext(GlobalContext)
+    const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000))
     const date = new Date().toLocaleDateString('en-US')
     const history = useHistory()
     const newData = []
-    const columns = []
+    const columns = []    
 
     const handlerAmount = (array, itemName, data) => {
         setCurrentData(array.map(itemData => itemData.item === itemName ? {...itemData, itemName: data} : itemData))
     }
 
-    const pdfPreview = () => setPreview(!preview)
-
     const {
         register,
         handleSubmit,
-        trigger,
-        formState: { errors }
     } = useForm({
         defaultValues: {
             quote: quote
@@ -82,7 +78,7 @@ const ComertialPurpouse = () => {
                     columns.push({
                         name: key,
                         selector: row => row[key],
-                        cell: row =>
+                        cell: row => 
                         <input
                             type={key}
                             name={key}
@@ -161,15 +157,15 @@ const ComertialPurpouse = () => {
     return (
         <div className="purpose" id="purpose">
             <Row className='purpose__title-print'>
-                <Col lg={4} md={5} sm={6} className="purpose__title">
+                <Col lg={3} md={5} sm={6} className="purpose__title">
                     <h3>Commertial Purpose</h3>
                     <div>
                         <img src={logo} alt="logo" />
                     </div>
                 </Col>
-                <Col lg={{offset:1, size:4}} md={5} sm={6} className='purpose__adress'>
+                <Col lg={{offset:1, size:3}} md={5} sm={6} className='purpose__adress'>
                     Waites Sensor Techologies, Inc.<br/>
-                    20 W. 11th St. Suite 200<br/>
+                    20 W. 11th St. Suite 200<br/> 
                     Covington, KY 41011<br/>
 
                     <div className="mt-3">(800)574-9248 www.waites.net</div>
@@ -178,7 +174,7 @@ const ComertialPurpouse = () => {
             <Row>
                 <Form id='form' onSubmit={handleSubmit(onSubmit)}>
                     <Row className='purpose__form'>
-                        <Col lg={4} md={5} className='purpose__form-quote'>
+                        <Col lg={3} md={5} className='purpose__form-quote'>
                             <FormGroup className='purpose__quote'>
                                 <Col>
                                     <h3>
@@ -186,8 +182,8 @@ const ComertialPurpouse = () => {
                                     </h3>
                                 </Col>
                                 <input
-                                    name='quote'
                                     type='text'
+                                    name='quote'
                                     disabled
                                     className="ui-kit__input"
                                     {...register('quote')}
@@ -199,28 +195,20 @@ const ComertialPurpouse = () => {
                                 </Label>
                                 <textarea
                                     name='bill'
-                                    type='text'
-                                    className={`ui-kit__textarea form-control ${errors.bill ? 'is-invalid' : ''}`}
+                                    className="ui-kit__textarea"
                                     {...register('bill', validation('address'))}
-                                    onKeyUp={() => {
-                                        trigger('bill')
-                                    }}
                                 />
                                 <Label>
                                     Ship to
                                 </Label>
                                 <textarea
                                     name='ship'
-                                    type='text'
-                                    className={`ui-kit__textarea form-control ${errors.ship ? 'is-invalid' : ''}`}
+                                    className="ui-kit__textarea"
                                     {...register('ship', validation('address'))}
-                                    onKeyUp={() => {
-                                        trigger('ship')
-                                    }}
                                 />
                             </FormGroup>
                         </Col>
-                        <Col lg={{offset:1, size:4}} md={5} className="purpose__description">
+                        <Col lg={{offset:1, size:3}} md={5} className="purpose__description">
                             <Row className='purpose__info'>
                                 <Col>
                                     <Label>
@@ -236,13 +224,10 @@ const ComertialPurpouse = () => {
                                     </Label>
                                 </Col>
                                 <input
-                                    name='expires'
                                     type='text'
-                                    className={`ui-kit__textarea form-control ${errors.expires ? 'is-invalid' : ''}`}
+                                    name='expires'
+                                    className="ui-kit__input"
                                     {...register('expires', validation('text'))}
-                                    onKeyUp={() => {
-                                        trigger('expires')
-                                    }}
                                 />
                             </Row>
                             <Row className='purpose__info'>
@@ -252,13 +237,10 @@ const ComertialPurpouse = () => {
                                     </Label>
                                 </Col>
                                 <input
-                                    name='memo'
                                     type='text'
-                                    className={`ui-kit__textarea form-control ${errors.memo ? 'is-invalid' : ''}`}
+                                    name='memo'
+                                    className="ui-kit__input"
                                     {...register('memo', validation('text'))}
-                                    onKeyUp={() => {
-                                        trigger('memo')
-                                    }}
                                 />
                             </Row>
                         </Col>
@@ -275,16 +257,13 @@ const ComertialPurpouse = () => {
                         </Col>
                     </FormGroup>
                     <FormGroup className='purpose__buttons'>
-                        <Col lg={2} md={2}>
+                        <Col lg={1} md={2}>
                             <Button
                                 form='form'
-                                onClick={(e) => {
+                                onClick={(e) =>{
                                     e.preventDefault()
-                                    let pdf = document.querySelector('.purpose__preview')
-                                    pdfPreview()
-                                    preview
-                                    ? pdf.classList.add('visible')
-                                    : pdf.classList.remove('visible')
+                                    // let pdf = document.querySelector('.purpose__preview')
+                                    // pdf.classList.add('visible')
                                 }}>
                                 Preview
                             </Button>
@@ -299,10 +278,11 @@ const ComertialPurpouse = () => {
                     </FormGroup>
                 </Form>
             </Row>
-            <div className='purpose__preview'>
-                <iframe src={BASE_URL + '/' + 'image/pdf/d3040739cbb290c87cc57521991582b45cf6db2d.pdf?page=hsn#toolbar=0'} />
-            </div>
-            {/* <Previews/> */}
+            {/* <div className='purpose__preview'>
+                <PDFViewer>
+                    <Previews/>
+                </PDFViewer>
+            </div> */}
             <ToastContainer position="bottom-right" />
         </div>
     )

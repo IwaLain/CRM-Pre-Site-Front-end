@@ -1,6 +1,5 @@
 import React from 'react';
 import './pdf.css'
-import logo from '../../../../assets/img/waites-block-logo-yellow-background.png'
 
 // Create Document Component
 const Previews = () => {
@@ -10,7 +9,7 @@ const Previews = () => {
           <div class="purpose_title">
               <div class="purpose_logo">
                   <div>
-                      <img src={logo} alt="" />
+                      <img src="../../../../assets/img/0f2e9792efcf90c199ac516320a35374317c1ce6.png" alt="" />
                   </div>
               </div>
               <div class="purpose_adress">
