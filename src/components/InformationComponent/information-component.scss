@@ -4,11 +4,8 @@
 }
 
 .information--item {
-  width: fit-content;
-
-  padding: 5px 15px;
-  border: 1px solid grey;
-  border-radius: 4px;
+  display: flex;
+  height: 40px;
 }
 .information--list {
   display: flex;
@@ -17,4 +14,19 @@
 }
 .information--item:not(:last-child) {
   margin-bottom: 5px;
+}
+.information--item .ui-kit__badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-wrap: break-word;
+
+  height: 100%;
+  padding: 8px;
+  width: fit-content;
+  background-color: #dedede;
+  color: black;
+}
+.information--item .field-value {
+  background-color: white;
 }
