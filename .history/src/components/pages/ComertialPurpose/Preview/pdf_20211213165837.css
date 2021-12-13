@@ -1,7 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+* {
+    box-shadow: none;
+    text-shadow: none;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  padding-right: 0 !important;
+}
+
 .purposePre {
     width: 600px;
-    height: auto;
-    transform: scale(0.5)
 }
 
 .purposePre_title {
@@ -54,7 +66,6 @@
 }
 
 .purposePre_form {
-    display: flex;
     justify-content: space-between;
     width: 100%;
 }

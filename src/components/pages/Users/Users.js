@@ -21,7 +21,7 @@ const UsersPage = () => {
     }
 
     useEffect(() => {
-        User.getUsers()
+        User.get()
         .then(data => setUsers(data.user))
     }, [])
     

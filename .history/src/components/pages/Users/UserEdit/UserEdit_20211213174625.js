@@ -1,18 +1,26 @@
 import React from 'react'
-import { alert } from '../../../../js/helpers/alert';
-import User from '../../../../js/api/users';
-import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
 import { useForm } from 'react-hook-form';
+import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
+import User from '../../../../js/api/users';
+import { alert } from '../../../../js/helpers/alert';
 import InputForm from '../../../../js/helpers/input';
 
-const UserAdd = ({ changeTable }) => {
-
+const UserEdit = ({ currentUser, editeMethod }) => {
     const {
         register,
         handleSubmit,
         trigger,
         formState: { errors }
-    } = useForm()
+    } = useForm({
+        defaultValues: {
+            firstname: currentUser.first_name,
+            lastname: currentUser.last_name,
+            username: currentUser.username,
+            email: currentUser.email,
+            phone: currentUser.phone,
+            role: currentUser.role,
+        }
+    })
 
     const dataInput = {
         register,
@@ -23,25 +31,38 @@ const UserAdd = ({ changeTable }) => {
 
     const onSubmit = (e) => {
         const data = {
+            'id': currentUser.id,
             'first_name': e.firstname,
             'last_name': e.lastname,
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
-            'password': e.password
+            'password': e.password,
+            'role': e.role,
         }
 
-        User.create(data)
+        if (currentUser.role !== 'SuperAdmin') {
+            editeMethod(currentUser.id, data)
+        }
+        User.edite(currentUser.id, data)
         .then(data => {
-            if(data.errors) {
-                for (let key in data.errors) {
-                    alert('error', data.errors[key])
-                }
+            if(data.success) {
+                alert('error', 'Something went wrong')
             } else {
-                changeTable(data.users)
-                alert('success', 'Add User successful')
+                alert('success', 'Edit User successful')
             }
         })
+
+        User.editRole(currentUser.id, data)
+        .then(data => {
+            if(data.success) {
+                alert('error', 'Something went wrong')
+            } else {
+                alert('success', 'Edit Role successful')
+            }
+        })
+
+        
     };
 
     return (
@@ -78,7 +99,7 @@ const UserAdd = ({ changeTable }) => {
                                     <Label className=''>User Name:</Label>
                                     <InputForm
                                         type={'username'}
-                                        data={dataInput}
+                                        data={dataInput} 
                                         errors={errors.username}
                                     />
                                 </Col>
@@ -103,12 +124,16 @@ const UserAdd = ({ changeTable }) => {
                                     />
                                 </Col>
                                 <Col md={6}>
-                                    <Label className=''>Password:</Label>
-                                    <InputForm
-                                        type={'password'}
-                                        data={dataInput}
-                                        errors={errors.password}
-                                    />
+                                    <Label className='w-100'>Role:</Label>
+                                    <select 
+                                        className='ui-kit__select w-100'
+                                        {...register('role')}
+                                    >
+                                        <option disabled selected> Select role</option>
+                                        <option value='manager'>manager</option>
+                                        <option value='member'>member</option>
+                                        <option value='SuperAdmin'>SuperAdmin</option>
+                                    </select>
                                 </Col>
                             </Row>
                         </FormGroup>
@@ -119,4 +144,4 @@ const UserAdd = ({ changeTable }) => {
     )
 }
 
-export default UserAdd
+export default UserEdit

@@ -284,7 +284,7 @@ const ComertialPurpouse = () => {
                                 form='form'
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    console.log(register)
+                                    console.log(e)
                                     let pdf = document.querySelector('.purpose__preview')
                                     pdfPreview()
                                     preview

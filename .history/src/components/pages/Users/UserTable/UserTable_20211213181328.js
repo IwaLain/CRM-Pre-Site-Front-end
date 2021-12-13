@@ -20,7 +20,7 @@ const UserTable = ({ users, editeTable, changeTable }) => {
         changeTable(data.users);
         alert("success", `Successful deleted user`);
       } else {
-        alert("error", 'Can`t delete Super Admin');
+
       }
     });
   };

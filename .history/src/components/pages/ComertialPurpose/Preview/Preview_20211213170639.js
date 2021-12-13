@@ -6,6 +6,7 @@ import bottom from '../../../../assets/img/barcode.png'
 // Create Document Component
 const Previews = ({ data, barcode }) => {
   return (
+    <div>
         <div class="purposePre">
           <div class="purposePre_title">
               <div class="purposePre_logo">
@@ -114,21 +115,22 @@ const Previews = ({ data, barcode }) => {
           <div class="total">
               Total: $21321
           </div>
-          <div class="purposePre_bottom">
-            <div class="purposePre_barcode">
-                <img src={bottom} alt="barcode" />
-                <div class="barcode">
-                    Q4353
-                </div>
-            </div>
-            <div class="purposePre_subadress">
-                20 W. 11th St.<br/>
-                Suite 200<br/>
-                Covington, KY 41011<br/>
-                United States<br/>
-            </div>
-        </div>
       </div>
+      <div class="purposePre_bottom">
+          <div class="purposePre_barcode">
+              <img src=bottom alt="" />
+              <div class="barcode">
+                  Q4353
+              </div>
+          </div>
+          <div class="purposePre_subadress">
+              20 W. 11th St.<br/>
+              Suite 200<br/>
+              Covington, KY 41011<br/>
+              United States<br/>
+          </div>
+      </div>
+    </div>
   )
 }
 

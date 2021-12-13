@@ -284,7 +284,6 @@ const ComertialPurpouse = () => {
                                 form='form'
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    console.log(register)
                                     let pdf = document.querySelector('.purpose__preview')
                                     pdfPreview()
                                     preview
@@ -307,7 +306,7 @@ const ComertialPurpouse = () => {
             <div className='purpose__preview'>
                 <iframe src={BASE_URL + '/' + 'image/pdf/d3040739cbb290c87cc57521991582b45cf6db2d.pdf?page=hsn#toolbar=0'} />
             </div>
-            <Previews />
+            <Previews/>
             <ToastContainer position="bottom-right" />
         </div>
     )

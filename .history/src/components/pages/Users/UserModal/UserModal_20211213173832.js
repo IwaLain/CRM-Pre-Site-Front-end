@@ -26,7 +26,7 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                 break;
             case 'Comertial Purpose':
                 setFormComponent(<Previews toggle={toggle} currentUser={currentUser} editeMethod={method} />)
-                setFormTitle('Comertial Purpose')
+                setFormTitle('Edit Profile')
                 break;
             default:
                 break;

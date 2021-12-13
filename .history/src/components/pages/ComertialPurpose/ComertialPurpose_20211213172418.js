@@ -205,7 +205,7 @@ const ComertialPurpouse = () => {
                                     name='bill'
                                     type='text'
                                     className={`ui-kit__textarea form-control ${errors.bill ? 'is-invalid' : ''}`}
-                                    {...register('bill', validation('address'))}
+                                    {...register('ship', validation('address'))}
                                     onKeyUp={() => {
                                         trigger('bill')
                                     }}
@@ -284,7 +284,6 @@ const ComertialPurpouse = () => {
                                 form='form'
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    console.log(register)
                                     let pdf = document.querySelector('.purpose__preview')
                                     pdfPreview()
                                     preview

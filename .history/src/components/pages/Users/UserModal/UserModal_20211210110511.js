@@ -4,7 +4,6 @@ import './UserModal.scss'
 import AddUser from '../UserAdd/UserAdd'
 import UserEdit from '../UserEdit/UserEdit'
 import ProfileEdit from '../../Profile/ProfileEdit/ProfileEdit'
-import Previews from '../../ComertialPurpose/Preview/Preview'
 
 const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
     const [formComponent, setFormComponent] = useState({});
@@ -23,10 +22,6 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
             case 'Edit Profile':
                 setFormComponent(<ProfileEdit toggle={toggle} currentUser={currentUser} editeMethod={method} />)
                 setFormTitle('Edit Profile')
-                break;
-            case 'Comertial Purpose':
-                setFormComponent(<Previews toggle={toggle} currentUser={currentUser} editeMethod={method} />)
-                setFormTitle('Comertial Purpose')
                 break;
             default:
                 break;

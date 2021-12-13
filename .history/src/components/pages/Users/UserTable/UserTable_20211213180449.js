@@ -15,14 +15,15 @@ const UserTable = ({ users, editeTable, changeTable }) => {
   const current = (currentUser) => setCurrentUser(currentUser);
 
   const deleteUser = (userId) => {
-    User.delete(userId).then((data) => {
-      if (data.success) {
+    console.log(currentUser)
+    if (currentUser.role !== 'SuperAdmin') {
+      User.delete(userId).then((data) => {
         changeTable(data.users);
         alert("success", `Successful deleted user`);
-      } else {
-        alert("error", 'Can`t delete Super Admin');
-      }
-    });
+      });
+    } else {
+      alert("error", 'Can`t delete Super Admin');
+    }
   };
 
   const isEmpty = (cell) => (cell === null ? "--" : cell === "" ? "--" : cell);

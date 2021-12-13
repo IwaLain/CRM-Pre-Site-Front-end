@@ -16,12 +16,8 @@ const UserTable = ({ users, editeTable, changeTable }) => {
 
   const deleteUser = (userId) => {
     User.delete(userId).then((data) => {
-      if (data.success) {
-        changeTable(data.users);
-        alert("success", `Successful deleted user`);
-      } else {
-        alert("error", 'Can`t delete Super Admin');
-      }
+      changeTable(data.users);
+      alert("success", `Successful deleted user`);
     });
   };
 

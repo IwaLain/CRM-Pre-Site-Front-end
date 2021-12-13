@@ -6,6 +6,7 @@ import bottom from '../../../../assets/img/barcode.png'
 // Create Document Component
 const Previews = ({ data, barcode }) => {
   return (
+    <div>
         <div class="purposePre">
           <div class="purposePre_title">
               <div class="purposePre_logo">
@@ -129,6 +130,7 @@ const Previews = ({ data, barcode }) => {
             </div>
         </div>
       </div>
+    </div>
   )
 }
 
