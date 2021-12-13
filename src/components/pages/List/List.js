@@ -88,36 +88,55 @@ const List = ({ type, title }) => {
   };
 
   const changeCustomer = (id) => {
-    fetch(
-      process.env.REACT_APP_SERVER_URL +
-        "/api/customer/" +
-        id +
-        "?access-token=" +
-        localStorage.getItem("token")
-    )
-      .then((res) => res.json())
-      .then((customer) => setSelectedCustomer(customer.customer[id]));
-    fetch(
-      process.env.REACT_APP_SERVER_URL +
-        "/api/customer/" +
-        id +
-        "/construct?access-token=" +
-        localStorage.getItem("token")
-    )
-      .then((res) => res.json())
-      .then((customerStructure) =>
-        setCustomerStructure(customerStructure["customerConstruct"])
+    try {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/customer/" +
+          id +
+          "?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((customer) => {
+          if (customer) {
+            setSelectedCustomer(customer.customer[id]);
+          } else console.log("Customer not found.");
+        });
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/customer/" +
+          id +
+          "/construct?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((customerStructure) => {
+          if (customerStructure)
+            setCustomerStructure(customerStructure["customerConstruct"]);
+          else console.log("Customer structure error.");
+        });
+    } catch (e) {
+      console.log(e);
+    }
+    try {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/user/last-customer/" +
+          id +
+          "?access-token=" +
+          localStorage.getItem("token"),
+        {
+          method: "PUT",
+        }
       );
-    fetch(
-      process.env.REACT_APP_SERVER_URL +
-        "/api/user/last-customer/" +
-        id +
-        "?access-token=" +
-        localStorage.getItem("token"),
-      {
-        method: "PUT",
-      }
-    );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -208,54 +227,70 @@ const List = ({ type, title }) => {
   useEffect(() => {
     if (requests.list) {
       setIsLoading(true);
-      requests
-        .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
-        .then((res) => {
-          setData(res);
-          setTotalRows(res.total);
-          setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
-          setIsLoading(false);
-        });
+      try {
+        requests
+          .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
+          .then((res) => {
+            setData(res);
+            setTotalRows(res.total);
+            setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
+            setIsLoading(false);
+          });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [requests, updateTrigger]);
 
   useEffect(() => {
     if (requests.ref)
-      requests.ref(-1).then((res) => {
-        const formattedNames = formatNames(res[type.ref]);
-        setEntityNames(formattedNames);
-        if (
-          selectedCustomer &&
-          Object.keys(selectedCustomer).length > 0 &&
-          type.ref === "customers"
-        ) {
-          setEntityID(selectedCustomer.id);
-        } else setEntityID(formattedNames[0].id);
-      });
+      try {
+        requests.ref(-1).then((res) => {
+          const formattedNames = formatNames(res[type.ref]);
+          setEntityNames(formattedNames);
+          if (
+            selectedCustomer &&
+            Object.keys(selectedCustomer).length > 0 &&
+            type.ref === "customers"
+          ) {
+            setEntityID(selectedCustomer.id);
+          } else setEntityID(formattedNames[0].id);
+        });
+      } catch (e) {
+        console.log(e);
+      }
   }, [requests]);
 
   useEffect(() => {
     if (requests.list) {
-      requests
-        .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
-        .then((res) => {
-          setData(res);
-        });
+      try {
+        requests
+          .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
+          .then((res) => {
+            setData(res);
+          });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [page]);
 
   useEffect(() => {
     if (requests.list) {
       setIsLoading(true);
-      requests
-        .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
-        .then((res) => {
-          setData(res);
-          setTotalRows(res.total);
-          setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
-          setPage(1);
-          setIsLoading(false);
-        });
+      try {
+        requests
+          .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
+          .then((res) => {
+            setData(res);
+            setTotalRows(res.total);
+            setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
+            setPage(1);
+            setIsLoading(false);
+          });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [entityID]);
 

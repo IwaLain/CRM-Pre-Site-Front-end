@@ -12,47 +12,75 @@ const Sidebar = ({ isMobile }) => {
         </Link>
       </div>
       <nav>
-        <ul>
+        <ul class="fa-ul">
           <li>
             <Link to={`/dashboard`}>
-              <i className="fas fa-chart-area"></i>
-              {!isMobile && "Dashboard"}
+              <span class="fa-li">
+                <i className="fas fa-chart-bar"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Dashboard
+              </span>
             </Link>
           </li>
           <li>
             <Link to={`/dashboard/customers`}>
-              <i className="fas fa-user"></i>
-              {!isMobile && "Customers"}
+              <span class="fa-li">
+                <i className="fas fa-user"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Customers
+              </span>
             </Link>
           </li>
           <li>
             <Link to={`/dashboard/facilities`}>
-              <i className="fas fa-industry"></i>
-              {!isMobile && "Facilities"}
+              <span class="fa-li">
+                <i className="fas fa-industry"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Facilities
+              </span>
             </Link>
           </li>
           <li>
             <Link to={`/dashboard/locations`}>
-              <i className="fas fa-compass"></i>
-              {!isMobile && "Locations"}
+              <span class="fa-li">
+                <i className="fas fa-map-marker-alt"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Locations
+              </span>
             </Link>
           </li>
           <li>
             <Link to={`/dashboard/equipment`}>
-              <i className="fas fa-tools"></i>
-              {!isMobile && "Equipment"}
+              <span class="fa-li">
+                <i className="fas fa-tools"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Equipment
+              </span>
             </Link>
           </li>
           <li>
             <Link to={`/dashboard/network`}>
-              <i className="fab fa-hubspot"></i>
-              {!isMobile && "Network"}
+              <span class="fa-li">
+                <i className="fas fa-network-wired"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Network
+              </span>
             </Link>
           </li>
           <li>
             <Link to={`/dashboard/purpose`}>
-              <i className="fas fa-file-pdf"></i>
-              {!isMobile && "Commertial Purpose"}
+              <span class="fa-li">
+                <i className="fas fa-file-alt"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Commercial Purpose
+              </span>
             </Link>
           </li>
         </ul>

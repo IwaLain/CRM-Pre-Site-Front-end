@@ -28,39 +28,49 @@ const App = () => {
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    try {
       Profile.getProfile().then((data) => {
-        setUserProfile(data.user);
-        if (data.user.last_customer) {
-          fetch(
-            process.env.REACT_APP_SERVER_URL +
-              "/api/customer/" +
-              data.user.last_customer +
-              "?access-token=" +
-              localStorage.getItem("token")
-          )
-            .then((res) => res.json())
-            .then((customer) => {
-              setSelectedCustomer(customer.customer[data.user.last_customer]);
-            });
-        }
+        if (data) {
+          setUserProfile(data.user);
+          if (data.user.last_customer) {
+            fetch(
+              process.env.REACT_APP_SERVER_URL +
+                "/api/customer/" +
+                data.user.last_customer +
+                "?access-token=" +
+                localStorage.getItem("token")
+            )
+              .then((res) => res.json())
+              .then((customer) => {
+                setSelectedCustomer(customer.customer[data.user.last_customer]);
+              });
+          }
+        } else console.log("Profile not found.");
       });
+    } catch (e) {
+      console.log(e);
     }
   }, []);
 
   useEffect(() => {
     if (selectedCustomer.id) {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/customer/" +
-          selectedCustomer.id +
-          "/construct?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((customerStructure) => {
-          setCustomerStructure(customerStructure["customerConstruct"]);
-        });
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/customer/" +
+            selectedCustomer.id +
+            "/construct?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((customerStructure) => {
+            if (customerStructure)
+              setCustomerStructure(customerStructure["customerConstruct"]);
+            else console.log("Customer structure not found.");
+          });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [selectedCustomer, updateTrigger]);
 
@@ -103,7 +113,7 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/dashboard/:path?">
-            {localStorage.getItem("token") ? (
+            {userProfile && Object.keys(userProfile).length > 0 ? (
               <DashboardLayout>
                 <Switch>
                   {routes.dashboard.map(({ path, children }, index) => {
@@ -121,14 +131,14 @@ const App = () => {
             <AuthLayout>
               <Switch>
                 <Route exact path="/">
-                  {localStorage.getItem("token") ? (
+                  {userProfile && Object.keys(userProfile).length > 0 ? (
                     <Redirect to="/dashboard" />
                   ) : (
                     <Redirect to="/login" />
                   )}
                 </Route>
                 <Route path="/login">
-                  {localStorage.getItem("token") ? (
+                  {userProfile && Object.keys(userProfile).length > 0 ? (
                     <Redirect to="/dashboard" />
                   ) : (
                     <LoginPage />

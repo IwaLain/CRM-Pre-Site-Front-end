@@ -210,31 +210,35 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         } else alert("error", `Request error.`);
       });
     } else if (mode === "edit") {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/" +
-          entityName +
-          "/update/" +
-          editId +
-          "?access-token=" +
-          localStorage.getItem("token"),
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      ).then((res) => {
-        if (res.status === 200) {
-          resetToggle();
-          setUpdateTrigger(!updateTrigger);
-          alert(
-            "success",
-            `${
-              entityName.charAt(0).toUpperCase() + entityName.slice(1)
-            } changed.`
-          );
-        } else alert("error", `Request error.`);
-      });
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/" +
+            entityName +
+            "/update/" +
+            editId +
+            "?access-token=" +
+            localStorage.getItem("token"),
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        ).then((res) => {
+          if (res.status === 200) {
+            resetToggle();
+            setUpdateTrigger(!updateTrigger);
+            alert(
+              "success",
+              `${
+                entityName.charAt(0).toUpperCase() + entityName.slice(1)
+              } changed.`
+            );
+          } else alert("error", `Request error.`);
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
@@ -600,18 +604,22 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       case "facilities":
       case "locations":
       case "equipment":
-        fetch(
-          process.env.REACT_APP_SERVER_URL +
-            "/api/" +
-            formattedRouteName +
-            "?access-token=" +
-            localStorage.getItem("token") +
-            "&limit=-1"
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            setRefListNames(formatNames(data[subEntity], "object"));
-          });
+        try {
+          fetch(
+            process.env.REACT_APP_SERVER_URL +
+              "/api/" +
+              formattedRouteName +
+              "?access-token=" +
+              localStorage.getItem("token") +
+              "&limit=-1"
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              setRefListNames(formatNames(data[subEntity], "object"));
+            });
+        } catch (e) {
+          console.log(e);
+        }
         break;
       default:
         break;
@@ -676,72 +684,76 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
 
   useEffect(() => {
     if (editId && entityName && mode === "edit") {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/" +
-          entityName +
-          "/" +
-          editId +
-          "?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          switch (entityName) {
-            case "customer":
-            case "facility":
-              setDefaultEntity(data[entityName][editId]);
-              reset({
-                ...data[entityName][editId],
-                headname: data[entityName][editId]["head_name"],
-              });
-              break;
-            default:
-              setDefaultEntity(data[entityName]);
-              let newFields = [];
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/" +
+            entityName +
+            "/" +
+            editId +
+            "?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            switch (entityName) {
+              case "customer":
+              case "facility":
+                setDefaultEntity(data[entityName][editId]);
+                reset({
+                  ...data[entityName][editId],
+                  headname: data[entityName][editId]["head_name"],
+                });
+                break;
+              default:
+                setDefaultEntity(data[entityName]);
+                let newFields = [];
 
-              if (
-                data[entityName]["jsonData"] &&
-                data[entityName]["jsonData"].length > 0 &&
-                data[entityName]["jsonData"] !== "null"
-              ) {
-                let newCount = 0;
+                if (
+                  data[entityName]["jsonData"] &&
+                  data[entityName]["jsonData"].length > 0 &&
+                  data[entityName]["jsonData"] !== "null"
+                ) {
+                  let newCount = 0;
 
-                const jsonData = data[entityName]["jsonData"];
+                  const jsonData = data[entityName]["jsonData"];
 
-                jsonData.forEach((el) => {
-                  newFields.push({
-                    id: `field${newCount + 1}`,
-                    title: el.name,
-                    value: el.value,
+                  jsonData.forEach((el) => {
+                    newFields.push({
+                      id: `field${newCount + 1}`,
+                      title: el.name,
+                      value: el.value,
+                    });
+                    newCount += 1;
                   });
-                  newCount += 1;
+
+                  setCustomFieldsCount(newCount);
+                  setCustomFields(newFields);
+                }
+
+                let fieldsToReset = {};
+
+                newFields.forEach((field) => {
+                  fieldsToReset[field.id] = field.value;
+                  fieldsToReset[field.name] = field.name;
                 });
 
-                setCustomFieldsCount(newCount);
-                setCustomFields(newFields);
-              }
-
-              let fieldsToReset = {};
-
-              newFields.forEach((field) => {
-                fieldsToReset[field.id] = field.value;
-                fieldsToReset[field.name] = field.name;
-              });
-
-              if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
-                reset({
-                  ...data[entityName],
-                  ...fieldsToReset,
-                });
-              } else {
-                reset({
-                  ...data[entityName],
-                });
-              }
-              break;
-          }
-        });
+                if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
+                  reset({
+                    ...data[entityName],
+                    ...fieldsToReset,
+                  });
+                } else {
+                  reset({
+                    ...data[entityName],
+                  });
+                }
+                break;
+            }
+          });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [editId]);
 

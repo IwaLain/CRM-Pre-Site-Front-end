@@ -16,17 +16,21 @@ const Network = () => {
     if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0))
       history.push("/dashboard/customers");
     else
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/customer/" +
-          selectedCustomer.id +
-          "/network?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((network) => {
-          setNetwork(Object.entries(network.Network));
-        });
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/customer/" +
+            selectedCustomer.id +
+            "/network?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((network) => {
+            setNetwork(Object.entries(network.Network));
+          });
+      } catch (e) {
+        console.log(e);
+      }
   }, [history, selectedCustomer, updateTrigger]);
 
   return (
