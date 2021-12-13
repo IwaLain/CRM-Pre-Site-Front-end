@@ -22,11 +22,11 @@ const AttachmentList = ({
     let setFilesFunction;
     let newFiles;
 
-    if (type == "1") {
+    if (type === "1") {
       setFilesFunction = setAttachedImages;
-    } else if (type == "2") {
+    } else if (type === "2") {
       setFilesFunction = setAttachedSchemas;
-    } else if (type == "3") {
+    } else if (type === "3") {
       setFilesFunction = setAttachedDocs;
     }
     Promise.all(
@@ -78,11 +78,11 @@ const AttachmentList = ({
   async function onRemoveImage(file, type) {
     let setFilesFunction;
     let isDeleted = true;
-    if (type == "1") {
+    if (type === "1") {
       setFilesFunction = setAttachedImages;
-    } else if (type == "2") {
+    } else if (type === "2") {
       setFilesFunction = setAttachedSchemas;
-    } else if (type == "3") {
+    } else if (type === "3") {
       setFilesFunction = setAttachedDocs;
     }
     if (onRemoveFileServer) {
@@ -90,7 +90,7 @@ const AttachmentList = ({
     } else {
       let fileToDelete;
 
-      fileToDelete = attachedFiles.find((el) => el.id == file.id);
+      fileToDelete = attachedFiles.find((el) => el.id === file.id);
 
       if (fileToDelete) {
         setCreatedFiles((state) => [
@@ -143,12 +143,12 @@ const AttachmentList = ({
         };
       });
       types.forEach((type) => {
-        if (type.typeID == "1") {
-          setAttachedImages(updatedFiles.filter((el) => el.type_id == "1"));
-        } else if (type.typeID == "2") {
-          setAttachedSchemas(updatedFiles.filter((el) => el.type_id == "2"));
-        } else if (type.typeID == "3") {
-          setAttachedDocs(updatedFiles.filter((el) => el.type_id == "3"));
+        if (type.typeID === "1") {
+          setAttachedImages(updatedFiles.filter((el) => el.type_id === "1"));
+        } else if (type.typeID === "2") {
+          setAttachedSchemas(updatedFiles.filter((el) => el.type_id === "2"));
+        } else if (type.typeID === "3") {
+          setAttachedDocs(updatedFiles.filter((el) => el.type_id === "3"));
         }
       });
     }
@@ -156,7 +156,7 @@ const AttachmentList = ({
   return (
     <>
       <div className="row">
-        {types && types.find((el) => el.typeID == "1") && (
+        {types && types.find((el) => el.typeID === "1") && (
           <div className="col">
             <AttachedFiles
               type="1"
@@ -170,7 +170,7 @@ const AttachmentList = ({
             />
           </div>
         )}
-        {types && types.find((el) => el.typeID == "2") && (
+        {types && types.find((el) => el.typeID === "2") && (
           <div className="col">
             <AttachedFiles
               type="2"
@@ -184,7 +184,7 @@ const AttachmentList = ({
             />
           </div>
         )}
-        {types && types.find((el) => el.typeID == "3") && (
+        {types && types.find((el) => el.typeID === "3") && (
           <div className="col">
             <AttachedFiles
               type="3"

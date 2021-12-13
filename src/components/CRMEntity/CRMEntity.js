@@ -58,8 +58,8 @@ const CRMEntity = ({ type }) => {
   async function deleteEntityImageServer(fileId, type_id) {
     const response = await deleteEntityImageAPI(id, fileId);
     if (response.success) {
-      if (type_id == "1") {
-        setEntityImages((state) => state.filter((el) => el.id != fileId));
+      if (type_id === "1") {
+        setEntityImages((state) => state.filter((el) => el.id !== fileId));
       }
       return true;
     } else {
@@ -79,7 +79,7 @@ const CRMEntity = ({ type }) => {
         newFiles.push(respImage);
       } else alert("error", response.message);
     }
-    if (type_id == "1") {
+    if (type_id === "1") {
       setEntityImages((state) => [...state, ...newFiles]);
     }
     return newFiles;
@@ -168,11 +168,11 @@ const CRMEntity = ({ type }) => {
         setAttachedFiles(data[`${type}Images`]);
 
         setEntityImages(
-          data[`${type}Images`].filter((el) => el.type_id == "1")
+          data[`${type}Images`].filter((el) => el.type_id === "1")
         );
 
         const mainImage = getMainImage(
-          data[`${type}Images`].filter((el) => el.type_id == "1")
+          data[`${type}Images`].filter((el) => el.type_id === "1")
         );
 
         setMainImage(mainImage);
@@ -209,13 +209,59 @@ const CRMEntity = ({ type }) => {
           )
             .then((res) => res.json())
             .then((data) => {
-              setSubEntity(data[subEntityName]);
+              setSubEntity([
+                {
+                  subEntityName: subEntityName,
+                  subEntityData: data[subEntityName],
+                },
+              ]);
+              // let equipment = data[subEntityName].find((el) => el.id === id);
+              // // if (equipment) {
+              // //   setSubEntity([
+              // //     {
+              // //       subEntityName: "sensors",
+              // //       subEntityData: equipment["sensors"],
+              // //     },
+              // //     { subEntityName: "mote", subEntityData: equipment["mote"] },
+              // //   ]);
+              // // }
+              // // setSubEntity([
+              // //   { subEntityName: "sensors" },
+              // //   { subEntityName: "mote" },
+              // // ]);
             });
         } else {
-          setSubEntity(data[subEntityName]);
+          setSubEntity([
+            {
+              subEntityName: subEntityName,
+              subEntityData: data[subEntityName],
+            },
+          ]);
         }
       }
-
+      if (type === "equipment") {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/location/" +
+            data["location_id"] +
+            "/equipment?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            let equipment = data["equipment"].find((el) => el.id === id);
+            console.log(equipment["mote"]);
+            if (equipment) {
+              setSubEntity([
+                {
+                  subEntityName: "sensors",
+                  subEntityData: equipment["sensors"],
+                },
+                { subEntityName: "motes", subEntityData: equipment["mote"] },
+              ]);
+            }
+          });
+      }
       setIsLoading(false);
     });
 
@@ -278,30 +324,34 @@ const CRMEntity = ({ type }) => {
             </div>
           )}
 
-          {entityObject && subEntityName.length > 0 && (
-            <div className="info-page--section">
-              <h2 className="page-subtitle">{`${type} ${subEntityName}`}</h2>
-              <div
-                className={
-                  screenSize > 440 ? "info-card_group" : "info-card_group dense"
-                }
-              >
-                {subEntity && subEntity.length > 0 ? (
-                  subEntity.map((subEnt, index) => (
-                    <InfoCard
-                      key={index}
-                      data={subEnt}
-                      type={subEntityName}
-                      toggleModal={toggleModal}
-                      setMode={setMode}
-                    />
-                  ))
-                ) : (
-                  <p>No {subEntityName} found.</p>
-                )}
+          {entityObject &&
+            subEntity.length > 0 &&
+            subEntity.map((subEnt) => (
+              <div className="info-page--section">
+                <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2>
+                <div
+                  className={
+                    screenSize > 440
+                      ? "info-card_group"
+                      : "info-card_group dense"
+                  }
+                >
+                  {subEnt.subEntityData && subEnt.subEntityData.length > 0 ? (
+                    subEnt.subEntityData.map((subEntityElement, index) => (
+                      <InfoCard
+                        key={index}
+                        data={subEntityElement}
+                        type={subEnt.subEntityName}
+                        toggleModal={toggleModal}
+                        setMode={setMode}
+                      />
+                    ))
+                  ) : (
+                    <p>No {subEntityName} found.</p>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            ))}
 
           {entityObject && entityObject[`${type}Images`] && (
             <div className="entity-page--section">

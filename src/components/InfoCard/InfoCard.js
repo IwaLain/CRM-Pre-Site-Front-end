@@ -14,12 +14,21 @@ const InfoCard = ({
   selected,
   changeCustomer,
   setMode,
+
   showView = true,
 }) => {
   const [subEntity, setSubEntity] = useState("");
   const [progress, setProgress] = useState(0);
   const { setEditId } = useContext(GlobalContext);
-
+  const [mainImage, setMainImage] = useState();
+  const onSetMainImage = (images) => {
+    if (images && images.length > 0) {
+      let image = images.find((el) => el["main_image"] === "1");
+      if (image) {
+        setMainImage(image.img);
+      }
+    }
+  };
   useEffect(() => {
     let totalProgress = 0;
 
@@ -31,6 +40,8 @@ const InfoCard = ({
         if (data.equipments && data.equipments.length > 0)
           totalProgress += 33.3;
         setSubEntity("Facilities");
+        onSetMainImage(data["customerImages"]);
+
         break;
       case "facilities":
         if (data.name) totalProgress += 33.3;
@@ -38,12 +49,16 @@ const InfoCard = ({
         if (data.equipments && data.equipments.length > 0)
           totalProgress += 33.3;
         setSubEntity("Locations");
+        onSetMainImage(data["facilityImages"]);
+
         break;
       case "locations":
         setSubEntity("Equipment");
+        onSetMainImage(data["locationImages"]);
         break;
       case "equipment":
         setSubEntity(["Sensors", "Mote"]);
+        onSetMainImage(data["equipmentImages"]);
         break;
       default:
         setSubEntity("");
@@ -78,8 +93,8 @@ const InfoCard = ({
       )}
       <img
         src={
-          data.img
-            ? process.env.REACT_APP_SERVER_URL + "/" + data.img
+          mainImage
+            ? process.env.REACT_APP_SERVER_URL + "/" + mainImage
             : placeholder
         }
         alt="customer"
