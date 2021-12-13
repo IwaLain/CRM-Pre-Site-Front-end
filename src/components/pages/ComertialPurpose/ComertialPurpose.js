@@ -27,10 +27,12 @@ import { useHistory } from 'react-router-dom';
 
 const ComertialPurpouse = () => {
     const token = getToken()
+    const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000))
     const [currentData, setCurrentData] = useState([])
     const [cols, setCols] = useState([])
+
     const { selectedCustomer } = useContext(GlobalContext)
-    const quote = 'Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000)
+
     const date = new Date().toLocaleDateString('en-US')
     const history = useHistory()
     const newData = []
@@ -43,6 +45,8 @@ const ComertialPurpouse = () => {
     const {
         register,
         handleSubmit,
+        trigger,
+        formState: { errors }
     } = useForm({
         defaultValues: {
             quote: quote
@@ -163,7 +167,7 @@ const ComertialPurpouse = () => {
                         <img src={logo} alt="logo" />
                     </div>
                 </Col>
-                <Col lg={{offset:1, size:3}} md={5} sm={6} className='purpose__adress'>
+                <Col lg={{offset:1, size:4}} md={5} sm={6} className='purpose__adress'>
                     Waites Sensor Techologies, Inc.<br/>
                     20 W. 11th St. Suite 200<br/>
                     Covington, KY 41011<br/>
@@ -182,8 +186,8 @@ const ComertialPurpouse = () => {
                                     </h3>
                                 </Col>
                                 <input
-                                    type='text'
                                     name='quote'
+                                    type='text'
                                     disabled
                                     className="ui-kit__input"
                                     {...register('quote')}
@@ -195,16 +199,24 @@ const ComertialPurpouse = () => {
                                 </Label>
                                 <textarea
                                     name='bill'
-                                    className="ui-kit__textarea"
+                                    type='text'
+                                    className={`ui-kit__textarea form-control ${errors.bill ? 'is-invalid' : ''}`}
                                     {...register('bill', validation('address'))}
+                                    onKeyUp={() => {
+                                        trigger('bill')
+                                    }}
                                 />
                                 <Label>
                                     Ship to
                                 </Label>
                                 <textarea
                                     name='ship'
-                                    className="ui-kit__textarea"
+                                    type='text'
+                                    className={`ui-kit__textarea form-control ${errors.ship ? 'is-invalid' : ''}`}
                                     {...register('ship', validation('address'))}
+                                    onKeyUp={() => {
+                                        trigger('ship')
+                                    }}
                                 />
                             </FormGroup>
                         </Col>
@@ -224,10 +236,13 @@ const ComertialPurpouse = () => {
                                     </Label>
                                 </Col>
                                 <input
-                                    type='text'
                                     name='expires'
-                                    className="ui-kit__input"
+                                    type='text'
+                                    className={`ui-kit__textarea form-control ${errors.expires ? 'is-invalid' : ''}`}
                                     {...register('expires', validation('text'))}
+                                    onKeyUp={() => {
+                                        trigger('expires')
+                                    }}
                                 />
                             </Row>
                             <Row className='purpose__info'>
@@ -237,10 +252,13 @@ const ComertialPurpouse = () => {
                                     </Label>
                                 </Col>
                                 <input
-                                    type='text'
                                     name='memo'
-                                    className="ui-kit__input"
+                                    type='text'
+                                    className={`ui-kit__textarea form-control ${errors.memo ? 'is-invalid' : ''}`}
                                     {...register('memo', validation('text'))}
+                                    onKeyUp={() => {
+                                        trigger('memo')
+                                    }}
                                 />
                             </Row>
                         </Col>
