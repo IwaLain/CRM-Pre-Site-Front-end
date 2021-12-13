@@ -11,7 +11,6 @@ import locationApi from "../../../js/api/locations";
 import equipmentApi from "../../../js/api/equipment";
 import facilitiesApi from "../../../js/api/facilities";
 import Button from "../../UIKit/Button/Button";
-import Select from "../../UIKit/Select/Select";
 import ModalSketch from "../../ModalComponent/ModalSketch";
 
 const List = ({ type, title }) => {
@@ -31,8 +30,6 @@ const List = ({ type, title }) => {
   const [chooseMode, setChooseMode] = useState(false);
   const [totalPages, setTotalPages] = useState();
 
-  const [testModal, setTestModal] = useState();
-
   const RECORDS_PER_PAGE = 10;
 
   const {
@@ -46,7 +43,6 @@ const List = ({ type, title }) => {
     setSelectedCustomer,
     setCustomerStructure,
     updateTrigger,
-    userProfile,
   } = useContext(GlobalContext);
 
   const match = useRouteMatch();
@@ -121,9 +117,7 @@ const List = ({ type, title }) => {
       {
         method: "PUT",
       }
-    )
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+    );
   };
 
   useEffect(() => {
@@ -198,13 +192,18 @@ const List = ({ type, title }) => {
 
     setPagePath(match.path);
 
-    if (requests.ref)
-      requests.ref(-1).then((res) => {
-        setEntityNames(formatNames(res[type.ref]));
-      });
-
     window.addEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (
+      selectedCustomer &&
+      Object.keys(selectedCustomer).length > 0 &&
+      type.ref === "customers"
+    ) {
+      setEntityID(selectedCustomer.id);
+    }
+  }, [selectedCustomer]);
 
   useEffect(() => {
     if (requests.list) {
@@ -229,9 +228,9 @@ const List = ({ type, title }) => {
           selectedCustomer &&
           Object.keys(selectedCustomer).length > 0 &&
           type.ref === "customers"
-        )
+        ) {
           setEntityID(selectedCustomer.id);
-        else setEntityID(formattedNames[0].id);
+        } else setEntityID(formattedNames[0].id);
       });
   }, [requests]);
 
@@ -287,18 +286,19 @@ const List = ({ type, title }) => {
             {showEntitySelect && (
               <div className="list__select-entity">
                 <Label for="select-entity">{type.ref}:</Label>
-                <Select id="select-entity" onChange={handleEntitySelect}>
+                <select
+                  className="ui-kit__select"
+                  id="select-entity"
+                  value={entityID}
+                  onChange={handleEntitySelect}
+                >
                   {entityNames &&
                     entityNames.map((entity) => (
-                      <option
-                        key={entity.id}
-                        value={entity.id}
-                        selected={entity.id === selectedCustomer.id}
-                      >
+                      <option key={entity.id} value={entity.id}>
                         {entity.name}
                       </option>
                     ))}
-                </Select>
+                </select>
               </div>
             )}
             <input

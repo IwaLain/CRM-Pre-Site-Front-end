@@ -16,7 +16,8 @@ const DashboardLayout = ({ children }) => {
     window.innerWidth <= MOBILE_SIZE
   );
 
-  const { pagePath, setPageTitle, pageType } = useContext(GlobalContext);
+  const { pagePath, setPageTitle, pageType, setEquipmentTypeList } =
+    useContext(GlobalContext);
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -31,6 +32,18 @@ const DashboardLayout = ({ children }) => {
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/equipment/type?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((list) => setEquipmentTypeList(list["type"]));
+    }
+  }, []);
 
   useEffect(() => {
     let filtered = routes.dashboard.filter((route) => {

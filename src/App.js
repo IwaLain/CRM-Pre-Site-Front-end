@@ -29,16 +29,6 @@ const App = () => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/equipment/type?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((list) => setEquipmentTypeList(list["type"]));
-    }
-
-    if (localStorage.getItem("token")) {
       Profile.getProfile().then((data) => {
         setUserProfile(data.user);
         if (data.user.last_customer) {

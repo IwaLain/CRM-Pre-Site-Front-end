@@ -131,6 +131,35 @@ const TableView = ({
           obj["location_info"] = value["location_info"];
         if (value["created_at"]) obj["created_at"] = value["created_at"];
         if (value["updated_at"]) obj["updated_at"] = value["updated_at"];
+        let singleAlias = "";
+        switch (type.entity) {
+          case "customers":
+            singleAlias = "customer";
+            break;
+          case "facilities":
+            singleAlias = "facility";
+            break;
+          case "locations":
+            singleAlias = "location";
+            break;
+          case "equipment":
+            singleAlias = "equipment";
+            break;
+          case "gateways":
+            singleAlias = "gateway";
+            break;
+        }
+        if (value[singleAlias + "Images"])
+          obj["images"] =
+            value[singleAlias + "Images"].length > 0 ? (
+              <>
+                <i className="fas fa-images"></i>
+                <i className="fas fa-images"></i>
+                ...
+              </>
+            ) : (
+              "No images."
+            );
         newData.push(obj);
       }
       setListData(newData);

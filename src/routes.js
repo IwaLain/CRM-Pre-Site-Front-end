@@ -1,7 +1,6 @@
 import LoginPage from "./components/pages/Login/Login";
 import UsersPage from "./components/pages/Users/Users";
 import Profile from "./components/pages/Profile/Profile";
-import CustomerCreate from "./components/ModalComponent/Modals/CustomerCreate/CustomerCreate";
 import List from "./components/pages/List/List";
 import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
@@ -27,11 +26,6 @@ const routes = {
       path: "/dashboard/profile",
       name: "Profile Page",
       children: <Profile />,
-    },
-    {
-      path: "/dashboard/customers/create",
-      name: "Customer Create",
-      children: <CustomerCreate />,
     },
     {
       path: "/dashboard/customers/:id",

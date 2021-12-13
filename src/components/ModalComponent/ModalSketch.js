@@ -47,6 +47,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     selectedCustomer,
     updateTrigger,
     setUpdateTrigger,
+    entityID,
   } = useContext(GlobalContext);
 
   const {
@@ -568,6 +569,32 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   }, [entity, mode]);
 
   useEffect(() => {
+    if (entity && mode === "create") {
+      switch (entity) {
+        case "customers":
+          break;
+        case "facilities":
+          reset({
+            customer_id: entityID,
+          });
+          break;
+        case "locations":
+          reset({
+            facility_id: entityID,
+          });
+          break;
+        case "equipment":
+          reset({
+            location_id: entityID,
+          });
+          break;
+        default:
+          break;
+      }
+    }
+  }, [entity, mode, entityID]);
+
+  useEffect(() => {
     switch (subEntity) {
       case "customers":
       case "facilities":
@@ -706,12 +733,10 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 reset({
                   ...data[entityName],
                   ...fieldsToReset,
-                  headname: data[entityName]["head_name"],
                 });
               } else {
                 reset({
                   ...data[entityName],
-                  headname: data[entityName]["head_name"],
                 });
               }
               break;
