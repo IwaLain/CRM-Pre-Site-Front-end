@@ -3,16 +3,16 @@ import { apiRequest } from "./api";
 import { BASE_URL } from "./constants";
 
 const facilitiesApi = {
-  getFacilities: async () => {
+  getFacilities: async (limit, page, search) => {
     const token = getToken();
 
-    if (token)
-      return apiRequest(
-        "GET",
-        BASE_URL + `/api/facilities?access-token=${token}`,
-        {},
-        {}
-      );
+    let url = `/api/facilities?access-token=${token}`;
+
+    if (limit) url += `&limit=${limit}`;
+    if (page) url += `&page=${page}`;
+    if (search) url += `&search=${search}`;
+
+    if (token) return apiRequest("GET", BASE_URL + url, {}, {});
   },
 
   getFacility: async (facilityId) => {
@@ -82,7 +82,6 @@ const facilitiesApi = {
 
   addFacilityImage: async (facilityId, data) => {
     const token = getToken();
-    console.log(data);
     if (token)
       return apiRequest(
         "POST",

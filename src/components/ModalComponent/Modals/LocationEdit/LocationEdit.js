@@ -17,6 +17,8 @@ import locationApi from "../../../../js/api/locations";
 import { GlobalContext } from "../../../../context";
 import "../../../../scss/location-edit.scss";
 import ConfirmModal from "../../../ConfirmModal/ConfirmModal";
+
+import AttachmentList from "../../../AttachmentList/AttachmentList";
 const LocationEdit = () => {
   const { setShowFormModal, editId, entityID } = useContext(GlobalContext);
   const [fields, setFields] = useState([]);
@@ -24,6 +26,31 @@ const LocationEdit = () => {
   const [addFieldModal, setAddFieldModal] = useState(false);
   const [removeFieldModal, setRemoveFieldModal] = useState(false);
   const [removeField, setRemoveField] = useState();
+  const [files, setFiles] = useState();
+  const [createdFiles, setCreatedFiles] = useState([]);
+
+  async function addLocationImageServer(files) {
+    let newFiles = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const response = await locationApi.addLocationImage(editId, files[i]);
+
+      if (response.success) {
+        const respImage = await response[`image`];
+        newFiles.push(respImage);
+      } else alert("error", response.message);
+    }
+
+    return newFiles;
+  }
+  async function deleteLocationImageServer(fileId) {
+    const response = await locationApi.deleteLocationImage(editId, fileId);
+    if (response.success) {
+      alert("success", `file deleted`);
+      return true;
+    } else alert("error", response.message);
+    return false;
+  }
 
   const {
     register,
@@ -35,7 +62,7 @@ const LocationEdit = () => {
   useEffect(() => {
     locationApi.getLocation(editId).then((data) => {
       const jsonData = data.location["jsonData"];
-
+      const locationFiles = data.location["locationImages"];
       reset({ name: data.location["name"] });
       if (jsonData) {
         let newFields = [];
@@ -52,11 +79,12 @@ const LocationEdit = () => {
 
         setFields(newFields);
       }
+      if (locationFiles) {
+        setFiles(locationFiles);
+      }
     });
-  }, [reset]);
+  }, []);
   const onSubmit = (data) => {
-    console.log(data);
-
     const body = {};
     const jsonData = [];
     for (const [key, value] of Object.entries(data)) {
@@ -76,7 +104,9 @@ const LocationEdit = () => {
       }
     }
     body["jsonData"] = jsonData;
-
+    if (createdFiles && createdFiles.length > 0) {
+      body["img"] = createdFiles;
+    }
     locationApi.editLocation(editId, body).then((res) => {
       if (res.status === "Successfully updated")
         alert("success", "Location updated.");
@@ -90,14 +120,17 @@ const LocationEdit = () => {
   const toggleAddFieldModal = () => {
     setAddFieldModal(!addFieldModal);
   };
+
   const toggleRemoveFieldModal = () => {
     setRemoveFieldModal(!removeFieldModal);
   };
+
   const handleRemoveFieldFormSubmit = () => {
     unregister(removeField.id);
     setFields(fields.filter((field) => field.id !== removeField.id));
     setRemoveField("");
   };
+
   const handleAddFieldFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -214,6 +247,13 @@ const LocationEdit = () => {
               </Button>
             </Col>
           </FormGroup>
+
+          {files && (
+            <AttachmentList
+              attachedFiles={files}
+              setCreatedFiles={setCreatedFiles}
+            />
+          )}
         </Form>
       </div>
     </>

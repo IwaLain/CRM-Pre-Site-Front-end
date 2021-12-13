@@ -1,21 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../../../../scss/customer-create-page.scss";
 import { Form, FormGroup, Label, Col } from "reactstrap";
-import star from "../../../../assets/img/star.svg";
 import { useForm } from "react-hook-form";
 import { alert } from "../../../../js/helpers/alert";
-import convertToBase64 from "../../../../js/helpers/convertImage";
 import { GlobalContext } from "../../../../context";
 import facilitiesApi from "../../../../js/api/facilities";
 import placeholder from "../../../../assets/img/company.png";
+import AttachmentList from "../../../AttachmentList/AttachmentList";
 
 const FacilityCreate = () => {
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const [loadedImg, setLoadedImg] = useState();
-  const [img, setImg] = useState();
-  const { setShowFormModal } = useContext(GlobalContext);
+  const [customerName, setCustomerName] = useState();
+  const [files, setFiles] = useState([]);
+  const [createdFiles, setCreatedFiles] = useState([]);
 
-  const { entityID } = useContext(GlobalContext);
+  const { entityID, setShowFormModal } = useContext(GlobalContext);
 
   const {
     register,
@@ -23,38 +21,17 @@ const FacilityCreate = () => {
     formState: { errors },
   } = useForm();
 
-  const getBase64Image = (img) => {
-    let canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    let ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    let dataURL = canvas.toDataURL("image/png");
-
-    return dataURL;
-  };
-
-  const addImageHandler = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      convertToBase64(file).then((res) => setImg(res));
-      const url = URL.createObjectURL(file);
-      setLoadedImg(url);
-      setImgLoaded(true);
-    }
-  };
-
   const onSubmit = (data) => {
     const body = {};
 
-    if (data.customerID) body["customer_id"] = data.customerID;
+    body["customer_id"] = entityID;
     if (data.name) body["name"] = data.name;
     if (data.lat) body["lat"] = data.lat;
     if (data.lng) body["lng"] = data.lng;
     if (data.address) body["address"] = data.address;
-    if (img) body["img"] = img;
-    else
-      body["img"] = getBase64Image(document.querySelector("#placeholder-img"));
+    if (createdFiles.length > 0) {
+      body["img"] = createdFiles;
+    }
 
     facilitiesApi.addFacilities(body).then((res) => {
       if (res.status === "Successfully created")
@@ -66,6 +43,20 @@ const FacilityCreate = () => {
     setShowFormModal(false);
   };
 
+  useEffect(() => {
+    fetch(
+      process.env.REACT_APP_SERVER_URL +
+        "/api/customer/" +
+        entityID +
+        "?access-token=" +
+        localStorage.getItem("token")
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setCustomerName(data.customer[entityID].name);
+      });
+  }, [entityID]);
+
   return (
     <div className="create-form">
       <img
@@ -76,12 +67,12 @@ const FacilityCreate = () => {
       />
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
         <FormGroup>
-          <Label for="customerID-field">Customer ID</Label>
+          <Label for="customerID-field">Customer</Label>
           <Col sm={12}>
             <input
               className="form-control"
               id="customerID-field"
-              value={entityID}
+              value={customerName}
               {...register("customerID")}
               readOnly
             />
@@ -167,28 +158,12 @@ const FacilityCreate = () => {
             />
           </Col>
         </FormGroup>
-        <FormGroup style={{ display: "flex", alignItems: "center" }}>
-          <Col>Image</Col>
-          <Col sm={12}>
-            {!imgLoaded ? (
-              <Label className="image-field" for="image-field">
-                <img className="star" src={star} alt="star" />
-                <span>Add image</span>
-              </Label>
-            ) : (
-              <Label className="image-field" for="image-field">
-                <img src={loadedImg} alt="customer-img" />
-              </Label>
-            )}
-            <input
-              className="form-control"
-              id="image-field"
-              type="file"
-              accept="image/*"
-              onChange={addImageHandler}
-            />
-          </Col>
-        </FormGroup>
+        {files && (
+          <AttachmentList
+            attachedFiles={files}
+            setCreatedFiles={setCreatedFiles}
+          />
+        )}
       </Form>
     </div>
   );

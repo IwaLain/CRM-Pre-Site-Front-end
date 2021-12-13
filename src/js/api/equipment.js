@@ -79,14 +79,14 @@ const equipmentApi = {
       );
   },
 
-  deleteImageEquipment: async (equipmentImageId) => {
+  deleteImageEquipment: async (equipmentId, equipmentImageId) => {
     const token = getToken();
 
     if (token)
       return apiRequest(
         "DELETE",
         BASE_URL +
-          `/api/equipment/image/delete/${equipmentImageId}?access-token=${token}`,
+          `/api/equipment/${equipmentId}/image/delete/${equipmentImageId}?access-token=${token}`,
         {},
         {}
       );
@@ -97,11 +97,13 @@ const equipmentApi = {
 
     if (token)
       return apiRequest(
-        "DELETE",
+        "POST",
         BASE_URL +
           `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`,
         data,
-        {}
+        {
+          "Content-Type": "application/json",
+        }
       );
   },
 
@@ -111,9 +113,23 @@ const equipmentApi = {
 
     if (limit) url += `&limit=${limit}`;
     if (page) url += `&page=${page}`;
-    if (search) url += `&s=${search}`;
+    if (search) url += `&search=${search}`;
 
     if (token) return apiRequest("GET", BASE_URL + url, {}, {});
+  },
+  setMainEquipmentImage: async (equipmentId, imageId) => {
+    const token = getToken();
+
+    if (token)
+      return apiRequest(
+        "PUT",
+        BASE_URL +
+          `/api/equipment/${equipmentId}/set-main-image/${imageId}?access-token=${token}`,
+        {},
+        {
+          "Content-Type": "application/json",
+        }
+      );
   },
 };
 

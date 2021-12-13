@@ -5,12 +5,16 @@ import { useForm } from "react-hook-form";
 import { alert } from "../../../../js/helpers/alert";
 import { GlobalContext } from "../../../../context";
 import placeholder from "../../../../assets/img/company.png";
+import AttachmentList from "../../../AttachmentList/AttachmentList";
 
 const RouterCreate = () => {
   const [facilitiesNames, setFacilitiesNames] = useState([]);
   const [gatewaysNames, setGatewaysNames] = useState([]);
   const [facilityID, setFacilityID] = useState();
   const [gatewayID, setGatewayID] = useState();
+  const [files, setFiles] = useState([]);
+  const [createdFiles, setCreatedFiles] = useState();
+
   const { setShowFormModal, selectedCustomer, customerStructure } =
     useContext(GlobalContext);
 
@@ -51,6 +55,9 @@ const RouterCreate = () => {
     if (gatewayID) body["gateway_id"] = gatewayID;
     body["name"] = "name";
     if (data.info) body["location_info"] = data.info;
+    if (createdFiles.length > 0) {
+      body["img"] = createdFiles;
+    }
 
     fetch(
       process.env.REACT_APP_SERVER_URL +
@@ -80,7 +87,7 @@ const RouterCreate = () => {
 
     setGatewaysNames(formatNames(customerStructure["gateways"]));
     setGatewayID(Object.keys(customerStructure["gateways"])[0]);
-  }, []);
+  }, [customerStructure]);
 
   return (
     <div className="create-form">
@@ -156,6 +163,12 @@ const RouterCreate = () => {
             />
           </Col>
         </FormGroup>
+        {files && (
+          <AttachmentList
+            attachedFiles={files}
+            setCreatedFiles={setCreatedFiles}
+          />
+        )}
       </Form>
     </div>
   );

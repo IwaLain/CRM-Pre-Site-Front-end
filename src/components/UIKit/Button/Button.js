@@ -26,7 +26,7 @@ const Button = ({
     else newStyle = colorStyle;
 
     setFormattedStyle(newStyle);
-  }, [color]);
+  }, [color, style]);
 
   return (
     <button
@@ -41,9 +41,9 @@ const Button = ({
     >
       {type ? (
         type === "list-view" ? (
-          <img src={listView} />
+          <img src={listView} alt="list-view error" />
         ) : type === "block-view" ? (
-          <img src={blockView} />
+          <img src={blockView} alt="block-view error" />
         ) : (
           children
         )

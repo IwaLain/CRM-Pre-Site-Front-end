@@ -24,7 +24,6 @@ const TableView = ({
 }) => {
   const [cols, setCols] = useState([]);
   const [listData, setListData] = useState([]);
-  const [fieldTitle, setFieldTitle] = useState("Title");
   const [showProgress, setShowProgress] = useState(true);
   const [progressField, SetProgressField] = useState("Progress");
   const [subEntity, setSubEntity] = useState("");
@@ -116,7 +115,7 @@ const TableView = ({
         Object.keys(data[type.entity]).length > 0)
     ) {
       const newData = [];
-      for (const [key, value] of Object.entries(data[type.entity])) {
+      for (const [, value] of Object.entries(data[type.entity])) {
         const obj = {};
 
         obj["id"] = value.id;
@@ -126,6 +125,8 @@ const TableView = ({
         if (value.locations) obj["locations"] = value.locations.length;
         if (value.equipments) obj["equipments"] = value.equipments.length;
         if (value.equipment) obj["equipment"] = value.equipment.length;
+        if (value.sensors && value.mote)
+          obj["sensors/motes"] = value.sensors.length + value.mote.length;
         if (value["location_info"])
           obj["location_info"] = value["location_info"];
         if (value["created_at"]) obj["created_at"] = value["created_at"];
@@ -169,12 +170,6 @@ const TableView = ({
         break;
     }
   }, []);
-
-  useEffect(() => {
-    if (listData && listData.length > 0) {
-      if (listData[0].name) setFieldTitle("Name");
-    }
-  }, [listData]);
 
   return (
     <DataTable

@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import "../../scss/attachedFiles.scss";
+import { Spinner } from "reactstrap";
 
 const AttachedFiles = ({
   type,
@@ -11,9 +12,10 @@ const AttachedFiles = ({
   attachedFiles,
   onRemoveFile,
   accepted = ".jpg, .jpeg, .png",
-  multiple = false,
+  multiple = true,
   maxFiles = 0,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
   const [confirmModal, setConfirmModal] = useState(false);
   const [removeFile, setRemoveFile] = useState();
@@ -23,7 +25,8 @@ const AttachedFiles = ({
     noKeyboard: true,
     multiple: multiple,
     maxFiles: maxFiles,
-    onDrop: (acceptedFiles) => {
+    onDrop: async (acceptedFiles) => {
+      setIsLoading(true);
       if (files.length < 1 || maxFiles === 0) {
         const newAcceptedFiles = acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -31,7 +34,7 @@ const AttachedFiles = ({
           })
         );
 
-        onAddFile(newAcceptedFiles, type);
+        await onAddFile(newAcceptedFiles, type);
       }
     },
   });
@@ -40,22 +43,21 @@ const AttachedFiles = ({
   };
 
   useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks
+    setIsLoading(false);
     files.forEach((file) => URL.revokeObjectURL(file.preview));
 
-    setFiles([
-      ...attachedFiles.map((file) => {
+    setFiles(
+      attachedFiles.map((file) => {
         const fileExtension = file.img.substring(file.img.lastIndexOf("."));
+
         const imageTypes = [".jpeg", ".png", ".jpg"];
         const isImage = imageTypes.some((el) => fileExtension.includes(el));
         return {
-          name: file.img,
-          preview: process.env.REACT_APP_SERVER_URL + "/" + file.img,
-          id: file.id,
+          ...file,
           isImage: isImage,
         };
-      }),
-    ]);
+      })
+    );
   }, [attachedFiles]);
 
   const thumbs =
@@ -93,7 +95,7 @@ const AttachedFiles = ({
         }}
         modalText={`Are you sure you want to DELETE file`}
       />
-      <h3 className="page-subtitle fw-normal">{name && name}</h3>
+      {name && <h3 className="page-subtitle fw-normal">{name}</h3>}
       <div
         {...getRootProps({
           className:
@@ -101,39 +103,34 @@ const AttachedFiles = ({
             (files && files.length > 0 ? "" : "dropzone--placeholder"),
         })}
       >
-        {/* <Button
-          className="delete-file--btn"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setRemoveFile("all");
-            toggleConfirmModal();
-          }}
-        >
-          Delete all {name}
-        </Button>
-        <Button
-          className="upload-file--btn"
-          onClick={(e) => {
-            e.preventDefault();
-          }}
-        >
-          Upload {name}
-        </Button> */}
         <input {...getInputProps()} />
 
         {thumbs ? (
           <div className="thumbsContainer">
             {thumbs}
+            {isLoading ? (
+              <>
+                <div className="thumb">
+                  <div className="thumbInner">
+                    <Spinner />
+                  </div>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
             {maxFiles === 0 && (
               <div
                 className="thumb"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+
                   open();
                 }}
               >
                 <button className="dropzone--add-file-btn btn ">
-                  <i class="fas fa-plus fa-2x add-file-btn--icon"></i>
+                  <i className="fas fa-plus fa-2x add-file-btn--icon"></i>
                 </button>
               </div>
             )}

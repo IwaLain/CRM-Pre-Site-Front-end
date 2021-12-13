@@ -11,7 +11,8 @@ import NotFound from "./components/pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
 import LoginPage from "./components/pages/Login/Login";
-import UIKit from "./components/UIKit/UIKit";
+import "./scss/ui-kit.scss";
+import Profile from "./js/api/profile";
 
 const App = () => {
   const [pageTitle, setPageTitle] = useState();
@@ -23,28 +24,90 @@ const App = () => {
   const [selectedCustomer, setSelectedCustomer] = useState({});
   const [customerStructure, setCustomerStructure] = useState({});
   const [userProfile, setUserProfile] = useState({});
+  const [equipmentTypeList, setEquipmentTypeList] = useState([]);
+  const [updateTrigger, setUpdateTrigger] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/equipment/type?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((list) => setEquipmentTypeList(list["type"]));
+    }
+
+    if (localStorage.getItem("token")) {
+      Profile.getProfile().then((data) => {
+        setUserProfile(data.user);
+        if (data.user.last_customer) {
+          fetch(
+            process.env.REACT_APP_SERVER_URL +
+              "/api/customer/" +
+              data.user.last_customer +
+              "?access-token=" +
+              localStorage.getItem("token")
+          )
+            .then((res) => res.json())
+            .then((customer) => {
+              setSelectedCustomer(customer.customer[data.user.last_customer]);
+            });
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedCustomer.id) {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/customer/" +
+          selectedCustomer.id +
+          "/construct?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((customerStructure) => {
+          setCustomerStructure(customerStructure["customerConstruct"]);
+        });
+    }
+  }, [selectedCustomer, updateTrigger]);
 
   return (
     <GlobalContext.Provider
       value={{
         pageTitle,
         setPageTitle,
+
         pageType,
         setPageType,
+
         pagePath,
         setPagePath,
+
         editId,
         setEditId,
+
         entityID,
         setEntityID,
+
         showFormModal,
         setShowFormModal,
+
         userProfile,
         setUserProfile,
+
         selectedCustomer,
         setSelectedCustomer,
         customerStructure,
         setCustomerStructure,
+
+        equipmentTypeList,
+        setEquipmentTypeList,
+
+        updateTrigger,
+        setUpdateTrigger,
       }}
     >
       <Router>
@@ -81,9 +144,6 @@ const App = () => {
                     <LoginPage />
                   )}
                 </Route>
-                {/* // {routes.auth.map(({ path, children }, index) => {
-                //   return <Route key={index} path={path} children={children} />;
-                // })}  */}
                 <Route component={NotFound} />
               </Switch>
             </AuthLayout>

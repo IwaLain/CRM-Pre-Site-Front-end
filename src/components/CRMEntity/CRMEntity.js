@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import logo from "../../assets/img/company.png";
 import customersApi from "../../js/api/customer";
@@ -10,10 +10,10 @@ import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
 import InfoCard from "../InfoCard/InfoCard";
 import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
-import ModalComponent from "../ModalComponent/ModalComponent";
 import { GlobalContext } from "../../context";
-import AttachedFiles from "../AttachedFiles/AttachedFiles";
-import convertToBase64 from "../../js/helpers/convertImage";
+import AttachmentList from "../AttachmentList/AttachmentList";
+import { Spinner } from "reactstrap";
+import ModalSketch from "../ModalComponent/ModalSketch";
 
 const CRMEntity = ({ type }) => {
   type = type.entity;
@@ -25,53 +25,27 @@ const CRMEntity = ({ type }) => {
   let getEntityAPI;
   let addEntityImageAPI;
   let setMainEntityImageAPI;
-  let deleteAllEntityImagesAPI;
-  let subEntityName = "";
 
-  const informationFieldNames = ["address", "phone", "email"];
+  let subEntityName = "";
+  const [isLoading, setIsLoading] = useState(false);
+
+  let informationFieldNames = [];
+
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
 
   const [entityObject, setEntityObject] = useState();
 
   const [mainImage, setMainImage] = useState();
 
-  const [subEntity, setSubEntity] = useState();
+  const [subEntity, setSubEntity] = useState([]);
 
   const [informationItems, setInformationItems] = useState([]);
 
   const [mode, setMode] = useState("edit");
 
-  const [fileTypes, setFileTypes] = useState([
-    {
-      type_id: "1",
-      setFunc(files) {
-        this.attachedFiles = [...files];
-      },
-      attachedFiles: [],
-      type_name: "image",
-      fileExtensions: ".jpg, .jpeg, .png",
-    },
-    {
-      type_id: "2",
-      setFunc(files) {
-        this.attachedFiles = [...files];
-      },
-      attachedFiles: [],
-      type_name: "schema",
-      fileExtensions:
-        ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-    },
-    {
-      type_id: "3",
-      setFunc(files) {
-        this.attachedFiles = [...files];
-      },
-      attachedFiles: [],
-      type_name: "doc",
-      fileExtensions:
-        ".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-    },
-  ]);
+  const [attachedFiles, setAttachedFiles] = useState();
+
+  const [entityImages, setEntityImages] = useState();
 
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
@@ -81,137 +55,107 @@ const CRMEntity = ({ type }) => {
     return mainImage;
   };
 
-  async function deleteAllEntityImages(type_id) {
-    const fileTypeIndex = fileTypes.findIndex(
-      (fileType) => fileType.type_id === type_id
-    );
-
-    if (fileTypeIndex > -1) {
-      const response = await deleteAllEntityImagesAPI(id, type_id);
-
-      if (response.success) {
-        setFileTypes((oldArr) => {
-          const newFileTypes = [...oldArr];
-          newFileTypes[fileTypeIndex].setFunc([]);
-
-          return newFileTypes;
-        });
-
-        alert("success", `files deleted`);
-      } else alert("error", response.message);
-    } else {
-      alert("warning", "wrong type of file");
-    }
-  }
-  async function deleteEntityImage(file, type_id) {
-    const fileTypeIndex = fileTypes.findIndex(
-      (fileType) => fileType.type_id === type_id
-    );
-
-    if (fileTypeIndex > -1) {
-      const response = await deleteEntityImageAPI(id, file.id);
-
-      if (response.success) {
-        const images = await response[`${type}Images`];
-        setFileTypes((oldArr) => {
-          const newFileTypes = [...oldArr];
-
-          setFiles(images, newFileTypes[fileTypeIndex]);
-
-          return newFileTypes;
-        });
-        alert("success", `file deleted`);
-      } else alert("error", response.message);
-    } else {
-      alert("warning", "wrong type of file");
-    }
-  }
-
-  async function addEntityImage(files, type_id) {
-    const newFiles = [...files];
-
-    const fileTypeIndex = fileTypes.findIndex(
-      (fileType) => fileType.type_id === type_id
-    );
-
-    if (fileTypeIndex > -1) {
-      for (let i = 0; i < newFiles.length; i++) {
-        let base64Format = await convertToBase64(newFiles[i]);
-        if (base64Format.length > 5) {
-          let data = { type_id: type_id, img: base64Format };
-
-          const response = await addEntityImageAPI(id, data);
-
-          if (response.success) {
-            const images = await response[`${type}Images`];
-            setFileTypes((oldArr) => {
-              const newFileTypes = [...oldArr];
-
-              setFiles(images, newFileTypes[fileTypeIndex]);
-
-              return newFileTypes;
-            });
-          } else alert("error", response.message);
-        } else {
-          alert("warning", "file is empty");
-        }
+  async function deleteEntityImageServer(fileId, type_id) {
+    const response = await deleteEntityImageAPI(id, fileId);
+    if (response.success) {
+      if (type_id == "1") {
+        setEntityImages((state) => state.filter((el) => el.id != fileId));
       }
+      return true;
     } else {
-      alert("warning", "wrong type of file");
+      alert("error", response.message);
+      return false;
     }
   }
-  const setFiles = (files, fileType) => {
-    const newFiles = files.filter((el) => el.type_id == fileType.type_id);
 
-    fileType.setFunc(newFiles);
-    return fileType;
-  };
+  async function addEntityImageServer(files, type_id) {
+    let newFiles = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const response = await addEntityImageAPI(id, files[i]);
+
+      if (response.success) {
+        const respImage = await response[`image`];
+        newFiles.push(respImage);
+      } else alert("error", response.message);
+    }
+    if (type_id == "1") {
+      setEntityImages((state) => [...state, ...newFiles]);
+    }
+    return newFiles;
+  }
+
   const setMainEntityImage = (imageId) => {
     setMainEntityImageAPI(id, imageId).then((res) => {
       setMainImage(res["main-image"]);
     });
   };
-  const setNewInformationItem = (fieldTitle, value) => {
-    setInformationItems((oldArr) => {
-      const newElement = { fieldTitle: fieldTitle, value: value };
 
-      return [...oldArr, newElement];
-    });
-  };
   switch (type) {
     case "customer":
       getEntityAPI = customersApi.getCustomer;
       deleteEntityImageAPI = customersApi.deleteCustomerImage;
       addEntityImageAPI = customersApi.addCustomerImage;
       setMainEntityImageAPI = customersApi.setMainCustomerImage;
-      deleteAllEntityImagesAPI = customersApi.deleteAllCustomerImages;
+
       subEntityName = "facilities";
+
+      informationFieldNames = ["address", "phone", "email"];
+
       break;
     case "facility":
       getEntityAPI = facilitiesApi.getFacility;
       deleteEntityImageAPI = facilitiesApi.deleteFacilityImage;
       addEntityImageAPI = facilitiesApi.addFacilityImage;
       setMainEntityImageAPI = facilitiesApi.setMainFacilityImage;
+
       subEntityName = "locations";
+
+      informationFieldNames = ["address"];
+
       break;
     case "location":
       getEntityAPI = locationApi.getLocation;
       deleteEntityImageAPI = locationApi.deleteLocationImage;
       addEntityImageAPI = locationApi.addLocationImage;
       setMainEntityImageAPI = locationApi.setMainLocationImage;
+
       subEntityName = "equipment";
+
       break;
     case "equipment":
       getEntityAPI = equipmentApi.getEquipment;
       deleteEntityImageAPI = equipmentApi.deleteImageEquipment;
       addEntityImageAPI = equipmentApi.createImageEquipment;
       setMainEntityImageAPI = equipmentApi.setMainEquipmentImage;
+
+      break;
+    default:
+      break;
+  }
+
+  let entityPluralAlias = "";
+
+  switch (type) {
+    case "customer":
+      entityPluralAlias = "customers";
+      break;
+    case "facility":
+      entityPluralAlias = "facilities";
+      break;
+    case "location":
+      entityPluralAlias = "locations";
+      break;
+    case "equipment":
+      entityPluralAlias = "equipment";
       break;
     default:
       break;
   }
 
   useEffect(() => {
+    setIsLoading(true);
+
     getEntityAPI(id).then((data) => {
       if (type === "customer" || type === "facility") {
         data = data[type][id];
@@ -219,32 +163,60 @@ const CRMEntity = ({ type }) => {
         data = data[type];
       }
       setEntityObject(data);
-      if (data[`${type}Images`]) {
-        fileTypes.forEach((fileType) => {
-          setFiles(data[`${type}Images`], fileType);
-        });
 
-        const mainImage = getMainImage(data[`${type}Images`]);
+      if (data[`${type}Images`]) {
+        setAttachedFiles(data[`${type}Images`]);
+
+        setEntityImages(
+          data[`${type}Images`].filter((el) => el.type_id == "1")
+        );
+
+        const mainImage = getMainImage(
+          data[`${type}Images`].filter((el) => el.type_id == "1")
+        );
+
         setMainImage(mainImage);
       }
-      if (data.jsonData) {
-        const customFields = data.jsonData;
-
-        customFields.forEach((el) => {
-          if (el.value) {
-            setNewInformationItem(el.name, el.value);
+      if (informationFieldNames.length > 0) {
+        let infoFields = informationFieldNames.map((el) => {
+          if (data[el]) {
+            return { fieldTitle: el, value: data[el] };
           }
+          return false;
+        });
+
+        setInformationItems((state) => {
+          return [...state, ...infoFields];
+        });
+      }
+      if (data.jsonData) {
+        const customFields = data.jsonData.map((el) => {
+          return { fieldTitle: el.name, value: el.value };
+        });
+
+        setInformationItems((state) => {
+          return [...state, ...customFields];
         });
       }
       if (subEntityName.length !== 0) {
-        setSubEntity(data[subEntityName]);
+        if (subEntityName === "equipment") {
+          fetch(
+            process.env.REACT_APP_SERVER_URL +
+              "/api/location/" +
+              id +
+              "/equipment?access-token=" +
+              localStorage.getItem("token")
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              setSubEntity(data[subEntityName]);
+            });
+        } else {
+          setSubEntity(data[subEntityName]);
+        }
       }
 
-      informationFieldNames.forEach((field) => {
-        if (data[field]) {
-          setNewInformationItem(field, data[field]);
-        }
-      });
+      setIsLoading(false);
     });
 
     setEntityID(id);
@@ -259,92 +231,93 @@ const CRMEntity = ({ type }) => {
   };
   return (
     <>
-      <ModalComponent
+      {/* <ModalComponent
         modal={showFormModal}
         toggle={toggleModal}
-        type={{ entity: subEntityName }}
+        type={subEntityName}
+        mode={mode}
+      /> */}
+      <ModalSketch
+        entity={subEntityName}
+        subEntity={entityPluralAlias}
+        modal={showFormModal}
+        toggle={toggleModal}
         mode={mode}
       />
-      <div className="d-flex align-items-center entity-page--header">
-        {entityObject && entityObject[`${type}Images`] && (
-          <div className="main-img--container">
-            <img
-              src={
-                mainImage && mainImage.img
-                  ? process.env.REACT_APP_SERVER_URL + "/" + mainImage.img
-                  : logo
-              }
-              alt="company img"
-              className="entity-page--img"
-            ></img>
-            <DropdownImageEdit
-              images={
-                fileTypes[0] && fileTypes[0].attachedFiles.length > 0
-                  ? fileTypes[0].attachedFiles
-                  : []
-              }
-              setMainImage={setMainEntityImage}
-            ></DropdownImageEdit>
-          </div>
-        )}
-        <h1 className="page-title">{entityObject && entityObject.name}</h1>
-      </div>
-
-      {entityObject && informationItems.length > 0 && (
-        <div className="entity-page--section">
-          <InformationComponent
-            items={informationItems}
-            title={`Information ${type}`}
-          ></InformationComponent>
-        </div>
-      )}
-
-      {entityObject && subEntityName.length > 0 && (
-        <div className="info-page--section">
-          <h2 className="page-subtitle">{`${type} ${subEntityName}`}</h2>
-          <div
-            className={
-              screenSize > 440 ? "info-card_group" : "info-card_group dense"
-            }
-          >
-            {subEntity && subEntity.length > 0 ? (
-              subEntity.map((subEnt) => (
-                <InfoCard
-                  data={subEnt}
-                  type={subEntityName}
-                  toggleModal={toggleModal}
-                  setMode={setMode}
-                />
-              ))
-            ) : (
-              <p>No {subEntityName} found.</p>
+      {!isLoading ? (
+        <>
+          <div className="d-flex align-items-center entity-page--header">
+            {entityObject && entityObject[`${type}Images`] && (
+              <div className="main-img--container">
+                <img
+                  src={
+                    mainImage && mainImage.img
+                      ? process.env.REACT_APP_SERVER_URL + "/" + mainImage.img
+                      : logo
+                  }
+                  alt="company img"
+                  className="entity-page--img"
+                ></img>
+                <DropdownImageEdit
+                  images={
+                    entityImages && entityImages.length > 0 ? entityImages : []
+                  }
+                  setMainImage={setMainEntityImage}
+                ></DropdownImageEdit>
+              </div>
             )}
+            <h1 className="page-title">{entityObject && entityObject.name}</h1>
           </div>
-        </div>
-      )}
 
-      {entityObject && entityObject[`${type}Images`] && (
-        <div className="entity-page--section">
-          <h2 className="page-subtitle">{`Attachments`}</h2>
-          <div className="row">
-            {fileTypes &&
-              fileTypes.map((fileType, i) => (
-                <div key={i} className="col ">
-                  <AttachedFiles
-                    type={fileType.type_id}
-                    name={fileType.type_name}
-                    onAddFile={addEntityImage}
-                    accepted={fileType.fileExtensions}
-                    onRemoveFile={deleteEntityImage}
-                    onDeleteAllFiles={deleteAllEntityImages}
-                    attachedFiles={
-                      fileType.attachedFiles ? fileType.attachedFiles : []
-                    }
-                  />
-                </div>
-              ))}
-          </div>
-        </div>
+          {entityObject && informationItems.length > 0 && (
+            <div className="entity-page--section">
+              <InformationComponent
+                items={informationItems}
+                title={`Information ${type}`}
+              ></InformationComponent>
+            </div>
+          )}
+
+          {entityObject && subEntityName.length > 0 && (
+            <div className="info-page--section">
+              <h2 className="page-subtitle">{`${type} ${subEntityName}`}</h2>
+              <div
+                className={
+                  screenSize > 440 ? "info-card_group" : "info-card_group dense"
+                }
+              >
+                {subEntity && subEntity.length > 0 ? (
+                  subEntity.map((subEnt, index) => (
+                    <InfoCard
+                      key={index}
+                      data={subEnt}
+                      type={subEntityName}
+                      toggleModal={toggleModal}
+                      setMode={setMode}
+                    />
+                  ))
+                ) : (
+                  <p>No {subEntityName} found.</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {entityObject && entityObject[`${type}Images`] && (
+            <div className="entity-page--section">
+              <h2 className="page-subtitle">{`Attachments`}</h2>
+              {attachedFiles && (
+                <AttachmentList
+                  attachedFiles={attachedFiles}
+                  onAddFileServer={addEntityImageServer}
+                  onRemoveFileServer={deleteEntityImageServer}
+                />
+              )}
+            </div>
+          )}
+        </>
+      ) : (
+        <Spinner />
       )}
     </>
   );
