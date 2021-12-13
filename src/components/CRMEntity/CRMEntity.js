@@ -250,7 +250,6 @@ const CRMEntity = ({ type }) => {
           .then((res) => res.json())
           .then((data) => {
             let equipment = data["equipment"].find((el) => el.id === id);
-            console.log(equipment["mote"]);
             if (equipment) {
               setSubEntity([
                 {
