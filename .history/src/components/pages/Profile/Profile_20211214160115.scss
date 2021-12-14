@@ -1,0 +1,115 @@
+.profile__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto !important;
+    max-width: 700px;
+    padding: 10px;
+}
+
+.profile {
+    display: flex;
+    padding: 20px;
+    &__card {
+        padding: 10px;
+    }
+
+    &__item {
+        align-items: center;
+        max-width: 360px;
+        padding-bottom: 5px;
+        margin-bottom: 20px;
+
+        .form-label {
+            margin-bottom: 0;
+            min-width: 100px;
+        }
+    }
+
+    &__text {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 200px;
+        height: 40px;
+        text-align: center;
+        background: #DEDEDE;
+        border-radius: 5px;
+        padding-bottom: 0;
+
+        .form-control {
+            text-align: center;
+        }
+    }
+
+    &__avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 150px;
+        & input[type="file"] {
+            display: none;
+        }
+
+        .image-field {
+            text-align: center;
+        }
+    }
+
+    &__button {
+        margin-top: 50px !important;
+        max-width: 150px;
+        i {
+            margin-left: 5px;
+        }
+    }
+
+    &__lable {
+        min-width: 200px;
+    }
+
+    &__username {
+        text-align: center;
+    }
+}
+
+.profile__img {
+    width: 98px;
+    height: 98px;
+    min-width: 98px;
+    min-height: 98px;
+    border-radius: 50%;
+    color: #000;
+    background: #eeeeee;
+
+    &-edit {
+        .profile__placeholder {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            width: 16px;
+            height: 16px;
+            z-index: 10;
+            visibility: hidden;
+        }
+    }
+
+    &:hover,
+    &-edit:hover > & {
+        background: rgba(0, 0, 0, 0.288);
+        cursor: pointer;
+    }
+
+    &-edit:hover {
+        position: absolute;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 86px;
+        height: 86px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+}

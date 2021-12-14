@@ -1,0 +1,13 @@
+.users {
+    &__title {
+    line-height: 1.3;
+    padding-top: 5px;
+    }
+
+    &__button {
+        @media (max-width: 600px) {
+            text-align: right;
+        }
+    }
+}
+
