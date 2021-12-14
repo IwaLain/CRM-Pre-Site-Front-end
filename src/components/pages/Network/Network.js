@@ -4,6 +4,7 @@ import { GlobalContext } from "../../../context";
 import Button from "../../UIKit/Button/Button";
 import List from "../List/List";
 import "../../../scss/network.scss";
+import { alert } from "../../../js/helpers/alert";
 
 const Network = () => {
   const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
@@ -13,9 +14,10 @@ const Network = () => {
   const history = useHistory();
 
   useEffect(() => {
-    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0))
+    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
       history.push("/dashboard/customers");
-    else
+      alert("error", "You need to select customer first.");
+    } else
       try {
         fetch(
           process.env.REACT_APP_SERVER_URL +

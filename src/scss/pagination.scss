@@ -12,14 +12,14 @@
   cursor: default;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid $primary;
-  color: $primary;
+  color: black;
   margin: 0 5px;
   text-decoration: none;
 }
 
 .pagination li:not(.disabled) a:hover {
   background-color: $default;
+  color: black;
   cursor: pointer;
 }
 
@@ -28,14 +28,12 @@
 }
 
 .pagination li.active a {
-  color: #fff;
-  background: $primary;
+  background: $default;
 }
 
 .pagination li.disabled a {
   pointer-events: none;
   color: rgb(198, 197, 202);
-  border: 1px solid rgb(198, 197, 202);
 }
 
 @media (max-width: 600px) {

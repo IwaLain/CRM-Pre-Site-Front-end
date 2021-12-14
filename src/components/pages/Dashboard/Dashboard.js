@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { GlobalContext } from "../../../context";
 import "../../../scss/dashboard-page.scss";
+import { alert } from "../../../js/helpers/alert";
+import CardSketch from "../../CardSketch/CardSketch";
 
 const Dashboard = () => {
   const { selectedCustomer } = useContext(GlobalContext);
@@ -10,9 +12,10 @@ const Dashboard = () => {
   const history = useHistory();
 
   useEffect(() => {
-    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0))
+    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
       history.push("/dashboard/customers");
-    else
+      alert("error", "You need to select customer first.");
+    } else
       try {
         fetch(
           process.env.REACT_APP_SERVER_URL +
@@ -66,7 +69,10 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-      <section className="dashboard-page__section">
+      <section
+        className="dashboard-page__section"
+        style={{ marginBottom: "20px" }}
+      >
         <h3>Network statistics</h3>
         <div className="dashboard-page__block-wrapper">
           {network &&
@@ -78,6 +84,16 @@ const Dashboard = () => {
             ))}
         </div>
       </section>
+      <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+      </div>
     </div>
   );
 };

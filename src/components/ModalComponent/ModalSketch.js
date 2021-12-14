@@ -615,7 +615,8 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           )
             .then((res) => res.json())
             .then((data) => {
-              setRefListNames(formatNames(data[subEntity], "object"));
+              if (Object.keys(data[subEntity]).length > 0)
+                setRefListNames(formatNames(data[subEntity], "object"));
             });
         } catch (e) {
           console.log(e);
@@ -759,31 +760,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
 
   return (
     <>
-      <Modal isOpen={addFieldModal} toggle={toggleAddFieldModal}>
-        <ModalHeader>Add Field</ModalHeader>
-        <ModalBody>
-          <Form
-            id="add-field-form"
-            onSubmit={(e) =>
-              handleAddFieldFormSubmit(e, customFields, customFieldsCount)
-            }
-          >
-            <FormGroup>
-              <Label for="add-field-field">Field title</Label>
-              <Col sm={12}>
-                <input className="form-control" id="add-field-field" />
-              </Col>
-            </FormGroup>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button onClick={toggleAddFieldModal}>Cancel</Button>
-          <Button form="add-field-form" color="primary">
-            Add
-          </Button>
-        </ModalFooter>
-      </Modal>
-      <Modal isOpen={modal} toggle={resetToggle}>
+      <Modal isOpen={modal} toggle={resetToggle} size="lg">
         <ModalHeader>{formTitle}</ModalHeader>
         <ModalBody>
           <Form id="form" onSubmit={handleSubmit(onSubmit)}>
@@ -792,7 +769,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 field.inputType === "email" ? (
                   <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={12}>
+                    <Col sm={6}>
                       <input
                         className={`form-control ${
                           errors[field.title] ? "is-invalid" : ""
@@ -815,7 +792,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 ) : field.inputType === "phone" ? (
                   <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={12}>
+                    <Col sm={6}>
                       <input
                         className={`form-control ${
                           errors[field.title] ? "is-invalid" : ""
@@ -839,7 +816,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 ) : field.inputType === "number" ? (
                   <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={12}>
+                    <Col sm={6}>
                       <input
                         className={`form-control ${
                           errors[field.title] ? "is-invalid" : ""
@@ -862,7 +839,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 ) : (
                   <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={12}>
+                    <Col sm={6}>
                       <input
                         className={`form-control ${
                           errors[field.title] ? "is-invalid" : ""
@@ -888,11 +865,12 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   <Label for="select-ref">
                     {subEntity.charAt(0).toUpperCase() + subEntity.slice(1)}
                   </Label>
-                  <Col sm={12}>
+                  <Col sm={6}>
                     <select
                       id="select-ref"
                       className="ui-kit__select"
                       {...register(field.subID)}
+                      disabled={refListNames.length < 1}
                     >
                       {refListNames &&
                         refListNames.map((ref) => (
@@ -909,7 +887,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     customFields.map(({ id, title }) => (
                       <FormGroup key={id}>
                         <Label for={`${id}-field`}>{title}</Label>
-                        <Col sm={12}>
+                        <Col sm={6}>
                           <input
                             className={`form-control ${
                               errors[`${id}`] ? "is-invalid" : ""
@@ -969,12 +947,13 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   <Label for={`${field.title.toLowerCase()}-field`}>
                     {field.title}
                   </Label>
-                  <Col sm={12}>
+                  <Col sm={6}>
                     <select
                       key={index}
                       id={`${field.title.toLowerCase()}-field`}
                       className="ui-kit__select"
                       {...register(field.subID)}
+                      disabled={equipmentTypeList.length < 1}
                     >
                       {equipmentTypeList &&
                         equipmentTypeList.map((type) => (
@@ -988,12 +967,21 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
               ) : field.fieldType === "form-customer-entity-select" ? (
                 <FormGroup key={index}>
                   <Label for={`${field.title}-field`}>{field.title}</Label>
-                  <Col sm={12}>
+                  <Col sm={6}>
                     <select
                       key={index}
                       id={`${field.title}-field`}
                       className="ui-kit__select"
                       {...register(field.subID)}
+                      disabled={
+                        field.title === "Facility"
+                          ? facilitiesNames.length < 1
+                          : field.title === "Equipment"
+                          ? equipmentNames.length < 1
+                          : (field.title = "Node"
+                              ? nodesNames.length < 1
+                              : gatewaysNames.length < 1)
+                      }
                     >
                       {field.title === "Facility"
                         ? facilitiesNames &&
@@ -1043,6 +1031,30 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           </Button>
           <Button color="primary" form="form">
             Submit
+          </Button>
+        </ModalFooter>
+      </Modal>
+      <Modal isOpen={addFieldModal} toggle={toggleAddFieldModal}>
+        <ModalHeader>Add Field</ModalHeader>
+        <ModalBody>
+          <Form
+            id="add-field-form"
+            onSubmit={(e) =>
+              handleAddFieldFormSubmit(e, customFields, customFieldsCount)
+            }
+          >
+            <FormGroup>
+              <Label for="add-field-field">Field title</Label>
+              <Col sm={12}>
+                <input className="form-control" id="add-field-field" />
+              </Col>
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={toggleAddFieldModal}>Cancel</Button>
+          <Button form="add-field-form" color="primary">
+            Add
           </Button>
         </ModalFooter>
       </Modal>

@@ -30,7 +30,7 @@ const List = ({ type, title }) => {
   const [chooseMode, setChooseMode] = useState(false);
   const [totalPages, setTotalPages] = useState();
 
-  const RECORDS_PER_PAGE = 10;
+  const RECORDS_PER_PAGE = 20;
 
   const {
     pageTitle,
@@ -246,15 +246,17 @@ const List = ({ type, title }) => {
     if (requests.ref)
       try {
         requests.ref(-1).then((res) => {
-          const formattedNames = formatNames(res[type.ref]);
-          setEntityNames(formattedNames);
-          if (
-            selectedCustomer &&
-            Object.keys(selectedCustomer).length > 0 &&
-            type.ref === "customers"
-          ) {
-            setEntityID(selectedCustomer.id);
-          } else setEntityID(formattedNames[0].id);
+          if (Object.keys(res[type.ref]).length > 0) {
+            const formattedNames = formatNames(res[type.ref]);
+            setEntityNames(formattedNames);
+            if (
+              selectedCustomer &&
+              Object.keys(selectedCustomer).length > 0 &&
+              type.ref === "customers"
+            ) {
+              setEntityID(selectedCustomer.id);
+            } else setEntityID(formattedNames[0].id);
+          }
         });
       } catch (e) {
         console.log(e);
@@ -326,7 +328,11 @@ const List = ({ type, title }) => {
                   id="select-entity"
                   value={entityID}
                   onChange={handleEntitySelect}
+                  disabled={!entityNames}
                 >
+                  <option value="" hidden>
+                    No records
+                  </option>
                   {entityNames &&
                     entityNames.map((entity) => (
                       <option key={entity.id} value={entity.id}>
@@ -374,6 +380,7 @@ const List = ({ type, title }) => {
                   chooseMode={chooseMode}
                   changeCustomer={changeCustomer}
                   showView={showView}
+                  perPage={RECORDS_PER_PAGE}
                 />
               ) : (
                 <div
