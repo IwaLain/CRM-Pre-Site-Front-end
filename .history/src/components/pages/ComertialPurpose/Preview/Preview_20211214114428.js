@@ -4,14 +4,8 @@ import logo from '../../../../assets/img/waites-block-logo-yellow-background.png
 import bottom from '../../../../assets/img/barcode.png'
 
 // Create Document Component
-const Previews = ({ data, items }) => {
-    let total = 0
-    
-    items.map(data => {
-        total += data.amount
-    })
-    
-    return (
+const Previews = ({ data, barcode }) => {
+  return (
         <div class="purposePre">
           <div class="purposePre_title">
               <div class="purposePre_logo">
@@ -90,29 +84,41 @@ const Previews = ({ data, items }) => {
                       </tr>
                   </thead>
                   <tbody>
-                    {
-                        items.map(data => (
-                            <tr key={data.item}>
-                                <td>{data.item}</td>
-                                <td>{data.description}</td>
-                                <td>{data.units}</td>
-                                <td align="center" class="cost">{data.quantity}</td>
-                                <td align="center" class="cost">{data.rate}</td>
-                                <td align="center" class="cost">{data.amount}</td>
-                            </tr>
-                        ))
-                    }
+                      <tr>
+                          <td>fasdfdfdf</td>
+                          <td>dsafasdfdsa</td>
+                          <td>fdsfdsff</td>
+                          <td align="center" class="cost">dfasfddsf</td>
+                          <td align="center" class="cost">dsfasdfsdf</td>
+                          <td align="center" class="cost">sdafdsafsaf</td>
+                      </tr>
+                      <tr>
+                          <td>fasdfdfdf</td>
+                          <td>dsafasdfdsa</td>
+                          <td>fdsfdsff</td>
+                          <td align="center" class="cost">dfasfddsf</td>
+                          <td align="center" class="cost">dsfasdfsdf</td>
+                          <td align="center" class="cost">sdafdsafsaf</td>
+                      </tr>
+                      <tr>
+                          <td>fasdfdfdf</td>
+                          <td>dsafasdfdsa</td>
+                          <td>fdsfdsff</td>
+                          <td align="center" class="cost">dfasfddsf</td>
+                          <td align="center" class="cost">dsfasdfsdf</td>
+                          <td align="center" class="cost">sdafdsafsaf</td>
+                      </tr>
                   </tbody>
               </table>
           </div>
           <div class="total">
-              Total: ${total}
+              Total: $21321
           </div>
           <div class="purposePre_bottom">
             <div class="purposePre_barcode">
                 <img src={bottom} alt="barcode" />
                 <div class="barcode">
-                    {data.quote}
+                    Q4353
                 </div>
             </div>
             <div class="purposePre_subadress">

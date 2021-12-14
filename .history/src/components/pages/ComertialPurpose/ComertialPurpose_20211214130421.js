@@ -327,6 +327,7 @@ const ComertialPurpouse = () => {
                 <Previews 
                     data={previewData}
                     items={previewList}
+                    total={total}
                 />
             </div>
             <ToastContainer position="bottom-right" />

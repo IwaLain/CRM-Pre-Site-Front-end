@@ -34,8 +34,8 @@ const ComertialPurpouse = () => {
             description: '',
             units: '',
             quantity: '',
-            rate: 0,
-            amount: 0,
+            rate: '',
+            amount: '',
         }
     ])
 
@@ -57,6 +57,15 @@ const ComertialPurpouse = () => {
     }
 
     const pdfPreview = () => setPreview(!preview)
+
+    const summary = () => {
+        // currentData.map(data => {
+        //     setTotal(total + data.amount)
+        // })
+        currentData.map(data => {
+            console.log(data)
+        })
+    }
 
     const {
         register,
@@ -180,6 +189,7 @@ const ComertialPurpouse = () => {
     return (
        
         <div className="purpose" id="purpose">
+             {summary()}
             <Row className='purpose__title-print'>
                 <Col lg={4} md={5} sm={6} className="purpose__title">
                     <h3>Commertial Purpose</h3>
@@ -301,12 +311,10 @@ const ComertialPurpouse = () => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     let pdf = document.querySelector('.purpose__preview')
-
                                     pdfPreview()
                                     preview
                                     ? pdf.classList.add('visible') 
                                     : pdf.classList.remove('visible')
-
                                     setPreviewData(getValues())
                                     setPreviewList(currentData)
                                 }}>

@@ -71,6 +71,12 @@ const ComertialPurpouse = () => {
     })
 
     useEffect(() => {
+        if (currentData.amount !== 0) {
+            setTotal(total + currentData.amount)
+        }
+    }, [currentData.amount])
+
+    useEffect(() => {
         if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) history.push("/dashboard/customers")
         else customersApi.getNetwork(selectedCustomer.id)
         .then(data => {
@@ -327,6 +333,7 @@ const ComertialPurpouse = () => {
                 <Previews 
                     data={previewData}
                     items={previewList}
+                    total={total}
                 />
             </div>
             <ToastContainer position="bottom-right" />

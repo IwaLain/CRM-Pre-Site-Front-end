@@ -5,13 +5,7 @@ import bottom from '../../../../assets/img/barcode.png'
 
 // Create Document Component
 const Previews = ({ data, items }) => {
-    let total = 0
-    
-    items.map(data => {
-        total += data.amount
-    })
-    
-    return (
+  return (
         <div class="purposePre">
           <div class="purposePre_title">
               <div class="purposePre_logo">
@@ -106,7 +100,7 @@ const Previews = ({ data, items }) => {
               </table>
           </div>
           <div class="total">
-              Total: ${total}
+              Total: $21321
           </div>
           <div class="purposePre_bottom">
             <div class="purposePre_barcode">

@@ -5,12 +5,7 @@ import bottom from '../../../../assets/img/barcode.png'
 
 // Create Document Component
 const Previews = ({ data, items }) => {
-    let total = 0
-    
-    items.map(data => {
-        total += data.amount
-    })
-    
+
     return (
         <div class="purposePre">
           <div class="purposePre_title">

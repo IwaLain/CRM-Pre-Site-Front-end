@@ -28,18 +28,7 @@ const ComertialPurpouse = () => {
     const [currentData, setCurrentData] = useState([])
     const [preview, setPreview] = useState(false)
     const [previewData, setPreviewData] = useState([])
-    const [previewList, setPreviewList] = useState([
-        {
-            item: '',
-            description: '',
-            units: '',
-            quantity: '',
-            rate: 0,
-            amount: 0,
-        }
-    ])
-
-    const [total, setTotal] = useState(0)
+    
     const [cols, setCols] = useState([])
 
     const { selectedCustomer } = useContext(GlobalContext)
@@ -62,8 +51,7 @@ const ComertialPurpouse = () => {
         register,
         handleSubmit,
         trigger,
-        formState: { errors },
-        getValues
+        formState: { errors }
     } = useForm({
         defaultValues: {
             quote: quote
@@ -116,7 +104,6 @@ const ComertialPurpouse = () => {
                         name: key,
                         selector: row => row[key],
                         cell: row => <input
-                            type={key}
                             name={key}
                             className="ui-kit__input"
                             onBlur={(e) => {
@@ -124,7 +111,6 @@ const ComertialPurpouse = () => {
                                 row['amount'] = row['quantity'] * row[key]
                                 handlerAmount(newData, row['item'], row['amount'])
                             }}
-                            
                         />
                     })
                 }
@@ -178,7 +164,6 @@ const ComertialPurpouse = () => {
     }
 
     return (
-       
         <div className="purpose" id="purpose">
             <Row className='purpose__title-print'>
                 <Col lg={4} md={5} sm={6} className="purpose__title">
@@ -301,14 +286,11 @@ const ComertialPurpouse = () => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     let pdf = document.querySelector('.purpose__preview')
-
                                     pdfPreview()
                                     preview
-                                    ? pdf.classList.add('visible') 
+                                    ? pdf.classList.add('visible')
                                     : pdf.classList.remove('visible')
-
-                                    setPreviewData(getValues())
-                                    setPreviewList(currentData)
+                                    setPreviewData(register)
                                 }}>
                                 Preview
                             </Button>
@@ -325,8 +307,8 @@ const ComertialPurpouse = () => {
             </Row>
             <div className='purpose__preview'>
                 <Previews 
+                    barcode={quote}
                     data={previewData}
-                    items={previewList}
                 />
             </div>
             <ToastContainer position="bottom-right" />

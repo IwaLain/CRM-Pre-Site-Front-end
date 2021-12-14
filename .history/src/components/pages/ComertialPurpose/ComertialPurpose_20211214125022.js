@@ -58,6 +58,10 @@ const ComertialPurpouse = () => {
 
     const pdfPreview = () => setPreview(!preview)
 
+    const summary = (amount) => {
+        setTotal(total + amount)
+    }
+
     const {
         register,
         handleSubmit,
@@ -122,6 +126,7 @@ const ComertialPurpouse = () => {
                             onBlur={(e) => {
                                 row[key] = Number(e.target.value)
                                 row['amount'] = row['quantity'] * row[key]
+                                summary(row['amount'])
                                 handlerAmount(newData, row['item'], row['amount'])
                             }}
                             
@@ -301,14 +306,13 @@ const ComertialPurpouse = () => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     let pdf = document.querySelector('.purpose__preview')
-
                                     pdfPreview()
                                     preview
                                     ? pdf.classList.add('visible') 
                                     : pdf.classList.remove('visible')
-
                                     setPreviewData(getValues())
                                     setPreviewList(currentData)
+                                    summary()
                                 }}>
                                 Preview
                             </Button>
@@ -327,6 +331,7 @@ const ComertialPurpouse = () => {
                 <Previews 
                     data={previewData}
                     items={previewList}
+                    total={total}
                 />
             </div>
             <ToastContainer position="bottom-right" />

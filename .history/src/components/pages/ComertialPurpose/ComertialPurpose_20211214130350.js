@@ -58,6 +58,14 @@ const ComertialPurpouse = () => {
 
     const pdfPreview = () => setPreview(!preview)
 
+    const summary = () => {
+        previewList.map(data => {
+            
+                setTotal(total + data.amount)
+            
+        })
+    }
+
     const {
         register,
         handleSubmit,
@@ -122,6 +130,7 @@ const ComertialPurpouse = () => {
                             onBlur={(e) => {
                                 row[key] = Number(e.target.value)
                                 row['amount'] = row['quantity'] * row[key]
+                                summary(row['amount'])
                                 handlerAmount(newData, row['item'], row['amount'])
                             }}
                             
@@ -327,6 +336,7 @@ const ComertialPurpouse = () => {
                 <Previews 
                     data={previewData}
                     items={previewList}
+                    total={total}
                 />
             </div>
             <ToastContainer position="bottom-right" />

@@ -58,6 +58,13 @@ const ComertialPurpouse = () => {
 
     const pdfPreview = () => setPreview(!preview)
 
+    const summary = () => {
+        previewList.map(data => {
+            setTotal(total + data.amount)
+            console.log(data.amount)
+        })
+    }
+
     const {
         register,
         handleSubmit,
@@ -301,14 +308,13 @@ const ComertialPurpouse = () => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     let pdf = document.querySelector('.purpose__preview')
-
                                     pdfPreview()
                                     preview
                                     ? pdf.classList.add('visible') 
                                     : pdf.classList.remove('visible')
-
                                     setPreviewData(getValues())
                                     setPreviewList(currentData)
+                                    summary()
                                 }}>
                                 Preview
                             </Button>
@@ -327,6 +333,7 @@ const ComertialPurpouse = () => {
                 <Previews 
                     data={previewData}
                     items={previewList}
+                    total={total}
                 />
             </div>
             <ToastContainer position="bottom-right" />

@@ -39,7 +39,7 @@ const ComertialPurpouse = () => {
         }
     ])
 
-    const [total, setTotal] = useState(0)
+    const [total, setTotal] = useState(1)
     const [cols, setCols] = useState([])
 
     const { selectedCustomer } = useContext(GlobalContext)
@@ -69,6 +69,13 @@ const ComertialPurpouse = () => {
             quote: quote
         }
     })
+
+    useEffect(() => {
+        if (previewList.amount !== 0) {
+            console.log(previewList)
+            setTotal(total + previewList.amount)
+        }
+    }, [previewList.amount])
 
     useEffect(() => {
         if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) history.push("/dashboard/customers")
@@ -327,6 +334,7 @@ const ComertialPurpouse = () => {
                 <Previews 
                     data={previewData}
                     items={previewList}
+                    total={total}
                 />
             </div>
             <ToastContainer position="bottom-right" />

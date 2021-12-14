@@ -58,6 +58,12 @@ const ComertialPurpouse = () => {
 
     const pdfPreview = () => setPreview(!preview)
 
+    useEffect(() => {
+        if (currentData.amount !== 0) {
+            setTotal(total + currentData.amount)
+        }
+    }, [currentData.amount])
+
     const {
         register,
         handleSubmit,
@@ -327,6 +333,7 @@ const ComertialPurpouse = () => {
                 <Previews 
                     data={previewData}
                     items={previewList}
+                    total={total}
                 />
             </div>
             <ToastContainer position="bottom-right" />

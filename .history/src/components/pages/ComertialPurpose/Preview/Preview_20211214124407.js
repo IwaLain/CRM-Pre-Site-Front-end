@@ -4,14 +4,8 @@ import logo from '../../../../assets/img/waites-block-logo-yellow-background.png
 import bottom from '../../../../assets/img/barcode.png'
 
 // Create Document Component
-const Previews = ({ data, items }) => {
-    let total = 0
-    
-    items.map(data => {
-        total += data.amount
-    })
-    
-    return (
+const Previews = ({ data, items, total }) => {
+  return (
         <div class="purposePre">
           <div class="purposePre_title">
               <div class="purposePre_logo">

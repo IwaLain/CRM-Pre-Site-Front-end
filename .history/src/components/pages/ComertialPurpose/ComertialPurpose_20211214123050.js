@@ -33,13 +33,13 @@ const ComertialPurpouse = () => {
             item: '',
             description: '',
             units: '',
-            quantity: '',
-            rate: 0,
-            amount: 0,
+            quantity: ''
+            rate: '',
+            amount: '',
         }
     ])
-
     const [total, setTotal] = useState(0)
+    
     const [cols, setCols] = useState([])
 
     const { selectedCustomer } = useContext(GlobalContext)
@@ -178,7 +178,6 @@ const ComertialPurpouse = () => {
     }
 
     return (
-       
         <div className="purpose" id="purpose">
             <Row className='purpose__title-print'>
                 <Col lg={4} md={5} sm={6} className="purpose__title">
@@ -301,12 +300,10 @@ const ComertialPurpouse = () => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     let pdf = document.querySelector('.purpose__preview')
-
                                     pdfPreview()
                                     preview
                                     ? pdf.classList.add('visible') 
                                     : pdf.classList.remove('visible')
-
                                     setPreviewData(getValues())
                                     setPreviewList(currentData)
                                 }}>
@@ -324,10 +321,16 @@ const ComertialPurpouse = () => {
                 </Form>
             </Row>
             <div className='purpose__preview'>
-                <Previews 
-                    data={previewData}
-                    items={previewList}
-                />
+                {
+                    preview
+                    ?
+                    <Previews 
+                        data={previewData}
+                        items={previewList}
+                    />
+                    :
+                    ''
+                }
             </div>
             <ToastContainer position="bottom-right" />
         </div>

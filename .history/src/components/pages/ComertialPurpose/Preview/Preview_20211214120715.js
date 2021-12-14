@@ -4,14 +4,8 @@ import logo from '../../../../assets/img/waites-block-logo-yellow-background.png
 import bottom from '../../../../assets/img/barcode.png'
 
 // Create Document Component
-const Previews = ({ data, items }) => {
-    let total = 0
-    
-    items.map(data => {
-        total += data.amount
-    })
-    
-    return (
+const Previews = ({ data, items = '' }) => {
+  return (
         <div class="purposePre">
           <div class="purposePre_title">
               <div class="purposePre_logo">
@@ -90,23 +84,21 @@ const Previews = ({ data, items }) => {
                       </tr>
                   </thead>
                   <tbody>
-                    {
-                        items.map(data => (
-                            <tr key={data.item}>
-                                <td>{data.item}</td>
-                                <td>{data.description}</td>
-                                <td>{data.units}</td>
-                                <td align="center" class="cost">{data.quantity}</td>
-                                <td align="center" class="cost">{data.rate}</td>
-                                <td align="center" class="cost">{data.amount}</td>
-                            </tr>
-                        ))
-                    }
+                    {items.map(data => (
+                        <tr key={data.item}>
+                            <td>{data.item}</td>
+                            <td>{data.description}</td>
+                            <td>{data.units}</td>
+                            <td align="center" class="cost">{data.quantity}</td>
+                            <td align="center" class="cost">{data.rate}</td>
+                            <td align="center" class="cost">{data.amount}</td>
+                        </tr>
+                    ))}
                   </tbody>
               </table>
           </div>
           <div class="total">
-              Total: ${total}
+              Total: $21321
           </div>
           <div class="purposePre_bottom">
             <div class="purposePre_barcode">
