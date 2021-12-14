@@ -83,7 +83,9 @@ const InfoCard = ({
           color="default"
           className="info-card__edit"
           onClick={() => {
-            setSubEntityName(type);
+            if (setSubEntityName) {
+              setSubEntityName(type);
+            }
             setMode("edit");
             setEditId(data.id);
             toggleModal();
@@ -129,7 +131,9 @@ const InfoCard = ({
             color="default"
             style={!chooseMode ? { visibility: "hidden" } : {}}
             onClick={() => {
-              setSubEntityName(type);
+              if (setSubEntityName) {
+                setSubEntityName(type);
+              }
               setMode("edit");
               setEditId(data.id);
               toggleModal();
