@@ -1,126 +1,116 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-
-* {
-    box-shadow: none;
-    text-shadow: none;
-    margin: 0;
-    padding: 0;
+.purposePre {
+    width: 600px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-body {
-  font-family: "Roboto", sans-serif;
-  padding-right: 0 !important;
-}
-
-.purpose {
-    
-}
-
-.purpose_title {
+.purposePre_title {
     justify-content: space-between;
     width: 100%;
 }
 
-.purpose_logo {
+.purposePre_logo {
     float: left;
     width: 40%;
     margin-right: 40px;
 }
 
-.purpose_logo img {
-    width: 280px;
+.purposePre_logo img {
+    width: 100%;
     margin-bottom: 20px;
 }
 
-.purpose_adress {
+.purposePre_adress {
     float: right;
     width: 40%;
 }
 
-.purpose_contact {
+.purposePre_contact {
+    display: flex;
     margin: 20px 0;
 }
 
-.purpose_contact-braek {
-    display: inline-block;
-    width: 25px;
+.purposePre_contact-braek {
+    margin-left: auto;
+    text-align: right;
 }
 
-.purpose_quote {
-    width: 100%;
+.purposePre_quote {
+    display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
-.purpose_quote-title {
-    float: left;
+.purposePre_quote-title {
+    margin-top: 5px;
     width: 50%;
 }
 
-.purpose_quote .quote {
-    float: right;
+.purposePre_quote .quote {
     width: 50%;
     text-align: right;
     font-size: 20px;
 }
 
-.purpose_form {
+.purposePre_form {
+    display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-.purpose_shipment {
+.purposePre_shipment {
     float: left;
     width: 40%;
     margin-right: 40px;
 }
 
-.purpose_shipment-title {
+.purposePre_shipment-title {
     float: left;
     width: 100%;
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
-.purpose_shipment-desc {
+.purposePre_shipment-desc {
     float: left;
 }
 
-.purpose_ship {
+.purposePre_ship {
     min-height: 100px;
     margin-top: 10px;
 }
 
-.purpose_info {
-    max-width: 250px;
+.purposePre_info {
+    
 }
 
-.purpose_info-title {
+.purposePre_info-title {
     padding: 10px 0;
     float: left;
     text-align: left;
     width: 30%;
 }
 
-.purpose_info-desc {
+.purposePre_info-desc {
     padding: 10px 0;
     width: 70%;
     text-align: right;
     margin-left: auto;
 }
 
-.purpose_info label{
+.purposePre_info label{
     float: right;
     min-width: 100px;
 }
 
-.purpose_description {
+.purposePre_description {
     float: right;
     width: 40%;
 }
 
-.purpose_table-title {
+.purposePre_table-title {
     float: left;
     width: 100%;
     margin-right: auto;
@@ -135,12 +125,12 @@ body {
     text-align: right;
 }
 
-.purpose__bottom {
+.purposePre_bottom {
     margin-top: 100px;
     max-width: 400px;
 }
 
-.purpose_barcode {
+.purposePre_barcode {
     float: left;
     max-width: 200px;
     margin-top: 40px;
@@ -150,7 +140,7 @@ body {
     margin-left: 30px;
 }
 
-.purpose_subadress {
+.purposePre_subadress {
     float: right;
     width: 150px;
     margin-left: 100px;

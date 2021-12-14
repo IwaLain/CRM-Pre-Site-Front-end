@@ -1,4 +1,4 @@
-import { Button, Col, Label, Row } from "reactstrap"
+import { Button, Card, Col, Label, Row } from "reactstrap"
 import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
 import { useContext, useEffect, useState } from "react"
@@ -29,6 +29,8 @@ const ProfilePage = () => {
         Profile.updateProfile(profile.id, data)
     }
 
+    const checkEmpty = (data) => data ? data : '--'
+
     const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
     const editeProfile = (data) => {
         setProfile(data)
@@ -48,20 +50,20 @@ const ProfilePage = () => {
         <>
             <h3>Profile</h3>
             <Row className='profile__container'>
-                <Col lg={4} md={8} sm={10} className='profile'>
-                    <Row className='profile__item'>
-                        <Col className='profile__avatar'>
-                            <div className='profile__avatar'>
+                <Card className="profile__card">
+                    <Row className="profile__username">
+                        User: {profile.username}
+                    </Row>
+                    <Row md="12" className='profile'>
+                        <Col md="4" className='profile__item'>
+                            <Row className='profile__avatar'>
                                 <Label
                                     className="image-field"
                                     for="image-field">
                                     <img
                                         className='profile__img'
-                                        src={
-                                            profile.img === null ? placeholder : loadedImg
-                                        }
+                                        src={profile.img === null ? placeholder : loadedImg}
                                         alt="Avatar"
-
                                     />
                                 </Label>
                                 <input
@@ -71,71 +73,53 @@ const ProfilePage = () => {
                                     accept="image/*"
                                     onChange={addImageHandler}
                                 />
-                            </div>
+                            </Row>
+                            <Row className='profile__button'>
+                                <Button
+                                    className=''
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        toggleEditProfile(true)
+                                }}>
+                                    Edite Profile
+                                    <i className="fas fa-user-edit"></i>
+                                </Button>
+                            </Row>
+                        </Col>
+                        <Col md="7" className="profile__data">
+                            <Row className='profile__item'>
+                                <Label className='profile__label'>First Name</Label>
+                                <Col className='profile__text'>
+                                    {checkEmpty(profile.first_name)}
+                                </Col>
+                            </Row>
+                            <Row className='profile__item'>
+                                <Label className='profile__label'>Last Name</Label>
+                                <Col className='profile__text'>
+                                    {checkEmpty(profile.last_name)}
+                                </Col>
+                            </Row>
+                            <Row className='profile__item'>
+                                <Label className='profile__label'>Email</Label>
+                                <Col className='profile__text'>
+                                    {checkEmpty(profile.email)}
+                                </Col>
+                            </Row>
+                            <Row className='profile__item'>
+                                <Label className='profile__label'>Phone</Label>
+                                <Col className='profile__text'>
+                                    {checkEmpty(profile.phone)}
+                                </Col>
+                            </Row>
+                            <Row className='profile__item'>
+                                <Label className='profile__label'>Role</Label>
+                                <Col className='profile__text'>
+                                    {checkEmpty(profile.role)}
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
-                    <Row className='profile__item'>
-                        <Col md={5} sm={4}>
-                            <Label className='profile__label'>Username</Label>
-                        </Col>
-                        <Col className='profile__text'>
-                            {profile.username}
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col md={5} sm={4}>
-                            <Label className='profile__label'>First Name</Label>
-                        </Col>
-                        <Col className='profile__text'>
-                            {profile.first_name}
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col md={5} sm={4}>
-                            <Label className='profile__label'>Last Name</Label>
-                        </Col>
-                        <Col className='profile__text'>
-                            {profile.last_name}
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col md={5} sm={4}>
-                            <Label className='profile__label'>Email</Label>
-                        </Col>
-                        <Col className='profile__text'>
-                            {profile.email}
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col md={5} sm={4}>
-                            <Label className='profile__label'>Phone</Label>
-                        </Col>
-                        <Col className='profile__text'>
-                            {profile.phone}
-                        </Col>
-                    </Row>
-                    <Row className='profile__item'>
-                        <Col md={5} sm={4}>
-                            <Label className='profile__label'>Role</Label>
-                        </Col>
-                        <Col className='profile__text'>
-                            {profile.role}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col className='profile__button'>
-                            <Button
-                                className=''
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    toggleEditProfile(true)
-                            }}>
-                                Edite Profile
-                                <i className="fas fa-user-edit"></i>
-                            </Button>
-                        </Col>
-                    </Row>
-                </Col>
+                </Card>
             </Row>
             <UserModal
                 type='Edit Profile'

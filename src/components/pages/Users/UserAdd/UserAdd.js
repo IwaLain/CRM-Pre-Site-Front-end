@@ -31,7 +31,7 @@ const UserAdd = ({ changeTable }) => {
             'password': e.password
         }
 
-        User.addUser(data)
+        User.create(data)
         .then(data => {
             if(data.errors) {
                 for (let key in data.errors) {

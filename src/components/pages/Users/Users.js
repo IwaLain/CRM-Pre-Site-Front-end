@@ -21,7 +21,7 @@ const UsersPage = () => {
     }
 
     useEffect(() => {
-        User.getUsers()
+        User.get()
         .then(data => setUsers(data.user))
     }, [])
     
@@ -39,7 +39,7 @@ const UsersPage = () => {
                         }
                     }>
 
-                        <div calassName='users__title-img'>
+                        <div className='users__title-img'>
                             Add User <i className="fas fa-user-plus"></i>
                         </div>
                     </Button>

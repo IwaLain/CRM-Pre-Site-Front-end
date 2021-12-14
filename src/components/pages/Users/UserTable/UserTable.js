@@ -1,26 +1,27 @@
-import React, { useMemo, useState } from "react";
-import { Col, Row, Table } from "reactstrap";
+import React, { useState } from "react";
+import { Col, Row } from "reactstrap";
 import User from "../../../../js/api/users";
 import "./UserTable.scss";
 import UserModal from "../UserModal/UserModal";
 import DataTable from "react-data-table-component";
 import Loader from "../../../../js/helpers/loader";
-import FilterComponent from "./UserFilter";
 import { alert } from "../../../../js/helpers/alert";
 
 const UserTable = ({ users, editeTable, changeTable }) => {
   const [currentUser, setCurrentUser] = useState([]);
   const [modalEditUser, setModalEditUser] = useState(false);
-  const [filterText, setFilterText] = useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   const toggleEditUser = () => setModalEditUser(!modalEditUser);
   const current = (currentUser) => setCurrentUser(currentUser);
 
   const deleteUser = (userId) => {
-    User.deleteUser(userId).then((data) => {
-      changeTable(data.users);
-      alert("success", `Successful deleted user`);
+    User.delete(userId).then((data) => {
+      if (data.success) {
+        changeTable(data.users);
+        alert("success", `Successful deleted user`);
+      } else {
+        alert("error", 'Can`t delete Super Admin');
+      }
     });
   };
 
@@ -92,21 +93,6 @@ const UserTable = ({ users, editeTable, changeTable }) => {
       grow: 0,
     },
   ];
-
-  const filteredItems = users.filter(
-    (item) =>
-      JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !==
-      -1
-  );
-
-  const subHeaderComponent = useMemo(() => {
-    return (
-      <FilterComponent
-        onFilter={(e) => setFilterText(e.target.value)}
-        filterText={filterText}
-      />
-    );
-  }, [filterText, resetPaginationToggle]);
 
   return (
     <Row className="mt-3">

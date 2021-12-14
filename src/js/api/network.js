@@ -1,6 +1,7 @@
 import { getToken } from "../helpers/helpers";
 import { apiRequest } from "./api";
-import { BASE_URL } from "./constants";
+
+const BASE_URL = process.env.REACT_APP_SERVER_URL
 
 const networkApi = {
   gataway: {

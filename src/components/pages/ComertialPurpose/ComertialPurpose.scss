@@ -32,6 +32,7 @@
 
         textarea {
             width: 100%;
+            margin-bottom: 20px;
         }
     }
 
@@ -92,6 +93,10 @@
     .visible {
         display: block;
     }
+}
+
+.purposePreview__button {
+    margin-left: auto !important;
 }
 
 @media print {
@@ -190,5 +195,9 @@
         img {
             width: 100%;
         }
+    }
+
+    .selected-customer {
+        display: none;
     }
 }

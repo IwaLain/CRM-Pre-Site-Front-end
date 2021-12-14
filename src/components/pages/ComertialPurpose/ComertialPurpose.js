@@ -9,6 +9,10 @@ import {
         Form,
         FormGroup,
         Label,
+        Modal,
+        ModalBody,
+        ModalFooter,
+        ModalHeader,
         Row
     } from 'reactstrap';
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
@@ -19,20 +23,37 @@ import { GlobalContext } from '../../../context';
 import { alert } from '../../../js/helpers/alert';
 import { validation } from '../../../js/helpers/validation';
 import { getToken } from '../../../js/helpers/helpers';
-import { BASE_URL } from '../../../js/api/constants';
 import { ToastContainer } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import Previews from './Preview/Preview';
 const ComertialPurpouse = () => {
-    const token = getToken()
+    
     const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000))
     const [currentData, setCurrentData] = useState([])
-    const [cols, setCols] = useState([])
     const [preview, setPreview] = useState(false)
+    const [previewData, setPreviewData] = useState([])
+    const [previewList, setPreviewList] = useState([
+        {
+            item: '',
+            description: '',
+            units: '',
+            quantity: '',
+            rate: 0,
+            amount: 0,
+        }
+    ])
+    
+    const [modalPDF, setModalPDF] = useState(false);
+    const [total, setTotal] = useState(0)
+    const [cols, setCols] = useState([])
 
     const { selectedCustomer } = useContext(GlobalContext)
-    const date = new Date().toLocaleDateString('en-US')
+    
     const history = useHistory()
+
+    const token = getToken()
+    const date = new Date().toLocaleDateString('en-US')
+    const BASE_URL = process.env.REACT_APP_SERVER_URL
     const newData = []
     const columns = []
 
@@ -40,13 +61,14 @@ const ComertialPurpouse = () => {
         setCurrentData(array.map(itemData => itemData.item === itemName ? {...itemData, itemName: data} : itemData))
     }
 
-    const pdfPreview = () => setPreview(!preview)
+    const togglePDF = () => setModalPDF(!modalPDF);
 
     const {
         register,
         handleSubmit,
         trigger,
-        formState: { errors }
+        formState: { errors },
+        getValues
     } = useForm({
         defaultValues: {
             quote: quote
@@ -99,6 +121,7 @@ const ComertialPurpouse = () => {
                         name: key,
                         selector: row => row[key],
                         cell: row => <input
+                            type={key}
                             name={key}
                             className="ui-kit__input"
                             onBlur={(e) => {
@@ -106,6 +129,7 @@ const ComertialPurpouse = () => {
                                 row['amount'] = row['quantity'] * row[key]
                                 handlerAmount(newData, row['item'], row['amount'])
                             }}
+                            
                         />
                     })
                 }
@@ -159,6 +183,7 @@ const ComertialPurpouse = () => {
     }
 
     return (
+       
         <div className="purpose" id="purpose">
             <Row className='purpose__title-print'>
                 <Col lg={4} md={5} sm={6} className="purpose__title">
@@ -280,11 +305,12 @@ const ComertialPurpouse = () => {
                                 form='form'
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    let pdf = document.querySelector('.purpose__preview')
-                                    pdfPreview()
-                                    preview
-                                    ? pdf.classList.add('visible')
-                                    : pdf.classList.remove('visible')
+
+                                    setPreviewData(getValues())
+                                    setPreviewList(currentData)
+
+                                    togglePDF(true)
+                                    // window.print()
                                 }}>
                                 Preview
                             </Button>
@@ -299,10 +325,31 @@ const ComertialPurpouse = () => {
                     </FormGroup>
                 </Form>
             </Row>
-            <div className='purpose__preview'>
-                <iframe src={BASE_URL + '/' + 'image/pdf/d3040739cbb290c87cc57521991582b45cf6db2d.pdf?page=hsn#toolbar=0'} />
-            </div>
-            {/* <Previews/> */}
+            <Modal
+                isOpen={modalPDF}
+                toggle={togglePDF}
+                className="purposePreview"
+                size='lg'
+            >
+                <ModalHeader>
+                    Preview PDF
+                </ModalHeader>
+                <ModalBody>
+                    <Previews 
+                        data={previewData}
+                        items={previewList}
+                        date={date}
+                    />
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                        onClick={togglePDF}
+                        className="purposePreview__button"
+                    >
+                        Close
+                    </Button>
+                </ModalFooter>
+            </Modal>
             <ToastContainer position="bottom-right" />
         </div>
     )

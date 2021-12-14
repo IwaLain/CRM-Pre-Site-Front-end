@@ -41,18 +41,26 @@ const UserEdit = ({ currentUser, editeMethod }) => {
             'role': e.role,
         }
 
-        User.editeUser(currentUser.id, data)
+        
+        User.edite(currentUser.id, data)
         .then(data => {
-            if(!data) {
-                alert('error', 'Something went wrong')
-            } else {
+            if(data.success) {
                 alert('success', 'Edit User successful')
+            } else {
+                alert('error', 'Can`t change Super Admin')
             }
         })
 
-        User.editUserRole(currentUser.id, data)
+        User.editRole(currentUser.id, data)
+        .then(data => {
+            if(data.success) {
+                alert('success', 'Edit Role successful')
+            }
+        })
 
-        editeMethod(currentUser.id, data)
+        if (currentUser.role !== 'SuperAdmin') {
+            editeMethod(currentUser.id, data)
+        }        
     };
 
     return (
