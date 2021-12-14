@@ -972,16 +972,16 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                       key={index}
                       id={`${field.title}-field`}
                       className="ui-kit__select"
-                      {...register(field.subID)}
                       disabled={
                         field.title === "Facility"
                           ? facilitiesNames.length < 1
                           : field.title === "Equipment"
                           ? equipmentNames.length < 1
-                          : (field.title = "Node"
-                              ? nodesNames.length < 1
-                              : gatewaysNames.length < 1)
+                          : field.title === "Node"
+                          ? nodesNames.length < 1
+                          : gatewaysNames.length < 1
                       }
+                      {...register(field.subID)}
                     >
                       {field.title === "Facility"
                         ? facilitiesNames &&
