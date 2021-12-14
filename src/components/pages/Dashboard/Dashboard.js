@@ -84,7 +84,7 @@ const Dashboard = () => {
             ))}
         </div>
       </section>
-      <div
+      {/* <div
         style={{
           display: "flex",
           flexWrap: "wrap",
@@ -99,7 +99,7 @@ const Dashboard = () => {
         <CardSketch />
         <CardSketch />
         <CardSketch />
-      </div>
+      </div> */}
     </div>
   );
 };
