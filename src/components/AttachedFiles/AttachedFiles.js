@@ -79,6 +79,10 @@ const AttachedFiles = ({
             <img src={file.preview} className="attached--img" alt="..." />
           ) : (
             <i className="far fa-file  fa-4x"></i>
+            // <div className="dropzone--filename">
+            //   <span className="filename--text">{file.img}</span>
+            //   <i className="far fa-file  fa-4x"></i>
+            // </div>
           )}
         </div>
       </div>
