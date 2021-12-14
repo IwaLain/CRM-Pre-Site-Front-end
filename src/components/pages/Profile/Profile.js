@@ -62,11 +62,8 @@ const ProfilePage = () => {
                                     for="image-field">
                                     <img
                                         className='profile__img'
-                                        src={
-                                            profile.img === null ? placeholder : loadedImg
-                                        }
+                                        src={profile.img === null ? placeholder : loadedImg}
                                         alt="Avatar"
-
                                     />
                                 </Label>
                                 <input
@@ -77,9 +74,6 @@ const ProfilePage = () => {
                                     onChange={addImageHandler}
                                 />
                             </Row>
-                            {/* <Row className="profile__username">
-                                {profile.username}
-                            </Row> */}
                             <Row className='profile__button'>
                                 <Button
                                     className=''
@@ -93,48 +87,32 @@ const ProfilePage = () => {
                             </Row>
                         </Col>
                         <Col md="7" className="profile__data">
-                            {/* <Row className='profile__item'>
-                                <Label className='profile__label'>Username</Label>
-                                <Col className='profile__text'>
-                                    {checkEmpty(profile.username)}
-                                </Col>
-                            </Row> */}
                             <Row className='profile__item'>
-                                
-                                    <Label className='profile__label'>First Name</Label>
-                                
+                                <Label className='profile__label'>First Name</Label>
                                 <Col className='profile__text'>
                                     {checkEmpty(profile.first_name)}
                                 </Col>
                             </Row>
                             <Row className='profile__item'>
-                                
-                                    <Label className='profile__label'>Last Name</Label>
-                                
+                                <Label className='profile__label'>Last Name</Label>
                                 <Col className='profile__text'>
                                     {checkEmpty(profile.last_name)}
                                 </Col>
                             </Row>
                             <Row className='profile__item'>
-                                
-                                    <Label className='profile__label'>Email</Label>
-                                
+                                <Label className='profile__label'>Email</Label>
                                 <Col className='profile__text'>
                                     {checkEmpty(profile.email)}
                                 </Col>
                             </Row>
                             <Row className='profile__item'>
-                            
-                                    <Label className='profile__label'>Phone</Label>
-                                
+                                <Label className='profile__label'>Phone</Label>
                                 <Col className='profile__text'>
                                     {checkEmpty(profile.phone)}
                                 </Col>
                             </Row>
                             <Row className='profile__item'>
-                                
-                                    <Label className='profile__label'>Role</Label>
-                            
+                                <Label className='profile__label'>Role</Label>
                                 <Col className='profile__text'>
                                     {checkEmpty(profile.role)}
                                 </Col>
