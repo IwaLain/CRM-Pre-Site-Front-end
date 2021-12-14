@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./information-component.scss";
+import "../../scss/information-component.scss";
 const InformationComponent = ({ items, title }) => {
   return (
     <>
@@ -10,8 +10,8 @@ const InformationComponent = ({ items, title }) => {
         {items &&
           items.map((item, i) => (
             <div key={i} className="information--item ">
-              <div className="ui-kit__badge field-name">{item.fieldTitle}</div>
-              <div className="ui-kit__badge field-value"> {item.value}</div>
+              <div className="ui-kit__badge field-name">{item.fieldTitle}:</div>
+              <div className="ui-kit__badge field-value">{item.value}</div>
             </div>
           ))}
       </div>
