@@ -4,6 +4,8 @@ import { GlobalContext } from "../../../context";
 import "../../../scss/dashboard-page.scss";
 import { alert } from "../../../js/helpers/alert";
 import CardSketch from "../../CardSketch/CardSketch";
+import List from "../List/List";
+import logo from "../../../assets/img/block-view.svg";
 
 const Dashboard = () => {
   const { selectedCustomer } = useContext(GlobalContext);
@@ -78,7 +80,7 @@ const Dashboard = () => {
           {network &&
             network.map((block, index) => (
               <div key={index} className="dashboard-page__block">
-                <h5>{block[0]}</h5>
+                <h5>{block[0].charAt(0).toUpperCase() + block[0].slice(1)}</h5>
                 <span>{block[1]}</span>
               </div>
             ))}
@@ -88,7 +90,7 @@ const Dashboard = () => {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          gap: "10px",
+          gap: "15px",
         }}
       >
         <CardSketch />

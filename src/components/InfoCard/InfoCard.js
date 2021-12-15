@@ -15,7 +15,7 @@ const InfoCard = ({
   changeCustomer,
   setMode,
   setSubEntityName,
-  showView = true,
+  hideRecordView,
 }) => {
   const [subEntity, setSubEntity] = useState("");
   const [progress, setProgress] = useState(0);
@@ -123,7 +123,7 @@ const InfoCard = ({
         <div className="info-card__btns">
           <Link
             to={`/dashboard/${type}/${data.id}`}
-            style={!showView ? { visibility: "hidden" } : {}}
+            style={hideRecordView && { visibility: "hidden" }}
           >
             View
           </Link>

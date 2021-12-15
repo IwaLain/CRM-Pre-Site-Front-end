@@ -25,7 +25,7 @@ const DashboardLayout = ({ children }) => {
   } = useContext(GlobalContext);
 
   const handleResize = () => {
-    if (window.innerWidth <= MOBILE_SIZE) {
+    if (window.screen.width <= MOBILE_SIZE) {
       setIsMobile(true);
       setSidebarCollapsed(true);
     } else {
@@ -63,7 +63,7 @@ const DashboardLayout = ({ children }) => {
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-  }, [setPageTitle]);
+  }, []);
 
   return (
     <div className="dashboard container-fluid">

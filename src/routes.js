@@ -50,12 +50,14 @@ const routes = {
     {
       path: "/dashboard/customers",
       name: "Customers",
-      children: <List type={{ entity: "customers" }} />,
+      children: <List type={{ entity: "customers" }} chooseMode showProgress />,
     },
     {
       path: "/dashboard/facilities",
       name: "Facilities",
-      children: <List type={{ entity: "facilities", ref: "customers" }} />,
+      children: (
+        <List type={{ entity: "facilities", ref: "customers" }} showProgress />
+      ),
     },
     {
       path: "/dashboard/locations",

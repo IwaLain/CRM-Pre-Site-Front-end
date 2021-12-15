@@ -50,7 +50,9 @@ const Network = () => {
                     id={`heading-${index}`}
                   >
                     <div key={index} className="dashboard-page__block">
-                      <h5>{block[0]}</h5>
+                      <h5>
+                        {block[0].charAt(0).toUpperCase() + block[0].slice(1)}
+                      </h5>
                       <span>{block[1]}</span>
                       <Button
                         className="dashboard-page__block-view accorion-button collapsed"
@@ -78,7 +80,11 @@ const Network = () => {
                       {selectedBlock === index && (
                         <List
                           type={{ entity: block[0].toLowerCase() }}
-                          title={block[0]}
+                          title={
+                            block[0].charAt(0).toUpperCase() + block[0].slice(1)
+                          }
+                          hideChangeView
+                          hideRecordView
                         />
                       )}
                     </div>

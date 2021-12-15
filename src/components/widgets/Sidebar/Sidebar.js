@@ -12,10 +12,10 @@ const Sidebar = ({ isMobile }) => {
         </Link>
       </div>
       <nav>
-        <ul class="fa-ul">
+        <ul className="fa-ul">
           <li>
             <Link to={`/dashboard`}>
-              <span class="fa-li">
+              <span className="fa-li">
                 <i className="fas fa-chart-bar"></i>
               </span>
               <span style={isMobile ? { visibility: "hidden" } : {}}>
@@ -25,7 +25,7 @@ const Sidebar = ({ isMobile }) => {
           </li>
           <li>
             <Link to={`/dashboard/customers`}>
-              <span class="fa-li">
+              <span className="fa-li">
                 <i className="fas fa-user"></i>
               </span>
               <span style={isMobile ? { visibility: "hidden" } : {}}>
@@ -35,7 +35,7 @@ const Sidebar = ({ isMobile }) => {
           </li>
           <li>
             <Link to={`/dashboard/facilities`}>
-              <span class="fa-li">
+              <span className="fa-li">
                 <i className="fas fa-industry"></i>
               </span>
               <span style={isMobile ? { visibility: "hidden" } : {}}>
@@ -45,7 +45,7 @@ const Sidebar = ({ isMobile }) => {
           </li>
           <li>
             <Link to={`/dashboard/locations`}>
-              <span class="fa-li">
+              <span className="fa-li">
                 <i className="fas fa-map-marker-alt"></i>
               </span>
               <span style={isMobile ? { visibility: "hidden" } : {}}>
@@ -55,7 +55,7 @@ const Sidebar = ({ isMobile }) => {
           </li>
           <li>
             <Link to={`/dashboard/equipment`}>
-              <span class="fa-li">
+              <span className="fa-li">
                 <i className="fas fa-tools"></i>
               </span>
               <span style={isMobile ? { visibility: "hidden" } : {}}>
@@ -65,7 +65,7 @@ const Sidebar = ({ isMobile }) => {
           </li>
           <li>
             <Link to={`/dashboard/network`}>
-              <span class="fa-li">
+              <span className="fa-li">
                 <i className="fas fa-network-wired"></i>
               </span>
               <span style={isMobile ? { visibility: "hidden" } : {}}>
@@ -75,7 +75,7 @@ const Sidebar = ({ isMobile }) => {
           </li>
           <li>
             <Link to={`/dashboard/purpose`}>
-              <span class="fa-li">
+              <span className="fa-li">
                 <i className="fas fa-file-alt"></i>
               </span>
               <span style={isMobile ? { visibility: "hidden" } : {}}>

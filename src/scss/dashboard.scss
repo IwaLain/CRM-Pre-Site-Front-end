@@ -133,6 +133,14 @@
   padding: 15px;
 }
 
+/* Modal */
+.modal-body {
+  max-height: 700px;
+  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
 @media (max-width: 750px) {
   .dashboard.container-fluid {
     grid-template-columns: 60px auto;

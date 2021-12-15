@@ -13,24 +13,32 @@ import facilitiesApi from "../../../js/api/facilities";
 import Button from "../../UIKit/Button/Button";
 import ModalSketch from "../../ModalComponent/ModalSketch";
 
-const List = ({ type, title }) => {
+const List = ({
+  type,
+  title,
+  chooseMode,
+  hideTitle,
+  hideSearch,
+  hideChangeView,
+  showProgress,
+  hideRecordView,
+  initBlockView,
+}) => {
   const [data, setData] = useState();
   const [searchQuery, setSearchQuery] = useState("");
   const [requests, setRequests] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [view, setView] = useState(true);
-  const [isSetViewNeeded, setIsSetViewNeeded] = useState(true);
-  const [page, setPage] = useState(1);
-  const [screenSize, SetScreenSize] = useState(window.innerWidth);
-  const [showEntitySelect, setShowEntitySelect] = useState(true);
-  const [showView, setShowView] = useState(true);
+  const [screenSize, SetScreenSize] = useState(window.screen.width);
   const [totalRows, setTotalRows] = useState(Math.ceil(0));
   const [entityNames, setEntityNames] = useState();
   const [mode, setMode] = useState();
-  const [chooseMode, setChooseMode] = useState(false);
-  const [totalPages, setTotalPages] = useState();
 
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
   const RECORDS_PER_PAGE = 20;
+
+  const [prevSelectedAll, setPrevSelectedAll] = useState(false);
 
   const {
     pageTitle,
@@ -62,20 +70,100 @@ const List = ({ type, title }) => {
 
     setIsLoading(true);
     setPage(1);
-    requests.list(RECORDS_PER_PAGE, 1, e.target.value, entityID).then((res) => {
-      setData(res);
-      setTotalRows(res.total);
-      setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
+    if (requests.list) {
+      requests
+        .list(RECORDS_PER_PAGE, 1, e.target.value, entityID)
+        .then((res) => {
+          setData(res);
+          setTotalRows(res.total);
+          setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
+          setIsLoading(false);
+        });
+    } else {
       setIsLoading(false);
-    });
+    }
   };
 
   const handleResize = () => {
-    SetScreenSize(window.innerWidth);
+    SetScreenSize(window.screen.width);
   };
 
   const handleEntitySelect = (e) => {
     setEntityID(e.target.value);
+    if (prevSelectedAll)
+      switch (type.entity) {
+        case "customers":
+          setRequests({ list: customersApi.getCustomers });
+          break;
+        case "facilities":
+          setRequests({
+            list: customersApi.getCustomerFacilities,
+            ref: customersApi.getCustomers,
+          });
+          break;
+        case "locations":
+          setRequests({
+            list: locationApi.getFacilityLocations,
+            ref: facilitiesApi.getFacilities,
+          });
+          break;
+        case "equipment":
+          setRequests({
+            list: equipmentApi.getLocationEquipment,
+            ref: locationApi.getLocations,
+          });
+          break;
+        case "gateways":
+        case "nodes":
+        case "motes":
+        case "routers":
+        case "sensors":
+          setRequests({
+            list: (limit, page, search) => {
+              let url =
+                process.env.REACT_APP_SERVER_URL +
+                "/api/customer/" +
+                selectedCustomer.id +
+                "/" +
+                type.entity +
+                "?access-token=" +
+                localStorage.getItem("token");
+              if (limit) url += "&limit=" + limit;
+              if (page) url += "&page=" + page;
+              if (search) url += "&search=" + search;
+
+              return fetch(url).then((res) => res.json());
+            },
+          });
+          break;
+        default:
+          break;
+      }
+    if (e.target.value === "all") {
+      switch (type.entity) {
+        case "facilities":
+          setRequests({
+            list: facilitiesApi.getFacilities,
+            ref: customersApi.getCustomers,
+          });
+          break;
+        case "locations":
+          setRequests({
+            list: locationApi.getLocations,
+            ref: facilitiesApi.getFacilities,
+          });
+          break;
+        case "equipment":
+          setRequests({
+            list: equipmentApi.getEquipments,
+            ref: locationApi.getLocations,
+          });
+          break;
+        default:
+          break;
+      }
+      setPrevSelectedAll(true);
+    } else setPrevSelectedAll(false);
   };
 
   const handlePageChange = (e) => {
@@ -140,73 +228,61 @@ const List = ({ type, title }) => {
   };
 
   useEffect(() => {
-    switch (type.entity) {
-      case "customers":
-        setRequests({ list: customersApi.getCustomers });
-        setChooseMode(true);
-        setShowEntitySelect(false);
-        setShowView(true);
-        setIsSetViewNeeded(true);
-        break;
-      case "facilities":
-        setRequests({
-          list: customersApi.getCustomerFacilities,
-          ref: customersApi.getCustomers,
-        });
-        setChooseMode(false);
-        setShowEntitySelect(true);
-        setShowView(true);
-        setIsSetViewNeeded(true);
-        break;
-      case "locations":
-        setRequests({
-          list: locationApi.getFacilityLocations,
-          ref: facilitiesApi.getFacilities,
-        });
-        setChooseMode(false);
-        setShowEntitySelect(true);
-        setShowView(true);
-        setIsSetViewNeeded(true);
-        break;
-      case "equipment":
-        setRequests({
-          list: equipmentApi.getLocationEquipment,
-          ref: locationApi.getLocations,
-        });
-        setChooseMode(false);
-        setShowEntitySelect(true);
-        setShowView(true);
-        setIsSetViewNeeded(true);
-        break;
-      case "gateways":
-      case "nodes":
-      case "motes":
-      case "routers":
-      case "sensors":
-        setChooseMode(false);
-        setShowEntitySelect(false);
-        setShowView(false);
-        setIsSetViewNeeded(false);
-        setRequests({
-          list: (limit, page, search) => {
-            let url =
-              process.env.REACT_APP_SERVER_URL +
-              "/api/customer/" +
-              selectedCustomer.id +
-              "/" +
-              type.entity +
-              "?access-token=" +
-              localStorage.getItem("token");
-            if (limit) url += "&limit=" + limit;
-            if (page) url += "&page=" + page;
-            if (search) url += "&search=" + search;
+    if (initBlockView) {
+      setView(false);
+    }
+  }, [initBlockView]);
 
-            return fetch(url).then((res) => res.json());
-          },
-        });
-        break;
-      default:
-        break;
+  useEffect(() => {
+    if (type) {
+      switch (type.entity) {
+        case "customers":
+          setRequests({ list: customersApi.getCustomers });
+          break;
+        case "facilities":
+          setRequests({
+            list: customersApi.getCustomerFacilities,
+            ref: customersApi.getCustomers,
+          });
+          break;
+        case "locations":
+          setRequests({
+            list: locationApi.getFacilityLocations,
+            ref: facilitiesApi.getFacilities,
+          });
+          break;
+        case "equipment":
+          setRequests({
+            list: equipmentApi.getLocationEquipment,
+            ref: locationApi.getLocations,
+          });
+          break;
+        case "gateways":
+        case "nodes":
+        case "motes":
+        case "routers":
+        case "sensors":
+          setRequests({
+            list: (limit, page, search) => {
+              let url =
+                process.env.REACT_APP_SERVER_URL +
+                "/api/customer/" +
+                selectedCustomer.id +
+                "/" +
+                type.entity +
+                "?access-token=" +
+                localStorage.getItem("token");
+              if (limit) url += "&limit=" + limit;
+              if (page) url += "&page=" + page;
+              if (search) url += "&search=" + search;
+
+              return fetch(url).then((res) => res.json());
+            },
+          });
+          break;
+        default:
+          break;
+      }
     }
 
     setPagePath(match.path);
@@ -218,6 +294,7 @@ const List = ({ type, title }) => {
     if (
       selectedCustomer &&
       Object.keys(selectedCustomer).length > 0 &&
+      type &&
       type.ref === "customers"
     ) {
       setEntityID(selectedCustomer.id);
@@ -261,7 +338,7 @@ const List = ({ type, title }) => {
       } catch (e) {
         console.log(e);
       }
-  }, [requests]);
+  }, [requests.ref]);
 
   useEffect(() => {
     if (requests.list) {
@@ -307,7 +384,10 @@ const List = ({ type, title }) => {
       />
       <div className="list">
         <div className="list__header">
-          <div className="list__title">
+          <div
+            className="list__title"
+            style={hideTitle && { visibility: "hidden" }}
+          >
             <h3>{title || pageTitle}</h3>
             <button
               className="list__add-btn"
@@ -320,9 +400,9 @@ const List = ({ type, title }) => {
             </button>
           </div>
           <div className="list__options">
-            {showEntitySelect && (
+            {type && type.ref && (
               <div className="list__select-entity">
-                <Label for="select-entity">{type.ref}:</Label>
+                <Label for="select-entity">{type && `${type.ref}:`}</Label>
                 <select
                   className="ui-kit__select"
                   id="select-entity"
@@ -333,6 +413,7 @@ const List = ({ type, title }) => {
                   <option value="" hidden>
                     No records
                   </option>
+                  <option value="all">All</option>
                   {entityNames &&
                     entityNames.map((entity) => (
                       <option key={entity.id} value={entity.id}>
@@ -342,13 +423,15 @@ const List = ({ type, title }) => {
                 </select>
               </div>
             )}
-            <input
-              className="list__search"
-              type="text"
-              placeholder="Search..."
-              onInput={handleSearch}
-            />
-            {isSetViewNeeded && (
+            {!hideSearch && (
+              <input
+                className="list__search"
+                type="text"
+                placeholder="Search..."
+                onInput={handleSearch}
+              />
+            )}
+            {!hideChangeView && (
               <div className="list__options_btns">
                 <Button
                   type="list-view"
@@ -379,8 +462,9 @@ const List = ({ type, title }) => {
                   setMode={setMode}
                   chooseMode={chooseMode}
                   changeCustomer={changeCustomer}
-                  showView={showView}
+                  hideRecordView={hideRecordView}
                   perPage={RECORDS_PER_PAGE}
+                  showProgress={showProgress}
                 />
               ) : (
                 <div
@@ -401,12 +485,18 @@ const List = ({ type, title }) => {
                         chooseMode={chooseMode}
                         selected={record[1].id === selectedCustomer.id}
                         changeCustomer={changeCustomer}
-                        showView={showView}
+                        hideRecordView={hideRecordView}
                       />
                     ))
                   ) : (
-                    <p style={{ display: "flex", justifyContent: "center" }}>
-                      No records found.
+                    <p
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        padding: "24px",
+                      }}
+                    >
+                      There are no records to display
                     </p>
                   )}
                 </div>

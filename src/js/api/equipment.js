@@ -1,19 +1,20 @@
 import { getToken } from "../helpers/helpers";
 import { apiRequest } from "./api";
 
-const BASE_URL = process.env.REACT_APP_SERVER_URL
+const BASE_URL = process.env.REACT_APP_SERVER_URL;
 
 const equipmentApi = {
-  getEquipments: async () => {
+  getEquipments: async (limit, page, search) => {
     const token = getToken();
 
-    if (token)
-      return apiRequest(
-        "GET",
-        BASE_URL + `/api/equipment?access-token=${token}`,
-        {},
-        {}
-      );
+    let url =
+      process.env.REACT_APP_SERVER_URL + `/api/equipment?access-token=${token}`;
+
+    if (limit) url += `&limit=${limit}`;
+    if (page) url += `&page=${page}`;
+    if (search) url += `&search=${search}`;
+
+    if (token) return apiRequest("GET", url, {}, {});
   },
 
   getEquipment: async (equipmentId) => {

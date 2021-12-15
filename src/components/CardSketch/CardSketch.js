@@ -7,15 +7,21 @@ const CardSketch = () => {
   return (
     <div style={{ padding: ".1px" }}>
       <div className="card-sketch">
-        <img src={skeletonImg} />
         <input type="checkbox" />
-        <div>Name</div>
-        <div>Facilities: 5</div>
-        <Progress value="33" />
-        <div className="card-sketch__btns">
-          <Button color="primary">View</Button>
-          <Button color="default">Edit</Button>
+        <div className="card-sketch__body">
+          <div>
+            <img src={skeletonImg} />
+          </div>
+          <div className="card-sketch__info">
+            <h4>Name</h4>
+            <div>Facilities: 5</div>
+            <div className="card-sketch__btns">
+              <Button color="primary">View</Button>
+              <Button color="default">Edit</Button>
+            </div>
+          </div>
         </div>
+        <Progress value="66" />
       </div>
     </div>
   );
