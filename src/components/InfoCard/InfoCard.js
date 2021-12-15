@@ -14,9 +14,11 @@ const InfoCard = ({
   selected,
   changeCustomer,
   setMode,
-  setSubEntityName,
+  currentSubEntityName,
+  setCurrentSubEntityName,
   hideRecordView,
 }) => {
+  const [toggleEntityModal, setToggleEntityModal] = useState(false);
   const [subEntity, setSubEntity] = useState("");
   const [progress, setProgress] = useState(0);
   const { setEditId } = useContext(GlobalContext);
@@ -67,7 +69,18 @@ const InfoCard = ({
 
     setProgress(totalProgress);
   }, [type]);
-
+  useEffect(() => {
+    if (
+      currentSubEntityName &&
+      currentSubEntityName.name &&
+      toggleEntityModal
+    ) {
+      setMode("edit");
+      setEditId(data.id);
+      toggleModal();
+      setToggleEntityModal(!toggleEntityModal);
+    }
+  }, [toggleEntityModal]);
   return (
     <div className="info-card">
       {chooseMode ? (
@@ -83,12 +96,14 @@ const InfoCard = ({
           color="default"
           className="info-card__edit"
           onClick={() => {
-            if (setSubEntityName) {
-              setSubEntityName(type);
+            if (setCurrentSubEntityName) {
+              setToggleEntityModal(!toggleEntityModal);
+              setCurrentSubEntityName((state) => ({ ...state, name: type }));
+            } else {
+              setMode("edit");
+              setEditId(data.id);
+              toggleModal();
             }
-            setMode("edit");
-            setEditId(data.id);
-            toggleModal();
           }}
         >
           <i className="far fa-edit"></i>
@@ -131,12 +146,14 @@ const InfoCard = ({
             color="default"
             style={!chooseMode ? { visibility: "hidden" } : {}}
             onClick={() => {
-              if (setSubEntityName) {
-                setSubEntityName(type);
+              if (setCurrentSubEntityName) {
+                setToggleEntityModal(!toggleEntityModal);
+                setCurrentSubEntityName({ name: type });
+              } else {
+                setMode("edit");
+                setEditId(data.id);
+                toggleModal();
               }
-              setMode("edit");
-              setEditId(data.id);
-              toggleModal();
             }}
           >
             <span>Edit</span>

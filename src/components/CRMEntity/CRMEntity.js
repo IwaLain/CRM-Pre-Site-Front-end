@@ -156,7 +156,6 @@ const CRMEntity = ({ type }) => {
   }
 
   useEffect(() => {
-    setCurrentSubEntityName(subEntityName);
     setInformationItems([]);
     setIsLoading(true);
     try {
@@ -269,15 +268,14 @@ const CRMEntity = ({ type }) => {
   };
   return (
     <>
-      {currentSubEntityName && (
-        <ModalSketch
-          entity={currentSubEntityName}
-          subEntity={entityPluralAlias}
-          modal={showFormModal}
-          toggle={toggleModal}
-          mode={mode}
-        />
-      )}
+      <ModalSketch
+        entity={currentSubEntityName && currentSubEntityName.name}
+        subEntity={entityPluralAlias}
+        modal={showFormModal}
+        toggle={toggleModal}
+        mode={mode}
+      />
+
       {!isLoading ? (
         <>
           <div className="d-flex align-items-center entity-page--header">
@@ -332,7 +330,8 @@ const CRMEntity = ({ type }) => {
                         type={subEnt.subEntityName}
                         toggleModal={toggleModal}
                         setMode={setMode}
-                        setSubEntityName={setCurrentSubEntityName}
+                        currentSubEntityName={currentSubEntityName}
+                        setCurrentSubEntityName={setCurrentSubEntityName}
                       />
                     ))
                   ) : (

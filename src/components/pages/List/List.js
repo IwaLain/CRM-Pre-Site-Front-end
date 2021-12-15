@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useRouteMatch } from "react-router";
 import TableView from "../../TableView/TableView";
 import InfoCard from "../../InfoCard/InfoCard";
-import Pagination from "../../widgets/Pagination/Pagination";
+import CustomPagination from "../../widgets/Pagination/Pagination";
 import { Spinner, Label } from "reactstrap";
 import { GlobalContext } from "../../../context";
 import customersApi from "../../../js/api/customer";
@@ -167,6 +167,7 @@ const List = ({
   };
 
   const handlePageChange = (e) => {
+    console.log(e.selected);
     const page = e.selected + 1;
     setPage(page);
   };
@@ -502,12 +503,13 @@ const List = ({
                 </div>
               )}
               {!view && totalPages > 1 && (
-                <Pagination
+                <CustomPagination
                   previousLabel={"<"}
                   nextLabel={">"}
                   pageCount={totalPages}
                   initialPage={page - 1}
-                  onPageChange={handlePageChange}
+                  onPageChange={setPage}
+                  totalRows={totalRows}
                   containerClassName={"pagination"}
                   activeClassName={"active"}
                 />
