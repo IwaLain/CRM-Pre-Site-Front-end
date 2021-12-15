@@ -103,14 +103,14 @@ const ComertialPurpouse = () => {
 
                             togglePDF(true)
                         }}>
-                        Preview <i class="far fa-eye"></i>
+                        Preview <i className="far fa-eye"></i>
                     </Button>
                 </Col>
                 <Col lg={2} md={2}>
                     <Button
                         id='purpose'
                         form='form'>
-                        Create PDF <i class="fas fa-file-pdf"></i>
+                        Create PDF <i className="fas fa-file-pdf"></i>
                     </Button>
                 </Col>
             </Row>

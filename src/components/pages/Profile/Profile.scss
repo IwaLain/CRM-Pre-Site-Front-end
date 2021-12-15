@@ -1,28 +1,31 @@
 .profile__container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 700px;
-    padding: 10px;
+    justify-content: start;
+    align-items: stretch;
+    max-width: 1200px;
 }
 
 .profile {
     display: flex;
-    justify-content: space-around;
-    padding: 20px;
+    justify-content: center;
+    align-items: stretch;
+
     &__card {
-        padding: 10px;
+        max-width: 500px;
+        padding: 10px 20px;
+        height: 100%;
+        background-color: #eee !important;
     }
 
     &__item {
         align-items: center;
-        max-width: 360px;
+        max-width: 460px;
         padding-bottom: 5px;
         margin-bottom: 20px;
-
+        
         .form-label {
             margin-bottom: 0;
-            min-width: 100px;
+            min-width: 200px;
         }
     }
 
@@ -30,12 +33,11 @@
         position: relative;
         display: flex;
         align-items: center;
-        justify-content: center;
         min-width: 200px;
         height: 40px;
-        text-align: center;
         background: #efefef;
         border-radius: 5px;
+        border-bottom: 1px solid silver;
         padding-bottom: 0;
 
         .form-control {
@@ -43,9 +45,16 @@
         }
     }
 
+    &__list {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
     &__avatar {
-        max-width: 150px;
-        margin-bottom: 30px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        
         & input[type="file"] {
             display: none;
         }
@@ -55,21 +64,23 @@
         }
     }
 
-    &__button {
+    &__button.btn {
         max-width: 150px;
+        margin-right: auto;
+        margin-top: 10px;
         i {
             margin-left: 5px;
         }
     }
 
-    &__lable {
-        min-width: 200px;
+    &__desc {
+        color: #666;
     }
 
     &__username {
         display: flex;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
         padding-top: 10px;
         font-size: 24px;
     }
@@ -80,11 +91,11 @@
     height: 120px;
     min-width: 98px;
     min-height: 98px;
-    border-radius: 5px;
     color: #000;
     background: #eeeeee;
     object-fit: cover;
-
+    border-radius: 50%;
+    
     &-edit {
         .profile__placeholder {
             position: absolute;
