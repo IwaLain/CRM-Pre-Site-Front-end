@@ -1,5 +1,5 @@
 import React from 'react';
-import './pdf.css'
+import './Preview.scss'
 import logo from '../../../../assets/img/waites-block-logo-yellow-background.png'
 import bottom from '../../../../assets/img/barcode.png'
 
