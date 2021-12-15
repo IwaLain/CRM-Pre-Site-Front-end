@@ -16,8 +16,13 @@ const DashboardLayout = ({ children }) => {
     window.innerWidth <= MOBILE_SIZE
   );
 
-  const { pagePath, setPageTitle, pageType, setEquipmentTypeList } =
-    useContext(GlobalContext);
+  const {
+    pagePath,
+    setPageTitle,
+    pageType,
+    setEquipmentTypeList,
+    userProfile,
+  } = useContext(GlobalContext);
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -34,14 +39,18 @@ const DashboardLayout = ({ children }) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/equipment/type?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((list) => setEquipmentTypeList(list["type"]));
+    if (userProfile && Object.keys(userProfile).length > 0) {
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/equipment/type?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((list) => setEquipmentTypeList(list["type"]));
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, []);
 

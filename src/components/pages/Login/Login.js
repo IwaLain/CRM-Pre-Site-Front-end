@@ -21,7 +21,8 @@ import { useContext } from "react";
 import { getToken } from "../../../js/helpers/helpers";
 
 const LoginPage = () => {
-  const { setUserProfile, setSelectedCustomer } = useContext(GlobalContext);
+  const { setUserProfile, setSelectedCustomer, setIsLogged } =
+    useContext(GlobalContext);
 
   const {
     register,
@@ -42,35 +43,45 @@ const LoginPage = () => {
       password: e.password,
     };
 
-    Profile.loginRequest(data).then((data) => {
-      if (data.errors) {
-        alert("error", data.errors);
-      } else {
-        localStorage.setItem("token", data.token);
-        alert("success", "Login success");
-      }
+    try {
+      Profile.loginRequest(data).then((data) => {
+        if (data.errors) {
+          alert("error", data.errors);
+        } else {
+          localStorage.setItem("token", data.token);
+          alert("success", "Login success");
+        }
 
-      const token = getToken();
+        const token = getToken();
 
-      if (token) {
-        Profile.getProfile().then((data) => {
-          setUserProfile(data.user);
-          if (data.user.last_customer) {
-            fetch(
-              process.env.REACT_APP_SERVER_URL +
-                "/api/customer/" +
-                data.user.last_customer +
-                "?access-token=" +
-                localStorage.getItem("token")
-            )
-              .then((res) => res.json())
-              .then((customer) => {
-                setSelectedCustomer(customer.customer[data.user.last_customer]);
-              });
-          }
-        });
-      }
-    });
+        if (token) {
+          Profile.getProfile().then((data) => {
+            setUserProfile(data.user);
+            if (data.user.last_customer) {
+              try {
+                fetch(
+                  process.env.REACT_APP_SERVER_URL +
+                    "/api/customer/" +
+                    data.user.last_customer +
+                    "?access-token=" +
+                    localStorage.getItem("token")
+                )
+                  .then((res) => res.json())
+                  .then((customer) => {
+                    setSelectedCustomer(
+                      customer.customer[data.user.last_customer]
+                    );
+                  });
+              } catch (e) {
+                console.log(e);
+              }
+            }
+          });
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

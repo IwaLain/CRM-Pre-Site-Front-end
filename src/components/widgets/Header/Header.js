@@ -21,11 +21,10 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    Profile.setlastCustomer(selectedCustomer.id)
+    Profile.setlastCustomer(selectedCustomer.id);
     Profile.logoutRequest().then(() => {
       localStorage.removeItem("token");
       window.location.reload();
-      history.push("/");
     });
   };
 

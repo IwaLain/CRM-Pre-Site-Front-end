@@ -21,6 +21,7 @@ const TableView = ({
   chooseMode,
   changeCustomer,
   showView,
+  perPage,
 }) => {
   const [cols, setCols] = useState([]);
   const [listData, setListData] = useState([]);
@@ -79,17 +80,39 @@ const TableView = ({
   ];
 
   const calculateProgress = (record) => {
+    if (typeof record.locations === "object")
+      console.log(record.locations.props.children[1]);
     let progress = 0;
     switch (type.entity) {
       case "customers":
         if (record.name) progress += 33.3;
-        if (record.facilities && record.facilities > 0) progress += 33.3;
-        if (record.equipments && record.equipments > 0) progress += 33.3;
+        if (
+          record.facilities &&
+          typeof record.facilities === "object" &&
+          record.facilities.props.children[1] > 0
+        )
+          progress += 33.3;
+        if (
+          record.equipment &&
+          typeof record.equipment === "object" &&
+          record.equipment.props.children[1] > 0
+        )
+          progress += 33.3;
         break;
       case "facilities":
         if (record.name) progress += 33.3;
-        if (record.locations && record.locations > 0) progress += 33.3;
-        if (record.equipments && record.equipments > 0) progress += 33.3;
+        if (
+          record.locations &&
+          typeof record.locations === "object" &&
+          record.locations.props.children[1] > 0
+        )
+          progress += 33.3;
+        if (
+          record.equipment &&
+          typeof record.equipment === "object" &&
+          record.equipment.props.children[1] > 0
+        )
+          progress += 33.3;
         break;
       default:
         break;
@@ -121,10 +144,41 @@ const TableView = ({
         obj["id"] = value.id;
         if (value.name) obj["name"] = value.name;
         if (value.serial) obj["serial"] = value.serial;
-        if (value.facilities) obj["facilities"] = value.facilities.length;
-        if (value.locations) obj["locations"] = value.locations.length;
-        if (value.equipments) obj["equipments"] = value.equipments.length;
-        if (value.equipment) obj["equipment"] = value.equipment.length;
+        if (value.facilities)
+          obj["facilities"] =
+            value["facilities"].length > 0 ? (
+              <>
+                <i className="fas fa-industry me-1"></i>
+                {value["facilities"].length}
+              </>
+            ) : (
+              "No facilities."
+            );
+        if (value.locations)
+          obj["locations"] =
+            value["locations"].length > 0 ? (
+              <>
+                <i className="fas fa-map-marker-alt me-1"></i>
+                {value["locations"].length}
+              </>
+            ) : (
+              "No locations."
+            );
+        if (value.equipments || value.equipment)
+          obj["equipment"] =
+            value["equipments"] && value["equipments"].length > 0 ? (
+              <>
+                <i className="fas fa-tools me-1"></i>
+                {value["equipments"].length}
+              </>
+            ) : value["equipment"] && value["equipment"].length > 0 ? (
+              <>
+                <i className="fas fa-tools me-1"></i>
+                {value["equipment"].length}
+              </>
+            ) : (
+              "No equipment."
+            );
         if (value.sensors && value.mote)
           obj["sensors/motes"] = value.sensors.length + value.mote.length;
         if (value["location_info"])
@@ -153,9 +207,8 @@ const TableView = ({
           obj["images"] =
             value[singleAlias + "Images"].length > 0 ? (
               <>
-                <i className="fas fa-images"></i>
-                <i className="fas fa-images"></i>
-                ...
+                <i className="fas fa-images me-1"></i>
+                {value[singleAlias + "Images"].length}
               </>
             ) : (
               "No images."
@@ -210,6 +263,7 @@ const TableView = ({
       paginationComponentOptions={paginationComponentOptions}
       onChangePage={handlePageChange}
       paginationDefaultPage={page}
+      paginationPerPage={perPage}
     />
   );
 };
