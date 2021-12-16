@@ -41,11 +41,11 @@ const CustomPagination = ({
   };
 
   const handleBackButtonClick = () => {
-    onPageChange(initialPage);
+    onPageChange(initialPage - 1);
   };
 
   const handleNextButtonClick = () => {
-    onPageChange(initialPage + 2);
+    onPageChange(initialPage + 1);
   };
 
   const handleLastPageButtonClick = () => {
@@ -57,17 +57,15 @@ const CustomPagination = ({
       <div>
         <nav className="custom-pagination--nav">
           <span className="custom-pagination--current-elements">{`${
-            Math.ceil(totalRows / pageCount) * (initialPage + 1) - 19
+            1 + 20 * (initialPage - 1)
           }-${
-            Math.ceil(totalRows / pageCount) * (initialPage + 1) < totalRows
-              ? Math.ceil(totalRows / pageCount) * (initialPage + 1)
-              : totalRows
+            20 * initialPage < totalRows ? 20 * initialPage : totalRows
           } of ${totalRows}`}</span>
           <div className="custom-pagination--buttons">
             <button
               className="custom-pagination--btn"
               onClick={handleFirstPageButtonClick}
-              disabled={initialPage === 0}
+              disabled={initialPage === 1}
               aria-label="first page"
             >
               <svg
@@ -85,7 +83,7 @@ const CustomPagination = ({
             <button
               className="custom-pagination--btn"
               onClick={handleBackButtonClick}
-              disabled={initialPage === 0}
+              disabled={initialPage === 1}
               aria-label="previous page"
             >
               <svg
@@ -103,7 +101,7 @@ const CustomPagination = ({
             <button
               className="custom-pagination--btn"
               onClick={handleNextButtonClick}
-              disabled={initialPage >= pageCount - 1}
+              disabled={initialPage >= pageCount}
               aria-label="next page"
             >
               <svg
@@ -121,7 +119,7 @@ const CustomPagination = ({
             <button
               className="custom-pagination--btn"
               onClick={handleLastPageButtonClick}
-              disabled={initialPage >= pageCount - 1}
+              disabled={initialPage >= pageCount}
               aria-label="last page"
             >
               <svg
