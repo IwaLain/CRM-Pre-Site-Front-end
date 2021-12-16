@@ -56,24 +56,26 @@ const LoginPage = () => {
 
         if (token) {
           Profile.getProfile().then((data) => {
-            setUserProfile(data.user);
-            if (data.user.last_customer) {
-              try {
-                fetch(
-                  process.env.REACT_APP_SERVER_URL +
-                    "/api/customer/" +
-                    data.user.last_customer +
-                    "?access-token=" +
-                    localStorage.getItem("token")
-                )
-                  .then((res) => res.json())
-                  .then((customer) => {
-                    setSelectedCustomer(
-                      customer.customer[data.user.last_customer]
-                    );
-                  });
-              } catch (e) {
-                console.log(e);
+            if (data) {
+              setUserProfile(data.user);
+              if (data.user.last_customer) {
+                try {
+                  fetch(
+                    process.env.REACT_APP_SERVER_URL +
+                      "/api/customer/" +
+                      data.user.last_customer +
+                      "?access-token=" +
+                      localStorage.getItem("token")
+                  )
+                    .then((res) => res.json())
+                    .then((customer) => {
+                      setSelectedCustomer(
+                        customer.customer[data.user.last_customer]
+                      );
+                    });
+                } catch (e) {
+                  console.log(e);
+                }
               }
             }
           });

@@ -77,16 +77,14 @@ const Network = () => {
                     data-bs-parent="#myAccordion"
                   >
                     <div className="card-body">
-                      {selectedBlock === index && (
-                        <List
-                          type={{ entity: block[0].toLowerCase() }}
-                          title={
-                            block[0].charAt(0).toUpperCase() + block[0].slice(1)
-                          }
-                          hideChangeView
-                          hideRecordView
-                        />
-                      )}
+                      <List
+                        type={{ entity: block[0].toLowerCase() }}
+                        title={
+                          block[0].charAt(0).toUpperCase() + block[0].slice(1)
+                        }
+                        hideChangeView
+                        hideRecordView
+                      />
                     </div>
                   </div>
                 ))}

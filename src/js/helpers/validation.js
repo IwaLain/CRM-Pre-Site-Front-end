@@ -26,7 +26,6 @@ export const validation = (type) => {
           value: 15,
           message: "Minimum 15 simvols",
         },
-        
       };
     case "email":
       return {
