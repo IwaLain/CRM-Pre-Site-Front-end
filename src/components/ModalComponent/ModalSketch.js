@@ -197,18 +197,24 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         }
-      ).then((res) => {
-        if (res.status === 200) {
-          resetToggle();
-          alert(
-            "success",
-            `${
-              entityName.charAt(0).toUpperCase() + entityName.slice(1)
-            } created.`
-          );
-          setUpdateTrigger(!updateTrigger);
-        } else alert("error", `Request error.`);
-      });
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data) {
+            if (data["success"]) {
+              resetToggle();
+              alert(
+                "success",
+                `${
+                  entityName.charAt(0).toUpperCase() + entityName.slice(1)
+                } created.`
+              );
+              setUpdateTrigger(!updateTrigger);
+            } else if (data.errors && data.errors.includes("ID is invalid")) {
+              alert("error", `Invalid ref object.`);
+            } else alert("error", `Request error.`);
+          }
+        });
     } else if (mode === "edit") {
       try {
         fetch(
@@ -224,18 +230,24 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
           }
-        ).then((res) => {
-          if (res.status === 200) {
-            resetToggle();
-            setUpdateTrigger(!updateTrigger);
-            alert(
-              "success",
-              `${
-                entityName.charAt(0).toUpperCase() + entityName.slice(1)
-              } changed.`
-            );
-          } else alert("error", `Request error.`);
-        });
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            if (data) {
+              if (data["success"]) {
+                resetToggle();
+                alert(
+                  "success",
+                  `${
+                    entityName.charAt(0).toUpperCase() + entityName.slice(1)
+                  } changed.`
+                );
+                setUpdateTrigger(!updateTrigger);
+              } else if (data.errors && data.errors.includes("ID is invalid")) {
+                alert("error", `Invalid ref object.`);
+              } else alert("error", `Request error.`);
+            }
+          });
       } catch (e) {
         console.log(e);
       }
