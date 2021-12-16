@@ -14,7 +14,7 @@ import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 import { Spinner } from "reactstrap";
 import ModalSketch from "../ModalComponent/ModalSketch";
-
+import List from "../pages/List/List";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
@@ -268,13 +268,13 @@ const CRMEntity = ({ type }) => {
   };
   return (
     <>
-      <ModalSketch
+      {/* <ModalSketch
         entity={currentSubEntityName && currentSubEntityName.name}
         subEntity={entityPluralAlias}
         modal={showFormModal}
         toggle={toggleModal}
         mode={mode}
-      />
+      /> */}
 
       {!isLoading ? (
         <>
@@ -313,32 +313,47 @@ const CRMEntity = ({ type }) => {
           {entityObject &&
             subEntity.length > 0 &&
             subEntity.map((subEnt) => (
-              <div className="info-page--section entity-page--section">
-                <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2>
-                <div
-                  className={
-                    screenSize > 440
-                      ? "info-card_group"
-                      : "info-card_group dense"
+              <div className="entity-page--section table-section">
+                {/* <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2> */}
+                <List
+                  type={{
+                    entity: subEnt.subEntityName,
+                    ref: entityPluralAlias,
+                  }}
+                  title={
+                    subEnt.subEntityName.charAt(0).toUpperCase() +
+                    subEnt.subEntityName.slice(1)
                   }
-                >
-                  {subEnt.subEntityData && subEnt.subEntityData.length > 0 ? (
-                    subEnt.subEntityData.map((subEntityElement, index) => (
-                      <InfoCard
-                        key={index}
-                        data={subEntityElement}
-                        type={subEnt.subEntityName}
-                        toggleModal={toggleModal}
-                        setMode={setMode}
-                        currentSubEntityName={currentSubEntityName}
-                        setCurrentSubEntityName={setCurrentSubEntityName}
-                      />
-                    ))
-                  ) : (
-                    <p>No {subEntityName} found.</p>
-                  )}
-                </div>
+                  hideSelect
+                  hideChangeView
+                  initBlockView={
+                    subEnt.subEntityName !== "sensors" &&
+                    subEnt.subEntityName !== "motes"
+                  }
+                  hideCreateBtn
+                  hideRecordView={
+                    subEnt.subEntityName === "sensors" ||
+                    subEnt.subEntityName === "motes"
+                  }
+                />
               </div>
+              //     {subEnt.subEntityData && subEnt.subEntityData.length > 0 ? (
+              //       subEnt.subEntityData.map((subEntityElement, index) => (
+              //         <InfoCard
+              //           key={index}
+              //           data={subEntityElement}
+              //           type={subEnt.subEntityName}
+              //           toggleModal={toggleModal}
+              //           setMode={setMode}
+              //           currentSubEntityName={currentSubEntityName}
+              //           setCurrentSubEntityName={setCurrentSubEntityName}
+              //         />
+              //       ))
+              //     ) : (
+              //       <p>No {subEntityName} found.</p>
+              //     )}
+              //   </div>
+              // </div>
             ))}
 
           {entityObject && entityObject[`${type}Images`] && (

@@ -18,6 +18,8 @@ const List = ({
   title,
   chooseMode,
   hideTitle,
+  hideCreateBtn,
+  hideSelect,
   hideSearch,
   hideChangeView,
   showProgress,
@@ -37,7 +39,7 @@ const List = ({
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const RECORDS_PER_PAGE = 20;
-
+  const [showFormModal, setShowFormModal] = useState();
   const [prevSelectedAll, setPrevSelectedAll] = useState(false);
 
   const {
@@ -45,8 +47,7 @@ const List = ({
     setPagePath,
     entityID,
     setEntityID,
-    showFormModal,
-    setShowFormModal,
+
     selectedCustomer,
     setSelectedCustomer,
     setCustomerStructure,
@@ -390,18 +391,20 @@ const List = ({
             style={hideTitle && { visibility: "hidden" }}
           >
             <h3>{title || pageTitle}</h3>
-            <button
-              className="list__add-btn"
-              onClick={() => {
-                setMode("create");
-                toggleModal();
-              }}
-            >
-              +
-            </button>
+            {!hideCreateBtn && (
+              <button
+                className="list__add-btn"
+                onClick={() => {
+                  setMode("create");
+                  toggleModal();
+                }}
+              >
+                +
+              </button>
+            )}
           </div>
           <div className="list__options">
-            {type && type.ref && (
+            {type && type.ref && !hideSelect && (
               <div className="list__select-entity">
                 <Label for="select-entity">{type && `${type.ref}:`}</Label>
                 <select

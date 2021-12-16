@@ -117,7 +117,7 @@ const InfoCard = ({
                 ? process.env.REACT_APP_SERVER_URL + "/" + mainImage
                 : placeholder
             }
-            alt="card image error"
+            alt="card error"
           />
         </div>
         <div className="card-sketch__info">
@@ -143,7 +143,7 @@ const InfoCard = ({
           >
             <Link
               to={`/dashboard/${type}/${data.id}`}
-              style={hideRecordView && { visibility: "hidden" }}
+              style={hideRecordView ? { visibility: "hidden" } : {}}
             >
               View
             </Link>
