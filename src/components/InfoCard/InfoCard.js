@@ -37,20 +37,21 @@ const InfoCard = ({
     let totalProgress = 0;
     switch (type) {
       case "customers":
-        if (data.name) totalProgress += 33.3;
+        if (data.name) totalProgress += 33.333333;
         if (data.facilities && data.facilities.length > 0)
-          totalProgress += 33.3;
+          totalProgress += 33.333333;
         if (data.equipments && data.equipments.length > 0)
-          totalProgress += 33.3;
+          totalProgress += 33.333333;
         setSubEntity("Facilities");
         onSetMainImage(data["customerImages"]);
 
         break;
       case "facilities":
-        if (data.name) totalProgress += 33.3;
-        if (data.locations && data.locations.length > 0) totalProgress += 33.3;
+        if (data.name) totalProgress += 33.333333;
+        if (data.locations && data.locations.length > 0)
+          totalProgress += 33.333333;
         if (data.equipments && data.equipments.length > 0)
-          totalProgress += 33.3;
+          totalProgress += 33.333333;
         setSubEntity("Locations");
         onSetMainImage(data["facilityImages"]);
 

@@ -99,7 +99,7 @@ const TableView = ({
           progress += 33.3;
         break;
       case "facilities":
-        if (record.name) progress += 33.3;
+        if (record["Name"]) progress += 33.3;
         if (
           record["Locations"] &&
           typeof record["Locations"] === "object" &&
