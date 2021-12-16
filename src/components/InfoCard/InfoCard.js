@@ -1,5 +1,5 @@
 import placeholder from "../../assets/img/company.png";
-import { Progress, FormGroup, Input } from "reactstrap";
+import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../../scss/info-card.scss";
 import { useContext, useEffect, useState } from "react";

@@ -7,19 +7,18 @@ import locationApi from "../../js/api/locations";
 import equipmentApi from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
-import InfoCard from "../InfoCard/InfoCard";
+
 import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 import { Spinner } from "reactstrap";
-import ModalSketch from "../ModalComponent/ModalSketch";
+
 import List from "../pages/List/List";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
-  const { showFormModal, setShowFormModal, setEntityID } =
-    useContext(GlobalContext);
+  const { setEntityID } = useContext(GlobalContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
@@ -32,8 +31,6 @@ const CRMEntity = ({ type }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   let informationFieldNames = [];
-  const [currentSubEntityName, setCurrentSubEntityName] = useState();
-  const [screenSize, SetScreenSize] = useState(window.innerWidth);
 
   const [entityObject, setEntityObject] = useState();
 
@@ -42,8 +39,6 @@ const CRMEntity = ({ type }) => {
   const [subEntity, setSubEntity] = useState([]);
 
   const [informationItems, setInformationItems] = useState([]);
-
-  const [mode, setMode] = useState("edit");
 
   const [attachedFiles, setAttachedFiles] = useState();
 
@@ -257,25 +252,10 @@ const CRMEntity = ({ type }) => {
     } catch {
       history.push("/404");
     }
-
-    window.addEventListener("resize", handleResize);
   }, []);
-  const handleResize = () => {
-    SetScreenSize(window.innerWidth);
-  };
-  const toggleModal = () => {
-    setShowFormModal(!showFormModal);
-  };
+
   return (
     <>
-      {/* <ModalSketch
-        entity={currentSubEntityName && currentSubEntityName.name}
-        subEntity={entityPluralAlias}
-        modal={showFormModal}
-        toggle={toggleModal}
-        mode={mode}
-      /> */}
-
       {!isLoading ? (
         <>
           <div className="d-flex align-items-center entity-page--header">
@@ -337,23 +317,6 @@ const CRMEntity = ({ type }) => {
                   }
                 />
               </div>
-              //     {subEnt.subEntityData && subEnt.subEntityData.length > 0 ? (
-              //       subEnt.subEntityData.map((subEntityElement, index) => (
-              //         <InfoCard
-              //           key={index}
-              //           data={subEntityElement}
-              //           type={subEnt.subEntityName}
-              //           toggleModal={toggleModal}
-              //           setMode={setMode}
-              //           currentSubEntityName={currentSubEntityName}
-              //           setCurrentSubEntityName={setCurrentSubEntityName}
-              //         />
-              //       ))
-              //     ) : (
-              //       <p>No {subEntityName} found.</p>
-              //     )}
-              //   </div>
-              // </div>
             ))}
 
           {entityObject && entityObject[`${type}Images`] && (
