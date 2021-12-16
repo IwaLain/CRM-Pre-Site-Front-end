@@ -697,59 +697,61 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         )
           .then((res) => res.json())
           .then((data) => {
-            switch (entityName) {
-              case "customer":
-              case "facility":
-                setDefaultEntity(data[entityName][editId]);
-                reset({
-                  ...data[entityName][editId],
-                  headname: data[entityName][editId]["head_name"],
-                });
-                break;
-              default:
-                setDefaultEntity(data[entityName]);
-                let newFields = [];
+            if (data[entityName]) {
+              switch (entityName) {
+                case "customer":
+                case "facility":
+                  setDefaultEntity(data[entityName][editId]);
+                  reset({
+                    ...data[entityName][editId],
+                    headname: data[entityName][editId]["head_name"],
+                  });
+                  break;
+                default:
+                  setDefaultEntity(data[entityName]);
+                  let newFields = [];
 
-                if (
-                  data[entityName]["jsonData"] &&
-                  data[entityName]["jsonData"].length > 0 &&
-                  data[entityName]["jsonData"] !== "null"
-                ) {
-                  let newCount = 0;
+                  if (
+                    data[entityName]["jsonData"] &&
+                    data[entityName]["jsonData"].length > 0 &&
+                    data[entityName]["jsonData"] !== "null"
+                  ) {
+                    let newCount = 0;
 
-                  const jsonData = data[entityName]["jsonData"];
+                    const jsonData = data[entityName]["jsonData"];
 
-                  jsonData.forEach((el) => {
-                    newFields.push({
-                      id: `field${newCount + 1}`,
-                      title: el.name,
-                      value: el.value,
+                    jsonData.forEach((el) => {
+                      newFields.push({
+                        id: `field${newCount + 1}`,
+                        title: el.name,
+                        value: el.value,
+                      });
+                      newCount += 1;
                     });
-                    newCount += 1;
+
+                    setCustomFieldsCount(newCount);
+                    setCustomFields(newFields);
+                  }
+
+                  let fieldsToReset = {};
+
+                  newFields.forEach((field) => {
+                    fieldsToReset[field.id] = field.value;
+                    fieldsToReset[field.name] = field.name;
                   });
 
-                  setCustomFieldsCount(newCount);
-                  setCustomFields(newFields);
-                }
-
-                let fieldsToReset = {};
-
-                newFields.forEach((field) => {
-                  fieldsToReset[field.id] = field.value;
-                  fieldsToReset[field.name] = field.name;
-                });
-
-                if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
-                  reset({
-                    ...data[entityName],
-                    ...fieldsToReset,
-                  });
-                } else {
-                  reset({
-                    ...data[entityName],
-                  });
-                }
-                break;
+                  if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
+                    reset({
+                      ...data[entityName],
+                      ...fieldsToReset,
+                    });
+                  } else {
+                    reset({
+                      ...data[entityName],
+                    });
+                  }
+                  break;
+              }
             }
           });
       } catch (e) {
