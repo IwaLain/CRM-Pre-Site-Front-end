@@ -56,9 +56,25 @@ const Profile = {
 
     createPdf: async (data) => {
         const token = getToken()
-        if ( token ) return await apiRequest('POST', BASE_URL + `/api/commercial-purpose/create-pdf?access-token=${token}`, data, {
-            'Content-Type':'application/json'
-        })
+        if (token) {
+            fetch(BASE_URL + `/api/commercial-purpose/create-pdf?access-token=${token}`, {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify(data)
+            })
+            .then(data => {
+                return data.blob()
+            })
+            .then(blob => {
+                let url = window.URL.createObjectURL(blob)
+                let a = document.createElement('a')
+                a.href = url
+                a.download = 'Comertial_Purpose.pdf'
+                document.body.appendChild(a)
+                a.click()
+                a.remove()
+            })
+        }
     }
 }
 

@@ -39,7 +39,7 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
             'email': e.email,
             'phone': e.phone,
             'img': e.img,
-            'role': currentUser.role,
+            'role': e.role
         }
 
         Profile.updateProfile(currentUser.id, data).then(data => {
@@ -51,8 +51,8 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
             }
         })
 
-        User.editUserRole(currentUser.id, data)
-
+        if (currentUser.role !== 'SuperAdmin') User.editRole(currentUser.id, data)
+    
         editeMethod(data)
     };
 
@@ -75,7 +75,7 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
                                     />
                                 </Col>
                                 <Col md={6}>
-                                    <Label className=''>Lust Name:</Label>
+                                    <Label className=''>Last Name:</Label>
                                     <InputForm
                                         type={'lastname'}
                                         data={dataInput}

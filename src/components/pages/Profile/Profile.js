@@ -6,12 +6,15 @@ import Profile from "../../../js/api/profile"
 import convertToBase64 from "../../../js/helpers/convertImage"
 import UserModal from "../Users/UserModal/UserModal"
 import { GlobalContext } from "../../../context"
+
 const ProfilePage = () => {
     const [loadedImg, setLoadedImg] = useState('');
     const [img, setImg] = useState('');
     const [modalEditProfile, setModalEditProfile] = useState(false)
     const { userProfile, setUserProfile } = useContext(GlobalContext)
     const [profile, setProfile] = useState(userProfile);
+    
+    
     useEffect(() => {
         Profile.getProfile()
         .then(data => {
@@ -29,13 +32,6 @@ const ProfilePage = () => {
         Profile.updateProfile(profile.id, data)
     }
 
-    const checkEmpty = (data) => data ? data : '--'
-
-    const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
-    const editeProfile = (data) => {
-        setProfile(data)
-    }
-
     const addImageHandler = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -46,80 +42,74 @@ const ProfilePage = () => {
         }
     };
 
+    const checkEmpty = (data) => data ? data : '--'
+
+    const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
+    const editeProfile = (data) => {
+        setProfile(data)
+    }
+
+    const profileData = [
+        {title: "First Name", desc: profile.first_name},
+        {title: "Last Name", desc: profile.last_name},
+        {title: "Phone", desc: profile.phone},
+        {title: "Email", desc: profile.email},
+        {title: "Role", desc: profile.role},
+    ]
+    
     return(
         <>
-            <h3>Profile</h3>
             <Row className='profile__container'>
-                <Card className="profile__card">
-                    <Row className="profile__username">
-                        User: {profile.username}
-                    </Row>
-                    <Row md="12" className='profile'>
-                        <Col md="4" className='profile__item'>
-                            <Row className='profile__avatar'>
-                                <Label
-                                    className="image-field"
-                                    for="image-field">
-                                    <img
-                                        className='profile__img'
-                                        src={profile.img === null ? placeholder : loadedImg}
-                                        alt="Avatar"
-                                    />
-                                </Label>
-                                <input
-                                    className="form-control"
-                                    id="image-field"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={addImageHandler}
+                <Col md="3" className='profile__item'>
+                    <Card className="profile__card">
+                        <Row className='profile__avatar'>
+                            <Label
+                                className="image-field"
+                                for="image-field">
+                                <img
+                                    className='profile__img'
+                                    src={profile.img === null ? placeholder : loadedImg}
+                                    alt="Avatar"
                                 />
-                            </Row>
-                            <Row className='profile__button'>
-                                <Button
-                                    className=''
-                                    onClick={(e) => {
-                                        e.preventDefault()
-                                        toggleEditProfile(true)
-                                }}>
-                                    Edite Profile
-                                    <i className="fas fa-user-edit"></i>
-                                </Button>
-                            </Row>
-                        </Col>
-                        <Col md="7" className="profile__data">
-                            <Row className='profile__item'>
-                                <Label className='profile__label'>First Name</Label>
-                                <Col className='profile__text'>
-                                    {checkEmpty(profile.first_name)}
-                                </Col>
-                            </Row>
-                            <Row className='profile__item'>
-                                <Label className='profile__label'>Last Name</Label>
-                                <Col className='profile__text'>
-                                    {checkEmpty(profile.last_name)}
-                                </Col>
-                            </Row>
-                            <Row className='profile__item'>
-                                <Label className='profile__label'>Email</Label>
-                                <Col className='profile__text'>
-                                    {checkEmpty(profile.email)}
-                                </Col>
-                            </Row>
-                            <Row className='profile__item'>
-                                <Label className='profile__label'>Phone</Label>
-                                <Col className='profile__text'>
-                                    {checkEmpty(profile.phone)}
-                                </Col>
-                            </Row>
-                            <Row className='profile__item'>
-                                <Label className='profile__label'>Role</Label>
-                                <Col className='profile__text'>
-                                    {checkEmpty(profile.role)}
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                </Card>
+                            </Label>
+                            <input
+                                className="form-control"
+                                id="image-field"
+                                type="file"
+                                accept="image/*"
+                                onChange={addImageHandler}
+                            />
+                        </Row>
+                        <Row className="profile__username">
+                            User: {profile.username}
+                        </Row>
+                    </Card>
+                </Col>
+                <Col md="8" className='profile__item'>
+                    <Card className="profile__card">
+                        <Row md="12" className='profile'>
+                            <Col className="profile__data">
+                                {profileData.map(data => (
+                                    <Row className='profile__list' key={data.title}>
+                                        <Col className='profile__text'>
+                                            <Label>{data.title}</Label>
+                                            <div className="profile__desc">{checkEmpty(data.desc)}</div>
+                                        </Col>
+                                    </Row>
+                                ))}
+                            </Col>
+                            <Button
+                                className='profile__button'
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    toggleEditProfile(true)
+                            }}>
+                                Edit Profile
+                                <i className="fas fa-user-edit"></i>
+                            </Button>
+                        </Row>
+                    </Card>
+                </Col>
             </Row>
             <UserModal
                 type='Edit Profile'

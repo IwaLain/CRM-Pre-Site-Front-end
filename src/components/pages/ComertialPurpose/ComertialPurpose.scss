@@ -22,7 +22,7 @@
         align-items: center;
 
         input {
-            max-width: 100px;
+            max-width: 170px;
             font-size: 20px;
             font-weight: 700;
         }
@@ -92,6 +92,15 @@
 
     .visible {
         display: block;
+    }
+
+    input[type='number'] {
+        -moz-appearance:textfield;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
     }
 }
 

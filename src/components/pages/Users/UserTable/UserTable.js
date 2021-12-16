@@ -94,6 +94,8 @@ const UserTable = ({ users, editeTable, changeTable }) => {
     },
   ];
 
+  console.log(users.length)
+
   return (
     <Row className="mt-3">
       <Col md={12}>
@@ -104,7 +106,7 @@ const UserTable = ({ users, editeTable, changeTable }) => {
           defaultSortField="title"
           progressComponent={<Loader />}
           responsive
-          pagination
+          pagination={users.length > 10 ? true : false}
           subHeaderAlign="right"
           customStyles={customStyles}
         />
