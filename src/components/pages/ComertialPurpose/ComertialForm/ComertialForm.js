@@ -25,13 +25,13 @@ const ComertialForm = ({dataForm}) => {
             items: currentData
         }
 
-        Profile.createPdf(data)
+        Profile.createPdf(data, date)
     }
 
     return (
         <Form id='form' onSubmit={handleSubmit(onSubmit)}>
             <Row className='purpose__form'>
-                <Col lg={4} md={5} className='purpose__form-quote'>
+                <Col lg={3} md={5} className='purpose__form-quote'>
                     <FormGroup className='purpose__quote'>
                         <Col>
                             <h3>
@@ -53,6 +53,7 @@ const ComertialForm = ({dataForm}) => {
                         <textarea
                             name='bill'
                             type='text'
+                            rows="4"
                             className={`ui-kit__textarea form-control ${errors.bill ? 'is-invalid' : ''}`}
                             {...register('bill', validation('address'))}
                             onKeyUp={() => {
@@ -65,6 +66,7 @@ const ComertialForm = ({dataForm}) => {
                         <textarea
                             name='ship'
                             type='text'
+                            rows="4"
                             className={`ui-kit__textarea form-control ${errors.ship ? 'is-invalid' : ''}`}
                             {...register('ship', validation('address'))}
                             onKeyUp={() => {
@@ -73,7 +75,7 @@ const ComertialForm = ({dataForm}) => {
                         />
                     </FormGroup>
                 </Col>
-                <Col lg={{offset:1, size:4}} md={5} className="purpose__description">
+                <Col lg={{offset:1, size:3}} md={5} className="purpose__description">
                     <Row className='purpose__info'>
                         <Col>
                             <Label>

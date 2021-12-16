@@ -1,17 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react'
 import DataTable from "react-data-table-component"
+import { useFieldArray } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import { Col, Label } from "reactstrap"
 import { GlobalContext } from '../../../../context'
 import customersApi from '../../../../js/api/customer'
+import { validation } from '../../../../js/helpers/validation'
 
-const ComertialTable = ({changeCurrentData}) => {
+const ComertialTable = ({changeCurrentData, dataForm}) => {
     const { selectedCustomer } = useContext(GlobalContext)
     const [currentData, setCurrentData] = useState([])
     const [cols, setCols] = useState([])
     const history = useHistory()
     const newData = []
     const columns = []
+
+    const { trigger, register, errors} = dataForm
+    const { fields } = useFieldArray({
+        keyName: 'key'
+    }) 
 
     const handlerAmount = (array, itemName, data) => {
         setCurrentData(array.map(itemData => itemData.item === itemName ? {...itemData, itemName: data} : itemData))
@@ -34,6 +41,8 @@ const ComertialTable = ({changeCurrentData}) => {
                 obj['amount'] = 0.00
                 newData.unshift(obj)
             }
+
+            let keyPrice = 0
     
             Object.keys(newData[0]).forEach(key => {
                 if ( key === 'item' || key === 'units' || key === 'quantity' ) {
@@ -59,20 +68,25 @@ const ComertialTable = ({changeCurrentData}) => {
                     })
                 }
                 if ( key === 'rate') {
+                    keyPrice++
                     columns.push({
                         name: 'price',
-                        selector: row => row[key],
+                        selector: row => row['rate'],
                         cell: row => <input
                             type='number'
                             name={key}
+                            key={keyPrice}
                             min="1"
-                            className="ui-kit__input rate"
+                            className={`ui-kit__input rate form-control ${(errors.key) ? 'is-invalid' : ''}`}
                             onBlur={(e) => {
                                 row[key] = Number(e.target.value)
                                 row['amount'] = row['quantity'] * row[key]
                                 handlerAmount(newData, row['item'], row['amount'])
                             }}
-                            
+                            {...register((`key`), validation('price'))}
+                            onKeyUp={() => {
+                                trigger(`key`)
+                            }}
                         />
                     })
                 }

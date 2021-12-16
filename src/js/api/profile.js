@@ -54,7 +54,7 @@ const Profile = {
         })
     },
 
-    createPdf: async (data) => {
+    createPdf: async (data, time) => {
         const token = getToken()
         if (token) {
             fetch(BASE_URL + `/api/commercial-purpose/create-pdf?access-token=${token}`, {
@@ -69,7 +69,7 @@ const Profile = {
                 let url = window.URL.createObjectURL(blob)
                 let a = document.createElement('a')
                 a.href = url
-                a.download = 'Comertial_Purpose.pdf'
+                a.download = `Comertial_Purpose_${time}.pdf`
                 document.body.appendChild(a)
                 a.click()
                 a.remove()

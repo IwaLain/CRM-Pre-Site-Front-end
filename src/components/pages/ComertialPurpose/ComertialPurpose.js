@@ -16,8 +16,6 @@ import Previews from './Preview/Preview';
 import ComertialTable from './ComertialTable/ComertialTable';
 import ComertialForm from './ComertialForm/ComertialForm';
 
-// 'Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000)
-
 const ComertialPurpouse = () => {
     const [quote, setQuote] = useState('Q' + Math.floor(Date.now() / 1000))
     const [currentData, setCurrentData] = useState([])
@@ -37,7 +35,6 @@ const ComertialPurpouse = () => {
     const date = new Date().toLocaleDateString('en-US')
 
     const togglePDF = () => setModalPDF(!modalPDF);
-
     const changeCurrentData = (newData) => setCurrentData(newData)
 
     const {
@@ -89,6 +86,7 @@ const ComertialPurpouse = () => {
             <Row className="purpose__table">
                 <ComertialTable
                     changeCurrentData={changeCurrentData}
+                    dataForm={dataForm}
                 />
             </Row>
 

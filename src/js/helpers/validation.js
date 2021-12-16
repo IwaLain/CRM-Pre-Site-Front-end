@@ -87,6 +87,14 @@ export const validation = (type) => {
           message: "Max 15 simvols",
         },
       };
+    case "price":
+      return {
+        required: `${type} is Required`,
+        minLength: {
+          value: 1,
+          message: "Min 1 number",
+        },
+      };
     default:
       break;
   }

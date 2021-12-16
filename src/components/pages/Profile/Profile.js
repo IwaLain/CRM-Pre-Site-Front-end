@@ -85,7 +85,7 @@ const ProfilePage = () => {
                         </Row>
                     </Card>
                 </Col>
-                <Col md="8" className='profile__item'>
+                <Col md="6" className='profile__item'>
                     <Card className="profile__card">
                         <Row md="12" className='profile'>
                             <Col className="profile__data">
