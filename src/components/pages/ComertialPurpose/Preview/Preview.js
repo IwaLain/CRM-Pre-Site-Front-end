@@ -38,7 +38,7 @@ const Previews = ({ data, items, date }) => {
                   </div>
                   <div className="purposePre_ship">
                       <div className="purposePre_shipment-title">
-                            Bill
+                            <b>Bill</b>
                       </div>
                       <div className="purposePre_shipment-desc">
                             {data.bill} 
@@ -53,23 +53,29 @@ const Previews = ({ data, items, date }) => {
               </div>
               <div className="purposePre_description">
                   <div className="purposePre_info">
-                      <div className="purposePre_info-title">
-                          <b>Date</b>
+                      <div className="purposePre_info-item">
+                        <div className="purposePre_info-title">
+                            <b>Date</b>
+                        </div>
+                        <div className="purposePre_info-desc" id="date">
+                            {date}
+                        </div>
                       </div>
-                      <div className="purposePre_info-desc" id="date">
-                          {date}
-                      </div>
-                      <div className="purposePre_info-title">
-                          <b>Expires</b>
-                      </div>
-                      <div className="purposePre_info-desc" id="expires">
+                      <div className="purposePre_info-item">
+                        <div className="purposePre_info-title">
+                            <b>Expires</b>
+                        </div>
+                        <div className="purposePre_info-desc" id="expires">
                             {data.expires}
+                        </div>
                       </div>
-                      <div className="purposePre_info-title">
-                          <b>Memo</b>
-                      </div>
-                      <div className="purposePre_info-desc" id="memo">
-                            {data.memo}
+                      <div className="purposePre_info-item">
+                        <div className="purposePre_info-title">
+                            <b>Memo</b>
+                        </div>
+                        <div className="purposePre_info-desc" id="memo">
+                                {data.memo}
+                        </div>
                       </div>
                   </div>
               </div>
@@ -86,7 +92,7 @@ const Previews = ({ data, items, date }) => {
                           <td width="10%">Units</td>
                           <td width="10%">Quantity</td>
                           <td width="10%">Rate</td>
-                          <td width="15%">Amount</td>
+                          <td width="15%">Cost</td>
                       </tr>
                   </thead>
                   <tbody>

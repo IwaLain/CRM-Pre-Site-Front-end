@@ -1,21 +1,25 @@
 .profile__container {
     display: flex;
     justify-content: start;
-    align-items: stretch;
     max-width: 1200px;
 }
 
 .profile {
     display: flex;
     justify-content: center;
-    align-items: stretch;
 
     &__card {
         max-width: 500px;
         padding: 10px 20px;
-        height: 100%;
-        background-color: #eee !important;
+        box-shadow: 0 0 1px 0 rgb(133, 133, 133);
+
+        &.card {
+            border: none;
+            background-color: #eee;
+        }
     }
+
+    
 
     &__item {
         align-items: center;
@@ -25,7 +29,7 @@
         
         .form-label {
             margin-bottom: 0;
-            min-width: 200px;
+            min-width: 150px;
         }
     }
 
@@ -53,7 +57,7 @@
     &__avatar {
         display: flex;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         
         & input[type="file"] {
             display: none;
@@ -80,7 +84,7 @@
     &__username {
         display: flex;
         justify-content: center;
-        margin-bottom: 40px;
+        margin-bottom: 10px;
         padding-top: 10px;
         font-size: 24px;
     }

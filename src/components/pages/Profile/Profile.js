@@ -104,7 +104,7 @@ const ProfilePage = () => {
                                     e.preventDefault()
                                     toggleEditProfile(true)
                             }}>
-                                Edite Profile
+                                Edit Profile
                                 <i className="fas fa-user-edit"></i>
                             </Button>
                         </Row>

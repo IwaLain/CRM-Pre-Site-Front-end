@@ -63,9 +63,10 @@ const ComertialTable = ({changeCurrentData}) => {
                         name: 'price',
                         selector: row => row[key],
                         cell: row => <input
-                            type={key}
+                            type='number'
                             name={key}
-                            className="ui-kit__input"
+                            min="1"
+                            className="ui-kit__input rate"
                             onBlur={(e) => {
                                 row[key] = Number(e.target.value)
                                 row['amount'] = row['quantity'] * row[key]
@@ -77,7 +78,7 @@ const ComertialTable = ({changeCurrentData}) => {
                 }
                 if ( key === 'amount') {
                     columns.push({
-                        name: key,
+                        name: 'cost',
                         selector: row => row['amount'],
                         cell: row => row['amount']
                     })

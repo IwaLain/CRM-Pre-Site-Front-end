@@ -75,7 +75,7 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
                                     />
                                 </Col>
                                 <Col md={6}>
-                                    <Label className=''>Lust Name:</Label>
+                                    <Label className=''>Last Name:</Label>
                                     <InputForm
                                         type={'lastname'}
                                         data={dataInput}

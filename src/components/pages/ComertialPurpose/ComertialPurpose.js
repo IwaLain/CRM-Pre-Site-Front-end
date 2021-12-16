@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
       Button,
       Col,
-      FormGroup,
       Modal,
       ModalBody,
       ModalFooter,
@@ -17,8 +16,10 @@ import Previews from './Preview/Preview';
 import ComertialTable from './ComertialTable/ComertialTable';
 import ComertialForm from './ComertialForm/ComertialForm';
 
+// 'Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000)
+
 const ComertialPurpouse = () => {
-    const [quote, setQuote] = useState('Q' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000))
+    const [quote, setQuote] = useState('Q' + Math.floor(Date.now() / 1000))
     const [currentData, setCurrentData] = useState([])
     const [previewData, setPreviewData] = useState([])
     const [modalPDF, setModalPDF] = useState(false);
@@ -65,7 +66,7 @@ const ComertialPurpouse = () => {
         <div className="purpose" id="purpose">
             <Row className='purpose__title-print'>
                 <Col lg={4} md={5} sm={6} className="purpose__title">
-                    <h3>Commertial Purpose</h3>
+                    <h3>Commercial Purpose</h3>
                     <div>
                         <img src={logo} alt="logo" />
                     </div>
