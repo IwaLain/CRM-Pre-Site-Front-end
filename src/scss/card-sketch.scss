@@ -9,6 +9,13 @@
   border-radius: 4px;
 }
 
+.card-sketch .card-sketch__edit {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 3px 3px 3px 5px;
+}
+
 .card-sketch > input {
   position: absolute;
   top: 10px;
@@ -41,11 +48,30 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  font-weight: bold;
+}
+
+.card-sketch__btns-one {
+  justify-content: center;
 }
 
 .card-sketch__btns > button {
   padding: 4px 30px;
   border-radius: 2px;
+}
+
+.card-sketch__btns > a {
+  padding: 4px 30px;
+  border-radius: 2px;
+  text-decoration: none;
+  color: white;
+  background-color: $primary;
+  border: 1px solid transparent;
+}
+
+.card-sketch__btns > a:hover {
+  color: white;
+  border: 1px solid black;
 }
 
 .card-sketch .progress {
