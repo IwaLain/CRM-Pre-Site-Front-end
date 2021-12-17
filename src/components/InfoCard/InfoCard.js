@@ -121,7 +121,9 @@ const InfoCard = ({
           />
         </div>
         <div className="card-sketch__info">
-          <h4>{data.name}</h4>
+          <h4 title={data.name} className="card-sketch__name">
+            {data.name}
+          </h4>
           {type !== "equipment"
             ? subEntity && (
                 <div>{`${subEntity}: ${

@@ -35,13 +35,24 @@ const AttachmentList = ({
           preview: img.preview,
           img: img.path,
           id: `${Math.random() * 1000}`,
+          filename: img.name,
           base64: await convertToBase64(img),
         };
       })
     ).then(async (res) => {
       newFiles = res;
       const data = res.map((file) => {
-        return { type_id: type, img: file.base64, isDeleted: 0, id: file.id };
+        let filename = "";
+        if (file.filename && file.filename.split(".", 1)[0].length > 0) {
+          filename = file.filename.split(".", 1)[0];
+        }
+        return {
+          type_id: type,
+          img: file.base64,
+          isDeleted: 0,
+          id: file.id,
+          fileName: filename,
+        };
       });
       if (onAddFileServer) {
         let responseData = await onAddFileServer(data, type);

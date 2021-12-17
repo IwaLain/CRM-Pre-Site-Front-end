@@ -82,3 +82,8 @@
 .card-sketch .progress .progress-bar {
   background-color: $success;
 }
+.card-sketch__name {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
