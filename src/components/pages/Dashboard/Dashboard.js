@@ -3,13 +3,11 @@ import { useHistory } from "react-router";
 import { GlobalContext } from "../../../context";
 import "../../../scss/dashboard-page.scss";
 import { alert } from "../../../js/helpers/alert";
-import CardSketch from "../../CardSketch/CardSketch";
-import List from "../List/List";
-import logo from "../../../assets/img/block-view.svg";
+import DataTable from "react-data-table-component";
+import PurposeTable from "../../PurposeTable/PurposeTable";
 
 const Dashboard = () => {
-  const { selectedCustomer } = useContext(GlobalContext);
-  const [network, setNetwork] = useState([]);
+  const { selectedCustomer, customerNetwork } = useContext(GlobalContext);
 
   const history = useHistory();
 
@@ -17,22 +15,7 @@ const Dashboard = () => {
     if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
       history.push("/dashboard/customers");
       alert("error", "You need to select customer first.");
-    } else
-      try {
-        fetch(
-          process.env.REACT_APP_SERVER_URL +
-            "/api/customer/" +
-            selectedCustomer.id +
-            "/network?access-token=" +
-            localStorage.getItem("token")
-        )
-          .then((res) => res.json())
-          .then((network) => {
-            setNetwork(Object.entries(network.Network));
-          });
-      } catch (e) {
-        console.log(e);
-      }
+    }
   }, [history, selectedCustomer]);
 
   return (
@@ -77,11 +60,12 @@ const Dashboard = () => {
       >
         <h3>Network statistics</h3>
         <div className="dashboard-page__block-wrapper">
-          {network &&
-            network.map((block, index) => (
+          {customerNetwork &&
+            Object.keys(customerNetwork).length > 0 &&
+            Object.entries(customerNetwork).map(([key, block], index) => (
               <div key={index} className="dashboard-page__block">
-                <h5>{block[0].charAt(0).toUpperCase() + block[0].slice(1)}</h5>
-                <span>{block[1]}</span>
+                <h5>{key.charAt(0).toUpperCase() + key.slice(1)}</h5>
+                <span>{block}</span>
               </div>
             ))}
         </div>

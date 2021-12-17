@@ -23,6 +23,7 @@ const App = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState({});
   const [customerStructure, setCustomerStructure] = useState({});
+  const [customerNetwork, setCustomerNetwork] = useState({});
   const [userProfile, setUserProfile] = useState({});
   const [equipmentTypeList, setEquipmentTypeList] = useState([]);
   const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -71,6 +72,19 @@ const App = () => {
       } catch (e) {
         console.log(e);
       }
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/customer/" +
+            selectedCustomer.id +
+            "/network?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((data) => setCustomerNetwork(data["Network"]));
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [selectedCustomer, updateTrigger]);
 
@@ -102,6 +116,8 @@ const App = () => {
         setSelectedCustomer,
         customerStructure,
         setCustomerStructure,
+        customerNetwork,
+        setCustomerNetwork,
 
         equipmentTypeList,
         setEquipmentTypeList,
