@@ -70,22 +70,6 @@ const Dashboard = () => {
             ))}
         </div>
       </section>
-      {/* <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "15px",
-        }}
-      >
-        <CardSketch />
-        <CardSketch />
-        <CardSketch />
-        <CardSketch />
-        <CardSketch />
-        <CardSketch />
-        <CardSketch />
-        <CardSketch />
-      </div> */}
     </div>
   );
 };
