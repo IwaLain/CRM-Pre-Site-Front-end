@@ -1,5 +1,5 @@
 import placeholder from "../../assets/img/company.png";
-import { Progress, FormGroup, Input } from "reactstrap";
+import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../../scss/info-card.scss";
 import { useContext, useEffect, useState } from "react";
@@ -121,7 +121,9 @@ const InfoCard = ({
           />
         </div>
         <div className="card-sketch__info">
-          <h4>{data.name}</h4>
+          <h4 title={data.name} className="card-sketch__name">
+            {data.name}
+          </h4>
           {type !== "equipment"
             ? subEntity && (
                 <div>{`${subEntity}: ${

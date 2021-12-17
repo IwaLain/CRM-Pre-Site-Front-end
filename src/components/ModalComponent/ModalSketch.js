@@ -197,18 +197,24 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         }
-      ).then((res) => {
-        if (res.status === 200) {
-          resetToggle();
-          alert(
-            "success",
-            `${
-              entityName.charAt(0).toUpperCase() + entityName.slice(1)
-            } created.`
-          );
-          setUpdateTrigger(!updateTrigger);
-        } else alert("error", `Request error.`);
-      });
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data) {
+            if (data["success"]) {
+              resetToggle();
+              alert(
+                "success",
+                `${
+                  entityName.charAt(0).toUpperCase() + entityName.slice(1)
+                } created.`
+              );
+              setUpdateTrigger(!updateTrigger);
+            } else if (data.errors && data.errors.includes("ID is invalid")) {
+              alert("error", `Invalid ref object.`);
+            } else alert("error", `Request error.`);
+          }
+        });
     } else if (mode === "edit") {
       try {
         fetch(
@@ -224,18 +230,24 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
           }
-        ).then((res) => {
-          if (res.status === 200) {
-            resetToggle();
-            setUpdateTrigger(!updateTrigger);
-            alert(
-              "success",
-              `${
-                entityName.charAt(0).toUpperCase() + entityName.slice(1)
-              } changed.`
-            );
-          } else alert("error", `Request error.`);
-        });
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            if (data) {
+              if (data["success"]) {
+                resetToggle();
+                alert(
+                  "success",
+                  `${
+                    entityName.charAt(0).toUpperCase() + entityName.slice(1)
+                  } changed.`
+                );
+                setUpdateTrigger(!updateTrigger);
+              } else if (data.errors && data.errors.includes("ID is invalid")) {
+                alert("error", `Invalid ref object.`);
+              } else alert("error", `Request error.`);
+            }
+          });
       } catch (e) {
         console.log(e);
       }
@@ -697,59 +709,61 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         )
           .then((res) => res.json())
           .then((data) => {
-            switch (entityName) {
-              case "customer":
-              case "facility":
-                setDefaultEntity(data[entityName][editId]);
-                reset({
-                  ...data[entityName][editId],
-                  headname: data[entityName][editId]["head_name"],
-                });
-                break;
-              default:
-                setDefaultEntity(data[entityName]);
-                let newFields = [];
+            if (data[entityName]) {
+              switch (entityName) {
+                case "customer":
+                case "facility":
+                  setDefaultEntity(data[entityName][editId]);
+                  reset({
+                    ...data[entityName][editId],
+                    headname: data[entityName][editId]["head_name"],
+                  });
+                  break;
+                default:
+                  setDefaultEntity(data[entityName]);
+                  let newFields = [];
 
-                if (
-                  data[entityName]["jsonData"] &&
-                  data[entityName]["jsonData"].length > 0 &&
-                  data[entityName]["jsonData"] !== "null"
-                ) {
-                  let newCount = 0;
+                  if (
+                    data[entityName]["jsonData"] &&
+                    data[entityName]["jsonData"].length > 0 &&
+                    data[entityName]["jsonData"] !== "null"
+                  ) {
+                    let newCount = 0;
 
-                  const jsonData = data[entityName]["jsonData"];
+                    const jsonData = data[entityName]["jsonData"];
 
-                  jsonData.forEach((el) => {
-                    newFields.push({
-                      id: `field${newCount + 1}`,
-                      title: el.name,
-                      value: el.value,
+                    jsonData.forEach((el) => {
+                      newFields.push({
+                        id: `field${newCount + 1}`,
+                        title: el.name,
+                        value: el.value,
+                      });
+                      newCount += 1;
                     });
-                    newCount += 1;
+
+                    setCustomFieldsCount(newCount);
+                    setCustomFields(newFields);
+                  }
+
+                  let fieldsToReset = {};
+
+                  newFields.forEach((field) => {
+                    fieldsToReset[field.id] = field.value;
+                    fieldsToReset[field.name] = field.name;
                   });
 
-                  setCustomFieldsCount(newCount);
-                  setCustomFields(newFields);
-                }
-
-                let fieldsToReset = {};
-
-                newFields.forEach((field) => {
-                  fieldsToReset[field.id] = field.value;
-                  fieldsToReset[field.name] = field.name;
-                });
-
-                if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
-                  reset({
-                    ...data[entityName],
-                    ...fieldsToReset,
-                  });
-                } else {
-                  reset({
-                    ...data[entityName],
-                  });
-                }
-                break;
+                  if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
+                    reset({
+                      ...data[entityName],
+                      ...fieldsToReset,
+                    });
+                  } else {
+                    reset({
+                      ...data[entityName],
+                    });
+                  }
+                  break;
+              }
             }
           });
       } catch (e) {
@@ -772,7 +786,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <Col sm={6}>
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
@@ -787,6 +801,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 ) : field.inputType === "phone" ? (
@@ -795,7 +814,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <Col sm={6}>
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
@@ -811,15 +830,31 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 ) : field.inputType === "number" ? (
-                  <FormGroup key={index}>
+                  <FormGroup
+                    key={index}
+                    style={
+                      field.title === "Lat" || field.title === "Lng"
+                        ? { display: "inline-block" }
+                        : {}
+                    }
+                  >
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={6}>
+                    <Col
+                      sm={
+                        field.title === "Lat" || field.title === "Lng" ? 10 : 6
+                      }
+                    >
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
@@ -834,6 +869,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 ) : (
@@ -842,7 +882,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <Col sm={6}>
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
@@ -857,6 +897,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 )
@@ -906,6 +951,12 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                               },
                             })}
                           />
+                          <small className="text-danger">
+                            {errors &&
+                              errors[`${id}`] &&
+                              errors[`${id}`].message}
+                          </small>
+                          ;
                         </Col>
                       </FormGroup>
                     ))}

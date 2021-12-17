@@ -48,13 +48,22 @@ const AttachedFiles = ({
 
     setFiles(
       attachedFiles.map((file) => {
+        let fileName;
         const fileExtension = file.img.substring(file.img.lastIndexOf("."));
-
+        if (!file.fileName) {
+          fileName = file.img.substring(
+            file.img.lastIndexOf("/") + 1,
+            file.img.lastIndexOf("_")
+          );
+        } else {
+          fileName = file.fileName;
+        }
         const imageTypes = [".jpeg", ".png", ".jpg"];
         const isImage = imageTypes.some((el) => fileExtension.includes(el));
         return {
           ...file,
           isImage: isImage,
+          fileName: fileName,
         };
       })
     );
@@ -76,9 +85,14 @@ const AttachedFiles = ({
         ></span>
         <div className="thumbInner">
           {file.isImage === true ? (
-            <img src={file.preview} className="attached--img" alt="..." />
+            <img
+              src={file.preview}
+              className="attached--img"
+              alt="..."
+              title={file.fileName}
+            />
           ) : (
-            <i className="far fa-file  fa-4x"></i>
+            <i className="far fa-file  fa-4x" title={file.fileName}></i>
             // <div className="dropzone--filename">
             //   <span className="filename--text">{file.img}</span>
             //   <i className="far fa-file  fa-4x"></i>

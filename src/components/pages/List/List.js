@@ -295,6 +295,7 @@ const List = ({
   useEffect(() => {
     if (
       selectedCustomer &&
+      !hideSelect &&
       Object.keys(selectedCustomer).length > 0 &&
       type &&
       type.ref === "customers"
@@ -325,7 +326,7 @@ const List = ({
     if (requests.ref)
       try {
         requests.ref(-1).then((res) => {
-          if (Object.keys(res[type.ref]).length > 0) {
+          if (Object.keys(res[type.ref]).length > 0 && !hideSelect) {
             const formattedNames = formatNames(res[type.ref]);
             setEntityNames(formattedNames);
             if (
