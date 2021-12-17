@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import DataTable from "react-data-table-component"
-import { useFieldArray } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import { Col, Label } from "reactstrap"
 import { GlobalContext } from '../../../../context'
 import customersApi from '../../../../js/api/customer'
-import { validation } from '../../../../js/helpers/validation'
 
-const ComertialTable = ({changeCurrentData, dataForm}) => {
+const ComertialTable = ({changeCurrentData, dataForm, checkPriceValid}) => {
     const { selectedCustomer } = useContext(GlobalContext)
     const [currentData, setCurrentData] = useState([])
     const [cols, setCols] = useState([])
@@ -15,13 +13,21 @@ const ComertialTable = ({changeCurrentData, dataForm}) => {
     const newData = []
     const columns = []
 
-    const { trigger, register, errors} = dataForm
-    const { fields } = useFieldArray({
-        keyName: 'key'
-    }) 
+    const { trigger, errors } = dataForm
 
     const handlerAmount = (array, itemName, data) => {
         setCurrentData(array.map(itemData => itemData.item === itemName ? {...itemData, itemName: data} : itemData))
+    }
+
+    const checkPrice = (e) => {
+        if (!e.target.value) {
+            let temp = e.target
+            temp.classList.add('is-invalid')
+        }
+        else {
+            let temp = e.target
+            temp.classList.remove('is-invalid')
+        } 
     }
 
     useEffect(() => {
@@ -41,9 +47,7 @@ const ComertialTable = ({changeCurrentData, dataForm}) => {
                 obj['amount'] = 0.00
                 newData.unshift(obj)
             }
-
-            let keyPrice = 0
-    
+            
             Object.keys(newData[0]).forEach(key => {
                 if ( key === 'item' || key === 'units' || key === 'quantity' ) {
                     columns.push({
@@ -68,24 +72,27 @@ const ComertialTable = ({changeCurrentData, dataForm}) => {
                     })
                 }
                 if ( key === 'rate') {
-                    keyPrice++
                     columns.push({
                         name: 'price',
                         selector: row => row['rate'],
                         cell: row => <input
+                            id={row['item']}
                             type='number'
-                            name={key}
-                            key={keyPrice}
+                            name={row['item']}
                             min="1"
-                            className={`ui-kit__input rate form-control ${(errors.key) ? 'is-invalid' : ''}`}
-                            onBlur={(e) => {
-                                row[key] = Number(e.target.value)
-                                row['amount'] = row['quantity'] * row[key]
-                                handlerAmount(newData, row['item'], row['amount'])
+                            className={`ui-kit__input form-control ${(errors.key) ? 'is-invalid' : ''}`}
+                            onChange={(e) => {
+                                setTimeout(() => {
+                                    row[key] = Number(e.target.value)
+                                    checkPriceValid(e) 
+                                    checkPrice(e)
+                                    row['amount'] = row['quantity'] * row[key]
+                                    handlerAmount(newData, row['item'], row['amount'])
+                                    console.log(row[key])
+                                }, 1000);
                             }}
-                            {...register((`key`), validation('price'))}
                             onKeyUp={() => {
-                                trigger(`key`)
+                                trigger(key)
                             }}
                         />
                     })

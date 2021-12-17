@@ -20,10 +20,11 @@ const ComertialPurpouse = () => {
     const [quote, setQuote] = useState('Q' + Math.floor(Date.now() / 1000))
     const [currentData, setCurrentData] = useState([])
     const [previewData, setPreviewData] = useState([])
+    const [priceValid, setPriceValid] = useState({})
     const [modalPDF, setModalPDF] = useState(false);
     const [previewList, setPreviewList] = useState([
         {
-            description: '',
+            description: '-',
             quantity: '',
             amount: 0,
             units: '',
@@ -36,6 +37,8 @@ const ComertialPurpouse = () => {
 
     const togglePDF = () => setModalPDF(!modalPDF);
     const changeCurrentData = (newData) => setCurrentData(newData)
+
+    const checkPriceValid = (valid) => setPriceValid(valid)
 
     const {
         formState: { errors },
@@ -80,6 +83,7 @@ const ComertialPurpouse = () => {
             <Row>
                 <ComertialForm 
                     dataForm={dataForm}
+                    priceValid={priceValid}
                 />
             </Row>
 
@@ -87,6 +91,7 @@ const ComertialPurpouse = () => {
                 <ComertialTable
                     changeCurrentData={changeCurrentData}
                     dataForm={dataForm}
+                    checkPriceValid={checkPriceValid}
                 />
             </Row>
 

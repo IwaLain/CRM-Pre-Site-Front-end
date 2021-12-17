@@ -3,7 +3,8 @@ import { Col, Form, FormGroup, Label, Row } from 'reactstrap'
 import Profile from '../../../../js/api/profile'
 import { validation } from '../../../../js/helpers/validation'
 
-const ComertialForm = ({dataForm}) => {
+const ComertialForm = ({dataForm, priceValid}) => {
+
     const 
     {   trigger, 
         errors, 
@@ -14,18 +15,37 @@ const ComertialForm = ({dataForm}) => {
         currentData
     } = dataForm
 
-    const onSubmit = (e) => {
-        const data = {
-            'billTo': e.bill,
-            'shipTo': e.ship,
-            'expires': e.expires,
-            'memo': e.memo,
-            'date': date,
-            'quote': quote,
-            items: currentData
-        }
+    const priceHandler = (data) => {
+        let counter = 0
+        data.map(data => {
+            if (!priceValid.target.value) {
+                let temp = priceValid.target
+                temp.focus()
+                temp.classList.add('is-invalid')
+            } else {
+                let temp = priceValid.target
+                temp.classList.remove('is-invalid')
+            } 
 
-        Profile.createPdf(data, date)
+            if (data.rate === 0) counter++
+        })
+        return counter
+    }
+
+    const onSubmit = (e) => {
+        if(priceHandler(currentData) === 0) {
+            const data = {
+                'billTo': e.bill,
+                'shipTo': e.ship,
+                'expires': e.expires,
+                'memo': e.memo,
+                'date': date,
+                'quote': quote,
+                items: currentData
+            }
+    
+            Profile.createPdf(data, date)
+        }
     }
 
     return (
