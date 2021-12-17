@@ -20,27 +20,29 @@ const TableView = ({
   setMode,
   chooseMode,
   changeCustomer,
-  showView,
+  showProgress,
+  hideRecordView,
+  perPage,
 }) => {
   const [cols, setCols] = useState([]);
   const [listData, setListData] = useState([]);
-  const [showProgress, setShowProgress] = useState(true);
   const [progressField, SetProgressField] = useState("Progress");
-  const [subEntity, setSubEntity] = useState("");
 
   const { setEditId, selectedCustomer } = useContext(GlobalContext);
 
-  const staticColsStart = {
-    cell: (row) => (
-      <Input
-        type="checkbox"
-        checked={row.id === selectedCustomer.id}
-        onChange={() => changeCustomer(row.id)}
-        style={!chooseMode ? { visibility: "hidden" } : {}}
-      />
-    ),
-    width: "0px",
-  };
+  const staticColsStart = [
+    {
+      cell: (row) => (
+        <Input
+          type="checkbox"
+          checked={row.id === selectedCustomer.id}
+          onChange={() => changeCustomer(row.id)}
+          style={!chooseMode ? { visibility: "hidden" } : {}}
+        />
+      ),
+      width: "0px",
+    },
+  ];
 
   const staticColsEnd = [
     {
@@ -58,7 +60,7 @@ const TableView = ({
           <Link
             className="table-view_btn me-2"
             to={`/dashboard/${type.entity}/${row.id}`}
-            style={!showView ? { visibility: "hidden" } : {}}
+            style={hideRecordView && { visibility: "hidden" }}
           >
             View
           </Link>
@@ -82,14 +84,34 @@ const TableView = ({
     let progress = 0;
     switch (type.entity) {
       case "customers":
-        if (record.name) progress += 33.3;
-        if (record.facilities && record.facilities > 0) progress += 33.3;
-        if (record.equipments && record.equipments > 0) progress += 33.3;
+        if (record["Name"]) progress += 33.3;
+        if (
+          record["Facilities"] &&
+          typeof record["Facilities"] === "object" &&
+          record["Facilities"].props.children[1] > 0
+        )
+          progress += 33.3;
+        if (
+          record["Equipment"] &&
+          typeof record["Equipment"] === "object" &&
+          record["Equipment"].props.children[1] > 0
+        )
+          progress += 33.3;
         break;
       case "facilities":
-        if (record.name) progress += 33.3;
-        if (record.locations && record.locations > 0) progress += 33.3;
-        if (record.equipments && record.equipments > 0) progress += 33.3;
+        if (record["Name"]) progress += 33.3;
+        if (
+          record["Locations"] &&
+          typeof record["Locations"] === "object" &&
+          record["Locations"].props.children[1] > 0
+        )
+          progress += 33.3;
+        if (
+          record["Equipment"] &&
+          typeof record["Equipment"] === "object" &&
+          record["Equipment"].props.children[1] > 0
+        )
+          progress += 33.3;
         break;
       default:
         break;
@@ -115,22 +137,95 @@ const TableView = ({
         Object.keys(data[type.entity]).length > 0)
     ) {
       const newData = [];
+
+      let singleAlias = "";
+      let mainEntity = "";
+      switch (type.entity) {
+        case "customers":
+          singleAlias = "customer";
+          mainEntity = "";
+          break;
+        case "facilities":
+          singleAlias = "facility";
+          mainEntity = "customer";
+          break;
+        case "locations":
+          singleAlias = "location";
+          mainEntity = "facility";
+          break;
+        case "equipment":
+          singleAlias = "equipment";
+          mainEntity = "location";
+          break;
+        case "gateways":
+          singleAlias = "gateway";
+          mainEntity = "";
+          break;
+        default:
+          mainEntity = "";
+          break;
+      }
+
       for (const [, value] of Object.entries(data[type.entity])) {
         const obj = {};
 
-        obj["id"] = value.id;
-        if (value.name) obj["name"] = value.name;
-        if (value.serial) obj["serial"] = value.serial;
-        if (value.facilities) obj["facilities"] = value.facilities.length;
-        if (value.locations) obj["locations"] = value.locations.length;
-        if (value.equipments) obj["equipments"] = value.equipments.length;
-        if (value.equipment) obj["equipment"] = value.equipment.length;
+        if (value[mainEntity])
+          obj[mainEntity.charAt(0).toUpperCase() + mainEntity.slice(1)] =
+            value[mainEntity]["name"];
+        if (value.id) obj["id"] = value.id;
+        if (value.name) obj["Name"] = value.name;
+        if (value.serial) obj["Serial"] = value.serial;
+        if (value.facilities)
+          obj["Facilities"] =
+            value["facilities"].length > 0 ? (
+              <>
+                <i className="fas fa-industry me-1"></i>
+                {value["facilities"].length}
+              </>
+            ) : (
+              "No facilities."
+            );
+        if (value.locations)
+          obj["Locations"] =
+            value["locations"].length > 0 ? (
+              <>
+                <i className="fas fa-map-marker-alt me-1"></i>
+                {value["locations"].length}
+              </>
+            ) : (
+              "No locations."
+            );
+        if (value.equipments || value.equipment)
+          obj["Equipment"] =
+            value["equipments"] && value["equipments"].length > 0 ? (
+              <>
+                <i className="fas fa-tools me-1"></i>
+                {value["equipments"].length}
+              </>
+            ) : value["equipment"] && value["equipment"].length > 0 ? (
+              <>
+                <i className="fas fa-tools me-1"></i>
+                {value["equipment"].length}
+              </>
+            ) : (
+              "No equipment."
+            );
         if (value.sensors && value.mote)
-          obj["sensors/motes"] = value.sensors.length + value.mote.length;
+          obj["Sensors/motes"] = value.sensors.length + value.mote.length;
         if (value["location_info"])
-          obj["location_info"] = value["location_info"];
-        if (value["created_at"]) obj["created_at"] = value["created_at"];
-        if (value["updated_at"]) obj["updated_at"] = value["updated_at"];
+          obj["Location info"] = value["location_info"];
+        if (value["created_at"]) obj["Created at"] = value["created_at"];
+        if (value["updated_at"]) obj["Updated at"] = value["updated_at"];
+        if (value[singleAlias + "Images"])
+          obj["Images"] =
+            value[singleAlias + "Images"].length > 0 ? (
+              <>
+                <i className="fas fa-images me-1"></i>
+                {value[singleAlias + "Images"].length}
+              </>
+            ) : (
+              "No images."
+            );
         newData.push(obj);
       }
       setListData(newData);
@@ -150,37 +245,17 @@ const TableView = ({
     }
   }, [data]);
 
-  useEffect(() => {
-    switch (type.entity) {
-      case "customers":
-        setShowProgress(true);
-        setSubEntity("Facilities");
-        break;
-      case "facilities":
-        setShowProgress(true);
-        setSubEntity("Locations");
-        break;
-      case "locations":
-        setShowProgress(false);
-        setSubEntity("Equipment");
-        break;
-      default:
-        setShowProgress(false);
-        setSubEntity("");
-        break;
-    }
-  }, []);
-
   return (
     <DataTable
-      columns={[staticColsStart, ...cols, ...staticColsEnd]}
+      columns={[...staticColsStart, ...cols, ...staticColsEnd]}
       data={listData}
-      pagination
+      pagination={Math.ceil(totalRows / perPage) > 1}
       paginationServer
       paginationTotalRows={totalRows}
       paginationComponentOptions={paginationComponentOptions}
       onChangePage={handlePageChange}
       paginationDefaultPage={page}
+      paginationPerPage={perPage}
     />
   );
 };

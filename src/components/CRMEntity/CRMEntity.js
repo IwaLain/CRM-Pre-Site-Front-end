@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import logo from "../../assets/img/company.png";
 import customersApi from "../../js/api/customer";
 import facilitiesApi from "../../js/api/facilities";
@@ -14,7 +14,7 @@ import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 import { Spinner } from "reactstrap";
 import ModalSketch from "../ModalComponent/ModalSketch";
-
+import List from "../pages/List/List";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
@@ -26,11 +26,13 @@ const CRMEntity = ({ type }) => {
   let addEntityImageAPI;
   let setMainEntityImageAPI;
 
+  const history = useHistory();
+
   let subEntityName = "";
   const [isLoading, setIsLoading] = useState(false);
 
   let informationFieldNames = [];
-
+  const [currentSubEntityName, setCurrentSubEntityName] = useState();
   const [screenSize, SetScreenSize] = useState(window.innerWidth);
 
   const [entityObject, setEntityObject] = useState();
@@ -58,8 +60,8 @@ const CRMEntity = ({ type }) => {
   async function deleteEntityImageServer(fileId, type_id) {
     const response = await deleteEntityImageAPI(id, fileId);
     if (response.success) {
-      if (type_id == "1") {
-        setEntityImages((state) => state.filter((el) => el.id != fileId));
+      if (type_id === "1") {
+        setEntityImages((state) => state.filter((el) => el.id !== fileId));
       }
       return true;
     } else {
@@ -79,7 +81,7 @@ const CRMEntity = ({ type }) => {
         newFiles.push(respImage);
       } else alert("error", response.message);
     }
-    if (type_id == "1") {
+    if (type_id === "1") {
       setEntityImages((state) => [...state, ...newFiles]);
     }
     return newFiles;
@@ -154,72 +156,107 @@ const CRMEntity = ({ type }) => {
   }
 
   useEffect(() => {
+    setInformationItems([]);
     setIsLoading(true);
+    try {
+      getEntityAPI(id).then((data) => {
+        if (type === "customer" || type === "facility") {
+          data = data[type][id];
+        } else {
+          data = data[type];
+        }
+        setEntityObject(data);
 
-    getEntityAPI(id).then((data) => {
-      if (type === "customer" || type === "facility") {
-        data = data[type][id];
-      } else {
-        data = data[type];
-      }
-      setEntityObject(data);
+        if (data[`${type}Images`]) {
+          setAttachedFiles(data[`${type}Images`]);
 
-      if (data[`${type}Images`]) {
-        setAttachedFiles(data[`${type}Images`]);
+          setEntityImages(
+            data[`${type}Images`].filter((el) => el.type_id === "1")
+          );
 
-        setEntityImages(
-          data[`${type}Images`].filter((el) => el.type_id == "1")
-        );
+          const mainImage = getMainImage(
+            data[`${type}Images`].filter((el) => el.type_id === "1")
+          );
 
-        const mainImage = getMainImage(
-          data[`${type}Images`].filter((el) => el.type_id == "1")
-        );
+          setMainImage(mainImage);
+        }
+        if (informationFieldNames.length > 0) {
+          let infoFields = informationFieldNames.map((el) => {
+            if (data[el]) {
+              return { fieldTitle: el, value: data[el] };
+            }
+            return false;
+          });
 
-        setMainImage(mainImage);
-      }
-      if (informationFieldNames.length > 0) {
-        let infoFields = informationFieldNames.map((el) => {
-          if (data[el]) {
-            return { fieldTitle: el, value: data[el] };
+          setInformationItems((state) => {
+            return [...state, ...infoFields];
+          });
+        }
+        if (data.jsonData) {
+          const customFields = data.jsonData.map((el) => {
+            return { fieldTitle: el.name, value: el.value };
+          });
+
+          setInformationItems((state) => {
+            return [...state, ...customFields];
+          });
+        }
+        if (subEntityName.length !== 0) {
+          if (subEntityName === "equipment") {
+            fetch(
+              process.env.REACT_APP_SERVER_URL +
+                "/api/location/" +
+                id +
+                "/equipment?access-token=" +
+                localStorage.getItem("token")
+            )
+              .then((res) => res.json())
+              .then((data) => {
+                setSubEntity([
+                  {
+                    subEntityName: subEntityName,
+                    subEntityData: data[subEntityName],
+                  },
+                ]);
+              });
+          } else {
+            setSubEntity([
+              {
+                subEntityName: subEntityName,
+                subEntityData: data[subEntityName],
+              },
+            ]);
           }
-          return false;
-        });
-
-        setInformationItems((state) => {
-          return [...state, ...infoFields];
-        });
-      }
-      if (data.jsonData) {
-        const customFields = data.jsonData.map((el) => {
-          return { fieldTitle: el.name, value: el.value };
-        });
-
-        setInformationItems((state) => {
-          return [...state, ...customFields];
-        });
-      }
-      if (subEntityName.length !== 0) {
-        if (subEntityName === "equipment") {
+        }
+        if (type === "equipment") {
           fetch(
             process.env.REACT_APP_SERVER_URL +
               "/api/location/" +
-              id +
+              data["location_id"] +
               "/equipment?access-token=" +
               localStorage.getItem("token")
           )
             .then((res) => res.json())
             .then((data) => {
-              setSubEntity(data[subEntityName]);
+              let equipment = data["equipment"].find((el) => el.id === id);
+              if (equipment) {
+                setSubEntity([
+                  {
+                    subEntityName: "sensors",
+                    subEntityData: equipment["sensors"],
+                  },
+                  { subEntityName: "motes", subEntityData: equipment["mote"] },
+                ]);
+              }
             });
-        } else {
-          setSubEntity(data[subEntityName]);
         }
-      }
+        setIsLoading(false);
+      });
 
-      setIsLoading(false);
-    });
-
-    setEntityID(id);
+      setEntityID(id);
+    } catch {
+      history.push("/404");
+    }
 
     window.addEventListener("resize", handleResize);
   }, []);
@@ -231,19 +268,14 @@ const CRMEntity = ({ type }) => {
   };
   return (
     <>
-      {/* <ModalComponent
-        modal={showFormModal}
-        toggle={toggleModal}
-        type={subEntityName}
-        mode={mode}
-      /> */}
-      <ModalSketch
-        entity={subEntityName}
+      {/* <ModalSketch
+        entity={currentSubEntityName && currentSubEntityName.name}
         subEntity={entityPluralAlias}
         modal={showFormModal}
         toggle={toggleModal}
         mode={mode}
-      />
+      /> */}
+
       {!isLoading ? (
         <>
           <div className="d-flex align-items-center entity-page--header">
@@ -278,30 +310,51 @@ const CRMEntity = ({ type }) => {
             </div>
           )}
 
-          {entityObject && subEntityName.length > 0 && (
-            <div className="info-page--section">
-              <h2 className="page-subtitle">{`${type} ${subEntityName}`}</h2>
-              <div
-                className={
-                  screenSize > 440 ? "info-card_group" : "info-card_group dense"
-                }
-              >
-                {subEntity && subEntity.length > 0 ? (
-                  subEntity.map((subEnt, index) => (
-                    <InfoCard
-                      key={index}
-                      data={subEnt}
-                      type={subEntityName}
-                      toggleModal={toggleModal}
-                      setMode={setMode}
-                    />
-                  ))
-                ) : (
-                  <p>No {subEntityName} found.</p>
-                )}
+          {entityObject &&
+            subEntity.length > 0 &&
+            subEntity.map((subEnt) => (
+              <div className="entity-page--section table-section">
+                {/* <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2> */}
+                <List
+                  type={{
+                    entity: subEnt.subEntityName,
+                    ref: entityPluralAlias,
+                  }}
+                  title={
+                    subEnt.subEntityName.charAt(0).toUpperCase() +
+                    subEnt.subEntityName.slice(1)
+                  }
+                  hideSelect
+                  hideChangeView
+                  initBlockView={
+                    subEnt.subEntityName !== "sensors" &&
+                    subEnt.subEntityName !== "motes"
+                  }
+                  hideCreateBtn
+                  hideRecordView={
+                    subEnt.subEntityName === "sensors" ||
+                    subEnt.subEntityName === "motes"
+                  }
+                />
               </div>
-            </div>
-          )}
+              //     {subEnt.subEntityData && subEnt.subEntityData.length > 0 ? (
+              //       subEnt.subEntityData.map((subEntityElement, index) => (
+              //         <InfoCard
+              //           key={index}
+              //           data={subEntityElement}
+              //           type={subEnt.subEntityName}
+              //           toggleModal={toggleModal}
+              //           setMode={setMode}
+              //           currentSubEntityName={currentSubEntityName}
+              //           setCurrentSubEntityName={setCurrentSubEntityName}
+              //         />
+              //       ))
+              //     ) : (
+              //       <p>No {subEntityName} found.</p>
+              //     )}
+              //   </div>
+              // </div>
+            ))}
 
           {entityObject && entityObject[`${type}Images`] && (
             <div className="entity-page--section">

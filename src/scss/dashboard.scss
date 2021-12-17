@@ -6,6 +6,7 @@
   padding: 0;
   display: grid;
   grid-template-columns: 280px auto;
+  box-sizing: border-box;
 }
 
 .dashboard > .row {
@@ -35,16 +36,16 @@
 }
 
 .dashboard aside .logo {
-  margin-bottom: 25px;
+  margin-bottom: 35px;
 }
 
-.dashboard aside nav ul {
+.dashboard aside nav .fa-ul {
   list-style: none;
-  padding-left: 0.25rem;
+  margin-left: 2.25rem;
 }
 
 .dashboard aside nav > ul > li > a > i {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .dashboard aside nav > ul > li > a {
@@ -130,6 +131,14 @@
 
 .dashboard main {
   padding: 15px;
+}
+
+/* Modal */
+.modal-body {
+  max-height: 700px;
+  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
 @media (max-width: 750px) {

@@ -1,0 +1,84 @@
+@import "./scss-variables.scss";
+
+.card-sketch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+  border-radius: 4px;
+}
+
+.card-sketch .card-sketch__edit {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 3px 3px 3px 5px;
+}
+
+.card-sketch > input {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.card-sketch__body {
+  display: flex;
+}
+
+.card-sketch__body img {
+  width: 116px;
+  height: 116px;
+  border-radius: 4px 0 0 0;
+}
+
+.card-sketch__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.card-sketch__info > *:not(:last-child) {
+  margin-bottom: 7px;
+}
+
+.card-sketch__btns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-weight: bold;
+}
+
+.card-sketch__btns-one {
+  justify-content: center;
+}
+
+.card-sketch__btns > button {
+  padding: 4px 30px;
+  border-radius: 2px;
+}
+
+.card-sketch__btns > a {
+  padding: 4px 30px;
+  border-radius: 2px;
+  text-decoration: none;
+  color: white;
+  background-color: $primary;
+  border: 1px solid transparent;
+}
+
+.card-sketch__btns > a:hover {
+  color: white;
+  border: 1px solid black;
+}
+
+.card-sketch .progress {
+  border-radius: 0 0 4px 4px;
+  height: 7px;
+}
+
+.card-sketch .progress .progress-bar {
+  background-color: $success;
+}

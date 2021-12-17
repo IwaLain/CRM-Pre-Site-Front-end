@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
       Button,
       Col,
@@ -26,10 +26,10 @@ const ComertialPurpouse = () => {
         {
             description: '-',
             quantity: '',
-            amount: 0,
+            cost: 0,
             units: '',
             item: '',
-            rate: 0,
+            price: 0,
         }
     ])
 
@@ -84,14 +84,14 @@ const ComertialPurpouse = () => {
                 <ComertialForm 
                     dataForm={dataForm}
                     priceValid={priceValid}
+                    currentData={currentData}
                 />
             </Row>
 
             <Row className="purpose__table">
                 <ComertialTable
-                    changeCurrentData={changeCurrentData}
+                    setData={changeCurrentData}
                     dataForm={dataForm}
-                    checkPriceValid={checkPriceValid}
                 />
             </Row>
 
@@ -130,9 +130,11 @@ const ComertialPurpouse = () => {
                 </ModalHeader>
                 <ModalBody>
                     <Previews 
-                        data={previewData}
+                        form={previewData}
+                        table={currentData}
                         items={previewList}
                         date={date}
+                        quote={quote}
                     />
                 </ModalBody>
                 <ModalFooter>

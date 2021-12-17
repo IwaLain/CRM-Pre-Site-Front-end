@@ -1,27 +1,15 @@
 import { useContext, useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import { GlobalContext } from "../../../../context";
-import { validation } from "../../../../js/helpers/validation";
-import '../../../../scss/ui-kit.scss'
+import { GlobalContext } from "../../context";
 
-const ComertialPurpose = ({ setData, dataForm }) => {
+const PurposeTable = ({ setData }) => {
   const { customerNetwork } = useContext(GlobalContext);
 
   const [listData, setListData] = useState([]);
-  const { register, trigger} = dataForm
-
-  const priceValidation = (e) => {
-      if (e.target.value === 0 || e.target.value === '') {
-        e.target.classList.add('is-invalid')
-      } else {
-        e.target.classList.remove('is-invalid')
-      }
-  }
 
   const handleDescriptionChange = (e) => {
     const newData = listData.map((el) => {
       if (el["item"] === e.target.id.split("-")[1]) {
-        priceValidation(e)
         return {
           ...el,
           description: e.target.value,
@@ -85,14 +73,8 @@ const ComertialPurpose = ({ setData, dataForm }) => {
         <input
           type="text"
           id={`description-${row.item}`}
-          name={`description-${row.item}`}
           placeholder="Enter description..."
-          className="form-control ui-kit__input"
-          onInput={(e) => {
-              handleDescriptionChange(e)
-              priceValidation(e)
-            }}
-          {...register(`description-${row.item}`, validation('text'))}
+          onInput={(e) => handleDescriptionChange(e)}
         />
       ),
     },
@@ -109,16 +91,10 @@ const ComertialPurpose = ({ setData, dataForm }) => {
       cell: (row) => (
         <input
           id={`price-${row.item}`}
-          name={`price-${row.item}`}
           type="number"
           min="0"
           placeholder="Enter price..."
-          className="form-control ui-kit__input"
-          onInput={(e) => {
-              handlePriceChange(e)
-              priceValidation(e)
-            }}
-          {...register(`price-${row.item}`, validation('price'))}
+          onInput={(e) => handlePriceChange(e)}
         />
       ),
     },
@@ -131,4 +107,4 @@ const ComertialPurpose = ({ setData, dataForm }) => {
   return <DataTable columns={columns} data={listData} />;
 };
 
-export default ComertialPurpose;
+export default PurposeTable;

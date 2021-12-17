@@ -16,10 +16,16 @@ const DashboardLayout = ({ children }) => {
     window.innerWidth <= MOBILE_SIZE
   );
 
-  const { pagePath, setPageTitle, pageType } = useContext(GlobalContext);
+  const {
+    pagePath,
+    setPageTitle,
+    pageType,
+    setEquipmentTypeList,
+    userProfile,
+  } = useContext(GlobalContext);
 
   const handleResize = () => {
-    if (window.innerWidth <= MOBILE_SIZE) {
+    if (window.screen.width <= MOBILE_SIZE) {
       setIsMobile(true);
       setSidebarCollapsed(true);
     } else {
@@ -33,6 +39,22 @@ const DashboardLayout = ({ children }) => {
   };
 
   useEffect(() => {
+    if (userProfile && Object.keys(userProfile).length > 0) {
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/equipment/type?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((list) => setEquipmentTypeList(list["type"]));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     let filtered = routes.dashboard.filter((route) => {
       return route.path === pagePath;
     })[0];
@@ -41,7 +63,7 @@ const DashboardLayout = ({ children }) => {
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-  }, [setPageTitle]);
+  }, []);
 
   return (
     <div className="dashboard container-fluid">

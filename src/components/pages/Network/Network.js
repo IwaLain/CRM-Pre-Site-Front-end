@@ -4,6 +4,7 @@ import { GlobalContext } from "../../../context";
 import Button from "../../UIKit/Button/Button";
 import List from "../List/List";
 import "../../../scss/network.scss";
+import { alert } from "../../../js/helpers/alert";
 
 const Network = () => {
   const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
@@ -13,20 +14,25 @@ const Network = () => {
   const history = useHistory();
 
   useEffect(() => {
-    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0))
+    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
       history.push("/dashboard/customers");
-    else
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/customer/" +
-          selectedCustomer.id +
-          "/network?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((network) => {
-          setNetwork(Object.entries(network.Network));
-        });
+      alert("error", "You need to select customer first.");
+    } else
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/customer/" +
+            selectedCustomer.id +
+            "/network?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((network) => {
+            setNetwork(Object.entries(network.Network));
+          });
+      } catch (e) {
+        console.log(e);
+      }
   }, [history, selectedCustomer, updateTrigger]);
 
   return (
@@ -44,7 +50,9 @@ const Network = () => {
                     id={`heading-${index}`}
                   >
                     <div key={index} className="dashboard-page__block">
-                      <h5>{block[0]}</h5>
+                      <h5>
+                        {block[0].charAt(0).toUpperCase() + block[0].slice(1)}
+                      </h5>
                       <span>{block[1]}</span>
                       <Button
                         className="dashboard-page__block-view accorion-button collapsed"
@@ -72,7 +80,11 @@ const Network = () => {
                       {selectedBlock === index && (
                         <List
                           type={{ entity: block[0].toLowerCase() }}
-                          title={block[0]}
+                          title={
+                            block[0].charAt(0).toUpperCase() + block[0].slice(1)
+                          }
+                          hideChangeView
+                          hideRecordView
                         />
                       )}
                     </div>

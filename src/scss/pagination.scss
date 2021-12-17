@@ -12,14 +12,14 @@
   cursor: default;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid $primary;
-  color: $primary;
+  color: black;
   margin: 0 5px;
   text-decoration: none;
 }
 
 .pagination li:not(.disabled) a:hover {
   background-color: $default;
+  color: black;
   cursor: pointer;
 }
 
@@ -28,14 +28,12 @@
 }
 
 .pagination li.active a {
-  color: #fff;
-  background: $primary;
+  background: $default;
 }
 
 .pagination li.disabled a {
   pointer-events: none;
   color: rgb(198, 197, 202);
-  border: 1px solid rgb(198, 197, 202);
 }
 
 @media (max-width: 600px) {
@@ -48,4 +46,63 @@
   .pagination a {
     margin: 0;
   }
+}
+.custom-pagination--nav {
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 8px;
+  padding-left: 8px;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 13px;
+  min-height: 56px;
+  background-color: #ffffff;
+  // border-top-color: rgba(0, 0, 0, 0.12);
+}
+.custom-pagination--buttons {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.custom-pagination--btn {
+  background-color: transparent;
+  position: relative;
+  display: block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: none;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  padding: 8px;
+  margin: 0px;
+  transition: 0.4s;
+  color: rgba(0, 0, 0, 0.54);
+  fill: rgba(0, 0, 0, 0.54);
+  cursor: pointer;
+}
+
+.custom-pagination--btn:hover:not(:disabled),
+.custom-pagination--btn:focus:not(:disabled) {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.custom-pagination--btn:disabled {
+  cursor: unset;
+  color: rgba(0, 0, 0, 0.18);
+  fill: rgba(0, 0, 0, 0.18);
+}
+.custom-pagination--current-elements {
+  margin: 0px 24px;
 }

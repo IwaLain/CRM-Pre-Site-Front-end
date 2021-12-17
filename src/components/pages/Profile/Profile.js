@@ -13,8 +13,15 @@ const ProfilePage = () => {
     const [modalEditProfile, setModalEditProfile] = useState(false)
     const { userProfile, setUserProfile } = useContext(GlobalContext)
     const [profile, setProfile] = useState(userProfile);
-    
-    
+
+    const profileData = [
+        {title: "First Name", desc: profile.first_name},
+        {title: "Last Name", desc: profile.last_name},
+        {title: "Phone", desc: profile.phone},
+        {title: "Email", desc: profile.email},
+        {title: "Role", desc: profile.role},
+    ]
+
     useEffect(() => {
         Profile.getProfile()
         .then(data => {
@@ -25,21 +32,17 @@ const ProfilePage = () => {
         })
     }, [userProfile])
 
-    const setNewImage = (img) => {
-        let data = {
-            'img': img
-        }
-        Profile.updateProfile(profile.id, data)
-    }
-
     const addImageHandler = (e) => {
         const file = e.target.files[0];
+        const url = URL.createObjectURL(file);
+        
         if (file) {
             convertToBase64(file).then((res) => setImg(res));
-            const url = URL.createObjectURL(file);
             setLoadedImg(url);
-            setNewImage(img)
         }
+
+        let data = {'img': img}
+        Profile.updateProfile(profile.id, data)
     };
 
     const checkEmpty = (data) => data ? data : '--'
@@ -49,13 +52,7 @@ const ProfilePage = () => {
         setProfile(data)
     }
 
-    const profileData = [
-        {title: "First Name", desc: profile.first_name},
-        {title: "Last Name", desc: profile.last_name},
-        {title: "Phone", desc: profile.phone},
-        {title: "Email", desc: profile.email},
-        {title: "Role", desc: profile.role},
-    ]
+    
     
     return(
         <>

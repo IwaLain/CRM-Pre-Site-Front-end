@@ -1,7 +1,6 @@
 import LoginPage from "./components/pages/Login/Login";
 import UsersPage from "./components/pages/Users/Users";
 import Profile from "./components/pages/Profile/Profile";
-import CustomerCreate from "./components/ModalComponent/Modals/CustomerCreate/CustomerCreate";
 import List from "./components/pages/List/List";
 import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
@@ -29,11 +28,6 @@ const routes = {
       children: <Profile />,
     },
     {
-      path: "/dashboard/customers/create",
-      name: "Customer Create",
-      children: <CustomerCreate />,
-    },
-    {
       path: "/dashboard/customers/:id",
       name: "Customer",
       children: <CRMEntity type={{ entity: "customer" }} />,
@@ -56,12 +50,14 @@ const routes = {
     {
       path: "/dashboard/customers",
       name: "Customers",
-      children: <List type={{ entity: "customers" }} />,
+      children: <List type={{ entity: "customers" }} chooseMode showProgress />,
     },
     {
       path: "/dashboard/facilities",
       name: "Facilities",
-      children: <List type={{ entity: "facilities", ref: "customers" }} />,
+      children: (
+        <List type={{ entity: "facilities", ref: "customers" }} showProgress />
+      ),
     },
     {
       path: "/dashboard/locations",

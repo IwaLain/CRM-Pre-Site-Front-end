@@ -2,28 +2,20 @@ import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { GlobalContext } from "../../../context";
 import "../../../scss/dashboard-page.scss";
+import { alert } from "../../../js/helpers/alert";
+import DataTable from "react-data-table-component";
+import PurposeTable from "../../PurposeTable/PurposeTable";
 
 const Dashboard = () => {
-  const { selectedCustomer } = useContext(GlobalContext);
-  const [network, setNetwork] = useState([]);
+  const { selectedCustomer, customerNetwork } = useContext(GlobalContext);
 
   const history = useHistory();
 
   useEffect(() => {
-    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0))
+    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
       history.push("/dashboard/customers");
-    else
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/customer/" +
-          selectedCustomer.id +
-          "/network?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((network) => {
-          setNetwork(Object.entries(network.Network));
-        });
+      alert("error", "You need to select customer first.");
+    }
   }, [history, selectedCustomer]);
 
   return (
@@ -62,18 +54,38 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-      <section className="dashboard-page__section">
+      <section
+        className="dashboard-page__section"
+        style={{ marginBottom: "20px" }}
+      >
         <h3>Network statistics</h3>
         <div className="dashboard-page__block-wrapper">
-          {network &&
-            network.map((block, index) => (
+          {customerNetwork &&
+            Object.keys(customerNetwork).length > 0 &&
+            Object.entries(customerNetwork).map(([key, block], index) => (
               <div key={index} className="dashboard-page__block">
-                <h5>{block[0]}</h5>
-                <span>{block[1]}</span>
+                <h5>{key.charAt(0).toUpperCase() + key.slice(1)}</h5>
+                <span>{block}</span>
               </div>
             ))}
         </div>
       </section>
+      {/* <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "15px",
+        }}
+      >
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+        <CardSketch />
+      </div> */}
     </div>
   );
 };

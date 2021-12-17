@@ -47,6 +47,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     selectedCustomer,
     updateTrigger,
     setUpdateTrigger,
+    entityID,
   } = useContext(GlobalContext);
 
   const {
@@ -209,31 +210,35 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         } else alert("error", `Request error.`);
       });
     } else if (mode === "edit") {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/" +
-          entityName +
-          "/update/" +
-          editId +
-          "?access-token=" +
-          localStorage.getItem("token"),
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      ).then((res) => {
-        if (res.status === 200) {
-          resetToggle();
-          setUpdateTrigger(!updateTrigger);
-          alert(
-            "success",
-            `${
-              entityName.charAt(0).toUpperCase() + entityName.slice(1)
-            } changed.`
-          );
-        } else alert("error", `Request error.`);
-      });
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/" +
+            entityName +
+            "/update/" +
+            editId +
+            "?access-token=" +
+            localStorage.getItem("token"),
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        ).then((res) => {
+          if (res.status === 200) {
+            resetToggle();
+            setUpdateTrigger(!updateTrigger);
+            alert(
+              "success",
+              `${
+                entityName.charAt(0).toUpperCase() + entityName.slice(1)
+              } changed.`
+            );
+          } else alert("error", `Request error.`);
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
@@ -568,23 +573,54 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   }, [entity, mode]);
 
   useEffect(() => {
+    if (entity && mode === "create") {
+      switch (entity) {
+        case "customers":
+          break;
+        case "facilities":
+          reset({
+            customer_id: entityID,
+          });
+          break;
+        case "locations":
+          reset({
+            facility_id: entityID,
+          });
+          break;
+        case "equipment":
+          reset({
+            location_id: entityID,
+          });
+          break;
+        default:
+          break;
+      }
+    }
+  }, [entity, mode, entityID]);
+
+  useEffect(() => {
     switch (subEntity) {
       case "customers":
       case "facilities":
       case "locations":
       case "equipment":
-        fetch(
-          process.env.REACT_APP_SERVER_URL +
-            "/api/" +
-            formattedRouteName +
-            "?access-token=" +
-            localStorage.getItem("token") +
-            "&limit=-1"
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            setRefListNames(formatNames(data[subEntity], "object"));
-          });
+        try {
+          fetch(
+            process.env.REACT_APP_SERVER_URL +
+              "/api/" +
+              formattedRouteName +
+              "?access-token=" +
+              localStorage.getItem("token") +
+              "&limit=-1"
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              if (Object.keys(data[subEntity]).length > 0)
+                setRefListNames(formatNames(data[subEntity], "object"));
+            });
+        } catch (e) {
+          console.log(e);
+        }
         break;
       default:
         break;
@@ -649,104 +685,82 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
 
   useEffect(() => {
     if (editId && entityName && mode === "edit") {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/" +
-          entityName +
-          "/" +
-          editId +
-          "?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          switch (entityName) {
-            case "customer":
-            case "facility":
-              setDefaultEntity(data[entityName][editId]);
-              reset({
-                ...data[entityName][editId],
-                headname: data[entityName][editId]["head_name"],
-              });
-              break;
-            default:
-              setDefaultEntity(data[entityName]);
-              let newFields = [];
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/" +
+            entityName +
+            "/" +
+            editId +
+            "?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            switch (entityName) {
+              case "customer":
+              case "facility":
+                setDefaultEntity(data[entityName][editId]);
+                reset({
+                  ...data[entityName][editId],
+                  headname: data[entityName][editId]["head_name"],
+                });
+                break;
+              default:
+                setDefaultEntity(data[entityName]);
+                let newFields = [];
 
-              if (
-                data[entityName]["jsonData"] &&
-                data[entityName]["jsonData"].length > 0 &&
-                data[entityName]["jsonData"] !== "null"
-              ) {
-                let newCount = 0;
+                if (
+                  data[entityName]["jsonData"] &&
+                  data[entityName]["jsonData"].length > 0 &&
+                  data[entityName]["jsonData"] !== "null"
+                ) {
+                  let newCount = 0;
 
-                const jsonData = data[entityName]["jsonData"];
+                  const jsonData = data[entityName]["jsonData"];
 
-                jsonData.forEach((el) => {
-                  newFields.push({
-                    id: `field${newCount + 1}`,
-                    title: el.name,
-                    value: el.value,
+                  jsonData.forEach((el) => {
+                    newFields.push({
+                      id: `field${newCount + 1}`,
+                      title: el.name,
+                      value: el.value,
+                    });
+                    newCount += 1;
                   });
-                  newCount += 1;
+
+                  setCustomFieldsCount(newCount);
+                  setCustomFields(newFields);
+                }
+
+                let fieldsToReset = {};
+
+                newFields.forEach((field) => {
+                  fieldsToReset[field.id] = field.value;
+                  fieldsToReset[field.name] = field.name;
                 });
 
-                setCustomFieldsCount(newCount);
-                setCustomFields(newFields);
-              }
-
-              let fieldsToReset = {};
-
-              newFields.forEach((field) => {
-                fieldsToReset[field.id] = field.value;
-                fieldsToReset[field.name] = field.name;
-              });
-
-              if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
-                reset({
-                  ...data[entityName],
-                  ...fieldsToReset,
-                  headname: data[entityName]["head_name"],
-                });
-              } else {
-                reset({
-                  ...data[entityName],
-                  headname: data[entityName]["head_name"],
-                });
-              }
-              break;
-          }
-        });
+                if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
+                  reset({
+                    ...data[entityName],
+                    ...fieldsToReset,
+                  });
+                } else {
+                  reset({
+                    ...data[entityName],
+                  });
+                }
+                break;
+            }
+          });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [editId]);
 
   return (
     <>
-      <Modal isOpen={addFieldModal} toggle={toggleAddFieldModal}>
-        <ModalHeader>Add Field</ModalHeader>
-        <ModalBody>
-          <Form
-            id="add-field-form"
-            onSubmit={(e) =>
-              handleAddFieldFormSubmit(e, customFields, customFieldsCount)
-            }
-          >
-            <FormGroup>
-              <Label for="add-field-field">Field title</Label>
-              <Col sm={12}>
-                <input className="form-control" id="add-field-field" />
-              </Col>
-            </FormGroup>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button onClick={toggleAddFieldModal}>Cancel</Button>
-          <Button form="add-field-form" color="primary">
-            Add
-          </Button>
-        </ModalFooter>
-      </Modal>
-      <Modal isOpen={modal} toggle={resetToggle}>
+      <Modal isOpen={modal} toggle={resetToggle} size="lg">
         <ModalHeader>{formTitle}</ModalHeader>
         <ModalBody>
           <Form id="form" onSubmit={handleSubmit(onSubmit)}>
@@ -755,7 +769,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 field.inputType === "email" ? (
                   <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={12}>
+                    <Col sm={6}>
                       <input
                         className={`form-control ${
                           errors[field.title] ? "is-invalid" : ""
@@ -778,7 +792,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 ) : field.inputType === "phone" ? (
                   <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={12}>
+                    <Col sm={6}>
                       <input
                         className={`form-control ${
                           errors[field.title] ? "is-invalid" : ""
@@ -802,7 +816,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 ) : field.inputType === "number" ? (
                   <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={12}>
+                    <Col sm={6}>
                       <input
                         className={`form-control ${
                           errors[field.title] ? "is-invalid" : ""
@@ -825,7 +839,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 ) : (
                   <FormGroup key={index}>
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={12}>
+                    <Col sm={6}>
                       <input
                         className={`form-control ${
                           errors[field.title] ? "is-invalid" : ""
@@ -851,11 +865,12 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   <Label for="select-ref">
                     {subEntity.charAt(0).toUpperCase() + subEntity.slice(1)}
                   </Label>
-                  <Col sm={12}>
+                  <Col sm={6}>
                     <select
                       id="select-ref"
                       className="ui-kit__select"
                       {...register(field.subID)}
+                      disabled={refListNames.length < 1}
                     >
                       {refListNames &&
                         refListNames.map((ref) => (
@@ -872,7 +887,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     customFields.map(({ id, title }) => (
                       <FormGroup key={id}>
                         <Label for={`${id}-field`}>{title}</Label>
-                        <Col sm={12}>
+                        <Col sm={6}>
                           <input
                             className={`form-control ${
                               errors[`${id}`] ? "is-invalid" : ""
@@ -932,12 +947,13 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   <Label for={`${field.title.toLowerCase()}-field`}>
                     {field.title}
                   </Label>
-                  <Col sm={12}>
+                  <Col sm={6}>
                     <select
                       key={index}
                       id={`${field.title.toLowerCase()}-field`}
                       className="ui-kit__select"
                       {...register(field.subID)}
+                      disabled={equipmentTypeList.length < 1}
                     >
                       {equipmentTypeList &&
                         equipmentTypeList.map((type) => (
@@ -951,11 +967,20 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
               ) : field.fieldType === "form-customer-entity-select" ? (
                 <FormGroup key={index}>
                   <Label for={`${field.title}-field`}>{field.title}</Label>
-                  <Col sm={12}>
+                  <Col sm={6}>
                     <select
                       key={index}
                       id={`${field.title}-field`}
                       className="ui-kit__select"
+                      disabled={
+                        field.title === "Facility"
+                          ? facilitiesNames.length < 1
+                          : field.title === "Equipment"
+                          ? equipmentNames.length < 1
+                          : field.title === "Node"
+                          ? nodesNames.length < 1
+                          : gatewaysNames.length < 1
+                      }
                       {...register(field.subID)}
                     >
                       {field.title === "Facility"
@@ -1006,6 +1031,30 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           </Button>
           <Button color="primary" form="form">
             Submit
+          </Button>
+        </ModalFooter>
+      </Modal>
+      <Modal isOpen={addFieldModal} toggle={toggleAddFieldModal}>
+        <ModalHeader>Add Field</ModalHeader>
+        <ModalBody>
+          <Form
+            id="add-field-form"
+            onSubmit={(e) =>
+              handleAddFieldFormSubmit(e, customFields, customFieldsCount)
+            }
+          >
+            <FormGroup>
+              <Label for="add-field-field">Field title</Label>
+              <Col sm={12}>
+                <input className="form-control" id="add-field-field" />
+              </Col>
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={toggleAddFieldModal}>Cancel</Button>
+          <Button form="add-field-form" color="primary">
+            Add
           </Button>
         </ModalFooter>
       </Modal>

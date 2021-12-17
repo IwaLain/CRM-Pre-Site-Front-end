@@ -3,7 +3,7 @@ import { Col, Form, FormGroup, Label, Row } from 'reactstrap'
 import Profile from '../../../../js/api/profile'
 import { validation } from '../../../../js/helpers/validation'
 
-const ComertialForm = ({dataForm, priceValid}) => {
+const ComertialForm = ({dataForm, currentData}) => {
 
     const 
     {   trigger, 
@@ -11,41 +11,21 @@ const ComertialForm = ({dataForm, priceValid}) => {
         register, 
         quote, 
         date, 
-        handleSubmit,
-        currentData
+        handleSubmit
     } = dataForm
 
-    const priceHandler = (data) => {
-        let counter = 0
-        data.map(data => {
-            if (!priceValid.target.value) {
-                let temp = priceValid.target
-                temp.focus()
-                temp.classList.add('is-invalid')
-            } else {
-                let temp = priceValid.target
-                temp.classList.remove('is-invalid')
-            } 
-
-            if (data.rate === 0) counter++
-        })
-        return counter
-    }
-
     const onSubmit = (e) => {
-        if(priceHandler(currentData) === 0) {
-            const data = {
-                'billTo': e.bill,
-                'shipTo': e.ship,
-                'expires': e.expires,
-                'memo': e.memo,
-                'date': date,
-                'quote': quote,
-                items: currentData
-            }
-    
-            Profile.createPdf(data, date)
+        console.log(currentData)
+        const data = {
+            'billTo': e.bill,
+            'shipTo': e.ship,
+            'expires': e.expires,
+            'memo': e.memo,
+            'date': date,
+            'quote': quote,
+            items: currentData
         }
+        Profile.createPdf(data, date)
     }
 
     return (
@@ -74,6 +54,7 @@ const ComertialForm = ({dataForm, priceValid}) => {
                             name='bill'
                             type='text'
                             rows="4"
+                            placeholder='Enter your bill...'
                             className={`ui-kit__textarea form-control ${errors.bill ? 'is-invalid' : ''}`}
                             {...register('bill', validation('address'))}
                             onKeyUp={() => {
@@ -87,6 +68,7 @@ const ComertialForm = ({dataForm, priceValid}) => {
                             name='ship'
                             type='text'
                             rows="4"
+                            placeholder='Enter your ship...'
                             className={`ui-kit__textarea form-control ${errors.ship ? 'is-invalid' : ''}`}
                             {...register('ship', validation('address'))}
                             onKeyUp={() => {
@@ -113,6 +95,7 @@ const ComertialForm = ({dataForm, priceValid}) => {
                         <input
                             name='expires'
                             type='text'
+                            placeholder='Expires...'
                             className={`ui-kit__textarea form-control ${errors.expires ? 'is-invalid' : ''}`}
                             {...register('expires', validation('text'))}
                             onKeyUp={() => {
@@ -129,6 +112,7 @@ const ComertialForm = ({dataForm, priceValid}) => {
                         <input
                             name='memo'
                             type='text'
+                            placeholder='Memo...'
                             className={`ui-kit__textarea form-control ${errors.memo ? 'is-invalid' : ''}`}
                             {...register('memo', validation('text'))}
                             onKeyUp={() => {
