@@ -786,7 +786,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <Col sm={6}>
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
@@ -801,6 +801,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 ) : field.inputType === "phone" ? (
@@ -809,7 +814,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <Col sm={6}>
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
@@ -825,15 +830,31 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 ) : field.inputType === "number" ? (
-                  <FormGroup key={index}>
+                  <FormGroup
+                    key={index}
+                    style={
+                      field.title === "Lat" || field.title === "Lng"
+                        ? { display: "inline-block" }
+                        : {}
+                    }
+                  >
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={6}>
+                    <Col
+                      sm={
+                        field.title === "Lat" || field.title === "Lng" ? 10 : 6
+                      }
+                    >
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
@@ -848,6 +869,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 ) : (
@@ -856,7 +882,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <Col sm={6}>
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
@@ -871,6 +897,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 )
@@ -920,6 +951,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                               },
                             })}
                           />
+                          <small className="text-danger">
+                            {errors &&
+                              errors[`${id}`] &&
+                              errors[`${id}`].message}
+                          </small>
                         </Col>
                       </FormGroup>
                     ))}

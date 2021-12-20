@@ -7,19 +7,18 @@ import locationApi from "../../js/api/locations";
 import equipmentApi from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
-import InfoCard from "../InfoCard/InfoCard";
+
 import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 import { Spinner } from "reactstrap";
-import ModalSketch from "../ModalComponent/ModalSketch";
+
 import List from "../pages/List/List";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
-  const { showFormModal, setShowFormModal, setEntityID } =
-    useContext(GlobalContext);
+  const { setEntityID } = useContext(GlobalContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
@@ -32,8 +31,6 @@ const CRMEntity = ({ type }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   let informationFieldNames = [];
-  const [currentSubEntityName, setCurrentSubEntityName] = useState();
-  const [screenSize, SetScreenSize] = useState(window.innerWidth);
 
   const [entityObject, setEntityObject] = useState();
 
@@ -42,8 +39,6 @@ const CRMEntity = ({ type }) => {
   const [subEntity, setSubEntity] = useState([]);
 
   const [informationItems, setInformationItems] = useState([]);
-
-  const [mode, setMode] = useState("edit");
 
   const [attachedFiles, setAttachedFiles] = useState();
 
@@ -158,124 +153,117 @@ const CRMEntity = ({ type }) => {
   useEffect(() => {
     setInformationItems([]);
     setIsLoading(true);
-    try {
-      getEntityAPI(id).then((data) => {
-        if (type === "customer" || type === "facility") {
-          data = data[type][id];
-        } else {
-          data = data[type];
-        }
-        setEntityObject(data);
+    if (id) {
+      setEntityID(id);
+      try {
+        getEntityAPI(id).then((data) => {
+          if (type === "customer" || type === "facility") {
+            data = data[type][id];
+          } else {
+            data = data[type];
+          }
+          setEntityObject(data);
 
-        if (data[`${type}Images`]) {
-          setAttachedFiles(data[`${type}Images`]);
+          if (data[`${type}Images`]) {
+            setAttachedFiles(data[`${type}Images`]);
 
-          setEntityImages(
-            data[`${type}Images`].filter((el) => el.type_id === "1")
-          );
+            setEntityImages(
+              data[`${type}Images`].filter((el) => el.type_id === "1")
+            );
 
-          const mainImage = getMainImage(
-            data[`${type}Images`].filter((el) => el.type_id === "1")
-          );
+            const mainImage = getMainImage(
+              data[`${type}Images`].filter((el) => el.type_id === "1")
+            );
 
-          setMainImage(mainImage);
-        }
-        if (informationFieldNames.length > 0) {
-          let infoFields = informationFieldNames.map((el) => {
-            if (data[el]) {
-              return { fieldTitle: el, value: data[el] };
+            setMainImage(mainImage);
+          }
+          if (informationFieldNames.length > 0) {
+            let infoFields = informationFieldNames.map((el) => {
+              if (data[el]) {
+                return { fieldTitle: el, value: data[el] };
+              }
+              return false;
+            });
+
+            setInformationItems((state) => {
+              return [...state, ...infoFields];
+            });
+          }
+          if (data.jsonData) {
+            const customFields = data.jsonData.map((el) => {
+              return { fieldTitle: el.name, value: el.value };
+            });
+
+            setInformationItems((state) => {
+              return [...state, ...customFields];
+            });
+          }
+          if (subEntityName.length !== 0) {
+            if (subEntityName === "equipment") {
+              fetch(
+                process.env.REACT_APP_SERVER_URL +
+                  "/api/location/" +
+                  id +
+                  "/equipment?access-token=" +
+                  localStorage.getItem("token")
+              )
+                .then((res) => res.json())
+                .then((data) => {
+                  setSubEntity([
+                    {
+                      subEntityName: subEntityName,
+                      subEntityData: data[subEntityName],
+                    },
+                  ]);
+                });
+            } else {
+              setSubEntity([
+                {
+                  subEntityName: subEntityName,
+                  subEntityData: data[subEntityName],
+                },
+              ]);
             }
-            return false;
-          });
-
-          setInformationItems((state) => {
-            return [...state, ...infoFields];
-          });
-        }
-        if (data.jsonData) {
-          const customFields = data.jsonData.map((el) => {
-            return { fieldTitle: el.name, value: el.value };
-          });
-
-          setInformationItems((state) => {
-            return [...state, ...customFields];
-          });
-        }
-        if (subEntityName.length !== 0) {
-          if (subEntityName === "equipment") {
+          }
+          if (type === "equipment") {
             fetch(
               process.env.REACT_APP_SERVER_URL +
                 "/api/location/" +
-                id +
+                data["location_id"] +
                 "/equipment?access-token=" +
                 localStorage.getItem("token")
             )
               .then((res) => res.json())
               .then((data) => {
-                setSubEntity([
-                  {
-                    subEntityName: subEntityName,
-                    subEntityData: data[subEntityName],
-                  },
-                ]);
+                let equipment = data["equipment"].find((el) => el.id === id);
+                if (equipment) {
+                  setSubEntity([
+                    {
+                      subEntityName: "sensors",
+                      subEntityData: equipment["sensors"],
+                    },
+                    {
+                      subEntityName: "motes",
+                      subEntityData: equipment["mote"],
+                    },
+                  ]);
+                }
               });
-          } else {
-            setSubEntity([
-              {
-                subEntityName: subEntityName,
-                subEntityData: data[subEntityName],
-              },
-            ]);
           }
-        }
-        if (type === "equipment") {
-          fetch(
-            process.env.REACT_APP_SERVER_URL +
-              "/api/location/" +
-              data["location_id"] +
-              "/equipment?access-token=" +
-              localStorage.getItem("token")
-          )
-            .then((res) => res.json())
-            .then((data) => {
-              let equipment = data["equipment"].find((el) => el.id === id);
-              if (equipment) {
-                setSubEntity([
-                  {
-                    subEntityName: "sensors",
-                    subEntityData: equipment["sensors"],
-                  },
-                  { subEntityName: "motes", subEntityData: equipment["mote"] },
-                ]);
-              }
-            });
-        }
-        setIsLoading(false);
-      });
-
-      setEntityID(id);
-    } catch {
+          setIsLoading(false);
+        });
+      } catch {
+        history.push(`/dashboard/${entityPluralAlias}`);
+        history.push("/404");
+      }
+    } else {
+      history.push(`/dashboard/${entityPluralAlias}`);
       history.push("/404");
     }
-
-    window.addEventListener("resize", handleResize);
   }, []);
-  const handleResize = () => {
-    SetScreenSize(window.innerWidth);
-  };
-  const toggleModal = () => {
-    setShowFormModal(!showFormModal);
-  };
+
   return (
     <>
-      {/* <ModalSketch
-        entity={currentSubEntityName && currentSubEntityName.name}
-        subEntity={entityPluralAlias}
-        modal={showFormModal}
-        toggle={toggleModal}
-        mode={mode}
-      /> */}
-
       {!isLoading ? (
         <>
           <div className="d-flex align-items-center entity-page--header">
@@ -337,23 +325,6 @@ const CRMEntity = ({ type }) => {
                   }
                 />
               </div>
-              //     {subEnt.subEntityData && subEnt.subEntityData.length > 0 ? (
-              //       subEnt.subEntityData.map((subEntityElement, index) => (
-              //         <InfoCard
-              //           key={index}
-              //           data={subEntityElement}
-              //           type={subEnt.subEntityName}
-              //           toggleModal={toggleModal}
-              //           setMode={setMode}
-              //           currentSubEntityName={currentSubEntityName}
-              //           setCurrentSubEntityName={setCurrentSubEntityName}
-              //         />
-              //       ))
-              //     ) : (
-              //       <p>No {subEntityName} found.</p>
-              //     )}
-              //   </div>
-              // </div>
             ))}
 
           {entityObject && entityObject[`${type}Images`] && (

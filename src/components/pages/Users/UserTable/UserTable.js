@@ -20,7 +20,7 @@ const UserTable = ({ users, editeTable, changeTable }) => {
         changeTable(data.users);
         alert("success", `Successful deleted user`);
       } else {
-        alert("error", 'Can`t delete Super Admin');
+        alert("error", "Can`t delete Super Admin");
       }
     });
   };
@@ -93,8 +93,6 @@ const UserTable = ({ users, editeTable, changeTable }) => {
       grow: 0,
     },
   ];
-
-  console.log(users.length)
 
   return (
     <Row className="mt-3">
