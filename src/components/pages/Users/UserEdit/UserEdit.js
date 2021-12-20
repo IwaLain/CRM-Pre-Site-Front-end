@@ -58,9 +58,7 @@ const UserEdit = ({ currentUser, editeMethod }) => {
             }
         })
 
-        if (currentUser.role !== 'SuperAdmin') {
-            editeMethod(currentUser.id, data)
-        }        
+        if (currentUser.role !== 'SuperAdmin') editeMethod(currentUser.id, data)       
     };
 
     return (
@@ -82,7 +80,7 @@ const UserEdit = ({ currentUser, editeMethod }) => {
                                     />
                                 </Col>
                                 <Col md={6}>
-                                    <Label className=''>Lust Name:</Label>
+                                    <Label className=''>Last Name:</Label>
                                     <InputForm
                                         type={'lastname'}
                                         data={dataInput}

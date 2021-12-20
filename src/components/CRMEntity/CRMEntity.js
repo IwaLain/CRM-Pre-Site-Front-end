@@ -253,11 +253,11 @@ const CRMEntity = ({ type }) => {
           setIsLoading(false);
         });
       } catch {
-        history.push(`/dashboard/${entityPluralAlias}`);
+        history.replace(`/dashboard/${entityPluralAlias}`);
         history.push("/404");
       }
     } else {
-      history.push(`/dashboard/${entityPluralAlias}`);
+      history.replace(`/dashboard/${entityPluralAlias}`);
       history.push("/404");
     }
   }, []);

@@ -16,9 +16,7 @@ const UsersPage = () => {
     const toggleAddUser = () => setModalAddUser(!modalAddUser)
 
     const changeTable = (usersList) => setUsers(usersList)
-    const editeTable = (userId, data) => {
-        setUsers(users.map(userData => userData.id === userId ? {...data, userId: data} : userData))
-    }
+    const editeTable = (userId, data) => setUsers(users.map(userData => userData.id === userId ? {...data, userId: data} : userData))
 
     useEffect(() => {
         User.get()

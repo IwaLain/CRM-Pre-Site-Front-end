@@ -3,18 +3,19 @@ import { Col, Form, FormGroup, Label, Row } from 'reactstrap'
 import Profile from '../../../../js/api/profile'
 import { validation } from '../../../../js/helpers/validation'
 
-const ComertialForm = ({dataForm}) => {
+const ComertialForm = ({dataForm, currentData}) => {
+
     const 
     {   trigger, 
         errors, 
         register, 
         quote, 
         date, 
-        handleSubmit,
-        currentData
+        handleSubmit
     } = dataForm
 
     const onSubmit = (e) => {
+        console.log(currentData)
         const data = {
             'billTo': e.bill,
             'shipTo': e.ship,
@@ -24,14 +25,13 @@ const ComertialForm = ({dataForm}) => {
             'quote': quote,
             items: currentData
         }
-
-        Profile.createPdf(data)
+        Profile.createPdf(data, date)
     }
 
     return (
         <Form id='form' onSubmit={handleSubmit(onSubmit)}>
             <Row className='purpose__form'>
-                <Col lg={4} md={5} className='purpose__form-quote'>
+                <Col lg={3} md={5} className='purpose__form-quote'>
                     <FormGroup className='purpose__quote'>
                         <Col>
                             <h3>
@@ -53,6 +53,8 @@ const ComertialForm = ({dataForm}) => {
                         <textarea
                             name='bill'
                             type='text'
+                            rows="4"
+                            placeholder='Enter your bill...'
                             className={`ui-kit__textarea form-control ${errors.bill ? 'is-invalid' : ''}`}
                             {...register('bill', validation('address'))}
                             onKeyUp={() => {
@@ -65,6 +67,8 @@ const ComertialForm = ({dataForm}) => {
                         <textarea
                             name='ship'
                             type='text'
+                            rows="4"
+                            placeholder='Enter your ship...'
                             className={`ui-kit__textarea form-control ${errors.ship ? 'is-invalid' : ''}`}
                             {...register('ship', validation('address'))}
                             onKeyUp={() => {
@@ -73,11 +77,11 @@ const ComertialForm = ({dataForm}) => {
                         />
                     </FormGroup>
                 </Col>
-                <Col lg={{offset:1, size:4}} md={5} className="purpose__description">
+                <Col lg={{offset:1, size:3}} md={5} className="purpose__description">
                     <Row className='purpose__info'>
                         <Col>
                             <Label>
-                                    Date
+                                Date
                             </Label>
                         </Col>
                         {date}
@@ -91,6 +95,7 @@ const ComertialForm = ({dataForm}) => {
                         <input
                             name='expires'
                             type='text'
+                            placeholder='Expires...'
                             className={`ui-kit__textarea form-control ${errors.expires ? 'is-invalid' : ''}`}
                             {...register('expires', validation('text'))}
                             onKeyUp={() => {
@@ -107,6 +112,7 @@ const ComertialForm = ({dataForm}) => {
                         <input
                             name='memo'
                             type='text'
+                            placeholder='Memo...'
                             className={`ui-kit__textarea form-control ${errors.memo ? 'is-invalid' : ''}`}
                             {...register('memo', validation('text'))}
                             onKeyUp={() => {

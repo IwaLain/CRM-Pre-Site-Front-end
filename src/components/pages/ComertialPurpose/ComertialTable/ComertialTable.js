@@ -1,111 +1,134 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import { useHistory } from "react-router-dom";
-import { Col, Label } from "reactstrap";
 import { GlobalContext } from "../../../../context";
-import customersApi from "../../../../js/api/customer";
+import { validation } from "../../../../js/helpers/validation";
+import '../../../../scss/ui-kit.scss'
 
-const ComertialTable = ({ changeCurrentData }) => {
-  const { selectedCustomer } = useContext(GlobalContext);
-  const [currentData, setCurrentData] = useState([]);
-  const [cols, setCols] = useState([]);
-  const history = useHistory();
-  const newData = [];
-  const columns = [];
+const ComertialPurpose = ({ setData, dataForm }) => {
+  const { customerNetwork } = useContext(GlobalContext);
 
-  const handlerAmount = (array, itemName, data) => {
-    setCurrentData(
-      array.map((itemData) =>
-        itemData.item === itemName ? { ...itemData, itemName: data } : itemData
-      )
-    );
+  const [listData, setListData] = useState([]);
+  const { register } = dataForm
+
+  const priceValidation = (e) => {
+      if (e.target.value === 0 || e.target.value === '') {
+        e.target.classList.add('is-invalid')
+      } else {
+        e.target.classList.remove('is-invalid')
+      }
+  }
+
+  const handleDescriptionChange = (e) => {
+    const newData = listData.map((el) => {
+      if (el["item"] === e.target.id.split("-")[1]) {
+        priceValidation(e)
+        return {
+          ...el,
+          description: e.target.value,
+        };
+      } else return el;
+    });
+
+    setListData(newData);
+    if (setData) {
+      setData(newData);
+    }
+  };
+
+  const handlePriceChange = (e) => {
+    const newData = listData.map((el) => {
+      if (el["item"] === e.target.id.split("-")[1]) {
+        return {
+          ...el,
+          price: e.target.value,
+          cost: el["quantity"] * e.target.value,
+        };
+      } else return el;
+    });
+
+    setListData(newData);
+    if (setData) {
+      setData(newData);
+    }
   };
 
   useEffect(() => {
-    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0))
-      history.push("/dashboard/customers");
-    else
-      customersApi.getNetwork(selectedCustomer.id).then((data) => {
-        setCurrentData(data.Network);
+    const data = [];
 
-        for (const [key, value] of Object.entries(data.Network)) {
-          const obj = {};
-
-          obj["item"] = key;
-          obj["description"] = "";
-          obj["units"] = "EA";
-          obj["quantity"] = Number(value);
-          obj["rate"] = 0;
-          obj["amount"] = 0.0;
-          newData.unshift(obj);
-        }
-
-        Object.keys(newData[0]).forEach((key) => {
-          if (key === "item" || key === "units" || key === "quantity") {
-            columns.push({
-              name: key,
-              selector: (row) => row[key],
-            });
-          }
-          if (key === "description") {
-            columns.push({
-              name: key,
-              selector: (row) => row[key],
-              cell: (row) => (
-                <input
-                  type={key}
-                  name={key}
-                  className="ui-kit__input"
-                  onBlur={(e) => {
-                    row[key] = e.target.value;
-                    handlerAmount(newData, row["item"], row[key]);
-                  }}
-                />
-              ),
-            });
-          }
-          if (key === "rate") {
-            columns.push({
-              name: "price",
-              selector: (row) => row[key],
-              cell: (row) => (
-                <input
-                  type="number"
-                  name={key}
-                  min="1"
-                  className="ui-kit__input rate"
-                  onInput={(e) => {
-                    console.log(e.target.value);
-                    if (e.target.value === "") console.log("false");
-                    row[key] = Number(e.target.value);
-                    row["amount"] = row["quantity"] * row[key];
-                    handlerAmount(newData, row["item"], row["amount"]);
-                  }}
-                />
-              ),
-            });
-          }
-          if (key === "amount") {
-            columns.push({
-              name: "cost",
-              selector: (row) => row["amount"],
-              cell: (row) => row["amount"],
-            });
-          }
+    for (const [key, value] of Object.entries(customerNetwork)) {
+      if (value > 0) {
+        data.push({
+          item: key,
+          description: "",
+          units: "EA",
+          quantity: value,
+          price: "",
+          cost: 0,
         });
+      }
+    }
 
-        setCurrentData(newData);
-        changeCurrentData(newData);
-        setCols(columns);
-      });
-  }, []);
+    setListData(data);
+    if (setData) {
+      setData(data);
+    }
+  }, [customerNetwork]);
 
-  return (
-    <Col>
-      <Label>Email orders to orders@waites.net</Label>
-      <DataTable dense direction="auto" columns={cols} data={currentData} />
-    </Col>
-  );
+  const columns = [
+    {
+      name: "Item",
+      selector: (row) => row["item"],
+    },
+    {
+      name: "Description",
+      cell: (row) => (
+        <input
+          type="text"
+          id={`description-${row.item}`}
+          name={`description-${row.item}`}
+          placeholder="Enter description..."
+          className="form-control ui-kit__input"
+          onInput={(e) => {
+              handleDescriptionChange(e)
+              priceValidation(e)
+            }}
+          {...register(`description-${row.item}`, validation('text'))}
+        />
+      ),
+    },
+    {
+      name: "Units",
+      selector: (row) => row["units"],
+    },
+    {
+      name: "Quantity",
+      selector: (row) => row["quantity"],
+    },
+    {
+      name: "Price",
+      cell: (row) => (
+        <input
+          id={`price-${row.item}`}
+          name={`price-${row.item}`}
+          type="number"
+          min="0"
+          placeholder="Enter price..."
+          className="form-control ui-kit__input"
+          onInput={(e) => {
+              handlePriceChange(e)
+              priceValidation(e)
+            }}
+          {...register(`price-${row.item}`, validation('price'))}
+        />
+      ),
+    },
+    {
+      name: "Cost",
+      selector: (row) => row["cost"],
+    },
+  ];
+
+  return <DataTable columns={columns} data={listData} />;
 };
 
-export default ComertialTable;
+export default ComertialPurpose;

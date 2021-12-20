@@ -49,12 +49,12 @@ const Profile = {
 
     uploadProfilePhoto: async (id, data) => {
         const token = getToken()
-        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
+        if ( token ) return apiRequest( 'PUT', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Authorization': 'Bearer' + token
         })
     },
 
-    createPdf: async (data) => {
+    createPdf: async (data, time) => {
         const token = getToken()
         if (token) {
             fetch(BASE_URL + `/api/commercial-purpose/create-pdf?access-token=${token}`, {
@@ -69,7 +69,7 @@ const Profile = {
                 let url = window.URL.createObjectURL(blob)
                 let a = document.createElement('a')
                 a.href = url
-                a.download = 'Comertial_Purpose.pdf'
+                a.download = `Comertial_Purpose_${time}.pdf`
                 document.body.appendChild(a)
                 a.click()
                 a.remove()

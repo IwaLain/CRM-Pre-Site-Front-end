@@ -4,11 +4,11 @@ import logo from '../../../../assets/img/waites-block-logo-yellow-background.png
 import bottom from '../../../../assets/img/barcode.png'
 
 // Create Document Component
-const Previews = ({ data, items, date }) => {
+const Previews = ({ table, form, date, quote }) => {
     let total = 0
 
-    items.map(data => {
-        total += data.amount
+    table.map(data => {
+        total += data.cost
     })
     
     return (
@@ -33,7 +33,7 @@ const Previews = ({ data, items, date }) => {
                           <b>Quote #</b>
                       </h2>
                       <div className="quote">
-                          {data.quote}
+                          {quote}
                       </div>
                   </div>
                   <div className="purposePre_ship">
@@ -41,13 +41,13 @@ const Previews = ({ data, items, date }) => {
                             <b>Bill</b>
                       </div>
                       <div className="purposePre_shipment-desc">
-                            {data.bill} 
+                            {form.bill} 
                       </div>
                       <div className="purposePre_shipment-title">
                           <b>Ship to</b>
                       </div>
                       <div className="purposePre_shipment-desc">
-                            {data.ship} 
+                            {form.ship} 
                       </div>
                   </div>
               </div>
@@ -66,7 +66,7 @@ const Previews = ({ data, items, date }) => {
                             <b>Expires</b>
                         </div>
                         <div className="purposePre_info-desc" id="expires">
-                            {data.expires}
+                            {form.expires}
                         </div>
                       </div>
                       <div className="purposePre_info-item">
@@ -74,7 +74,7 @@ const Previews = ({ data, items, date }) => {
                             <b>Memo</b>
                         </div>
                         <div className="purposePre_info-desc" id="memo">
-                                {data.memo}
+                            {form.memo}
                         </div>
                       </div>
                   </div>
@@ -97,14 +97,14 @@ const Previews = ({ data, items, date }) => {
                   </thead>
                   <tbody>
                     {
-                        items.map(data => (
+                        table.map(data => (
                             <tr key={data.item}>
                                 <td>{data.item}</td>
                                 <td>{data.description}</td>
                                 <td>{data.units}</td>
                                 <td align="center" className="cost">{data.quantity}</td>
-                                <td align="center" className="cost">{data.rate}</td>
-                                <td align="center" className="cost">{data.amount}</td>
+                                <td align="center" className="cost">{data.price}</td>
+                                <td align="center" className="cost">{data.cost}</td>
                             </tr>
                         ))
                     }
@@ -118,7 +118,7 @@ const Previews = ({ data, items, date }) => {
             <div className="purposePre_barcode">
                 <img src={bottom} alt="barcode" />
                 <div className="barcode">
-                    {data.quote}
+                    {quote}
                 </div>
             </div>
             <div className="purposePre_subadress">

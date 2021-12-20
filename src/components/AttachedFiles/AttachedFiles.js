@@ -83,16 +83,11 @@ const AttachedFiles = ({
             toggleConfirmModal();
           }}
         ></span>
-        <div className="thumbInner">
+        <div className="thumbInner" title={file.fileName}>
           {file.isImage === true ? (
-            <img
-              src={file.preview}
-              className="attached--img"
-              alt="..."
-              title={file.fileName}
-            />
+            <img src={file.preview} className="attached--img" alt="..." />
           ) : (
-            <i className="far fa-file  fa-4x" title={file.fileName}></i>
+            <i className="far fa-file  fa-4x"></i>
             // <div className="dropzone--filename">
             //   <span className="filename--text">{file.img}</span>
             //   <i className="far fa-file  fa-4x"></i>

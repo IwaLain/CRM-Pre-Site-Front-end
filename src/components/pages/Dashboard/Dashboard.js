@@ -3,8 +3,6 @@ import { useHistory } from "react-router";
 import { GlobalContext } from "../../../context";
 import "../../../scss/dashboard-page.scss";
 import { alert } from "../../../js/helpers/alert";
-import DataTable from "react-data-table-component";
-import PurposeTable from "../../PurposeTable/PurposeTable";
 
 const Dashboard = () => {
   const { selectedCustomer, customerNetwork } = useContext(GlobalContext);
