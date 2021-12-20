@@ -12,7 +12,6 @@
 }
 
 .edit-img button {
-  background: transparent;
   border: 0;
 }
 
@@ -20,7 +19,6 @@
 .edit-img button:active,
 .edit-img button:focus,
 .edit-img button:active:focus {
-  background: transparent;
   border: 0;
   box-shadow: none;
 }
@@ -54,4 +52,19 @@
   .edit-img__menu {
     flex-direction: column;
   }
+}
+// .edit-img__btn {
+//   color: white;
+//   background-color: black;
+//   border-radius: 50%;
+// }
+.edit-img__icon {
+  font-size: 12px;
+  padding: 6px;
+  border-radius: 50%;
+  background-color: black;
+  color: white;
+}
+.edit-img__btn {
+  background: transparent;
 }
