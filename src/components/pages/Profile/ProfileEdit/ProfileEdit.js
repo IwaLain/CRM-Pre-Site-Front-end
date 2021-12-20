@@ -38,7 +38,6 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
-            'img': e.img,
             'role': e.role
         }
 

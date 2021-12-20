@@ -5,31 +5,25 @@ export const apiRequest = async (
   headers = undefined
 ) => {
   if (method === "GET" || method === "DELETE") {
-    try {
       const response = await fetch(url, {
         method: method,
+      }).then(data => {
+        return data.json();
+      }).catch(errors => {
+        console.log('Error: ' + errors)
       });
-      const json = await response.json();
-
-      return await json;
-    } catch (error) {
-      console.error("Error: ", error);
-    }
-  } else {
-    try {
-      const response = await fetch(url, {
-        method: method,
-        headers: headers,
-        body: JSON.stringify(data),
-      });
-
-      const json = await response.json();
-
-      if (response !== undefined) {
-        return await json;
-      } 
-    } catch (error) {
-      console.error("Error: ", error);
-    }
+      return response
+  } 
+  else {
+    const response = await fetch(url, {
+      method: method,
+      headers: headers,
+      body: JSON.stringify(data),
+    }).then(data => {
+      return data.json();
+    }).catch(errors => {
+      console.log('Error: ' + errors)
+    });
+    return response
   }
 };

@@ -1,5 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Col, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap'
+import React, { 
+    useEffect, 
+    useState } from 'react'
+import { 
+    Button, 
+    Col, 
+    FormGroup, 
+    Modal, 
+    ModalBody, 
+    ModalFooter, 
+    ModalHeader, 
+    Row } from 'reactstrap'
 import './UserModal.scss'
 import AddUser from '../UserAdd/UserAdd'
 import UserEdit from '../UserEdit/UserEdit'
