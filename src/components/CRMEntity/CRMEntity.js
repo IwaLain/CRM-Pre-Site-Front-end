@@ -153,7 +153,7 @@ const CRMEntity = ({ type }) => {
   useEffect(() => {
     setInformationItems([]);
     setIsLoading(true);
-    if (id) {
+    if (!id) {
       setEntityID(id);
       try {
         getEntityAPI(id).then((data) => {
@@ -253,11 +253,11 @@ const CRMEntity = ({ type }) => {
           setIsLoading(false);
         });
       } catch {
-        history.push(`/dashboard/${entityPluralAlias}`);
+        history.replace(`/dashboard/${entityPluralAlias}`);
         history.push("/404");
       }
     } else {
-      history.push(`/dashboard/${entityPluralAlias}`);
+      history.replace(`/dashboard/${entityPluralAlias}`);
       history.push("/404");
     }
   }, []);
