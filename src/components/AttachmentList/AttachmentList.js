@@ -100,9 +100,9 @@ const AttachmentList = ({
       isDeleted = await onRemoveFileServer(file.id, type);
     } else {
       let fileToDelete;
-
-      fileToDelete = attachedFiles.find((el) => el.id === file.id);
-
+      if (attachedFiles) {
+        fileToDelete = attachedFiles.find((el) => el.id === file.id);
+      }
       if (fileToDelete) {
         setCreatedFiles((state) => [
           ...state,

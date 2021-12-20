@@ -21,6 +21,7 @@
 .thumbsContainer {
   display: flex;
   flex-direction: row;
+
   flex-wrap: wrap;
   margin-bottom: -15px;
   margin-right: -15px;
@@ -33,7 +34,7 @@
   border: 1px solid #eaeaea;
   margin-bottom: 15px;
   margin-right: 15px;
-  width: 95px;
+  width: 90px;
   height: 90px;
 }
 
@@ -47,7 +48,7 @@
 }
 .dropzone {
   display: flex;
-
+  justify-content: center;
   text-align: center;
   position: relative;
 
