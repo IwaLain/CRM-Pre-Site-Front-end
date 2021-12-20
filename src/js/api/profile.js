@@ -49,7 +49,7 @@ const Profile = {
 
     uploadProfilePhoto: async (id, data) => {
         const token = getToken()
-        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
+        if ( token ) return apiRequest( 'PUT', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
             'Authorization': 'Bearer' + token
         })
     },

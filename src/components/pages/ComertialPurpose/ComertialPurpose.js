@@ -2,25 +2,20 @@ import React, { useState } from 'react'
 import {
       Button,
       Col,
-      Modal,
-      ModalBody,
-      ModalFooter,
-      ModalHeader,
       Row
   } from 'reactstrap';
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
 import './ComertialPurpose.scss'
 import { useForm } from 'react-hook-form';
 import { ToastContainer } from 'react-toastify';
-import Previews from './Preview/Preview';
 import ComertialTable from './ComertialTable/ComertialTable';
 import ComertialForm from './ComertialForm/ComertialForm';
+import ComertialModal from './ComertialModal/ComertialModal';
 
 const ComertialPurpouse = () => {
-    const [quote, setQuote] = useState('Q' + Math.floor(Date.now() / 1000))
+    const [quote, ] = useState('Q' + Math.floor(Date.now() / 1000))
     const [currentData, setCurrentData] = useState([])
     const [previewData, setPreviewData] = useState([])
-    const [priceValid, setPriceValid] = useState({})
     const [modalPDF, setModalPDF] = useState(false);
     const [previewList, setPreviewList] = useState([
         {
@@ -37,8 +32,6 @@ const ComertialPurpouse = () => {
 
     const togglePDF = () => setModalPDF(!modalPDF);
     const changeCurrentData = (newData) => setCurrentData(newData)
-
-    const checkPriceValid = (valid) => setPriceValid(valid)
 
     const {
         formState: { errors },
@@ -62,6 +55,14 @@ const ComertialPurpouse = () => {
         date
     }
 
+    const preview = {
+        previewData,
+        currentData,
+        previewList,
+        date,
+        quote,
+    }
+
     return (
         <div className="purpose" id="purpose">
             <Row className='purpose__title-print'>
@@ -83,7 +84,6 @@ const ComertialPurpouse = () => {
             <Row>
                 <ComertialForm 
                     dataForm={dataForm}
-                    priceValid={priceValid}
                     currentData={currentData}
                 />
             </Row>
@@ -119,33 +119,11 @@ const ComertialPurpouse = () => {
                 </Col>
             </Row>
 
-            <Modal
-                isOpen={modalPDF}
-                toggle={togglePDF}
-                className="purposePreview"
-                size='lg'
-            >
-                <ModalHeader>
-                    Preview PDF
-                </ModalHeader>
-                <ModalBody>
-                    <Previews 
-                        form={previewData}
-                        table={currentData}
-                        items={previewList}
-                        date={date}
-                        quote={quote}
-                    />
-                </ModalBody>
-                <ModalFooter>
-                    <Button
-                        onClick={togglePDF}
-                        className="purposePreview__button"
-                    >
-                        Close
-                    </Button>
-                </ModalFooter>
-            </Modal>
+            <ComertialModal 
+                modalPDF={modalPDF}
+                togglePDF={togglePDF}
+                preview={preview}
+            />
             <ToastContainer position="bottom-right" />
         </div>
     )

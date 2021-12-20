@@ -58,9 +58,7 @@ const UserEdit = ({ currentUser, editeMethod }) => {
             }
         })
 
-        if (currentUser.role !== 'SuperAdmin') {
-            editeMethod(currentUser.id, data)
-        }        
+        if (currentUser.role !== 'SuperAdmin') editeMethod(currentUser.id, data)       
     };
 
     return (

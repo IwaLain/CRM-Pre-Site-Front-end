@@ -81,7 +81,7 @@ const ComertialForm = ({dataForm, currentData}) => {
                     <Row className='purpose__info'>
                         <Col>
                             <Label>
-                                    Date
+                                Date
                             </Label>
                         </Col>
                         {date}

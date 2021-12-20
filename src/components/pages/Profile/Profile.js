@@ -3,17 +3,22 @@ import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
 import { useContext, useEffect, useState } from "react"
 import Profile from "../../../js/api/profile"
-import convertToBase64 from "../../../js/helpers/convertImage"
 import UserModal from "../Users/UserModal/UserModal"
 import { GlobalContext } from "../../../context"
+import convertToBase64 from "../../../js/helpers/convertImage"
 
 const ProfilePage = () => {
-    const [loadedImg, setLoadedImg] = useState('');
-    const [img, setImg] = useState('');
-    const [modalEditProfile, setModalEditProfile] = useState(false)
     const { userProfile, setUserProfile } = useContext(GlobalContext)
     const [profile, setProfile] = useState(userProfile);
+    const [loadedImg, setLoadedImg] = useState(process.env.REACT_APP_SERVER_URL + "/" + profile.img);
+    const [img, setImg] = useState(process.env.REACT_APP_SERVER_URL + "/" + profile.img);
+    const [modalEditProfile, setModalEditProfile] = useState(false)
 
+    const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
+    const editeProfile = (data) => {
+        setProfile(data)
+    }
+    
     const profileData = [
         {title: "First Name", desc: profile.first_name},
         {title: "Last Name", desc: profile.last_name},
@@ -22,38 +27,29 @@ const ProfilePage = () => {
         {title: "Role", desc: profile.role},
     ]
 
+    const checkEmpty = (data) => data ? data : '--'
+
     useEffect(() => {
         Profile.getProfile()
         .then(data => {
             setProfile(data.user)
-            setLoadedImg(
-                process.env.REACT_APP_SERVER_URL + "/" + profile.img
-            );
         })
-    }, [userProfile])
-
+    }, [])
+      
     const addImageHandler = (e) => {
         const file = e.target.files[0];
-        const url = URL.createObjectURL(file);
-        
+        let url = URL.createObjectURL(file);
         if (file) {
             convertToBase64(file).then((res) => setImg(res));
             setLoadedImg(url);
+        } else {
+            setLoadedImg(placeholder);
         }
 
-        let data = {'img': img}
-        Profile.updateProfile(profile.id, data)
+        Profile.uploadProfilePhoto(profile.id, {'img': img})
+        .then(data => console.log(data))
     };
 
-    const checkEmpty = (data) => data ? data : '--'
-
-    const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
-    const editeProfile = (data) => {
-        setProfile(data)
-    }
-
-    
-    
     return(
         <>
             <Row className='profile__container'>
@@ -65,7 +61,11 @@ const ProfilePage = () => {
                                 for="image-field">
                                 <img
                                     className='profile__img'
-                                    src={profile.img === null ? placeholder : loadedImg}
+                                    src={
+                                        loadedImg === null || '' || 'http://crm.local' 
+                                        ? placeholder 
+                                        : loadedImg
+                                    }
                                     alt="Avatar"
                                 />
                             </Label>
@@ -73,7 +73,7 @@ const ProfilePage = () => {
                                 className="form-control"
                                 id="image-field"
                                 type="file"
-                                accept="image/*"
+                                accept=".png, .jpg, .jpeg"
                                 onChange={addImageHandler}
                             />
                         </Row>
