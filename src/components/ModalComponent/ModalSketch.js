@@ -956,7 +956,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                               errors[`${id}`] &&
                               errors[`${id}`].message}
                           </small>
-                          ;
                         </Col>
                       </FormGroup>
                     ))}
