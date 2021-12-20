@@ -54,6 +54,9 @@ const ProfilePage = () => {
 
     return(
         <div className="container-fluid profile__container">
+            <Row>
+                <h3>Profile</h3>
+            </Row>
             <Row className='profile__item'>
                 <Row md="12" className='profile'>
                     <Col className="profile__data">
@@ -63,7 +66,7 @@ const ProfilePage = () => {
                                     profileData.map(data => (
                                         data.title === 'Avatar' 
                                         ?
-                                        <tr className='profile__list'>
+                                        <tr className='profile__list' key={data.title}>
                                             <td className="profile__title">
                                                 <Label>{data.title}</Label>
                                             </td>
@@ -101,23 +104,27 @@ const ProfilePage = () => {
                                         </tr>
                                     ))
                                 }
+                                <tr className='profile__list' key="profile__button">
+                                    <td className="profile__title"><Label></Label></td>
+                                    <td className="profile__desc">
+                                        <Row>
+                                            <Button
+                                                className='profile__button'
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    toggleEditProfile(true)
+                                            }}>
+                                                Edit Profile
+                                                <i className="fas fa-user-edit"></i>
+                                            </Button>
+                                        </Row>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </Col>
                 </Row>
             </Row>
-            <Row>
-                <Button
-                    className='profile__button'
-                    onClick={(e) => {
-                        e.preventDefault()
-                        toggleEditProfile(true)
-                }}>
-                    Edit Profile
-                    <i className="fas fa-user-edit"></i>
-                </Button>
-            </Row>
-            
             <UserModal
                 type='Edit Profile'
                 currentUser={profile}
