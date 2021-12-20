@@ -429,12 +429,14 @@ const List = ({
               </div>
             )}
             {!hideSearch && (
-              <input
-                className="list__search"
-                type="text"
-                placeholder="Search..."
-                onInput={handleSearch}
-              />
+              <div style={{ display: "flex" }}>
+                <input
+                  className="list__search"
+                  type="text"
+                  placeholder="Search..."
+                  onInput={handleSearch}
+                />
+              </div>
             )}
             {!hideChangeView && (
               <div className="list__options_btns">
@@ -474,7 +476,7 @@ const List = ({
               ) : (
                 <div
                   className={
-                    screenSize > 440
+                    screenSize > 1020
                       ? "info-card_group"
                       : "info-card_group dense"
                   }
