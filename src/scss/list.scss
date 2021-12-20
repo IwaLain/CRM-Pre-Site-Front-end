@@ -1,10 +1,18 @@
 @import "./scss-variables.scss";
 
+.list {
+  background-color: white;
+  padding: 15px 0 0 0;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px #ddd;
+}
+
 .list__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  padding: 0 15px;
 }
 
 .list__header button {

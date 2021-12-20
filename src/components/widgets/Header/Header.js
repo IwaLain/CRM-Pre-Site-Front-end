@@ -42,7 +42,7 @@ const Header = () => {
         toggle={toggleDropdown}
       >
         <DropdownToggle className="profile-badge__toggle">
-          <i className="fas fa-star"></i>
+          <i className="fas fa-user"></i>
         </DropdownToggle>
         <DropdownMenu end>
           <DropdownItem>
