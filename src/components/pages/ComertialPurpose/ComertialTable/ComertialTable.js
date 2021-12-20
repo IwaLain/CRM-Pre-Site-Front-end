@@ -8,7 +8,7 @@ const ComertialPurpose = ({ setData, dataForm }) => {
   const { customerNetwork } = useContext(GlobalContext);
 
   const [listData, setListData] = useState([]);
-  const { register, trigger} = dataForm
+  const { register } = dataForm
 
   const priceValidation = (e) => {
       if (e.target.value === 0 || e.target.value === '') {

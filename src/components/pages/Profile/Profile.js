@@ -20,6 +20,8 @@ const ProfilePage = () => {
     }
     
     const profileData = [
+        {title: "Avatar", desc: profile.img},
+        {title: "Username", desc: profile.username},
         {title: "First Name", desc: profile.first_name},
         {title: "Last Name", desc: profile.last_name},
         {title: "Phone", desc: profile.phone},
@@ -51,63 +53,71 @@ const ProfilePage = () => {
     };
 
     return(
-        <>
-            <Row className='profile__container'>
-                <Col md="3" className='profile__item'>
-                    <Card className="profile__card">
-                        <Row className='profile__avatar'>
-                            <Label
-                                className="image-field"
-                                for="image-field">
-                                <img
-                                    className='profile__img'
-                                    src={
-                                        loadedImg === null || '' || 'http://crm.local' 
-                                        ? placeholder 
-                                        : loadedImg
-                                    }
-                                    alt="Avatar"
-                                />
-                            </Label>
-                            <input
-                                className="form-control"
-                                id="image-field"
-                                type="file"
-                                accept=".png, .jpg, .jpeg"
-                                onChange={addImageHandler}
-                            />
-                        </Row>
-                        <Row className="profile__username">
-                            User: {profile.username}
-                        </Row>
-                    </Card>
-                </Col>
-                <Col md="6" className='profile__item'>
-                    <Card className="profile__card">
-                        <Row md="12" className='profile'>
-                            <Col className="profile__data">
-                                {profileData.map(data => (
-                                    <Row className='profile__list' key={data.title}>
-                                        <Col className='profile__text'>
-                                            <Label>{data.title}</Label>
-                                            <div className="profile__desc">{checkEmpty(data.desc)}</div>
-                                        </Col>
-                                    </Row>
-                                ))}
-                            </Col>
-                            <Button
-                                className='profile__button'
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    toggleEditProfile(true)
-                            }}>
-                                Edit Profile
-                                <i className="fas fa-user-edit"></i>
-                            </Button>
-                        </Row>
-                    </Card>
-                </Col>
+        <div className="container-fluid profile__container">
+            <Row className='profile__item'>
+                <Row md="12" className='profile'>
+                    <Col className="profile__data">
+                        <table>
+                            <tbody>
+                                {
+                                    profileData.map(data => (
+                                        data.title === 'Avatar' 
+                                        ?
+                                        <tr className='profile__list'>
+                                            <td className="profile__title">
+                                                <Label>{data.title}</Label>
+                                            </td>
+                                            <td className='profile__avatar'>
+                                                <Label
+                                                    className="image-field"
+                                                    for="image-field">
+                                                    <img
+                                                        className='profile__img'
+                                                        src={
+                                                            loadedImg === null || '' || 'http://crm.local' 
+                                                            ? placeholder 
+                                                            : loadedImg
+                                                        }
+                                                        alt="Avatar"
+                                                    />
+                                                </Label>
+                                                <input
+                                                    className="form-control"
+                                                    id="image-field"
+                                                    type="file"
+                                                    accept=".png, .jpg, .jpeg"
+                                                    onChange={addImageHandler}
+                                                />
+                                            </td>
+                                        </tr>
+                                        :
+                                        <tr className='profile__list' key={data.title}>
+                                            <td className="profile__title">
+                                                <Label>{data.title}</Label>
+                                            </td>
+                                            <td className="profile__desc">
+                                                <div className="profile__desc">{checkEmpty(data.desc)}</div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </Col>
+                </Row>
             </Row>
+            <Row>
+                <Button
+                    className='profile__button'
+                    onClick={(e) => {
+                        e.preventDefault()
+                        toggleEditProfile(true)
+                }}>
+                    Edit Profile
+                    <i className="fas fa-user-edit"></i>
+                </Button>
+            </Row>
+            
             <UserModal
                 type='Edit Profile'
                 currentUser={profile}
@@ -115,7 +125,7 @@ const ProfilePage = () => {
                 toggle={toggleEditProfile}
                 modal={modalEditProfile}
             />
-        </>
+        </div>
     )
 }
 

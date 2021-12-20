@@ -1,39 +1,8 @@
-.profile__container {
-    display: flex;
-    justify-content: start;
-    max-width: 1200px;
-
-    @media (max-width: 1085px) {
-        justify-content: center;
-    }
-}
-
 .profile {
-    display: flex;
     justify-content: center;
-
-    &__card {
-        max-width: 500px;
-        padding: 10px 20px;
-        box-shadow: 0 0 1px 0 rgb(133, 133, 133);
-
-        &.card {
-            border: none;
-            background-color: #eee;
-
-            @media (max-width: 750px) {
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-
-        
-    }
     
     &__item {
         align-items: center;
-        max-width: 460px;
-        min-width: 400px;
         padding-bottom: 5px;
         margin-bottom: 20px;
 
@@ -105,6 +74,22 @@
         margin-bottom: 10px;
         padding-top: 10px;
         font-size: 24px;
+    }
+
+    table {
+        font-size: 16px;
+
+        .profile__title {
+            text-align: right;
+        }
+
+        .profile__desc {
+            margin-left: 20px;
+        }
+
+        td {
+            margin-bottom: 25px;
+        }
     }
 }
 
