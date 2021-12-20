@@ -8,7 +8,7 @@ const ComertialPurpose = ({ setData, dataForm }) => {
   const { customerNetwork } = useContext(GlobalContext);
 
   const [listData, setListData] = useState([]);
-  const { register } = dataForm
+  const { register, errors, trigger } = dataForm
 
   const priceValidation = (e) => {
       if (e.target.value === 0 || e.target.value === '') {
@@ -87,12 +87,15 @@ const ComertialPurpose = ({ setData, dataForm }) => {
           id={`description-${row.item}`}
           name={`description-${row.item}`}
           placeholder="Enter description..."
-          className="form-control ui-kit__input"
+          className={`form-control ${'description-' + row.item === '' ? 'is-invalid' : ''}`}
           onInput={(e) => {
               handleDescriptionChange(e)
               priceValidation(e)
             }}
           {...register(`description-${row.item}`, validation('text'))}
+          onKeyUp = {() => {
+            trigger(`description-${row.item}`)
+          }}
         />
       ),
     },
@@ -113,12 +116,15 @@ const ComertialPurpose = ({ setData, dataForm }) => {
           type="number"
           min="0"
           placeholder="Enter price..."
-          className="form-control ui-kit__input"
+          className={`form-control ${'price-' + row.item === '' ? 'is-invalid' : ''}`}
           onInput={(e) => {
               handlePriceChange(e)
               priceValidation(e)
             }}
           {...register(`price-${row.item}`, validation('price'))}
+          onKeyUp = {() => {
+            trigger(`price-${row.item}`)
+          }}
         />
       ),
     },
