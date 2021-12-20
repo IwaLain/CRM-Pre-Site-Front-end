@@ -153,7 +153,7 @@ const CRMEntity = ({ type }) => {
   useEffect(() => {
     setInformationItems([]);
     setIsLoading(true);
-    if (!id) {
+    if (id) {
       setEntityID(id);
       try {
         getEntityAPI(id).then((data) => {
