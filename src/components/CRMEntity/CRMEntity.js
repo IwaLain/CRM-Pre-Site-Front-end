@@ -87,14 +87,14 @@ const CRMEntity = ({ type }) => {
       setMainImage(res["main-image"]);
     });
   };
-
+  let entityPluralAlias = "";
   switch (type) {
     case "customer":
       getEntityAPI = customersApi.getCustomer;
       deleteEntityImageAPI = customersApi.deleteCustomerImage;
       addEntityImageAPI = customersApi.addCustomerImage;
       setMainEntityImageAPI = customersApi.setMainCustomerImage;
-
+      entityPluralAlias = "customers";
       subEntityName = "facilities";
 
       informationFieldNames = ["address", "phone", "email"];
@@ -105,7 +105,7 @@ const CRMEntity = ({ type }) => {
       deleteEntityImageAPI = facilitiesApi.deleteFacilityImage;
       addEntityImageAPI = facilitiesApi.addFacilityImage;
       setMainEntityImageAPI = facilitiesApi.setMainFacilityImage;
-
+      entityPluralAlias = "facilities";
       subEntityName = "locations";
 
       informationFieldNames = ["address"];
@@ -116,7 +116,7 @@ const CRMEntity = ({ type }) => {
       deleteEntityImageAPI = locationApi.deleteLocationImage;
       addEntityImageAPI = locationApi.addLocationImage;
       setMainEntityImageAPI = locationApi.setMainLocationImage;
-
+      entityPluralAlias = "locations";
       subEntityName = "equipment";
 
       break;
@@ -125,25 +125,6 @@ const CRMEntity = ({ type }) => {
       deleteEntityImageAPI = equipmentApi.deleteImageEquipment;
       addEntityImageAPI = equipmentApi.createImageEquipment;
       setMainEntityImageAPI = equipmentApi.setMainEquipmentImage;
-
-      break;
-    default:
-      break;
-  }
-
-  let entityPluralAlias = "";
-
-  switch (type) {
-    case "customer":
-      entityPluralAlias = "customers";
-      break;
-    case "facility":
-      entityPluralAlias = "facilities";
-      break;
-    case "location":
-      entityPluralAlias = "locations";
-      break;
-    case "equipment":
       entityPluralAlias = "equipment";
       break;
     default:
