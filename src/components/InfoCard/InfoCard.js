@@ -152,7 +152,7 @@ const InfoCard = ({
             }
           >
             <Link
-              to={`/dashboard/${type}/${data && data.id}`}
+              to={`/${type}/${data && data.id}`}
               style={data && hideRecordView ? { visibility: "hidden" } : {}}
             >
               View

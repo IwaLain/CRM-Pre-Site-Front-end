@@ -24,7 +24,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/dashboard/customers`}>
+            <Link to={`/customers`}>
               <span className="fa-li">
                 <i className="fas fa-user"></i>
               </span>
@@ -34,7 +34,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/dashboard/facilities`}>
+            <Link to={`/facilities`}>
               <span className="fa-li">
                 <i className="fas fa-industry"></i>
               </span>
@@ -44,7 +44,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/dashboard/locations`}>
+            <Link to={`/locations`}>
               <span className="fa-li">
                 <i className="fas fa-map-marker-alt"></i>
               </span>
@@ -54,7 +54,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/dashboard/equipment`}>
+            <Link to={`/equipment`}>
               <span className="fa-li">
                 <i className="fas fa-tools"></i>
               </span>
@@ -64,7 +64,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/dashboard/network`}>
+            <Link to={`/network`}>
               <span className="fa-li">
                 <i className="fas fa-network-wired"></i>
               </span>
@@ -74,7 +74,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/dashboard/purpose`}>
+            <Link to={`/purpose`}>
               <span className="fa-li">
                 <i className="fas fa-file-alt"></i>
               </span>

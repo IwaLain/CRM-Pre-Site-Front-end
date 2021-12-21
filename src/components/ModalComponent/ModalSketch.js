@@ -243,9 +243,13 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   } changed.`
                 );
                 setUpdateTrigger(!updateTrigger);
-              } else if (data.errors && data.errors.includes("ID is invalid")) {
-                alert("error", `Invalid ref object.`);
-              } else alert("error", `Request error.`);
+              } else {
+                if (data["errors"]) {
+                  data["errors"].split(", ").forEach((err) => {
+                    alert("error", err);
+                  });
+                }
+              }
             }
           });
       } catch (e) {
@@ -775,7 +779,12 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   return (
     <>
       <Modal isOpen={modal} toggle={resetToggle} size="lg">
-        <ModalHeader>{formTitle}</ModalHeader>
+        <ModalHeader>
+          <button className="modal-close" onClick={resetToggle}>
+            <i className="fas fa-times"></i>
+          </button>
+          {formTitle}
+        </ModalHeader>
         <ModalBody>
           <Form id="form" onSubmit={handleSubmit(onSubmit)}>
             {modalFields.map((field, index) =>
@@ -793,15 +802,21 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                         {...register(field.title.toLowerCase(), {
                           required: {
                             value: true,
-                            message: `${field.title.toLowerCase()} is required.`,
+                            message: `${field.title} is required.`,
                           },
                           pattern: {
                             value: /^[\w-.]+@([\w-]+.)+[\w-]{1,10}$/,
-                            message: `${field.title.toLowerCase()} is not valid. Example: alex@gmail.com`,
+                            message: `${field.title} is not valid. Example: alex@gmail.com`,
                           },
                         })}
                       />
-                      <small className="text-danger">
+                      <small
+                        className={
+                          errors[field.title.toLowerCase()]
+                            ? "text-danger"
+                            : "text-danger hidden"
+                        }
+                      >
                         {errors &&
                           errors[field.title.toLowerCase()] &&
                           errors[field.title.toLowerCase()].message}

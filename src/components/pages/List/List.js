@@ -4,7 +4,7 @@ import { useRouteMatch } from "react-router";
 import TableView from "../../TableView/TableView";
 import InfoCard from "../../InfoCard/InfoCard";
 import CustomPagination from "../../widgets/Pagination/Pagination";
-import { Spinner, Label } from "reactstrap";
+import { Label } from "reactstrap";
 import { GlobalContext } from "../../../context";
 import customersApi from "../../../js/api/customer";
 import locationApi from "../../../js/api/locations";
@@ -12,6 +12,7 @@ import equipmentApi from "../../../js/api/equipment";
 import facilitiesApi from "../../../js/api/facilities";
 import Button from "../../UIKit/Button/Button";
 import ModalSketch from "../../ModalComponent/ModalSketch";
+import Loader from "../../widgets/Loader/Loader";
 
 const List = ({
   type,
@@ -31,7 +32,7 @@ const List = ({
   const [requests, setRequests] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [view, setView] = useState(true);
-  const [screenSize, SetScreenSize] = useState(window.screen.width);
+  const [screenSize, SetScreenSize] = useState(window.innerWidth);
   const [totalRows, setTotalRows] = useState(Math.ceil(0));
   const [entityNames, setEntityNames] = useState();
   const [mode, setMode] = useState();
@@ -86,7 +87,7 @@ const List = ({
   };
 
   const handleResize = () => {
-    SetScreenSize(window.screen.width);
+    SetScreenSize(window.innerWidth);
   };
 
   const handleEntitySelect = (e) => {
@@ -165,12 +166,6 @@ const List = ({
       }
       setPrevSelectedAll(true);
     } else setPrevSelectedAll(false);
-  };
-
-  const handlePageChange = (e) => {
-    console.log(e.selected);
-    const page = e.selected + 1;
-    setPage(page);
   };
 
   const toggleModal = () => {
@@ -385,77 +380,77 @@ const List = ({
         toggle={toggleModal}
         mode={mode}
       />
-      <div className="list">
-        <div className="list__header">
-          <div
-            className="list__title"
-            style={hideTitle && { visibility: "hidden" }}
-          >
-            <h3>{title || pageTitle}</h3>
-            {!hideCreateBtn && (
-              <button
-                className="list__add-btn"
-                onClick={() => {
-                  setMode("create");
-                  toggleModal();
-                }}
-              >
-                +
-              </button>
-            )}
-          </div>
-          <div className="list__options">
-            {type && type.ref && !hideSelect && (
-              <div className="list__select-entity">
-                <Label for="select-entity">{type && `${type.ref}:`}</Label>
-                <select
-                  className="ui-kit__select"
-                  id="select-entity"
-                  value={entityID}
-                  onChange={handleEntitySelect}
-                  disabled={!entityNames}
+      {!isLoading && data && Object.keys(data[type.entity]).length > 0 ? (
+        <div className="list">
+          <div className="list__header">
+            <div
+              className="list__title"
+              style={hideTitle && { visibility: "hidden" }}
+            >
+              <h3>{title || pageTitle}</h3>
+              {!hideCreateBtn && (
+                <button
+                  className="list__add-btn"
+                  onClick={() => {
+                    setMode("create");
+                    toggleModal();
+                  }}
                 >
-                  <option value="" hidden>
-                    No records
-                  </option>
-                  <option value="all">All</option>
-                  {entityNames &&
-                    entityNames.map((entity) => (
-                      <option key={entity.id} value={entity.id}>
-                        {entity.name}
-                      </option>
-                    ))}
-                </select>
-              </div>
-            )}
-            {!hideSearch && (
-              <div style={{ display: "flex" }}>
-                <input
-                  className="list__search"
-                  type="text"
-                  placeholder="Search..."
-                  onInput={handleSearch}
-                />
-              </div>
-            )}
-            {!hideChangeView && (
-              <div className="list__options_btns">
-                <Button
-                  type="list-view"
-                  onClick={() => setView(true)}
-                  className={view ? "active" : ""}
-                ></Button>
-                <Button
-                  type="block-view"
-                  onClick={() => setView(false)}
-                  className={!view ? "active" : ""}
-                ></Button>
-              </div>
-            )}
+                  +
+                </button>
+              )}
+            </div>
+            <div className="list__options">
+              {type && type.ref && !hideSelect && (
+                <div className="list__select-entity">
+                  <Label for="select-entity">{type && `${type.ref}:`}</Label>
+                  <select
+                    className="ui-kit__select"
+                    id="select-entity"
+                    value={entityID}
+                    onChange={handleEntitySelect}
+                    disabled={!entityNames}
+                  >
+                    <option value="" hidden>
+                      No records
+                    </option>
+                    <option value="all">All</option>
+                    {entityNames &&
+                      entityNames.map((entity) => (
+                        <option key={entity.id} value={entity.id}>
+                          {entity.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              )}
+              {!hideSearch && (
+                <div style={{ display: "flex" }}>
+                  <input
+                    className="list__search"
+                    type="text"
+                    placeholder="Search..."
+                    onInput={handleSearch}
+                  />
+                </div>
+              )}
+              {!hideChangeView && (
+                <div className="list__options_btns">
+                  <Button
+                    type="list-view"
+                    onClick={() => setView(true)}
+                    className={view ? "active" : ""}
+                  ></Button>
+                  <Button
+                    type="block-view"
+                    onClick={() => setView(false)}
+                    className={!view ? "active" : ""}
+                  ></Button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="list__content">
-          {!isLoading ? (
+          <div className="list__content">
             <>
               {view ? (
                 <TableView
@@ -521,11 +516,20 @@ const List = ({
                 />
               )}
             </>
-          ) : (
-            <Spinner />
-          )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          style={{
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Loader />
+        </div>
+      )}
     </>
   );
 };

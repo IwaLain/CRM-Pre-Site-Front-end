@@ -15,7 +15,7 @@ const Network = () => {
 
   useEffect(() => {
     if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
-      history.push("/dashboard/customers");
+      history.push("/customers");
       alert("error", "You need to select customer first.");
     } else
       try {
@@ -28,6 +28,7 @@ const Network = () => {
         )
           .then((res) => res.json())
           .then((network) => {
+            console.log(Object.entries(network.Network));
             setNetwork(Object.entries(network.Network));
           });
       } catch (e) {
@@ -43,17 +44,15 @@ const Network = () => {
           <div className="accordion" id="myAccordion">
             <div className="accordion__headers">
               {network &&
-                network.map((block, index) => (
+                network.map(([key, value], index) => (
                   <h2
                     key={index}
                     className="accordion-header"
                     id={`heading-${index}`}
                   >
                     <div key={index} className="dashboard-page__block">
-                      <h5>
-                        {block[0].charAt(0).toUpperCase() + block[0].slice(1)}
-                      </h5>
-                      <span>{block[1]}</span>
+                      <h5>{key.charAt(0).toUpperCase() + key.slice(1)}</h5>
+                      <span>{value.length}</span>
                       <Button
                         className="dashboard-page__block-view accorion-button collapsed"
                         color="primary"
@@ -69,7 +68,7 @@ const Network = () => {
             </div>
             <div>
               {network &&
-                network.map((block, index) => (
+                network.map(([key, value], index) => (
                   <div
                     key={index}
                     id={`collapse-${index}`}
@@ -78,10 +77,8 @@ const Network = () => {
                   >
                     <div className="card-body">
                       <List
-                        type={{ entity: block[0].toLowerCase() }}
-                        title={
-                          block[0].charAt(0).toUpperCase() + block[0].slice(1)
-                        }
+                        type={{ entity: key.toLowerCase() }}
+                        title={key.charAt(0).toUpperCase() + key.slice(1)}
                         hideChangeView
                         hideRecordView
                       />

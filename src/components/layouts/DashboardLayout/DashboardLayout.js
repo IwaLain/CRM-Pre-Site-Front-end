@@ -25,7 +25,7 @@ const DashboardLayout = ({ children }) => {
   } = useContext(GlobalContext);
 
   const handleResize = () => {
-    if (window.screen.width <= MOBILE_SIZE) {
+    if (window.innerWidth <= MOBILE_SIZE) {
       setIsMobile(true);
       setSidebarCollapsed(true);
     } else {
@@ -55,7 +55,7 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    let filtered = routes.dashboard.filter((route) => {
+    let filtered = routes.filter((route) => {
       return route.path === pagePath;
     })[0];
     filtered && setPageTitle(filtered.name);

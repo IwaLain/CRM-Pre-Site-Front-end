@@ -13,6 +13,7 @@ import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
 import LoginPage from "./components/pages/Login/Login";
 import "./scss/ui-kit.scss";
 import Profile from "./js/api/profile";
+import { alert } from "./js/helpers/alert";
 
 const App = () => {
   const [pageTitle, setPageTitle] = useState();
@@ -29,28 +30,24 @@ const App = () => {
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
-    try {
-      Profile.getProfile().then((data) => {
-        if (data) {
-          setUserProfile(data.user);
-          if (data.user.last_customer) {
-            fetch(
-              process.env.REACT_APP_SERVER_URL +
-                "/api/customer/" +
-                data.user.last_customer +
-                "?access-token=" +
-                localStorage.getItem("token")
-            )
-              .then((res) => res.json())
-              .then((customer) => {
-                setSelectedCustomer(customer.customer[data.user.last_customer]);
-              });
-          }
-        } else console.log("Profile not found.");
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    Profile.getProfile().then((data) => {
+      if (data) {
+        setUserProfile(data.user);
+        if (data.user.last_customer) {
+          fetch(
+            process.env.REACT_APP_SERVER_URL +
+              "/api/customer/" +
+              data.user.last_customer +
+              "?access-token=" +
+              localStorage.getItem("token")
+          )
+            .then((res) => res.json())
+            .then((customer) => {
+              setSelectedCustomer(customer.customer[data.user.last_customer]);
+            });
+        }
+      } else console.log("Profile not found.");
+    });
   }, []);
 
   useEffect(() => {
@@ -128,41 +125,41 @@ const App = () => {
     >
       <Router>
         <Switch>
-          <Route path="/dashboard/:path?">
+          <Route path="/:path?">
             {userProfile && Object.keys(userProfile).length > 0 ? (
               <DashboardLayout>
                 <Switch>
-                  {routes.dashboard.map(({ path, children }, index) => {
+                  {routes.map(({ path, children }, index) => {
                     return (
                       <Route key={index} path={path} children={children} />
                     );
                   })}
+                  <Route exact path="/login">
+                    <Redirect to="/customers" />
+                  </Route>
                 </Switch>
               </DashboardLayout>
             ) : (
-              <Redirect to="/login" />
+              <AuthLayout>
+                <Switch>
+                  <Route exact path="/">
+                    {localStorage.getItem("token") ? (
+                      <Redirect to="/customers" />
+                    ) : (
+                      <Redirect to="/login" />
+                    )}
+                  </Route>
+                  <Route path="/login">
+                    {localStorage.getItem("token") ? (
+                      <Redirect to="/customers" />
+                    ) : (
+                      <LoginPage />
+                    )}
+                  </Route>
+                  <Route component={NotFound} />
+                </Switch>
+              </AuthLayout>
             )}
-          </Route>
-          <Route>
-            <AuthLayout>
-              <Switch>
-                <Route exact path="/">
-                  {userProfile && Object.keys(userProfile).length > 0 ? (
-                    <Redirect to="/dashboard" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )}
-                </Route>
-                <Route path="/login">
-                  {userProfile && Object.keys(userProfile).length > 0 ? (
-                    <Redirect to="/dashboard" />
-                  ) : (
-                    <LoginPage />
-                  )}
-                </Route>
-                <Route component={NotFound} />
-              </Switch>
-            </AuthLayout>
           </Route>
         </Switch>
       </Router>

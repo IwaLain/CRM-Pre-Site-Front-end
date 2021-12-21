@@ -13,6 +13,32 @@ ul {
   list-style: none;
 }
 
+.text-danger.hidden {
+  visibility: hidden;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  border: 0;
+  background-color: transparent;
+}
+
+.modal-header {
+  position: relative;
+}
+
+.modal-body > form > div > div {
+  position: relative;
+}
+
+.modal-body > form > div small {
+  position: absolute;
+  top: -20px;
+  right: 0;
+}
+
 .modal-footer {
   display: flex;
   justify-content: space-between;
