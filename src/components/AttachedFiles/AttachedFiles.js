@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import "../../scss/attachedFiles.scss";
 import { Spinner } from "reactstrap";
-
+import PropTypes from "prop-types";
 const AttachedFiles = ({
   type,
   name,
@@ -156,5 +156,14 @@ const AttachedFiles = ({
       </div>
     </>
   );
+};
+AttachedFiles.propTypes = {
+  name: PropTypes.string,
+  onAddFile: PropTypes.func,
+  attachedFiles: PropTypes.array,
+  onRemoveFile: PropTypes.func,
+  accepted: PropTypes.string,
+  multiple: PropTypes.bool,
+  maxFiles: PropTypes.number,
 };
 export default AttachedFiles;

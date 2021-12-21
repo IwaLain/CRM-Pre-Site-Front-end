@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AttachedFiles from "../AttachedFiles/AttachedFiles";
 import convertToBase64 from "../../js/helpers/convertImage";
 import { alert } from "../../js/helpers/alert";
-
+import PropTypes from "prop-types";
 const AttachmentList = ({
   titleNeeded = true,
   multiple = true,
@@ -212,5 +212,19 @@ const AttachmentList = ({
       </div>
     </>
   );
+};
+AttachmentList.propTypes = {
+  titleNeeded: PropTypes.bool,
+  multiple: PropTypes.bool,
+  maxFiles: PropTypes.number,
+  types: PropTypes.arrayOf(
+    PropTypes.shape({
+      typeID: PropTypes.string,
+    })
+  ),
+  onAddFileServer: PropTypes.func,
+  onRemoveFileServer: PropTypes.func,
+  setCreatedFiles: PropTypes.func,
+  fileType: PropTypes.string,
 };
 export default AttachmentList;

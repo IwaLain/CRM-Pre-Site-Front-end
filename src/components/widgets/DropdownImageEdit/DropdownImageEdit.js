@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from "reactstrap";
-import star from "../../../assets/img/star.svg";
+import { Dropdown, DropdownMenu, DropdownItem } from "reactstrap";
+
 import "../../../scss/dropdownImageEdit.scss";
+import PropTypes from "prop-types";
 const DropdownImageEdit = ({ images, setMainImage }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => {
@@ -17,7 +13,7 @@ const DropdownImageEdit = ({ images, setMainImage }) => {
     <span className="edit-img">
       <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
         <button className="edit-img__btn" onClick={toggleDropdown}>
-          <i class="fas fa-pencil-alt edit-img__icon"></i>
+          <i className="fas fa-pencil-alt edit-img__icon"></i>
         </button>
         {/* <DropdownToggle className="edit-img__btn">
           <i class="fas fa-pencil-alt"></i>
@@ -45,5 +41,9 @@ const DropdownImageEdit = ({ images, setMainImage }) => {
       </Dropdown>
     </span>
   );
+};
+DropdownImageEdit.propTypes = {
+  images: PropTypes.array,
+  setMainImage: PropTypes.func,
 };
 export default DropdownImageEdit;

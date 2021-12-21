@@ -13,7 +13,7 @@ import "../../scss/CRMEntity.scss";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 import { Spinner } from "reactstrap";
-
+import PropTypes from "prop-types";
 import List from "../pages/List/List";
 const CRMEntity = ({ type }) => {
   type = type.entity;
@@ -216,8 +216,7 @@ const CRMEntity = ({ type }) => {
                     },
                   ]);
                 });
-            }
-              else {
+            } else {
               setSubEntity([
                 {
                   subEntityName: subEntityName,
@@ -302,7 +301,10 @@ const CRMEntity = ({ type }) => {
           {entityObject &&
             subEntity.length > 0 &&
             subEntity.map((subEnt) => (
-              <div className="entity-page--section table-section">
+              <div
+                key={subEnt.subEntityName}
+                className="entity-page--section table-section"
+              >
                 {/* <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2> */}
                 <List
                   type={{
@@ -346,5 +348,10 @@ const CRMEntity = ({ type }) => {
       )}
     </>
   );
+};
+CRMEntity.propTypes = {
+  type: PropTypes.shape({
+    entity: PropTypes.string,
+  }),
 };
 export default CRMEntity;
