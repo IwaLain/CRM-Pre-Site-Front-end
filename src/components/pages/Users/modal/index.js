@@ -11,9 +11,9 @@ import {
     ModalHeader, 
     Row } from 'reactstrap'
 import './UserModal.scss'
-import AddUser from '../UserAdd/UserAdd'
-import UserEdit from '../UserEdit/UserEdit'
-import ProfileEdit from '../../Profile/ProfileEdit/ProfileEdit'
+import AddUser from '../add'
+import UserEdit from '../edit'
+import ProfileEdit from '../../Profile/edit'
 
 const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
     const [formComponent, setFormComponent] = useState({});

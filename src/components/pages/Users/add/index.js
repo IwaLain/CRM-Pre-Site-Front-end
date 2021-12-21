@@ -1,26 +1,17 @@
 import React from 'react'
-import { useForm } from 'react-hook-form';
-import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
-import User from '../../../../js/api/users';
 import { alert } from '../../../../js/helpers/alert';
+import User from '../../../../js/api/users';
+import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
+import { useForm } from 'react-hook-form';
 import InputForm from '../../../../js/helpers/input';
 
-const UserEdit = ({ currentUser, editeMethod }) => {
+const UserAdd = ({ changeTable }) => {
     const {
         register,
         handleSubmit,
         trigger,
         formState: { errors }
-    } = useForm({
-        defaultValues: {
-            firstname: currentUser.first_name,
-            lastname: currentUser.last_name,
-            username: currentUser.username,
-            email: currentUser.email,
-            phone: currentUser.phone,
-            role: currentUser.role,
-        }
-    })
+    } = useForm()
 
     const dataInput = {
         register,
@@ -31,34 +22,25 @@ const UserEdit = ({ currentUser, editeMethod }) => {
 
     const onSubmit = (e) => {
         const data = {
-            'id': currentUser.id,
             'first_name': e.firstname,
             'last_name': e.lastname,
             'username': e.username,
             'email': e.email,
             'phone': e.phone,
-            'password': e.password,
-            'role': e.role,
+            'password': e.password
         }
 
-        
-        User.edite(currentUser.id, data)
+        User.create(data)
         .then(data => {
-            if(data.success) {
-                alert('success', 'Edit User successful')
+            if(data.errors) {
+                for (let key in data.errors) {
+                    alert('error', data.errors[key])
+                }
             } else {
-                alert('error', 'Can`t change Super Admin')
+                changeTable(data.users)
+                alert('success', 'Add User successful')
             }
         })
-
-        User.editRole(currentUser.id, data)
-        .then(data => {
-            if(data.success) {
-                alert('success', 'Edit Role successful')
-            }
-        })
-
-        if (currentUser.role !== 'SuperAdmin') editeMethod(currentUser.id, data)       
     };
 
     return (
@@ -80,7 +62,7 @@ const UserEdit = ({ currentUser, editeMethod }) => {
                                     />
                                 </Col>
                                 <Col md={6}>
-                                    <Label className=''>Last Name:</Label>
+                                    <Label className=''>Lust Name:</Label>
                                     <InputForm
                                         type={'lastname'}
                                         data={dataInput}
@@ -95,7 +77,7 @@ const UserEdit = ({ currentUser, editeMethod }) => {
                                     <Label className=''>User Name:</Label>
                                     <InputForm
                                         type={'username'}
-                                        data={dataInput} 
+                                        data={dataInput}
                                         errors={errors.username}
                                     />
                                 </Col>
@@ -120,16 +102,12 @@ const UserEdit = ({ currentUser, editeMethod }) => {
                                     />
                                 </Col>
                                 <Col md={6}>
-                                    <Label className='w-100'>Role:</Label>
-                                    <select 
-                                        className='ui-kit__select w-100'
-                                        {...register('role')}
-                                    >
-                                        <option disabled selected> Select role</option>
-                                        <option value='manager'>manager</option>
-                                        <option value='member'>member</option>
-                                        <option value='SuperAdmin'>SuperAdmin</option>
-                                    </select>
+                                    <Label className=''>Password:</Label>
+                                    <InputForm
+                                        type={'password'}
+                                        data={dataInput}
+                                        errors={errors.password}
+                                    />
                                 </Col>
                             </Row>
                         </FormGroup>
@@ -140,4 +118,4 @@ const UserEdit = ({ currentUser, editeMethod }) => {
     )
 }
 
-export default UserEdit
+export default UserAdd

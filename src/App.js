@@ -10,7 +10,7 @@ import DashboardLayout from "./components/layouts/DashboardLayout/DashboardLayou
 import NotFound from "./components/pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
-import LoginPage from "./components/pages/Login/Login";
+import LoginPage from "./components/pages/Login";
 import "./scss/ui-kit.scss";
 import Profile from "./js/api/profile";
 
@@ -81,7 +81,10 @@ const App = () => {
             localStorage.getItem("token")
         )
           .then((res) => res.json())
-          .then((data) => setCustomerNetwork(data["Network"]));
+          .then((data) => {
+            console.log(data)
+            setCustomerNetwork(data["Network"])
+          });
       } catch (e) {
         console.log(e);
       }

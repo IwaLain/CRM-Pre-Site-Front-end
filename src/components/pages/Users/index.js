@@ -6,8 +6,8 @@ import {
     } from 'reactstrap'
 import './Users.scss'
 import User from '../../../js/api/users'
-import UserTable from './UserTable/UserTable'
-import UserModal from './UserModal/UserModal'
+import UserTable from './table'
+import UserModal from './modal'
 
 const UsersPage = () => {
     const [users, setUsers] = useState([])
@@ -36,7 +36,6 @@ const UsersPage = () => {
                             toggleAddUser()
                         }
                     }>
-
                         <div className='users__title-img'>
                             Add User <i className="fas fa-user-plus"></i>
                         </div>

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Col, Row } from "reactstrap";
 import User from "../../../../js/api/users";
 import "./UserTable.scss";
-import UserModal from "../UserModal/UserModal";
-import DataTable, { Direction } from "react-data-table-component";
+import UserModal from "../modal";
+import DataTable from "react-data-table-component";
 import Loader from "../../../../js/helpers/loader";
 import { alert } from "../../../../js/helpers/alert";
 

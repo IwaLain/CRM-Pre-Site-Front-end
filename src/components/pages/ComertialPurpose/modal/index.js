@@ -6,7 +6,7 @@ import {
     ModalFooter, 
     ModalHeader 
 } from 'reactstrap'
-import Previews from '../Preview/Preview'
+import Previews from '../preview'
 
 const ComertialModal = ({modalPDF, togglePDF, preview}) => {
     const {previewData, currentData, previewList, date, quote} = preview

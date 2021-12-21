@@ -1,12 +1,12 @@
-import LoginPage from "./components/pages/Login/Login";
-import UsersPage from "./components/pages/Users/Users";
-import Profile from "./components/pages/Profile/Profile";
+import LoginPage from "./components/pages/Login";
+import UsersPage from "./components/pages/Users";
+import Profile from "./components/pages/Profile";
 import List from "./components/pages/List/List";
 import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
 import Dashboard from "./components/pages/Dashboard/Dashboard";
 import Network from "./components/pages/Network/Network";
-import ComertialPorpose from "./components/pages/ComertialPurpose/ComertialPurpose";
+import ComertialPorpose from "./components/pages/ComertialPurpose";
 
 const routes = {
   auth: [

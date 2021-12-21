@@ -1,24 +1,32 @@
-import { Button, Card, Col, Label, Row } from "reactstrap"
+import React, {useReducer} from 'react';
+import { 
+    Button, 
+    Col, 
+    Label, 
+    Row 
+} from "reactstrap"
 import './Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect } from "react"
 import Profile from "../../../js/api/profile"
-import UserModal from "../Users/UserModal/UserModal"
+import UserModal from "../Users/modal"
 import { GlobalContext } from "../../../context"
 import convertToBase64 from "../../../js/helpers/convertImage"
+import reducer from './reducer';
 
 const ProfilePage = () => {
-    const { userProfile, setUserProfile } = useContext(GlobalContext)
-    const [profile, setProfile] = useState(userProfile);
-    const [loadedImg, setLoadedImg] = useState(process.env.REACT_APP_SERVER_URL + "/" + profile.img);
-    const [img, setImg] = useState(process.env.REACT_APP_SERVER_URL + "/" + profile.img);
-    const [modalEditProfile, setModalEditProfile] = useState(false)
+    const { userProfile, setUserProfile} = useContext(GlobalContext)
 
-    const toggleEditProfile = () => setModalEditProfile(!modalEditProfile)
-    const editeProfile = (data) => {
-        setProfile(data)
+    const initialState = {
+        profile: userProfile,
+        loadedImg: process.env.REACT_APP_SERVER_URL + "/" + userProfile.img,
+        img: process.env.REACT_APP_SERVER_URL + "/" + userProfile.img,
+        modalEditProfile: false,
     }
     
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const {profile, loadedImg, img, modalEditProfile} = state
+
     const profileData = [
         {title: "Avatar", desc: profile.img},
         {title: "Username", desc: profile.username},
@@ -28,24 +36,30 @@ const ProfilePage = () => {
         {title: "Email", desc: profile.email},
         {title: "Role", desc: profile.role},
     ]
+    
+    const toggleEditProfile = () => dispatch({type: 'MODAL_EDIT_PROFILE', paylod: !modalEditProfile})
 
+    const editeProfile = (data) => {
+        setUserProfile(data)
+    }
+    
     const checkEmpty = (data) => data ? data : '--'
 
     useEffect(() => {
         Profile.getProfile()
         .then(data => {
-            setProfile(data.user)
+            dispatch({profile: data.user})
         })
-    }, [])
+    }, [userProfile])
       
     const addImageHandler = (e) => {
         const file = e.target.files[0];
         let url = URL.createObjectURL(file);
         if (file) {
-            convertToBase64(file).then((res) => setImg(res));
-            setLoadedImg(url);
+            convertToBase64(file).then((res) => dispatch({type: 'IMG', paylod: res}));
+            dispatch({type: 'LOADED_IMG', paylod: loadedImg});
         } else {
-            setLoadedImg(placeholder);
+            dispatch({type: 'LOADED_IMG', paylod: loadedImg});
         }
 
         Profile.uploadProfilePhoto(profile.id, {'img': img})

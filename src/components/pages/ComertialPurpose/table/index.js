@@ -6,9 +6,9 @@ import '../../../../scss/ui-kit.scss'
 
 const ComertialPurpose = ({ setData, dataForm }) => {
   const { customerNetwork } = useContext(GlobalContext);
-
+  console.log(customerNetwork)
   const [listData, setListData] = useState([]);
-  const { register, errors, trigger } = dataForm
+  const { register, trigger } = dataForm
 
   const priceValidation = (e) => {
       if (e.target.value === 0 || e.target.value === '') {
