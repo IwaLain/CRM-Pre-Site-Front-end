@@ -14,7 +14,8 @@ import { useForm } from "react-hook-form";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 import { alert } from "../../js/helpers/alert";
-
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import "../../scss/modal-sketch.scss";
 const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const [formTitle, setFormTitle] = useState();
 
@@ -36,9 +37,9 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const [equipmentNames, setEquipmentNames] = useState([]);
   const [gatewaysNames, setGatewaysNames] = useState([]);
   const [nodesNames, setNodesNames] = useState([]);
-
+  const [deleteField, setDeleteField] = useState();
   const [defaultEntity, setDefaultEntity] = useState({});
-
+  const [confirmModal, setConfirmModal] = useState(false);
   const {
     equipmentTypeList,
     customerStructure,
@@ -55,8 +56,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     handleSubmit,
     reset,
     formState: { errors },
+    unregister,
   } = useForm();
-
+  const toggleConfirmModal = () => {
+    setConfirmModal(!confirmModal);
+  };
   let formattedRouteName;
 
   switch (subEntity) {
@@ -274,6 +278,12 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     toggleAddFieldModal();
   };
 
+  const handleRemoveFieldFormSubmit = (e, fields, fieldId) => {
+    const newFields = fields.filter((field) => field.id !== fieldId);
+    unregister(fieldId);
+    setDeleteField();
+    setCustomFields(newFields);
+  };
   useEffect(() => {
     let name = "";
 
@@ -934,24 +944,38 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                       <FormGroup key={id}>
                         <Label for={`${id}-field`}>{title}</Label>
                         <Col sm={6}>
-                          <input
-                            className={`form-control ${
-                              errors[`${id}`] ? "is-invalid" : ""
-                            }`}
-                            id={`${id}-field`}
-                            placeholder="Enter value."
-                            {...register(`${id}`, {
-                              required: {
-                                value: true,
-                                message: "Value is required.",
-                              },
-                              minLength: {
-                                value: 3,
-                                message:
-                                  "Value should contain at least 3 symbols.",
-                              },
-                            })}
-                          />
+                          <div className="custom-field__container">
+                            <input
+                              className={`form-control ${
+                                errors[`${id}`] ? "is-invalid" : ""
+                              }`}
+                              id={`${id}-field`}
+                              placeholder="Enter value."
+                              {...register(`${id}`, {
+                                required: {
+                                  value: true,
+                                  message: "Value is required.",
+                                },
+                                minLength: {
+                                  value: 3,
+                                  message:
+                                    "Value should contain at least 3 symbols.",
+                                },
+                              })}
+                            />
+                            <span
+                              className="delete-field__btn"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setDeleteField({ id, title });
+                                toggleConfirmModal();
+                                // toggleConfirmModal(e, customFields, id);
+                              }}
+                            >
+                              <i class="fas fa-times"></i>
+                            </span>
+                          </div>
                           <small className="text-danger">
                             {errors &&
                               errors[`${id}`] &&
@@ -1109,6 +1133,19 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           </Button>
         </ModalFooter>
       </Modal>
+      {deleteField && (
+        <ConfirmModal
+          modal={confirmModal}
+          toggleModal={toggleConfirmModal}
+          title="Delete form field"
+          handleSubmit={(e) => {
+            handleRemoveFieldFormSubmit(e, customFields, deleteField.id);
+          }}
+          modalText={`Are you sure you want to DELETE ${
+            deleteField.title ? deleteField.title : ""
+          } field`}
+        />
+      )}
     </>
   );
 };

@@ -216,7 +216,8 @@ const CRMEntity = ({ type }) => {
                     },
                   ]);
                 });
-            } else {
+            }
+              else {
               setSubEntity([
                 {
                   subEntityName: subEntityName,

@@ -13,7 +13,6 @@ const AddFieldModal = ({ modal, toggle, addFieldHandler }) => {
   const [showError, setShowError] = useState(false);
   return (
     <>
-      {" "}
       <Modal isOpen={modal} toggle={toggle} centered>
         <ModalHeader toggle={toggle}>Modal title</ModalHeader>
         <ModalBody>
@@ -43,7 +42,7 @@ const AddFieldModal = ({ modal, toggle, addFieldHandler }) => {
             }}
           >
             Add Field
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
             onClick={() => {
