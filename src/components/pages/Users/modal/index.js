@@ -22,11 +22,11 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
     useEffect(() => {
         switch (type) {
             case 'Add User':
-                setFormComponent(<AddUser changeTable={method} />)
+                setFormComponent(<AddUser toggle={toggle} changeTable={method} />)
                 setFormTitle('Add User')
                 break;
             case 'Edit User':
-                setFormComponent(<UserEdit currentUser={currentUser} editeMethod={method} />)
+                setFormComponent(<UserEdit toggle={toggle} currentUser={currentUser} editeMethod={method} />)
                 setFormTitle('Edit User')
                 break;
             case 'Edit Profile':

@@ -40,12 +40,10 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
             'phone': e.phone,
             'role': e.role
         }
-
         Profile.updateProfile(currentUser.id, data).then(data => {
             if (!data) {
                 alert('error', 'Something went wrong')
             } else {
-                toggle()
                 alert('success', 'Profile seccess edited')
             }
         })
@@ -53,6 +51,10 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
         if (currentUser.role !== 'SuperAdmin') User.editRole(currentUser.id, data)
     
         editeMethod(data)
+        
+            toggle(false)
+        
+        
     };
 
     return (

@@ -4,37 +4,23 @@ import {
       Col,
       Row
   } from 'reactstrap';
-import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
-import './ComertialPurpose.scss'
 import { useForm } from 'react-hook-form';
 import { ToastContainer } from 'react-toastify';
-import ComertialTable from './table';
-import ComertialForm from './form';
-import ComertialModal from './modal';
+
 import { GlobalContext } from '../../../context';
+import { reducer } from '../../../reducer';
+
+import { dataValid } from './helpers';
+import Table from './table';
+import Form from './form';
+import Modal from './modal';
+import './ComertialPurpose.scss'
+
+import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
+
 
 const ComertialPurpouse = () => {
     const { customerNetwork } = useContext(GlobalContext);
-
-    const dataValid = (checkData) => {
-        const data = [];
-        for (const [key, value] of Object.entries(checkData)) {
-            console.log(key, value)
-            if (value.length > 0) {
-              data.push({
-                item: key,
-                description: "",
-                units: "EA",
-                quantity: value.length,
-                price: "",
-                cost: 0,
-              });
-            }
-        }
-        return data.length > 0
-    }
-
-    const reducer = (state, updates) => ({...state, ...(updates || {})});
 
     const initialState = {
         quote: 'Q' + Math.floor(Date.now() / 1000),
@@ -52,7 +38,11 @@ const ComertialPurpouse = () => {
     }
     
     const [state, dispatch] = useReducer(reducer, initialState)
-    const {quote, currentData, previewData, modalPDF, previewList} = state
+    const {
+        quote, 
+        currentData, 
+        modalPDF, 
+    } = state
 
     const date = new Date().toLocaleDateString('en-US')
 
@@ -80,14 +70,6 @@ const ComertialPurpouse = () => {
         quote,
         date
     }
-
-    const preview = {
-        previewData,
-        currentData,
-        previewList,
-        date,
-        quote,
-    }
     
     return (
         <div className="purpose" id="purpose">
@@ -108,14 +90,14 @@ const ComertialPurpouse = () => {
             </Row>
 
             <Row>
-                <ComertialForm 
+                <Form 
                     dataForm={dataForm}
                     currentData={currentData}
                 />
             </Row>
 
             <Row className="purpose__table">
-                <ComertialTable
+                <Table
                     setData={changeCurrentData}
                     dataForm={dataForm}
                 />
@@ -152,10 +134,10 @@ const ComertialPurpouse = () => {
             }
             
 
-            <ComertialModal 
-                modalPDF={modalPDF}
+            <Modal 
                 togglePDF={togglePDF}
-                preview={preview}
+                preview={state}
+                date={date}
             />
             <ToastContainer position="bottom-right" />
         </div>

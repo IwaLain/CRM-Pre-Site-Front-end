@@ -57,6 +57,8 @@ const UserEdit = ({ currentUser, editeMethod }) => {
         } else {
             alert('error', 'Can`t change Super Admin')
         }
+
+        
     };
 
     return (

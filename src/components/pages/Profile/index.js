@@ -12,7 +12,7 @@ import Profile from "../../../js/api/profile"
 import UserModal from "../Users/modal"
 import { GlobalContext } from "../../../context"
 import convertToBase64 from "../../../js/helpers/convertImage"
-import reducer from './reducer';
+import { reducer } from '../../../reducer';
 
 const ProfilePage = () => {
     const { userProfile, setUserProfile} = useContext(GlobalContext)
@@ -37,7 +37,7 @@ const ProfilePage = () => {
         {title: "Role", desc: profile.role},
     ]
     
-    const toggleEditProfile = () => dispatch({type: 'MODAL_EDIT_PROFILE', paylod: !modalEditProfile})
+    const toggleEditProfile = () => dispatch({modalEditProfile: !modalEditProfile})
 
     const editeProfile = (data) => {
         setUserProfile(data)
@@ -56,10 +56,10 @@ const ProfilePage = () => {
         const file = e.target.files[0];
         let url = URL.createObjectURL(file);
         if (file) {
-            convertToBase64(file).then((res) => dispatch({type: 'IMG', paylod: res}));
-            dispatch({type: 'LOADED_IMG', paylod: loadedImg});
+            convertToBase64(file).then((res) => dispatch({type: 'IMG', payload: res}));
+            dispatch({loadedImg: loadedImg});
         } else {
-            dispatch({type: 'LOADED_IMG', paylod: loadedImg});
+            dispatch({loadedImg: loadedImg});
         }
 
         Profile.uploadProfilePhoto(profile.id, {'img': img})

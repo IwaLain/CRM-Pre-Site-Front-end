@@ -1,26 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import {
     Button,
         Col,
         Row,
     } from 'reactstrap'
-import './Users.scss'
 import User from '../../../js/api/users'
+
 import UserTable from './table'
 import UserModal from './modal'
+import { reducer } from '../../../reducer'
+
+import './Users.scss'
 
 const UsersPage = () => {
-    const [users, setUsers] = useState([])
-    const [modalAddUser, setModalAddUser] = useState(false)
 
-    const toggleAddUser = () => setModalAddUser(!modalAddUser)
+    const initialState = {
+        users: [],
+        modalAddUser: false
+    }
 
-    const changeTable = (usersList) => setUsers(usersList)
-    const editeTable = (userId, data) => setUsers(users.map(userData => userData.id === userId ? {...data, userId: data} : userData))
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const {users, modalAddUser} = state
+
+    const toggleAddUser = () => dispatch({modalAddUser: !modalAddUser})
+
+    const changeTable = (usersList) => dispatch({users: usersList})
+    const editeTable = (userId, data) => dispatch({users: users.map(userData => userData.id === userId ? {...data, userId: data} : userData)})
 
     useEffect(() => {
         User.get()
-        .then(data => setUsers(data.user))
+        .then(data => dispatch({users: data.user}))
     }, [])
     
     return (

@@ -8,8 +8,8 @@ import {
 } from 'reactstrap'
 import Previews from '../preview'
 
-const ComertialModal = ({modalPDF, togglePDF, preview}) => {
-    const {previewData, currentData, previewList, date, quote} = preview
+const ComertialModal = ({togglePDF, preview, date}) => {
+    const {previewData, currentData, previewList, quote, modalPDF} = preview
     
     return (
         <Modal
@@ -23,6 +23,7 @@ const ComertialModal = ({modalPDF, togglePDF, preview}) => {
             </ModalHeader>
             <ModalBody>
                 <Previews 
+                    preview={preview}
                     form={previewData}
                     table={currentData}
                     items={previewList}
