@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useContext, useReducer } from 'react'
 import {
       Button,
       Col,
@@ -11,8 +11,29 @@ import { ToastContainer } from 'react-toastify';
 import ComertialTable from './table';
 import ComertialForm from './form';
 import ComertialModal from './modal';
+import { GlobalContext } from '../../../context';
 
 const ComertialPurpouse = () => {
+    const { customerNetwork } = useContext(GlobalContext);
+
+    const dataValid = (checkData) => {
+        const data = [];
+        for (const [key, value] of Object.entries(checkData)) {
+            console.log(key, value)
+            if (value.length > 0) {
+              data.push({
+                item: key,
+                description: "",
+                units: "EA",
+                quantity: value.length,
+                price: "",
+                cost: 0,
+              });
+            }
+        }
+        return data.length > 0
+    }
+
     const reducer = (state, updates) => ({...state, ...(updates || {})});
 
     const initialState = {
@@ -37,7 +58,7 @@ const ComertialPurpouse = () => {
 
     const togglePDF = () => dispatch({modalPDF: !modalPDF});
     const changeCurrentData = (newData) => dispatch({currentData: newData})
-
+    
     const {
         formState: { errors },
         handleSubmit,
@@ -67,7 +88,7 @@ const ComertialPurpouse = () => {
         date,
         quote,
     }
-
+    
     return (
         <div className="purpose" id="purpose">
             <Row className='purpose__title-print'>
@@ -100,29 +121,36 @@ const ComertialPurpouse = () => {
                 />
             </Row>
             
-            <Row className='purpose__buttons'>
-                <Col lg={2} md={2}>
-                    <Button
-                        form='form'
-                        onClick={(e) => {
-                            e.preventDefault()
+            {
+                dataValid(customerNetwork)
+                ? 
+                <Row className='purpose__buttons'>
+                    <Col lg={2} md={2}>
+                        <Button
+                            form='form'
+                            onClick={(e) => {
+                                e.preventDefault()
 
-                            dispatch({previewData: getValues()})
-                            dispatch({previewList: currentData})
+                                dispatch({previewData: getValues()})
+                                dispatch({previewList: currentData})
 
-                            togglePDF(true)
-                        }}>
-                        Preview <i className="far fa-eye"></i>
-                    </Button>
-                </Col>
-                <Col lg={2} md={2}>
-                    <Button
-                        id='purpose'
-                        form='form'>
-                        Create PDF <i className="fas fa-file-pdf"></i>
-                    </Button>
-                </Col>
-            </Row>
+                                togglePDF(true)
+                            }}>
+                            Preview <i className="far fa-eye"></i>
+                        </Button>
+                    </Col>
+                    <Col lg={2} md={2}>
+                        <Button
+                            id='purpose'
+                            form='form'>
+                            Create PDF <i className="fas fa-file-pdf"></i>
+                        </Button>
+                    </Col>
+                </Row>
+                :
+                ''
+            }
+            
 
             <ComertialModal 
                 modalPDF={modalPDF}

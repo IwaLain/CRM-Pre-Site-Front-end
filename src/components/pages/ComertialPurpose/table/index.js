@@ -6,7 +6,7 @@ import '../../../../scss/ui-kit.scss'
 
 const ComertialPurpose = ({ setData, dataForm }) => {
   const { customerNetwork } = useContext(GlobalContext);
-  console.log(customerNetwork)
+
   const [listData, setListData] = useState([]);
   const { register, trigger } = dataForm
 
@@ -56,12 +56,12 @@ const ComertialPurpose = ({ setData, dataForm }) => {
     const data = [];
 
     for (const [key, value] of Object.entries(customerNetwork)) {
-      if (value > 0) {
+      if (value.length > 0) {
         data.push({
           item: key,
           description: "",
           units: "EA",
-          quantity: value,
+          quantity: value.length,
           price: "",
           cost: 0,
         });
