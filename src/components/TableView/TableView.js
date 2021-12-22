@@ -247,7 +247,7 @@ const TableView = ({
 
   return (
     <>
-      {listData && (
+      {listData && Object.keys(listData).length > 0 && cols.length > 0 ? (
         <DataTable
           columns={[...staticColsStart, ...cols, ...staticColsEnd]}
           data={listData}
@@ -259,6 +259,17 @@ const TableView = ({
           paginationDefaultPage={page}
           paginationPerPage={perPage}
         />
+      ) : (
+        <p
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "24px 24px 39px 24px",
+            margin: "0",
+          }}
+        >
+          There are no records to display
+        </p>
       )}
     </>
   );

@@ -13,7 +13,6 @@ import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
 import LoginPage from "./components/pages/Login/Login";
 import "./scss/ui-kit.scss";
 import Profile from "./js/api/profile";
-import { alert } from "./js/helpers/alert";
 
 const App = () => {
   const [pageTitle, setPageTitle] = useState();

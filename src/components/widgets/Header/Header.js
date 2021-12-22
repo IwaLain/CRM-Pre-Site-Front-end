@@ -5,7 +5,7 @@ import {
   DropdownMenu,
 } from "reactstrap";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Profile from "../../../js/api/profile";
 import { GlobalContext } from "../../../context";
 
@@ -13,6 +13,8 @@ const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const { selectedCustomer } = useContext(GlobalContext);
+
+  const history = useHistory();
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
