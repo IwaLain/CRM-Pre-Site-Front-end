@@ -3,7 +3,6 @@ import { Button, Col, Label } from "reactstrap";
 import "./attached-images.scss";
 import star from "../../assets/img/star.svg";
 import uploadImage from "../../js/helpers/convertImage";
-import Previews from "../Previews/Previews";
 const AttachedImages = ({ attachedImages, title, addImage, deleteImage }) => {
   const getImageById = (id) => {
     let image = attachedImages.find((x) => x.id == id);

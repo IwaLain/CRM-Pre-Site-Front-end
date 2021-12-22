@@ -51,8 +51,7 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
         if (currentUser.role !== 'SuperAdmin') User.editRole(currentUser.id, data)
     
         editeMethod(data)
-        
-            toggle(false)
+        toggle(false)
         
         
     };
