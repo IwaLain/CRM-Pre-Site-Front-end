@@ -7,13 +7,6 @@
   padding: 0 15px 15px 15px;
 }
 
-.info-card-group {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  grid-gap: 10px;
-  width: 100%;
-}
-
 .info-card {
   position: relative;
   display: flex;

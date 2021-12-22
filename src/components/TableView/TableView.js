@@ -247,7 +247,7 @@ const TableView = ({
 
   return (
     <>
-      {listData && Object.keys(listData).length > 0 && (
+      {listData && (
         <DataTable
           columns={[...staticColsStart, ...cols, ...staticColsEnd]}
           data={listData}

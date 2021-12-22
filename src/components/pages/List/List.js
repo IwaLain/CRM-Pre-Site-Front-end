@@ -380,76 +380,76 @@ const List = ({
         toggle={toggleModal}
         mode={mode}
       />
-      {!isLoading && data && Object.keys(data[type.entity]).length > 0 ? (
-        <div className="list">
-          <div className="list__header">
-            <div
-              className="list__title"
-              style={hideTitle && { visibility: "hidden" }}
-            >
-              <h3>{title || pageTitle}</h3>
-              {!hideCreateBtn && (
-                <button
-                  className="list__add-btn"
-                  onClick={() => {
-                    setMode("create");
-                    toggleModal();
-                  }}
-                >
-                  +
-                </button>
-              )}
-            </div>
-            <div className="list__options">
-              {type && type.ref && !hideSelect && (
-                <div className="list__select-entity">
-                  <Label for="select-entity">{type && `${type.ref}:`}</Label>
-                  <select
-                    className="ui-kit__select"
-                    id="select-entity"
-                    value={entityID}
-                    onChange={handleEntitySelect}
-                    disabled={!entityNames}
-                  >
-                    <option value="" hidden>
-                      No records
-                    </option>
-                    <option value="all">All</option>
-                    {entityNames &&
-                      entityNames.map((entity) => (
-                        <option key={entity.id} value={entity.id}>
-                          {entity.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              )}
-              {!hideSearch && (
-                <div style={{ display: "flex" }}>
-                  <input
-                    className="list__search"
-                    type="text"
-                    placeholder="Search..."
-                    onInput={handleSearch}
-                  />
-                </div>
-              )}
-              {!hideChangeView && (
-                <div className="list__options_btns">
-                  <Button
-                    type="list-view"
-                    onClick={() => setView(true)}
-                    className={view ? "active" : ""}
-                  ></Button>
-                  <Button
-                    type="block-view"
-                    onClick={() => setView(false)}
-                    className={!view ? "active" : ""}
-                  ></Button>
-                </div>
-              )}
-            </div>
+      <div className="list">
+        <div className="list__header">
+          <div
+            className="list__title"
+            style={hideTitle && { visibility: "hidden" }}
+          >
+            <h3>{title || pageTitle}</h3>
+            {!hideCreateBtn && (
+              <button
+                className="list__add-btn"
+                onClick={() => {
+                  setMode("create");
+                  toggleModal();
+                }}
+              >
+                +
+              </button>
+            )}
           </div>
+          <div className="list__options">
+            {type && type.ref && !hideSelect && (
+              <div className="list__select-entity">
+                <Label for="select-entity">{type && `${type.ref}:`}</Label>
+                <select
+                  className="ui-kit__select"
+                  id="select-entity"
+                  value={entityID}
+                  onChange={handleEntitySelect}
+                  disabled={!entityNames}
+                >
+                  <option value="" hidden>
+                    No records
+                  </option>
+                  <option value="all">All</option>
+                  {entityNames &&
+                    entityNames.map((entity) => (
+                      <option key={entity.id} value={entity.id}>
+                        {entity.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            )}
+            {!hideSearch && (
+              <div style={{ display: "flex" }}>
+                <input
+                  className="list__search"
+                  type="text"
+                  placeholder="Search..."
+                  onInput={handleSearch}
+                />
+              </div>
+            )}
+            {!hideChangeView && (
+              <div className="list__options_btns">
+                <Button
+                  type="list-view"
+                  onClick={() => setView(true)}
+                  className={view ? "active" : ""}
+                ></Button>
+                <Button
+                  type="block-view"
+                  onClick={() => setView(false)}
+                  className={!view ? "active" : ""}
+                ></Button>
+              </div>
+            )}
+          </div>
+        </div>
+        {!isLoading ? (
           <div className="list__content">
             <>
               {view ? (
@@ -496,6 +496,7 @@ const List = ({
                         display: "flex",
                         justifyContent: "center",
                         padding: "24px",
+                        margin: "0",
                       }}
                     >
                       There are no records to display
@@ -517,19 +518,19 @@ const List = ({
               )}
             </>
           </div>
-        </div>
-      ) : (
-        <div
-          style={{
-            height: "100vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Loader />
-        </div>
-      )}
+        ) : (
+          <div
+            style={{
+              height: "100vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Loader />
+          </div>
+        )}
+      </div>
     </>
   );
 };

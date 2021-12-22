@@ -9,7 +9,7 @@ const initialState = {
 const Test = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  //const { searchValue, activeTab } = state;
+  const { searchValue, activeTab } = state;
 
   useEffect(() => {
     dispatch({
