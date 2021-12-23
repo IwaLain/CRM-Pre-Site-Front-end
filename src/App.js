@@ -15,17 +15,15 @@ import "./scss/ui-kit.scss";
 import Profile from "./js/api/profile";
 
 const App = () => {
-  const [pageTitle, setPageTitle] = useState();
-  const [pageType, setPageType] = useState();
-  const [pagePath, setPagePath] = useState();
+  const [userProfile, setUserProfile] = useState({});
+  const [selectedCustomer, setSelectedCustomer] = useState({});
+  const [equipmentTypeList, setEquipmentTypeList] = useState([]);
+
   const [entityID, setEntityID] = useState();
   const [editId, setEditId] = useState();
   const [showFormModal, setShowFormModal] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState({});
   const [customerStructure, setCustomerStructure] = useState({});
   const [customerNetwork, setCustomerNetwork] = useState({});
-  const [userProfile, setUserProfile] = useState({});
-  const [equipmentTypeList, setEquipmentTypeList] = useState([]);
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
@@ -87,15 +85,6 @@ const App = () => {
   return (
     <GlobalContext.Provider
       value={{
-        pageTitle,
-        setPageTitle,
-
-        pageType,
-        setPageType,
-
-        pagePath,
-        setPagePath,
-
         editId,
         setEditId,
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import {
   Button,
   Modal,
@@ -16,13 +16,36 @@ import AttachmentList from "../AttachmentList/AttachmentList";
 import { alert } from "../../js/helpers/alert";
 import fields from "./fields";
 import formatNames from "./formatNames";
+import { reducer } from "../../reducer";
 
 const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
-  const [formTitle, setFormTitle] = useState();
+  const initialState = {
+    formTitle: "",
 
-  const [entityName, setEntityName] = useState();
+    entityName: "",
 
-  const [refListNames, setRefListNames] = useState([]);
+    refListNames: [],
+
+    modalFields: [],
+
+    anyImg: [],
+    equipmentImg: [],
+    locationImg: [],
+
+    customFields: [],
+    customFieldsCount: 0,
+    addFieldModal: false,
+
+    facilitiesNames: [],
+    equipmentNames: [],
+    gatewaysNames: [],
+    nodesNames: [],
+
+    defaultEntity: {},
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { formTitle, entityName, refListNames } = state;
 
   const [modalFields, setModalFields] = useState([]);
 
@@ -109,7 +132,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     toggle();
     reset({});
     setDefaultEntity([]);
-    setEditId(undefined);
+    setEditId(null);
     setAnyImg([]);
     setLocationImg([]);
     setEquipmentImg([]);
@@ -280,55 +303,57 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
 
     switch (entity) {
       case "customers":
-        setFormTitle("Customer Create");
+        dispatch({ formTitle: "Customer Create" });
         name = "customer";
         setModalFields(fields["customer"]);
         break;
       case "facilities":
-        setFormTitle("Facility Create");
+        dispatch({ formTitle: "Facility Create" });
         name = "facility";
         setModalFields(fields["facility"]);
         break;
       case "locations":
-        setFormTitle("Location create");
+        dispatch({ formTitle: "Location create" });
         name = "location";
         setModalFields(fields["location"]);
         break;
       case "equipment":
-        setFormTitle("Equipment create");
+        dispatch({ formTitle: "Equipment create" });
         name = "equipment";
         setModalFields(fields["equipment"]);
         break;
       case "sensors":
-        setFormTitle("Sensor create");
+        dispatch({ formTitle: "Sensor create" });
         name = "sensor";
         setModalFields(fields["sensor"]);
         break;
       case "motes":
-        setFormTitle("Mote create");
+        dispatch({ formTitle: "Mote create" });
         name = "mote";
         setModalFields(fields["mote"]);
         break;
       case "nodes":
-        setFormTitle("Node create");
+        dispatch({ formTitle: "Node create" });
         name = "node";
         setModalFields(fields["node"]);
         break;
       case "routers":
-        setFormTitle("Router create");
+        dispatch({ formTitle: "Router create" });
         name = "router";
         setModalFields(fields["router"]);
         break;
       case "gateways":
-        setFormTitle("Gateway create");
+        dispatch({ formTitle: "Gateway create" });
         name = "gateway";
         setModalFields(fields["gateway"]);
         break;
       default:
         break;
     }
-    setFormTitle(`${name.charAt(0).toUpperCase() + name.slice(1)} ${mode}`);
-    setEntityName(name);
+    dispatch({
+      formTitle: `${name.charAt(0).toUpperCase() + name.slice(1)} ${mode}`,
+    });
+    dispatch({ entityName: name });
   }, [entity, mode]);
 
   useEffect(() => {
@@ -375,7 +400,9 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             .then((res) => res.json())
             .then((data) => {
               if (Object.keys(data[subEntity]).length > 0)
-                setRefListNames(formatNames(data[subEntity], "object"));
+                dispatch({
+                  refListNames: formatNames(data[subEntity], "object"),
+                });
             });
         } catch (e) {
           console.log(e);
@@ -589,7 +616,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
-                      <small className="text-danger">
+                      <small className="text-danger validation-error">
                         {errors &&
                           errors[field.title.toLowerCase()] &&
                           errors[field.title.toLowerCase()].message}
@@ -629,7 +656,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
-                      <small className="text-danger">
+                      <small className="text-danger validation-error">
                         {errors &&
                           errors[field.title.toLowerCase()] &&
                           errors[field.title.toLowerCase()].message}
@@ -657,7 +684,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
-                      <small className="text-danger">
+                      <small className="text-danger validation-error">
                         {errors &&
                           errors[field.title.toLowerCase()] &&
                           errors[field.title.toLowerCase()].message}
@@ -711,7 +738,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                               },
                             })}
                           />
-                          <small className="text-danger">
+                          <small className="text-danger validation-error">
                             {errors &&
                               errors[`${id}`] &&
                               errors[`${id}`].message}

@@ -44,8 +44,6 @@ const List = ({
   const [prevSelectedAll, setPrevSelectedAll] = useState(false);
 
   const {
-    pageTitle,
-    setPagePath,
     entityID,
     setEntityID,
 
@@ -282,8 +280,6 @@ const List = ({
       }
     }
 
-    setPagePath(match.path);
-
     window.addEventListener("resize", handleResize);
   }, []);
 
@@ -386,7 +382,7 @@ const List = ({
             className="list__title"
             style={hideTitle && { visibility: "hidden" }}
           >
-            <h3>{title || pageTitle}</h3>
+            <h3>{title}</h3>
             {!hideCreateBtn && (
               <button
                 className="list__add-btn"

@@ -102,9 +102,15 @@ export const validation = (type) => {
 export const errorsValidation = (errors, message) => {
   if (errors) {
     return (
-      <small className="addUser__desc text-danger">{errors.message}</small>
+      <small className="addUser__desc text-danger validation-error">
+        {errors.message}
+      </small>
     );
   } else {
-    return <small className="addUser__desc text-muted">{message}</small>;
+    return (
+      <small className="addUser__desc text-muted validation-error">
+        {message}
+      </small>
+    );
   }
 };

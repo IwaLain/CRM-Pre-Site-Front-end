@@ -42,24 +42,45 @@ const routes = [
   {
     path: "/customers",
     name: "Customers",
-    children: <List type={{ entity: "customers" }} chooseMode showProgress />,
+    children: (
+      <List
+        type={{ entity: "customers" }}
+        title="Customers"
+        chooseMode
+        showProgress
+      />
+    ),
   },
   {
     path: "/facilities",
     name: "Facilities",
     children: (
-      <List type={{ entity: "facilities", ref: "customers" }} showProgress />
+      <List
+        type={{ entity: "facilities", ref: "customers" }}
+        title="Facilities"
+        showProgress
+      />
     ),
   },
   {
     path: "/locations",
     name: "Locations",
-    children: <List type={{ entity: "locations", ref: "facilities" }} />,
+    children: (
+      <List
+        type={{ entity: "locations", ref: "facilities" }}
+        title="Locations"
+      />
+    ),
   },
   {
     path: "/equipment",
     name: "Equipment",
-    children: <List type={{ entity: "equipment", ref: "locations" }} />,
+    children: (
+      <List
+        type={{ entity: "equipment", ref: "locations" }}
+        title="Equipment"
+      />
+    ),
   },
   {
     path: "/network",

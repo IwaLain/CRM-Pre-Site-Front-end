@@ -16,13 +16,8 @@ const DashboardLayout = ({ children }) => {
     window.innerWidth <= MOBILE_SIZE
   );
 
-  const {
-    pagePath,
-    setPageTitle,
-    pageType,
-    setEquipmentTypeList,
-    userProfile,
-  } = useContext(GlobalContext);
+  const { pagePath, setPageTitle, setEquipmentTypeList, userProfile } =
+    useContext(GlobalContext);
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -67,11 +62,7 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <div className="dashboard container-fluid">
-      <Sidebar
-        isMobile={isMobile}
-        toggleSidebar={toggleSidebar}
-        type={pageType && pageType.ref}
-      />
+      <Sidebar isMobile={isMobile} toggleSidebar={toggleSidebar} />
       <section>
         <Header isMobile={isMobile} toggleSidebar={toggleSidebar} />
         <main>
