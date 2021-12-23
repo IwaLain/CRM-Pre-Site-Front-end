@@ -16,8 +16,7 @@ const DashboardLayout = ({ children }) => {
     window.innerWidth <= MOBILE_SIZE
   );
 
-  const { pagePath, setPageTitle, setEquipmentTypeList, userProfile } =
-    useContext(GlobalContext);
+  const { setEquipmentTypeList, userProfile } = useContext(GlobalContext);
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -48,13 +47,6 @@ const DashboardLayout = ({ children }) => {
       }
     }
   }, []);
-
-  useEffect(() => {
-    let filtered = routes.filter((route) => {
-      return route.path === pagePath;
-    })[0];
-    filtered && setPageTitle(filtered.name);
-  }, [pagePath]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);

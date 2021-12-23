@@ -1,6 +1,5 @@
 import "../../../scss/list.scss";
 import { useContext, useEffect, useState } from "react";
-import { useRouteMatch } from "react-router";
 import TableView from "../../TableView/TableView";
 import InfoCard from "../../InfoCard/InfoCard";
 import CustomPagination from "../../widgets/Pagination/Pagination";
@@ -52,8 +51,6 @@ const List = ({
     setCustomerStructure,
     updateTrigger,
   } = useContext(GlobalContext);
-
-  const match = useRouteMatch();
 
   const formatNames = (data) => {
     const formattedNames = [];
