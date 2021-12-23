@@ -1,5 +1,5 @@
 import "../../../scss/list.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import TableView from "../../TableView/TableView";
 import InfoCard from "../../InfoCard/InfoCard";
 import CustomPagination from "../../widgets/Pagination/Pagination";
@@ -12,6 +12,7 @@ import facilitiesApi from "../../../js/api/facilities";
 import Button from "../../UIKit/Button/Button";
 import ModalSketch from "../../ModalComponent/ModalSketch";
 import Loader from "../../widgets/Loader/Loader";
+import { reducer } from "../../../reducer";
 
 const List = ({
   type,
@@ -26,7 +27,13 @@ const List = ({
   hideRecordView,
   initBlockView,
 }) => {
-  const [data, setData] = useState();
+  const initialState = {
+    data: [],
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { data } = state;
+
   const [searchQuery, setSearchQuery] = useState("");
   const [requests, setRequests] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -35,11 +42,11 @@ const List = ({
   const [totalRows, setTotalRows] = useState(Math.ceil(0));
   const [entityNames, setEntityNames] = useState();
   const [mode, setMode] = useState();
+  const [modal, setModal] = useState(false);
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const RECORDS_PER_PAGE = 20;
-  const [showFormModal, setShowFormModal] = useState();
   const [prevSelectedAll, setPrevSelectedAll] = useState(false);
 
   const {
@@ -48,7 +55,7 @@ const List = ({
 
     selectedCustomer,
     setSelectedCustomer,
-    setCustomerStructure,
+    customerStructure,
     updateTrigger,
   } = useContext(GlobalContext);
 
@@ -71,7 +78,7 @@ const List = ({
       requests
         .list(RECORDS_PER_PAGE, 1, e.target.value, entityID)
         .then((res) => {
-          setData(res);
+          dispatch({ data: res });
           setTotalRows(res.total);
           setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
           setIsLoading(false);
@@ -164,7 +171,7 @@ const List = ({
   };
 
   const toggleModal = () => {
-    setShowFormModal(!showFormModal);
+    setModal(!modal);
   };
 
   const changeCustomer = (id) => {
@@ -186,23 +193,6 @@ const List = ({
       console.log(e);
     }
 
-    try {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/customer/" +
-          id +
-          "/construct?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((customerStructure) => {
-          if (customerStructure)
-            setCustomerStructure(customerStructure["customerConstruct"]);
-          else console.log("Customer structure error.");
-        });
-    } catch (e) {
-      console.log(e);
-    }
     try {
       fetch(
         process.env.REACT_APP_SERVER_URL +
@@ -299,7 +289,7 @@ const List = ({
         requests
           .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
           .then((res) => {
-            setData(res);
+            dispatch({ data: res });
             setTotalRows(res.total);
             setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
             setIsLoading(false);
@@ -337,7 +327,7 @@ const List = ({
         requests
           .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
           .then((res) => {
-            setData(res);
+            dispatch({ data: res });
           });
       } catch (e) {
         console.log(e);
@@ -352,7 +342,7 @@ const List = ({
         requests
           .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
           .then((res) => {
-            setData(res);
+            dispatch({ data: res });
             setTotalRows(res.total);
             setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
             setPage(1);
@@ -369,9 +359,10 @@ const List = ({
       <ModalSketch
         entity={type && type.entity}
         subEntity={type && type.ref}
-        modal={showFormModal}
+        modal={modal}
         toggle={toggleModal}
         mode={mode}
+        customerStructure={customerStructure}
       />
       <div className="list">
         <div className="list__header">
@@ -453,7 +444,7 @@ const List = ({
                   page={page}
                   setPage={setPage}
                   toggleModal={toggleModal}
-                  modal={showFormModal}
+                  modal={modal}
                   setMode={setMode}
                   chooseMode={chooseMode}
                   changeCustomer={changeCustomer}

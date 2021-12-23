@@ -18,7 +18,14 @@ import fields from "./fields";
 import formatNames from "./formatNames";
 import { reducer } from "../../reducer";
 
-const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
+const ModalSketch = ({
+  toggle,
+  modal,
+  entity,
+  subEntity,
+  mode,
+  customerStructure,
+}) => {
   const initialState = {
     formTitle: "",
 
@@ -45,9 +52,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { formTitle, entityName, refListNames } = state;
-
-  const [modalFields, setModalFields] = useState([]);
+  const { formTitle, entityName, refListNames, modalFields } = state;
 
   const [anyImg, setAnyImg] = useState([]);
   const [equipmentImg, setEquipmentImg] = useState([]);
@@ -66,7 +71,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
 
   const {
     equipmentTypeList,
-    customerStructure,
     editId,
     setEditId,
     selectedCustomer,
@@ -305,50 +309,53 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       case "customers":
         dispatch({ formTitle: "Customer Create" });
         name = "customer";
-        setModalFields(fields["customer"]);
+
         break;
       case "facilities":
         dispatch({ formTitle: "Facility Create" });
         name = "facility";
-        setModalFields(fields["facility"]);
+
         break;
       case "locations":
         dispatch({ formTitle: "Location create" });
         name = "location";
-        setModalFields(fields["location"]);
+
         break;
       case "equipment":
         dispatch({ formTitle: "Equipment create" });
         name = "equipment";
-        setModalFields(fields["equipment"]);
+
         break;
       case "sensors":
         dispatch({ formTitle: "Sensor create" });
         name = "sensor";
-        setModalFields(fields["sensor"]);
+
         break;
       case "motes":
         dispatch({ formTitle: "Mote create" });
         name = "mote";
-        setModalFields(fields["mote"]);
+
         break;
       case "nodes":
         dispatch({ formTitle: "Node create" });
         name = "node";
-        setModalFields(fields["node"]);
+
         break;
       case "routers":
         dispatch({ formTitle: "Router create" });
         name = "router";
-        setModalFields(fields["router"]);
+
         break;
       case "gateways":
         dispatch({ formTitle: "Gateway create" });
         name = "gateway";
-        setModalFields(fields["gateway"]);
+
         break;
       default:
         break;
+    }
+    if (name) {
+      dispatch({ modalFields: fields[name] });
     }
     dispatch({
       formTitle: `${name.charAt(0).toUpperCase() + name.slice(1)} ${mode}`,
@@ -413,6 +420,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     }
 
     if (customerStructure) {
+      console.log(customerStructure);
       switch (entity) {
         case "sensors":
           setFacilitiesNames(

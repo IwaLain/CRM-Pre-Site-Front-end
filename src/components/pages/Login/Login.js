@@ -21,8 +21,7 @@ import { useContext } from "react";
 import { getToken } from "../../../js/helpers/helpers";
 
 const LoginPage = () => {
-  const { setUserProfile, setSelectedCustomer, setIsLogged } =
-    useContext(GlobalContext);
+  const { setUserProfile, setSelectedCustomer } = useContext(GlobalContext);
 
   const {
     register,

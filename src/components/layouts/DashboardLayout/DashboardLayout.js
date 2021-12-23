@@ -1,35 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useReducer } from "react";
 import "../../../scss/dashboard.scss";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import Header from "../../widgets/Header/Header";
 import Sidebar from "../../widgets/Sidebar/Sidebar";
 import Breadcrumbs from "../../widgets/Breadcrumbs/Breadcrumbs";
-import routes from "../../../routes";
 import { GlobalContext } from "../../../context";
+import { reducer } from "../../../reducer";
 
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 750;
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= MOBILE_SIZE);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(
-    window.innerWidth <= MOBILE_SIZE
-  );
+  const initialState = {
+    isMobile: window.innerWidth <= MOBILE_SIZE,
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { isMobile } = state;
 
   const { setEquipmentTypeList, userProfile } = useContext(GlobalContext);
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
-      setIsMobile(true);
-      setSidebarCollapsed(true);
+      dispatch({ isMobile: true });
     } else {
-      setIsMobile(false);
-      setSidebarCollapsed(false);
+      dispatch({ isMobile: false });
     }
-  };
-
-  const toggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
   };
 
   useEffect(() => {
@@ -54,9 +50,9 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <div className="dashboard container-fluid">
-      <Sidebar isMobile={isMobile} toggleSidebar={toggleSidebar} />
+      <Sidebar isMobile={isMobile} />
       <section>
-        <Header isMobile={isMobile} toggleSidebar={toggleSidebar} />
+        <Header isMobile={isMobile} />
         <main>
           <Breadcrumbs />
           {children}

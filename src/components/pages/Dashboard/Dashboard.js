@@ -1,13 +1,38 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { useHistory } from "react-router";
 import { GlobalContext } from "../../../context";
 import "../../../scss/dashboard-page.scss";
 import { alert } from "../../../js/helpers/alert";
+import { reducer } from "../../../reducer";
 
 const Dashboard = () => {
-  const { selectedCustomer, customerNetwork } = useContext(GlobalContext);
+  const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
+
+  const initialState = {
+    customerNetwork: [],
+  };
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { customerNetwork } = state;
 
   const history = useHistory();
+
+  useEffect(() => {
+    if (selectedCustomer.id) {
+      try {
+        fetch(
+          process.env.REACT_APP_SERVER_URL +
+            "/api/customer/" +
+            selectedCustomer.id +
+            "/network?access-token=" +
+            localStorage.getItem("token")
+        )
+          .then((res) => res.json())
+          .then((data) => dispatch({ customerNetwork: data["Network"] }));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [selectedCustomer, updateTrigger]);
 
   useEffect(() => {
     if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {

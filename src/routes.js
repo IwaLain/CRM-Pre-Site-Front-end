@@ -6,7 +6,6 @@ import CRMEntity from "./components/CRMEntity/CRMEntity";
 import Dashboard from "./components/pages/Dashboard/Dashboard";
 import Network from "./components/pages/Network/Network";
 import ComertialPorpose from "./components/pages/ComertialPurpose/ComertialPurpose";
-import Test from "./components/ReducerTests/Test";
 
 const routes = [
   {
@@ -96,11 +95,6 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     children: <Dashboard />,
-  },
-  {
-    path: "/test",
-    name: "Test",
-    children: <Test />,
   },
 ];
 
