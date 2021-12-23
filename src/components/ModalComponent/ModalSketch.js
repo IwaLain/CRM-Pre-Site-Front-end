@@ -850,18 +850,17 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                 ) : field.inputType === "number" ? (
                   <FormGroup
                     key={index}
-                    // style={
-                    //   field.title === "Lat" || field.title === "Lng"
-                    //     ? { display: "inline-block" }
-                    //     : {}
-                    // }
+                    style={
+                      field.title === "Lat" || field.title === "Lng"
+                        ? { display: "inline-block" }
+                        : {}
+                    }
                   >
                     <Label for={`${field.title}-field`}>{field.title}</Label>
                     <Col
-                      // sm={
-                      //   field.title === "Lat" || field.title === "Lng" ? 10 : 6
-                      // }
-                      sm={6}
+                      sm={
+                        field.title === "Lat" || field.title === "Lng" ? 10 : 6
+                      }
                     >
                       <input
                         className={`form-control ${
