@@ -15,17 +15,17 @@ import convertToBase64 from "../../../js/helpers/convertImage"
 import { reducer } from '../../../reducer';
 
 const ProfilePage = () => {
-    const { userProfile } = useContext(GlobalContext)
+    const { userProfile, setUserProfile } = useContext(GlobalContext)
 
     const initialState = {
         profile: userProfile,
         loadedImg: process.env.REACT_APP_SERVER_URL + "/" + userProfile.img,
-        img: '',
         modalEditProfile: false,
+        img: ''
     }
     
     const [state, dispatch] = useReducer(reducer, initialState)
-    const {profile, loadedImg, img, modalEditProfile} = state
+    const {profile, loadedImg, modalEditProfile, img} = state
 
     const profileData = [
         {title: "Avatar", desc: profile.img},
@@ -50,20 +50,26 @@ const ProfilePage = () => {
         .then(data => {
             dispatch({profile: data.user})
         })
-    }, [userProfile])
+    }, [])
       
+    const setNewImage = (img) => {
+        let data = {
+            'img': img
+        }
+        
+        setUserProfile({...userProfile, img: loadedImg})
+        Profile.updateProfile(profile.id, data)
+    }
+
     const addImageHandler = (e) => {
         const file = e.target.files[0];
-        let url = URL.createObjectURL(file);
-        if (file) {
-            convertToBase64(file)
-            .then(res => dispatch({img: res}));
-            dispatch({loadedImg: loadedImg});
-        } else {
-            dispatch({loadedImg: loadedImg});
-        }
 
-        Profile.uploadProfilePhoto(profile.id, {'img': img})
+        if (file) {
+            convertToBase64(file).then(res => dispatch({img: res}))
+            const url = URL.createObjectURL(file);
+            dispatch({loadedImg: url});
+            setNewImage(img)
+        }
     };
 
     return(
@@ -91,9 +97,9 @@ const ProfilePage = () => {
                                                     <img
                                                         className='profile__img'
                                                         src={
-                                                            loadedImg === null || '' || 'http://crm.local' 
-                                                            ? placeholder 
-                                                            : loadedImg
+                                                            loadedImg !== '' || null
+                                                            ? loadedImg
+                                                            : placeholder
                                                         }
                                                         alt="Avatar"
                                                     />
@@ -124,10 +130,7 @@ const ProfilePage = () => {
                                         <Row>
                                             <Button
                                                 className='profile__button'
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    toggleEditProfile(true)
-                                            }}>
+                                                onClick={toggleEditProfile}>
                                                 Edit Profile
                                                 <i className="fas fa-user-edit"></i>
                                             </Button>
@@ -139,13 +142,17 @@ const ProfilePage = () => {
                     </Col>
                 </Row>
             </Row>
-            <UserModal
-                type='Edit Profile'
-                currentUser={profile}
-                method={editeProfile}
-                toggle={toggleEditProfile}
-                modal={modalEditProfile}
-            />
+            {
+                modalEditProfile 
+                ? <UserModal
+                    type='Edit Profile'
+                    currentUser={profile}
+                    method={editeProfile}
+                    toggle={toggleEditProfile}
+                    modal={modalEditProfile}
+                />
+                : null
+            }
         </div>
     )
 }

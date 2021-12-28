@@ -140,3 +140,14 @@
         cursor: pointer;
     }
 }
+
+.form__require {
+    position: relative;
+    &::after {
+        position: absolute;
+        content: '*';
+        top: 0;
+        right: -10px;
+        color: red
+    }
+}

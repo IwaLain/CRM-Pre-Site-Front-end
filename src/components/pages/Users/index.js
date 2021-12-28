@@ -4,6 +4,7 @@ import {
         Col,
         Row,
     } from 'reactstrap'
+import { useForm } from 'react-hook-form'
 import User from '../../../js/api/users'
 
 import UserTable from './table'
@@ -58,12 +59,18 @@ const UsersPage = () => {
                 users={users}
             />
 
-            <UserModal
-                type='Add User'
-                method={changeTable}
-                toggle={toggleAddUser}
-                modal={modalAddUser}
-            />
+            {
+                modalAddUser
+                ?
+                <UserModal
+                    type='Add User'
+                    method={changeTable}
+                    toggle={toggleAddUser}
+                    modal={modalAddUser}
+                />
+                :
+                ''
+            }
         </div>
     )
 }

@@ -47,13 +47,6 @@ const Profile = {
         })
     },
 
-    uploadProfilePhoto: async (id, data) => {
-        const token = getToken()
-        if ( token ) return apiRequest( 'PUT', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
-            'Authorization': 'Bearer' + token
-        })
-    },
-
     createPdf: async (data, time) => {
         const token = getToken()
         if (token) {

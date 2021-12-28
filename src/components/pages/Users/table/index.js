@@ -114,13 +114,20 @@ const UserTable = ({ users, editeTable, changeTable }) => {
           customStyles={customStyles}
         />
       </Col>
-      <UserModal
-        type="Edit User"
-        currentUser={currentUser}
-        method={editeTable}
-        toggle={toggleEditUser}
-        modal={modalEditUser}
-      />
+      {
+        modalEditUser
+        ?
+        <UserModal
+          type="Edit User"
+          currentUser={currentUser}
+          method={editeTable}
+          toggle={toggleEditUser}
+          modal={modalEditUser}
+        />
+        :
+        ''
+      }
+      
     </Row>
   );
 };

@@ -1,5 +1,6 @@
 import React, { 
     useEffect, 
+    useReducer, 
     useState } from 'react'
 import { 
     Button, 
@@ -11,27 +12,33 @@ import {
     ModalHeader, 
     Row } from 'reactstrap'
 import './UserModal.scss'
-import AddUser from '../add'
+import UserAdd from '../add'
 import UserEdit from '../edit'
 import ProfileEdit from '../../Profile/edit'
+import { reducer } from '../../../../reducer'
 
 const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
-    const [formComponent, setFormComponent] = useState({});
-    const [formTitle, setFormTitle] = useState({});
+    const initialState = {
+        formComponent: {},
+        formTitle: {}
+    }
+
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const {formComponent, formTitle} = state
 
     useEffect(() => {
         switch (type) {
             case 'Add User':
-                setFormComponent(<AddUser toggle={toggle} changeTable={method} />)
-                setFormTitle('Add User')
+                dispatch({formComponent: <UserAdd toggle={toggle} changeTable={method} />})
+                dispatch({formTitle: 'Add User'})
                 break;
             case 'Edit User':
-                setFormComponent(<UserEdit toggle={toggle} currentUser={currentUser} editeMethod={method} />)
-                setFormTitle('Edit User')
+                dispatch({formComponent: <UserEdit toggle={toggle} currentUser={currentUser} editeMethod={method} />})
+                dispatch({formTitle: 'Edit User'})
                 break;
             case 'Edit Profile':
-                setFormComponent(<ProfileEdit toggle={toggle} currentUser={currentUser} editeMethod={method} />)
-                setFormTitle('Edit Profile')
+                dispatch({formComponent: <ProfileEdit toggle={toggle} currentUser={currentUser} editeMethod={method} />})
+                dispatch({formTitle: 'Edit Profile'})
                 break;
             default:
                 break;

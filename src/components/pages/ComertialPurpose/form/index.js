@@ -47,7 +47,7 @@ const ComertialForm = ({dataForm, currentData}) => {
                         />
                     </FormGroup> 
                     <FormGroup className='purpose__ship'>
-                        <Label>
+                        <Label className='form__require'>
                             Bill to
                         </Label>
                         <textarea
@@ -61,7 +61,7 @@ const ComertialForm = ({dataForm, currentData}) => {
                                 trigger('bill')
                             }}
                         />
-                        <Label>
+                        <Label className='form__require'>
                             Ship to
                         </Label>
                         <textarea
@@ -88,7 +88,7 @@ const ComertialForm = ({dataForm, currentData}) => {
                     </Row>
                     <Row className='purpose__info my-2'>
                         <Col>
-                            <Label>
+                            <Label className='form__require'>
                                 Expires
                             </Label>
                         </Col>
@@ -105,7 +105,7 @@ const ComertialForm = ({dataForm, currentData}) => {
                     </Row>
                     <Row className='purpose__info'>
                         <Col>
-                            <Label>
+                            <Label className='form__require'>
                                 Memo
                             </Label>
                         </Col>
