@@ -234,12 +234,12 @@ const CRMEntity = ({ type }) => {
           setIsLoading(false);
         });
       } catch {
-        history.replace(`/dashboard/${entityPluralAlias}`);
-        history.push("/404");
+        // history.replace(`/dashboard/${entityPluralAlias}`);
+        // history.push("/404");
       }
     } else {
-      history.replace(`/dashboard/${entityPluralAlias}`);
-      history.push("/404");
+      // history.replace(`/dashboard/${entityPluralAlias}`);
+      // history.push("/404");
     }
   }, []);
 

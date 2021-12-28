@@ -16,16 +16,10 @@ const DashboardLayout = ({ children }) => {
     window.innerWidth <= MOBILE_SIZE
   );
 
-  const {
-    pagePath,
-    setPageTitle,
-    pageType,
-    setEquipmentTypeList,
-    userProfile,
-  } = useContext(GlobalContext);
+  const { setEquipmentTypeList, userProfile } = useContext(GlobalContext);
 
   const handleResize = () => {
-    if (window.screen.width <= MOBILE_SIZE) {
+    if (window.innerWidth <= MOBILE_SIZE) {
       setIsMobile(true);
       setSidebarCollapsed(true);
     } else {
@@ -55,23 +49,12 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    let filtered = routes.dashboard.filter((route) => {
-      return route.path === pagePath;
-    })[0];
-    filtered && setPageTitle(filtered.name);
-  }, [pagePath]);
-
-  useEffect(() => {
     window.addEventListener("resize", handleResize);
   }, []);
 
   return (
     <div className="dashboard container-fluid">
-      <Sidebar
-        isMobile={isMobile}
-        toggleSidebar={toggleSidebar}
-        type={pageType && pageType.ref}
-      />
+      <Sidebar isMobile={isMobile} toggleSidebar={toggleSidebar} />
       <section>
         <Header isMobile={isMobile} toggleSidebar={toggleSidebar} />
         <main>

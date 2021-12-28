@@ -59,7 +59,7 @@ const TableView = ({
         <>
           <Link
             className="table-view_btn me-2"
-            to={`/dashboard/${type.entity}/${row.id}`}
+            to={`/${type.entity}/${row.id}`}
             style={hideRecordView && { visibility: "hidden" }}
           >
             View
@@ -246,17 +246,32 @@ const TableView = ({
   }, [data]);
 
   return (
-    <DataTable
-      columns={[...staticColsStart, ...cols, ...staticColsEnd]}
-      data={listData}
-      pagination={Math.ceil(totalRows / perPage) > 1}
-      paginationServer
-      paginationTotalRows={totalRows}
-      paginationComponentOptions={paginationComponentOptions}
-      onChangePage={handlePageChange}
-      paginationDefaultPage={page}
-      paginationPerPage={perPage}
-    />
+    <>
+      {listData && Object.keys(listData).length > 0 && cols.length > 0 ? (
+        <DataTable
+          columns={[...staticColsStart, ...cols, ...staticColsEnd]}
+          data={listData}
+          pagination={Math.ceil(totalRows / perPage) > 1}
+          paginationServer
+          paginationTotalRows={totalRows}
+          paginationComponentOptions={paginationComponentOptions}
+          onChangePage={handlePageChange}
+          paginationDefaultPage={page}
+          paginationPerPage={perPage}
+        />
+      ) : (
+        <p
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "24px 24px 39px 24px",
+            margin: "0",
+          }}
+        >
+          There are no records to display
+        </p>
+      )}
+    </>
   );
 };
 

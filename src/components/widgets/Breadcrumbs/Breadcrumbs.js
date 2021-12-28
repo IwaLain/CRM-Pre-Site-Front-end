@@ -15,7 +15,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
       {breadcrumbs &&
         breadcrumbs.map(({ breadcrumb, match }, index) => {
           if (
-            breadcrumb.key.includes("/dashboard/customers/") &&
+            breadcrumb.key.includes("/customers/") &&
             parseInt(breadcrumb.props.children)
           ) {
             customersApi
@@ -26,7 +26,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
                 );
               });
           } else if (
-            breadcrumb.key.includes("/dashboard/facilities/") &&
+            breadcrumb.key.includes("/facilities/") &&
             parseInt(breadcrumb.props.children)
           ) {
             facilitiesApi
@@ -37,7 +37,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
                 );
               });
           } else if (
-            breadcrumb.key.includes("/dashboard/locations/") &&
+            breadcrumb.key.includes("/locations/") &&
             parseInt(breadcrumb.props.children)
           ) {
             locationApi
@@ -46,7 +46,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
                 setName(location.location.name);
               });
           } else if (
-            breadcrumb.key.includes("/dashboard/equipment/") &&
+            breadcrumb.key.includes("/equipment/") &&
             parseInt(breadcrumb.props.children)
           ) {
             equipmentApi

@@ -34,7 +34,9 @@ const FieldComponent = (props) => {
           className="form-control"
         />
         {errors[id] && (
-          <small className="text-danger">{errors[id].message}</small>
+          <small className="text-danger validation-error">
+            {errors[id].message}
+          </small>
         )}
       </Col>
     </FormGroup>

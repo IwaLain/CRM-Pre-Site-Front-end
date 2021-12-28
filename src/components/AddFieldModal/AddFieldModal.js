@@ -24,7 +24,9 @@ const AddFieldModal = ({ modal, toggle, addFieldHandler }) => {
             }}
           ></Input>
           {showError && (
-            <small className="text-danger">{"field is required"}</small>
+            <small className="text-danger validation-error">
+              {"field is required"}
+            </small>
           )}
         </ModalBody>
         <ModalFooter>

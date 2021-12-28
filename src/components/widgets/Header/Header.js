@@ -42,14 +42,14 @@ const Header = () => {
         toggle={toggleDropdown}
       >
         <DropdownToggle className="profile-badge__toggle">
-          <i className="fas fa-star"></i>
+          <i className="fas fa-user"></i>
         </DropdownToggle>
         <DropdownMenu end>
           <DropdownItem>
-            <Link to="/dashboard/profile">Profile</Link>
+            <Link to="/profile">Profile</Link>
           </DropdownItem>
           <DropdownItem>
-            <Link to="/dashboard/users">Users</Link>
+            <Link to="/users">Users</Link>
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem>

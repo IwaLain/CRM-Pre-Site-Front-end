@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useHistory } from "react-router";
 import { GlobalContext } from "../../../context";
 import "../../../scss/dashboard-page.scss";
@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
-      history.push("/dashboard/customers");
+      history.push("/customers");
       alert("error", "You need to select customer first.");
     }
   }, [history, selectedCustomer]);
@@ -63,7 +63,7 @@ const Dashboard = () => {
             Object.entries(customerNetwork).map(([key, block], index) => (
               <div key={index} className="dashboard-page__block">
                 <h5>{key.charAt(0).toUpperCase() + key.slice(1)}</h5>
-                <span>{block}</span>
+                <span>{block.length}</span>
               </div>
             ))}
         </div>
