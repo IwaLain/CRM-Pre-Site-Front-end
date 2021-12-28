@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Col, Form, Label, Row } from 'reactstrap';
+import PropTypes from "prop-types";
 import InputForm from '../../../../js/helpers/input';
 
 const Forms = ({onSubmit, currentUser = '', type}) => {
@@ -96,6 +97,12 @@ const Forms = ({onSubmit, currentUser = '', type}) => {
             </Form>
         </Row>
     );
+}
+
+Forms.propTypes = {
+    currentUser: PropTypes.object,
+    onSubmit: PropTypes.func,
+    type: PropTypes.string
 }
 
 export default Forms;

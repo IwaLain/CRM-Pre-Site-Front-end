@@ -5,7 +5,7 @@ import {
     Label, 
     Row 
 } from "reactstrap"
-import './Profile.scss'
+import '../../../scss/Profile.scss'
 import placeholder from '../../../assets/img/profile_placeholder.png'
 import { useContext, useEffect } from "react"
 import Profile from "../../../js/api/profile"

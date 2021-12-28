@@ -14,7 +14,8 @@ import { dataValid } from './helpers';
 import Table from './table';
 import Form from './form';
 import Modal from './modal';
-import './ComertialPurpose.scss'
+
+import '../../../scss/ComertialPurpose.scss'
 
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
 
@@ -132,8 +133,7 @@ const ComertialPurpouse = () => {
                 :
                 ''
             }
-            
-
+        
             <Modal 
                 togglePDF={togglePDF}
                 preview={state}

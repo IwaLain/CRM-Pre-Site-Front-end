@@ -1,7 +1,6 @@
 import React, { 
     useEffect, 
-    useReducer, 
-    useState } from 'react'
+    useReducer} from 'react'
 import { 
     Button, 
     Col, 
@@ -11,6 +10,7 @@ import {
     ModalFooter, 
     ModalHeader, 
     Row } from 'reactstrap'
+import PropTypes from "prop-types";
 import './UserModal.scss'
 import UserAdd from '../add'
 import UserEdit from '../edit'
@@ -89,6 +89,14 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
             </ModalFooter>
         </Modal>
     )
+}
+
+UserModal.propTypes = {
+    type: PropTypes.string,
+    toggle: PropTypes.func,
+    modal: PropTypes.bool,
+    method: PropTypes.func,
+    currentUser: PropTypes.object
 }
 
 export default UserModal

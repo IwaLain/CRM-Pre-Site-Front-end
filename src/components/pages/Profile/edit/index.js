@@ -1,5 +1,6 @@
 import React from 'react'
 import Profile from '../../../../js/api/profile';
+import PropTypes from "prop-types";
 import User from '../../../../js/api/users';
 import { alert } from '../../../../js/helpers/alert';
 import Forms from '../../Users/form';
@@ -40,6 +41,12 @@ const ProfileEdit = ({currentUser, editeMethod, toggle}) => {
             />
         </div>
     )
+}
+
+ProfileEdit.propTypes = {
+    currentUser: PropTypes.object,
+    editeMethod: PropTypes.func,
+    toggle: PropTypes.func,
 }
 
 export default ProfileEdit

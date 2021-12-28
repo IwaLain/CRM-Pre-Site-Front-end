@@ -4,14 +4,13 @@ import {
         Col,
         Row,
     } from 'reactstrap'
-import { useForm } from 'react-hook-form'
 import User from '../../../js/api/users'
 
 import UserTable from './table'
 import UserModal from './modal'
 import { reducer } from '../../../reducer'
 
-import './Users.scss'
+import '../../../scss/Users.scss'
 
 const UsersPage = () => {
 

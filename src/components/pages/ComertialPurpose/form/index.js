@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from "prop-types";
 import { Col, Form, FormGroup, Label, Row } from 'reactstrap'
 import Profile from '../../../../js/api/profile'
 import { validation } from '../../../../js/helpers/validation'
@@ -126,6 +127,9 @@ const ComertialForm = ({dataForm, currentData}) => {
     )
 }
 
+ComertialForm.propTypes = {
+    dataForm: PropTypes.object,
+    currentData: PropTypes.object
+}
+
 export default ComertialForm
-
-

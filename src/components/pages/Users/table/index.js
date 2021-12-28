@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Col, Row } from "reactstrap";
+import PropTypes from "prop-types";
 import User from "../../../../js/api/users";
-import "./UserTable.scss";
+import "../../../../scss/UserTable.scss";
 import UserModal from "../modal";
 import DataTable from "react-data-table-component";
 import Loader from "../../../../js/helpers/loader";
@@ -131,5 +132,11 @@ const UserTable = ({ users, editeTable, changeTable }) => {
     </Row>
   );
 };
+
+UserTable.propTypes = {
+  users: PropTypes.array,
+  editeTable: PropTypes.func,
+  changeTable: PropTypes.func,
+}
 
 export default UserTable;

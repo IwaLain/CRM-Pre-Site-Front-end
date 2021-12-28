@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
+import PropTypes from "prop-types";
 import { GlobalContext } from "../../../../context";
 import { validation } from "../../../../js/helpers/validation";
 import '../../../../scss/ui-kit.scss'
@@ -136,5 +137,10 @@ const ComertialPurpose = ({ setData, dataForm }) => {
 
   return <DataTable columns={columns} data={listData} />;
 };
+
+ComertialPurpose.propTypes = {
+  setData: PropTypes.func,
+  dataForm: PropTypes.object
+}
 
 export default ComertialPurpose;
