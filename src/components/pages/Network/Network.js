@@ -28,12 +28,9 @@ const Network = () => {
         )
           .then((res) => res.json())
           .then((network) => {
-            console.log(Object.entries(network.Network));
             setNetwork(Object.entries(network.Network));
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
   }, [history, selectedCustomer, updateTrigger]);
 
   return (

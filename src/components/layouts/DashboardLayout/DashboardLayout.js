@@ -38,9 +38,7 @@ const DashboardLayout = ({ children }) => {
         )
           .then((res) => res.json())
           .then((list) => setEquipmentTypeList(list["type"]));
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, []);
 

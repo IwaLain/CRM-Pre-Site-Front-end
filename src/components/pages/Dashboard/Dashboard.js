@@ -28,9 +28,7 @@ const Dashboard = () => {
         )
           .then((res) => res.json())
           .then((data) => dispatch({ customerNetwork: data["Network"] }));
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [selectedCustomer, updateTrigger]);
 

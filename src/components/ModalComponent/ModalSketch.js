@@ -17,15 +17,9 @@ import { alert } from "../../js/helpers/alert";
 import fields from "./fields";
 import formatNames from "./formatNames";
 import { reducer } from "../../reducer";
+import PropTypes from "prop-types";
 
-const ModalSketch = ({
-  toggle,
-  modal,
-  entity,
-  subEntity,
-  mode,
-  customerStructure,
-}) => {
+const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const initialState = {
     formTitle: "",
 
@@ -52,22 +46,24 @@ const ModalSketch = ({
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { formTitle, entityName, refListNames, modalFields } = state;
+  const {
+    formTitle,
+    entityName,
+    refListNames,
+    modalFields,
+    customFields,
+    customFieldsCount,
+    addFieldModal,
+    facilitiesNames,
+    equipmentNames,
+    gatewaysNames,
+    nodesNames,
+    defaultEntity,
+  } = state;
 
   const [anyImg, setAnyImg] = useState([]);
   const [equipmentImg, setEquipmentImg] = useState([]);
   const [locationImg, setLocationImg] = useState([]);
-
-  const [customFields, setCustomFields] = useState([]);
-  const [customFieldsCount, setCustomFieldsCount] = useState(0);
-  const [addFieldModal, setAddFieldModal] = useState(false);
-
-  const [facilitiesNames, setFacilitiesNames] = useState([]);
-  const [equipmentNames, setEquipmentNames] = useState([]);
-  const [gatewaysNames, setGatewaysNames] = useState([]);
-  const [nodesNames, setNodesNames] = useState([]);
-
-  const [defaultEntity, setDefaultEntity] = useState({});
 
   const {
     equipmentTypeList,
@@ -77,6 +73,7 @@ const ModalSketch = ({
     updateTrigger,
     setUpdateTrigger,
     entityID,
+    customerStructure,
   } = useContext(GlobalContext);
 
   const {
@@ -126,7 +123,7 @@ const ModalSketch = ({
         const re = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/;
 
         if (!re.test(e.target.value)) {
-          console.log("jopa");
+          console.log("test failed");
         }
       }
     }
@@ -135,12 +132,12 @@ const ModalSketch = ({
   const resetToggle = () => {
     toggle();
     reset({});
-    setDefaultEntity([]);
     setEditId(null);
     setAnyImg([]);
     setLocationImg([]);
     setEquipmentImg([]);
-    setCustomFields([]);
+    dispatch({ defaultEntity: [] });
+    dispatch({ customFields: [] });
   };
 
   const onSubmit = (data) => {
@@ -276,14 +273,12 @@ const ModalSketch = ({
               }
             }
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   };
 
   const toggleAddFieldModal = () => {
-    setAddFieldModal(!addFieldModal);
+    dispatch({ addFieldModal: !addFieldModal });
   };
 
   const handleAddFieldFormSubmit = (e, fields, fieldCount) => {
@@ -296,8 +291,8 @@ const ModalSketch = ({
       title: e.target.elements["add-field-field"].value,
     });
 
-    setCustomFieldsCount(fieldCount + 1);
-    setCustomFields(newFields);
+    dispatch({ customFieldsCount: fieldCount + 1 });
+    dispatch({ customFields: newFields });
 
     toggleAddFieldModal();
   };
@@ -411,65 +406,84 @@ const ModalSketch = ({
                   refListNames: formatNames(data[subEntity], "object"),
                 });
             });
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (e) {}
         break;
       default:
         break;
     }
 
     if (customerStructure) {
-      console.log(customerStructure);
       switch (entity) {
         case "sensors":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setNodesNames(formatNames(customerStructure["nodes"], "object"));
+          dispatch({
+            nodesNames: formatNames(customerStructure["nodes"], "object"),
+          });
 
-          setEquipmentNames(
-            formatNames(customerStructure["equipment"], "object")
-          );
+          dispatch({
+            equipmentNames: formatNames(
+              customerStructure["equipment"],
+              "object"
+            ),
+          });
 
           break;
         case "motes":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setGatewaysNames(
-            formatNames(customerStructure["gateways"], "object")
-          );
+          dispatch({
+            gatewaysNames: formatNames(customerStructure["gateways"], "object"),
+          });
 
-          setEquipmentNames(
-            formatNames(customerStructure["equipment"], "object")
-          );
+          dispatch({
+            equipmentNames: formatNames(
+              customerStructure["equipment"],
+              "object"
+            ),
+          });
           break;
         case "nodes":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setGatewaysNames(
-            formatNames(customerStructure["gateways"], "object")
-          );
+          dispatch({
+            gatewaysNames: formatNames(customerStructure["gateways"], "object"),
+          });
           break;
         case "routers":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setGatewaysNames(
-            formatNames(customerStructure["gateways"], "object")
-          );
+          dispatch({
+            gatewaysNames: formatNames(customerStructure["gateways"], "object"),
+          });
           break;
         case "gateways":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
-
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
           break;
         default:
           break;
@@ -495,14 +509,14 @@ const ModalSketch = ({
               switch (entityName) {
                 case "customer":
                 case "facility":
-                  setDefaultEntity(data[entityName][editId]);
+                  dispatch({ defaultEntity: data[entityName][editId] });
                   reset({
                     ...data[entityName][editId],
                     headname: data[entityName][editId]["head_name"],
                   });
                   break;
                 default:
-                  setDefaultEntity(data[entityName]);
+                  dispatch({ defaultEntity: data[entityName] });
                   let newFields = [];
 
                   if (
@@ -523,8 +537,8 @@ const ModalSketch = ({
                       newCount += 1;
                     });
 
-                    setCustomFieldsCount(newCount);
-                    setCustomFields(newFields);
+                    dispatch({ customFieldsCount: newCount });
+                    dispatch({ customFields: newFields });
                   }
 
                   let fieldsToReset = {};
@@ -548,9 +562,7 @@ const ModalSketch = ({
               }
             }
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [editId]);
 
@@ -905,6 +917,14 @@ const ModalSketch = ({
       </Modal>
     </>
   );
+};
+
+ModalSketch.propTypes = {
+  toggle: PropTypes.func,
+  modal: PropTypes.bool,
+  entity: PropTypes.string,
+  subEntity: PropTypes.string,
+  mode: PropTypes.string,
 };
 
 export default ModalSketch;

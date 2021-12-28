@@ -48,7 +48,7 @@ const App = () => {
               setSelectedCustomer(customer.customer[data.user.last_customer]);
             });
         }
-      } else console.log("Profile not found.");
+      }
     });
   }, []);
 
@@ -68,11 +68,8 @@ const App = () => {
               dispatch({
                 customerStructure: customerStructure["customerConstruct"],
               });
-            else console.log("Customer structure not found.");
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [selectedCustomer, updateTrigger]);
 

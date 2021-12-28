@@ -15,9 +15,8 @@ const TableView = ({
   type,
   totalRows,
   page,
-  setPage,
+  dispatch,
   toggleModal,
-  setMode,
   chooseMode,
   changeCustomer,
   showProgress,
@@ -67,7 +66,7 @@ const TableView = ({
           <Button
             color="default"
             onClick={() => {
-              setMode("edit");
+              dispatch({ mode: "edit" });
               setEditId(row.id);
               toggleModal();
             }}
@@ -121,7 +120,7 @@ const TableView = ({
   };
 
   const handlePageChange = (page) => {
-    setPage(page);
+    dispatch({ page });
   };
 
   useEffect(() => {

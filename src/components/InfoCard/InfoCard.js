@@ -14,7 +14,7 @@ const InfoCard = ({
   chooseMode,
   selected,
   changeCustomer,
-  setMode,
+  dispatch,
   currentSubEntityName,
   setCurrentSubEntityName,
   hideRecordView,
@@ -79,7 +79,7 @@ const InfoCard = ({
       currentSubEntityName.name &&
       toggleEntityModal
     ) {
-      setMode("edit");
+      dispatch({ mode: "edit" });
       setEditId(data.id);
       toggleModal();
       setToggleEntityModal(!toggleEntityModal);
@@ -103,8 +103,8 @@ const InfoCard = ({
               setToggleEntityModal(!toggleEntityModal);
               setCurrentSubEntityName((state) => ({ ...state, name: type }));
             } else {
-              if (setMode) {
-                setMode("edit");
+              if (dispatch) {
+                dispatch({ mode: "edit" });
               }
               if (data) {
                 setEditId(data.id);
@@ -165,8 +165,8 @@ const InfoCard = ({
                     setToggleEntityModal(!toggleEntityModal);
                     setCurrentSubEntityName({ name: type });
                   } else {
-                    if (setMode) {
-                      setMode("edit");
+                    if (dispatch) {
+                      dispatch({ mode: "edit" });
                     }
                     if (data) {
                       setEditId(data.id);

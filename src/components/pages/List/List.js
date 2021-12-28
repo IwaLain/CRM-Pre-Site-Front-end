@@ -1,5 +1,5 @@
 import "../../../scss/list.scss";
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useState, useReducer } from "react";
 import TableView from "../../TableView/TableView";
 import InfoCard from "../../InfoCard/InfoCard";
 import CustomPagination from "../../widgets/Pagination/Pagination";
@@ -28,26 +28,39 @@ const List = ({
   initBlockView,
 }) => {
   const initialState = {
-    data: [],
+    data: {},
+    searchQuery: "",
+    requests: {},
+    isLoading: false,
+    view: true,
+    screenSize: window.innerWidth,
+    totalRows: Math.ceil(0),
+    totalPages: 0,
+    entityNames: [],
+    mode: "",
+    page: 1,
+    modal: false,
+    prevSelectedAll: false,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { data } = state;
+  const {
+    data,
+    searchQuery,
+    requests,
+    isLoading,
+    view,
+    screenSize,
+    totalRows,
+    totalPages,
+    entityNames,
+    modal,
+    prevSelectedAll,
+    page,
+    mode,
+  } = state;
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [requests, setRequests] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [view, setView] = useState(true);
-  const [screenSize, SetScreenSize] = useState(window.innerWidth);
-  const [totalRows, setTotalRows] = useState(Math.ceil(0));
-  const [entityNames, setEntityNames] = useState();
-  const [mode, setMode] = useState();
-  const [modal, setModal] = useState(false);
-
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState();
   const RECORDS_PER_PAGE = 20;
-  const [prevSelectedAll, setPrevSelectedAll] = useState(false);
 
   const {
     entityID,
@@ -55,7 +68,7 @@ const List = ({
 
     selectedCustomer,
     setSelectedCustomer,
-    customerStructure,
+    setCustomerStructure,
     updateTrigger,
   } = useContext(GlobalContext);
 
@@ -70,26 +83,26 @@ const List = ({
   };
 
   const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
+    dispatch({ searchQuery: e.target.value });
 
-    setIsLoading(true);
-    setPage(1);
+    dispatch({ isLoading: true });
+    dispatch({ page: 1 });
     if (requests.list) {
       requests
         .list(RECORDS_PER_PAGE, 1, e.target.value, entityID)
         .then((res) => {
           dispatch({ data: res });
-          setTotalRows(res.total);
-          setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
-          setIsLoading(false);
+          dispatch({ totalRows: res.total });
+          dispatch({ totalPages: Math.ceil(res.total / RECORDS_PER_PAGE) });
+          dispatch({ isLoading: false });
         });
     } else {
-      setIsLoading(false);
+      dispatch({ isLoading: false });
     }
   };
 
   const handleResize = () => {
-    SetScreenSize(window.innerWidth);
+    dispatch({ screenSize: window.innerWidth });
   };
 
   const handleEntitySelect = (e) => {
@@ -97,24 +110,30 @@ const List = ({
     if (prevSelectedAll)
       switch (type.entity) {
         case "customers":
-          setRequests({ list: customersApi.getCustomers });
+          dispatch({ requests: { list: customersApi.getCustomers } });
           break;
         case "facilities":
-          setRequests({
-            list: customersApi.getCustomerFacilities,
-            ref: customersApi.getCustomers,
+          dispatch({
+            requests: {
+              list: customersApi.getCustomerFacilities,
+              ref: customersApi.getCustomers,
+            },
           });
           break;
         case "locations":
-          setRequests({
-            list: locationApi.getFacilityLocations,
-            ref: facilitiesApi.getFacilities,
+          dispatch({
+            requests: {
+              list: locationApi.getFacilityLocations,
+              ref: facilitiesApi.getFacilities,
+            },
           });
           break;
         case "equipment":
-          setRequests({
-            list: equipmentApi.getLocationEquipment,
-            ref: locationApi.getLocations,
+          dispatch({
+            requests: {
+              list: equipmentApi.getLocationEquipment,
+              ref: locationApi.getLocations,
+            },
           });
           break;
         case "gateways":
@@ -122,21 +141,23 @@ const List = ({
         case "motes":
         case "routers":
         case "sensors":
-          setRequests({
-            list: (limit, page, search) => {
-              let url =
-                process.env.REACT_APP_SERVER_URL +
-                "/api/customer/" +
-                selectedCustomer.id +
-                "/" +
-                type.entity +
-                "?access-token=" +
-                localStorage.getItem("token");
-              if (limit) url += "&limit=" + limit;
-              if (page) url += "&page=" + page;
-              if (search) url += "&search=" + search;
+          dispatch({
+            requests: {
+              list: (limit, page, search) => {
+                let url =
+                  process.env.REACT_APP_SERVER_URL +
+                  "/api/customer/" +
+                  selectedCustomer.id +
+                  "/" +
+                  type.entity +
+                  "?access-token=" +
+                  localStorage.getItem("token");
+                if (limit) url += "&limit=" + limit;
+                if (page) url += "&page=" + page;
+                if (search) url += "&search=" + search;
 
-              return fetch(url).then((res) => res.json());
+                return fetch(url).then((res) => res.json());
+              },
             },
           });
           break;
@@ -146,32 +167,38 @@ const List = ({
     if (e.target.value === "all") {
       switch (type.entity) {
         case "facilities":
-          setRequests({
-            list: facilitiesApi.getFacilities,
-            ref: customersApi.getCustomers,
+          dispatch({
+            requests: {
+              list: facilitiesApi.getFacilities,
+              ref: customersApi.getCustomers,
+            },
           });
           break;
         case "locations":
-          setRequests({
-            list: locationApi.getLocations,
-            ref: facilitiesApi.getFacilities,
+          dispatch({
+            requests: {
+              list: locationApi.getLocations,
+              ref: facilitiesApi.getFacilities,
+            },
           });
           break;
         case "equipment":
-          setRequests({
-            list: equipmentApi.getEquipments,
-            ref: locationApi.getLocations,
+          dispatch({
+            requests: {
+              list: equipmentApi.getEquipments,
+              ref: locationApi.getLocations,
+            },
           });
           break;
         default:
           break;
       }
-      setPrevSelectedAll(true);
-    } else setPrevSelectedAll(false);
+      dispatch({ prevSelectedAll: true });
+    } else dispatch({ prevSelectedAll: false });
   };
 
   const toggleModal = () => {
-    setModal(!modal);
+    dispatch({ modal: !modal });
   };
 
   const changeCustomer = (id) => {
@@ -187,12 +214,24 @@ const List = ({
         .then((customer) => {
           if (customer) {
             setSelectedCustomer(customer.customer[id]);
-          } else console.log("Customer not found.");
+          }
         });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
 
+    try {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/customer/" +
+          id +
+          "/construct?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((customerStructure) => {
+          if (customerStructure)
+            setCustomerStructure(customerStructure["customerConstruct"]);
+        });
+    } catch (e) {}
     try {
       fetch(
         process.env.REACT_APP_SERVER_URL +
@@ -204,14 +243,12 @@ const List = ({
           method: "PUT",
         }
       );
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   useEffect(() => {
     if (initBlockView) {
-      setView(false);
+      dispatch({ view: false });
     }
   }, [initBlockView]);
 
@@ -219,24 +256,30 @@ const List = ({
     if (type) {
       switch (type.entity) {
         case "customers":
-          setRequests({ list: customersApi.getCustomers });
+          dispatch({ requests: { list: customersApi.getCustomers } });
           break;
         case "facilities":
-          setRequests({
-            list: customersApi.getCustomerFacilities,
-            ref: customersApi.getCustomers,
+          dispatch({
+            requests: {
+              list: customersApi.getCustomerFacilities,
+              ref: customersApi.getCustomers,
+            },
           });
           break;
         case "locations":
-          setRequests({
-            list: locationApi.getFacilityLocations,
-            ref: facilitiesApi.getFacilities,
+          dispatch({
+            requests: {
+              list: locationApi.getFacilityLocations,
+              ref: facilitiesApi.getFacilities,
+            },
           });
           break;
         case "equipment":
-          setRequests({
-            list: equipmentApi.getLocationEquipment,
-            ref: locationApi.getLocations,
+          dispatch({
+            requests: {
+              list: equipmentApi.getLocationEquipment,
+              ref: locationApi.getLocations,
+            },
           });
           break;
         case "gateways":
@@ -244,21 +287,23 @@ const List = ({
         case "motes":
         case "routers":
         case "sensors":
-          setRequests({
-            list: (limit, page, search) => {
-              let url =
-                process.env.REACT_APP_SERVER_URL +
-                "/api/customer/" +
-                selectedCustomer.id +
-                "/" +
-                type.entity +
-                "?access-token=" +
-                localStorage.getItem("token");
-              if (limit) url += "&limit=" + limit;
-              if (page) url += "&page=" + page;
-              if (search) url += "&search=" + search;
+          dispatch({
+            requests: {
+              list: (limit, page, search) => {
+                let url =
+                  process.env.REACT_APP_SERVER_URL +
+                  "/api/customer/" +
+                  selectedCustomer.id +
+                  "/" +
+                  type.entity +
+                  "?access-token=" +
+                  localStorage.getItem("token");
+                if (limit) url += "&limit=" + limit;
+                if (page) url += "&page=" + page;
+                if (search) url += "&search=" + search;
 
-              return fetch(url).then((res) => res.json());
+                return fetch(url).then((res) => res.json());
+              },
             },
           });
           break;
@@ -284,19 +329,17 @@ const List = ({
 
   useEffect(() => {
     if (requests.list) {
-      setIsLoading(true);
+      dispatch({ isLoading: true });
       try {
         requests
           .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
           .then((res) => {
             dispatch({ data: res });
-            setTotalRows(res.total);
-            setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
-            setIsLoading(false);
+            dispatch({ totalRows: res.total });
+            dispatch({ totalPages: Math.ceil(res.total / RECORDS_PER_PAGE) });
+            dispatch({ isLoading: false });
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [requests, updateTrigger]);
 
@@ -306,7 +349,7 @@ const List = ({
         requests.ref(-1).then((res) => {
           if (Object.keys(res[type.ref]).length > 0 && !hideSelect) {
             const formattedNames = formatNames(res[type.ref]);
-            setEntityNames(formattedNames);
+            dispatch({ entityNames: formattedNames });
             if (
               selectedCustomer &&
               Object.keys(selectedCustomer).length > 0 &&
@@ -316,9 +359,7 @@ const List = ({
             } else setEntityID(formattedNames[0].id);
           }
         });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
   }, [requests.ref]);
 
   useEffect(() => {
@@ -329,28 +370,24 @@ const List = ({
           .then((res) => {
             dispatch({ data: res });
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [page]);
 
   useEffect(() => {
     if (requests.list) {
-      setIsLoading(true);
+      dispatch({ isLoading: true });
       try {
         requests
           .list(RECORDS_PER_PAGE, page, searchQuery, entityID)
           .then((res) => {
             dispatch({ data: res });
-            setTotalRows(res.total);
-            setTotalPages(Math.ceil(res.total / RECORDS_PER_PAGE));
-            setPage(1);
-            setIsLoading(false);
+            dispatch({ totalRows: res.total });
+            dispatch({ totalPages: Math.ceil(res.total / RECORDS_PER_PAGE) });
+            dispatch({ page: 1 });
+            dispatch({ isLoading: false });
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [entityID]);
 
@@ -362,7 +399,6 @@ const List = ({
         modal={modal}
         toggle={toggleModal}
         mode={mode}
-        customerStructure={customerStructure}
       />
       <div className="list">
         <div className="list__header">
@@ -375,7 +411,7 @@ const List = ({
               <button
                 className="list__add-btn"
                 onClick={() => {
-                  setMode("create");
+                  dispatch({ mode: "create" });
                   toggleModal();
                 }}
               >
@@ -421,12 +457,12 @@ const List = ({
               <div className="list__options_btns">
                 <Button
                   type="list-view"
-                  onClick={() => setView(true)}
+                  onClick={() => dispatch({ view: true })}
                   className={view ? "active" : ""}
                 ></Button>
                 <Button
                   type="block-view"
-                  onClick={() => setView(false)}
+                  onClick={() => dispatch({ view: false })}
                   className={!view ? "active" : ""}
                 ></Button>
               </div>
@@ -442,10 +478,9 @@ const List = ({
                   type={type}
                   totalRows={totalRows}
                   page={page}
-                  setPage={setPage}
+                  dispatch={dispatch}
                   toggleModal={toggleModal}
                   modal={modal}
-                  setMode={setMode}
                   chooseMode={chooseMode}
                   changeCustomer={changeCustomer}
                   hideRecordView={hideRecordView}
@@ -460,14 +495,16 @@ const List = ({
                       : "info-card_group dense"
                   }
                 >
-                  {data && Object.keys(data[type.entity]).length > 0 ? (
+                  {data &&
+                  data[type.entity] &&
+                  Object.keys(data[type.entity]).length > 0 ? (
                     Object.entries(data[type.entity]).map((record) => (
                       <InfoCard
                         key={record[1].id}
                         data={record[1]}
                         type={type.entity}
                         toggleModal={toggleModal}
-                        setMode={setMode}
+                        dispatch={dispatch}
                         chooseMode={chooseMode}
                         selected={record[1].id === selectedCustomer.id}
                         changeCustomer={changeCustomer}
@@ -494,7 +531,7 @@ const List = ({
                   nextLabel={">"}
                   pageCount={totalPages}
                   initialPage={page}
-                  onPageChange={setPage}
+                  dispatch={dispatch}
                   totalRows={totalRows}
                   containerClassName={"pagination"}
                   activeClassName={"active"}
