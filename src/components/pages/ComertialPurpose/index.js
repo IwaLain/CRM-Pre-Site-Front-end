@@ -15,7 +15,7 @@ import Table from './table';
 import Form from './form';
 import Modal from './modal';
 
-import '../../../scss/ComertialPurpose.scss'
+import './ComertialPurpose.scss'
 
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
 

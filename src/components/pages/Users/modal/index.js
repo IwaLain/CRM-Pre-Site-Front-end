@@ -11,11 +11,14 @@ import {
     ModalHeader, 
     Row } from 'reactstrap'
 import PropTypes from "prop-types";
-import './UserModal.scss'
+
+import { reducer } from '../../../../reducer'
+
 import UserAdd from '../add'
 import UserEdit from '../edit'
 import ProfileEdit from '../../Profile/edit'
-import { reducer } from '../../../../reducer'
+
+import './UserModal.scss'
 
 const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
     const initialState = {

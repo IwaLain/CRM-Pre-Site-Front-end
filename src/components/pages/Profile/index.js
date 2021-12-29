@@ -1,18 +1,22 @@
-import React, {useReducer} from 'react';
+import React, {useReducer, useContext, useEffect } from 'react';
 import { 
     Button, 
     Col, 
     Label, 
     Row 
 } from "reactstrap"
-import '../../../scss/Profile.scss'
-import placeholder from '../../../assets/img/profile_placeholder.png'
-import { useContext, useEffect } from "react"
+
+import convertToBase64 from "../../../js/helpers/convertImage"
+import { GlobalContext } from "../../../context"
+import { reducer } from '../../../reducer';
+
 import Profile from "../../../js/api/profile"
 import UserModal from "../Users/modal"
-import { GlobalContext } from "../../../context"
-import convertToBase64 from "../../../js/helpers/convertImage"
-import { reducer } from '../../../reducer';
+
+import './Profile.scss'
+
+import placeholder from '../../../assets/img/profile_placeholder.png'
+
 
 const ProfilePage = () => {
     const { userProfile, setUserProfile } = useContext(GlobalContext)

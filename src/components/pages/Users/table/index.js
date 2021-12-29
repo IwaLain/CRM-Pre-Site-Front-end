@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import DataTable from "react-data-table-component";
 import { Col, Row } from "reactstrap";
 import PropTypes from "prop-types";
+
 import User from "../../../../js/api/users";
-import "../../../../scss/UserTable.scss";
+
 import UserModal from "../modal";
-import DataTable from "react-data-table-component";
+
 import Loader from "../../../../js/helpers/loader";
 import { alert } from "../../../../js/helpers/alert";
+
+import "./UserTable.scss";
 
 const UserTable = ({ users, editeTable, changeTable }) => {
   const [currentUser, setCurrentUser] = useState([]);

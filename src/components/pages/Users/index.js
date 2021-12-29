@@ -10,7 +10,7 @@ import UserTable from './table'
 import UserModal from './modal'
 import { reducer } from '../../../reducer'
 
-import '../../../scss/Users.scss'
+import './Users.scss'
 
 const UsersPage = () => {
 
