@@ -1,7 +1,5 @@
-import { getToken } from "../helpers/helpers";
-import { apiRequest } from "./api";
-
-const BASE_URL = process.env.REACT_APP_SERVER_URL
+import { getToken } from '../helpers/helpers'
+import { apiRequest, header, BASE_URL} from './api'
 
 const customersApi = {
   getCustomers: async (limit, page, search) => {
@@ -17,9 +15,7 @@ const customersApi = {
         "GET",
         BASE_URL + url,
         {},
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -29,9 +25,7 @@ const customersApi = {
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/customer/${customerId}?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/customer/${customerId}?access-token=${token}`
       );
   },
 
@@ -43,9 +37,7 @@ const customersApi = {
         "POST",
         BASE_URL + `/api/customer/create?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -58,9 +50,7 @@ const customersApi = {
         BASE_URL +
           `/api/customer/${customerId}/image/create?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -71,9 +61,7 @@ const customersApi = {
       return apiRequest(
         "DELETE",
         BASE_URL +
-          `/api/customer/${customerId}/image/delete/${imageId}?access-token=${token}`,
-        {},
-        {}
+          `/api/customer/${customerId}/image/delete/${imageId}?access-token=${token}`
       );
   },
 
@@ -86,9 +74,7 @@ const customersApi = {
         BASE_URL +
           `/api/customer/${customerId}/set-main-image/${imageId}?access-token=${token}`,
         {},
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -100,9 +86,7 @@ const customersApi = {
         "PUT",
         BASE_URL + `/api/customer/update/${customerId}?access-token=${token}`,
         dataCustomer,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -134,9 +118,7 @@ const customersApi = {
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/customer/${id}/equipment?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/customer/${id}/equipment?access-token=${token}`
       );
   },
 
@@ -146,9 +128,7 @@ const customersApi = {
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/customer/${id}/network?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/customer/${id}/network?access-token=${token}`
       );
   },
 
@@ -158,9 +138,7 @@ const customersApi = {
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/customer/${id}/construct?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/customer/${id}/construct?access-token=${token}`
       );
   },
 
@@ -171,9 +149,7 @@ const customersApi = {
       return apiRequest(
         "GET",
         BASE_URL +
-          `/api/customer/${id}/image/${typeId}/delete-all?access-token=${token}`,
-        {},
-        {}
+          `/api/customer/${id}/image/${typeId}/delete-all?access-token=${token}`
       );
   },
 };

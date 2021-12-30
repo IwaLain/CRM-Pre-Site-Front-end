@@ -1,7 +1,5 @@
-import { getToken } from "../helpers/helpers";
-import { apiRequest } from "./api";
-
-const BASE_URL = process.env.REACT_APP_SERVER_URL
+import { getToken } from '../helpers/helpers'
+import { apiRequest, header, BASE_URL} from './api'
 
 const facilitiesApi = {
   getFacilities: async (limit, page, search) => {
@@ -22,9 +20,7 @@ const facilitiesApi = {
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/facility/${facilityId}?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/facility/${facilityId}?access-token=${token}`
       );
   },
 
@@ -36,9 +32,7 @@ const facilitiesApi = {
         "POST",
         BASE_URL + `/api/facility/create?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -50,9 +44,7 @@ const facilitiesApi = {
         "PUT",
         BASE_URL + `/api/facility/update/${facilityId}?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -62,9 +54,7 @@ const facilitiesApi = {
     if (token)
       return apiRequest(
         "DELETE",
-        BASE_URL + `/api/facility/delete/${facilityId}?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/facility/delete/${facilityId}?access-token=${token}`
       );
   },
 
@@ -75,9 +65,7 @@ const facilitiesApi = {
       return apiRequest(
         "DELETE",
         BASE_URL +
-          `/api/facility/${facilityId}/image/delete/${imageId}?access-token=${token}`,
-        {},
-        {}
+          `/api/facility/${facilityId}/image/delete/${imageId}?access-token=${token}`
       );
   },
 
@@ -89,9 +77,7 @@ const facilitiesApi = {
         BASE_URL +
           `/api/facility/${facilityId}/image/create?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -104,9 +90,7 @@ const facilitiesApi = {
         BASE_URL +
           `/api/facility/${facilityId}/set-main-image/${imageId}?access-token=${token}`,
         {},
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 };

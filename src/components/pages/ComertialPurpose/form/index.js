@@ -129,7 +129,7 @@ const ComertialForm = ({dataForm, currentData}) => {
 
 ComertialForm.propTypes = {
     dataForm: PropTypes.object,
-    currentData: PropTypes.object
+    currentData: PropTypes.array
 }
 
 export default ComertialForm

@@ -7,10 +7,11 @@ import {
     ModalHeader 
 } from 'reactstrap'
 import PropTypes from "prop-types";
+
 import Previews from '../preview'
 
-const ComertialModal = ({togglePDF, preview, date}) => {
-    const {previewData, currentData, quote, modalPDF} = preview
+const ComertialModal = ({togglePDF, preview, date, currentData}) => {
+    const {previewData, quote, modalPDF} = preview
     
     return (
         <Modal
@@ -46,7 +47,6 @@ ComertialModal.propTypes = {
     togglePDF: PropTypes.func,
     preview: PropTypes.object,
     date: PropTypes.string,
-    modalPDF: PropTypes.bool
 }
 
 export default ComertialModal

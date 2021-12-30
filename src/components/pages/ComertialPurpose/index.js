@@ -135,6 +135,7 @@ const ComertialPurpouse = () => {
             }
         
             <Modal 
+                currentData={currentData}
                 togglePDF={togglePDF}
                 preview={state}
                 date={date}

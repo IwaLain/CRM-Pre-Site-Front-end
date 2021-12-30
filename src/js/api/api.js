@@ -1,3 +1,6 @@
+export const header = {"Content-Type": "application/json"}
+export const BASE_URL = process.env.REACT_APP_SERVER_URL
+
 export const apiRequest = async (
   method,
   url,

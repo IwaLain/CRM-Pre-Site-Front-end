@@ -134,7 +134,7 @@ const Previews = ({ table, form, date, quote }) => {
 }
 
 Previews.propTypes ={
-    table: PropTypes.object,
+    table: PropTypes.array,
     items: PropTypes.object,
     date: PropTypes.string,
     quote: PropTypes.string
