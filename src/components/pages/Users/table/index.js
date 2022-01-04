@@ -1,109 +1,110 @@
-import React, { useState } from "react";
-import DataTable from "react-data-table-component";
-import { Col, Row } from "reactstrap";
-import PropTypes from "prop-types";
+import React, { useState } from 'react'
+import DataTable from 'react-data-table-component'
+import { Col, Row } from 'reactstrap'
+import PropTypes from 'prop-types'
 
-import User from "../../../../js/api/users";
+import User from '../../../../js/api/users'
 
-import UserModal from "../modal";
+import UserModal from '../modal'
 
-import Loader from "../../../../js/helpers/loader";
-import { alert } from "../../../../js/helpers/alert";
+import { alert } from '../../../../js/helpers/alert'
 
-import "./UserTable.scss";
+import Button from '../../../UIKit/Button/Button'
 
 const UserTable = ({ users, editeTable, changeTable }) => {
-  const [currentUser, setCurrentUser] = useState([]);
-  const [modalEditUser, setModalEditUser] = useState(false);
+  const [currentUser, setCurrentUser] = useState([])
+  const [modalEditUser, setModalEditUser] = useState(false)
 
-  const toggleEditUser = () => setModalEditUser(!modalEditUser);
-  const current = (currentUser) => setCurrentUser(currentUser);
+  const toggleEditUser = () => setModalEditUser(!modalEditUser)
+  const current = (currentUser) => setCurrentUser(currentUser)
 
   const deleteUser = (userId) => {
     User.delete(userId).then((data) => {
       if (data.success) {
-        changeTable(data.users);
-        alert("success", `Successful deleted user`);
+        changeTable(data.users)
+        alert('success', `Successful deleted user`)
       } else {
-        alert("error", 'Can`t delete Super Admin');
+        alert('error', 'Can`t delete Super Admin')
       }
-    });
-  };
+    })
+  }
 
-  const isEmpty = (cell) => (cell === null ? "--" : cell === "" ? "--" : cell);
+  const isEmpty = (cell) => (cell === null ? '--' : cell === '' ? '--' : cell)
 
   const customStyles = {
     rows: {
       style: {
-        fontSize: "16px",
-      },
+        fontSize: '16px'
+      }
     },
     headCells: {
       style: {
-        fontSize: "16px",
-      },
-    },
-  };
+        fontSize: '16px'
+      }
+    }
+  }
 
   const columns = [
     {
-      name: "First Name",
-      selector: (row) => isEmpty(row["first_name"]),
-      maxWidth: "200px",
+      name: 'First Name',
+      selector: (row) => isEmpty(row['first_name']),
+      maxWidth: '200px'
     },
     {
-      name: "Last Name",
-      selector: (row) => isEmpty(row["last_name"]),
-      maxWidth: "200px",
+      name: 'Last Name',
+      selector: (row) => isEmpty(row['last_name']),
+      maxWidth: '200px'
     },
     {
-      name: "UserName",
-      selector: (row) => isEmpty(row["username"]),
+      name: 'UserName',
+      selector: (row) => isEmpty(row['username']),
       sortable: true,
-      maxWidth: "300px",
+      maxWidth: '300px'
     },
     {
-      name: "Email Address",
-      selector: (row) => isEmpty(row["email"]),
-      maxWidth: "300px"
+      name: 'Email Address',
+      selector: (row) => isEmpty(row['email']),
+      maxWidth: '300px'
     },
     {
-      name: "Phone",
-      selector: (row) => isEmpty(row["phone"]),
-      maxWidth: "200px"
+      name: 'Phone',
+      selector: (row) => isEmpty(row['phone']),
+      maxWidth: '200px'
     },
-    { 
-      name: "Role",
-      selector: (row) => isEmpty(row["role"]),
-      maxWidth: "200px",
+    {
+      name: 'Role',
+      selector: (row) => isEmpty(row['role']),
+      maxWidth: '200px'
     },
     {
       cell: (row) => (
-        <i
-          className="fas fa-edit users-table__img"
-          alt="edite"
+        <Button
+          className="btn btn-primary"
           onClick={() => {
-            toggleEditUser(true);
-            current(row);
+            toggleEditUser(true)
+            current(row)
           }}
-        ></i>
+        >
+          <i className="far fa-edit users-table__img" alt="edite"></i>
+        </Button>
       ),
       right: true,
-      grow: 0,
+      grow: 0
     },
     {
       cell: (row) => (
-        <i
-          className="fas fa-trash users-table__img"
-          alt="delete"
+        <Button
+          className="btn btn-danger"
           onClick={() => {
-            deleteUser(row.id);
+            deleteUser(row.id)
           }}
-        ></i>
+        >
+          <i className="far fa-trash-alt users-table__img" alt="delete"></i>
+        </Button>
       ),
-      grow: 0,
-    },
-  ];
+      grow: 0
+    }
+  ]
 
   return (
     <Row className="mt-3">
@@ -112,16 +113,13 @@ const UserTable = ({ users, editeTable, changeTable }) => {
           columns={columns}
           data={users}
           defaultSortField="title"
-          progressComponent={<Loader />}
           responsive
           pagination={users.length > 10 ? true : false}
           subHeaderAlign="right"
           customStyles={customStyles}
         />
       </Col>
-      {
-        modalEditUser
-        ?
+      {modalEditUser ? (
         <UserModal
           type="Edit User"
           currentUser={currentUser}
@@ -129,18 +127,17 @@ const UserTable = ({ users, editeTable, changeTable }) => {
           toggle={toggleEditUser}
           modal={modalEditUser}
         />
-        :
-        ''
-      }
-      
+      ) : (
+        null
+      )}
     </Row>
-  );
-};
+  )
+}
 
 UserTable.propTypes = {
   users: PropTypes.array,
   editeTable: PropTypes.func,
-  changeTable: PropTypes.func,
+  changeTable: PropTypes.func
 }
 
-export default UserTable;
+export default UserTable

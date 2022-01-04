@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { GlobalContext } from "../../../../context";
 import { validation } from "../../../../js/helpers/validation";
 import '../../../../scss/ui-kit.scss'
+import { Row } from "reactstrap";
 
 const ComertialPurpose = ({ setData, dataForm }) => {
   const { customerNetwork } = useContext(GlobalContext);
@@ -135,7 +136,11 @@ const ComertialPurpose = ({ setData, dataForm }) => {
     },
   ];
 
-  return <DataTable columns={columns} data={listData} />;
+  return (
+    <Row className="purpose__table">
+      <DataTable columns={columns} data={listData} />
+    </Row>
+  );
 };
 
 ComertialPurpose.propTypes = {

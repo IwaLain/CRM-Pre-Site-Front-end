@@ -18,8 +18,6 @@ import UserAdd from '../add'
 import UserEdit from '../edit'
 import ProfileEdit from '../../Profile/edit'
 
-import './UserModal.scss'
-
 const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
     const initialState = {
         formComponent: {},
