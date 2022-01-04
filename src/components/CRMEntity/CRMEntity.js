@@ -12,7 +12,7 @@ import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
-import { Spinner } from "reactstrap";
+import Loader from "../widgets/Loader/Loader";
 import PropTypes from "prop-types";
 import List from "../pages/List/List";
 const CRMEntity = ({ type }) => {
@@ -234,19 +234,19 @@ const CRMEntity = ({ type }) => {
           setIsLoading(false);
         });
       } catch {
-        // history.replace(`/dashboard/${entityPluralAlias}`);
-        // history.push("/404");
+        history.replace(`/dashboard/${entityPluralAlias}`);
+        history.push("/404");
       }
     } else {
-      // history.replace(`/dashboard/${entityPluralAlias}`);
-      // history.push("/404");
+      history.replace(`/dashboard/${entityPluralAlias}`);
+      history.push("/404");
     }
   }, []);
 
   return (
     <>
       {!isLoading ? (
-        <>
+        <div className="entity-page">
           <div className="d-flex align-items-center entity-page--header">
             {entityObject && entityObject[`${type}Images`] && (
               <div className="main-img--container">
@@ -323,9 +323,18 @@ const CRMEntity = ({ type }) => {
               )}
             </div>
           )}
-        </>
+        </div>
       ) : (
-        <Spinner />
+        <div
+          style={{
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Loader />
+        </div>
       )}
     </>
   );
