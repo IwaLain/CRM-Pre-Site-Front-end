@@ -19,7 +19,7 @@ import formatNames from "./formatNames";
 import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-
+import "../../scss/modal-sketch.scss";
 const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const initialState = {
     formTitle: "",
@@ -775,7 +775,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                setDeleteField({ id, title });
+                                dispatch({ deleteField: { id, title } });
                                 toggleConfirmModal();
                                 // toggleConfirmModal(e, customFields, id);
                               }}
