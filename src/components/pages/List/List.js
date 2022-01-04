@@ -1,5 +1,5 @@
 import "../../../scss/list.scss";
-import { useContext, useEffect, useState, useReducer } from "react";
+import { useContext, useEffect, useReducer } from "react";
 import TableView from "../../TableView/TableView";
 import InfoCard from "../../InfoCard/InfoCard";
 import CustomPagination from "../../widgets/Pagination/Pagination";
@@ -13,6 +13,7 @@ import Button from "../../UIKit/Button/Button";
 import ModalSketch from "../../ModalComponent/ModalSketch";
 import Loader from "../../widgets/Loader/Loader";
 import { reducer } from "../../../reducer";
+import PropTypes from "prop-types";
 
 const List = ({
   type,
@@ -554,6 +555,20 @@ const List = ({
       </div>
     </>
   );
+};
+
+List.propTypes = {
+  type: PropTypes.object,
+  title: PropTypes.string,
+  chooseMode: PropTypes.bool,
+  hideTitle: PropTypes.bool,
+  hideCreateBtn: PropTypes.bool,
+  hideSelect: PropTypes.bool,
+  hideSearch: PropTypes.bool,
+  hideChangeView: PropTypes.bool,
+  showProgress: PropTypes.bool,
+  hideRecordView: PropTypes.bool,
+  initBlockView: PropTypes.bool,
 };
 
 export default List;

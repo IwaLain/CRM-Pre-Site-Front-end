@@ -1,12 +1,15 @@
 import React, { useContext, useReducer } from "react";
-import "../../../scss/dashboard.scss";
-import { useEffect, useState } from "react";
+import "../../../scss/dashboard-layout.scss";
+import "../../../scss/header.scss";
+import "../../../scss/sidebar.scss";
+import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import Header from "../../widgets/Header/Header";
 import Sidebar from "../../widgets/Sidebar/Sidebar";
 import Breadcrumbs from "../../widgets/Breadcrumbs/Breadcrumbs";
 import { GlobalContext } from "../../../context";
 import { reducer } from "../../../reducer";
+import PropTypes from "prop-types";
 
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 750;
@@ -59,6 +62,10 @@ const DashboardLayout = ({ children }) => {
       </section>
     </div>
   );
+};
+
+DashboardLayout.propTypes = {
+  children: PropTypes.element,
 };
 
 export default DashboardLayout;
