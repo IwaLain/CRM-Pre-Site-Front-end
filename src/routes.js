@@ -1,11 +1,11 @@
-import UsersPage from "./components/pages/Users/Users";
-import Profile from "./components/pages/Profile/Profile";
-import List from "./components/pages/List/List";
+import UsersPage from "./pages/Users/Users";
+import Profile from "./pages/Profile/Profile";
+import List from "./components/List/List";
 import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
-import Dashboard from "./components/pages/Dashboard/Dashboard";
-import Network from "./components/pages/Network/Network";
-import ComertialPorpose from "./components/pages/ComertialPurpose/ComertialPurpose";
+import StatisticsDashboard from "./pages/StatisticsDashboard/StatisticsDashboard";
+import Network from "./pages/Network/Network";
+import ComertialPorpose from "./pages/ComertialPurpose/ComertialPurpose";
 
 const routes = [
   {
@@ -94,7 +94,7 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    children: <Dashboard />,
+    children: <StatisticsDashboard />,
   },
 ];
 

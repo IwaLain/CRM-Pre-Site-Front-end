@@ -10,6 +10,7 @@ import Breadcrumbs from "../../widgets/Breadcrumbs/Breadcrumbs";
 import { GlobalContext } from "../../../context";
 import { reducer } from "../../../reducer";
 import PropTypes from "prop-types";
+import debounce from "../../../js/helpers/debounce";
 
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 750;
@@ -22,6 +23,8 @@ const DashboardLayout = ({ children }) => {
   const { isMobile } = state;
 
   const { setEquipmentTypeList, userProfile } = useContext(GlobalContext);
+
+  const debouncedResizeHandler = debounce(() => handleResize());
 
   const handleResize = () => {
     if (window.innerWidth <= MOBILE_SIZE) {
@@ -46,7 +49,7 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", debouncedResizeHandler);
   }, []);
 
   return (

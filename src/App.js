@@ -7,10 +7,10 @@ import {
 } from "react-router-dom";
 import { GlobalContext } from "./context";
 import DashboardLayout from "./components/layouts/DashboardLayout/DashboardLayout";
-import NotFound from "./components/pages/NotFound/NotFound";
+import NotFound from "./pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
-import LoginPage from "./components/pages/Login/Login";
+import LoginPage from "./pages/Login/Login";
 import "./scss/ui-kit.scss";
 import Profile from "./js/api/profile";
 import { reducer } from "./reducer";
