@@ -97,7 +97,13 @@ const CRMEntity = ({ type }) => {
       entityPluralAlias = "customers";
       subEntityName = "facilities";
 
-      informationFieldNames = ["address", "phone", "email"];
+      informationFieldNames = [
+        "address",
+        "phone",
+        "email",
+        "activity",
+        "head_name",
+      ];
 
       break;
     case "facility":
@@ -135,103 +141,108 @@ const CRMEntity = ({ type }) => {
     setInformationItems([]);
     setIsLoading(true);
     if (id) {
-      setEntityID(id);
       try {
         getEntityAPI(id).then((data) => {
-          if (type === "customer" || type === "facility") {
-            data = data[type][id];
-          } else {
-            data = data[type];
-          }
-          setEntityObject(data);
+          console.log(data.code);
+          if (data.code !== 0) {
+            setEntityID(id);
+            if (type === "customer" || type === "facility") {
+              data = data[type][id];
+            } else {
+              data = data[type];
+            }
+            setEntityObject(data);
 
-          if (data[`${type}Images`]) {
-            setAttachedFiles(data[`${type}Images`]);
+            if (data[`${type}Images`]) {
+              setAttachedFiles(data[`${type}Images`]);
 
-            setEntityImages(
-              data[`${type}Images`].filter((el) => el.type_id === "1")
-            );
+              setEntityImages(
+                data[`${type}Images`].filter((el) => el.type_id === "1")
+              );
 
-            const mainImage = getMainImage(
-              data[`${type}Images`].filter((el) => el.type_id === "1")
-            );
+              const mainImage = getMainImage(
+                data[`${type}Images`].filter((el) => el.type_id === "1")
+              );
 
-            setMainImage(mainImage);
-          }
-          if (informationFieldNames.length > 0) {
-            let infoFields = informationFieldNames.map((el) => {
-              if (data[el]) {
-                return { fieldTitle: el, value: data[el] };
+              setMainImage(mainImage);
+            }
+            if (informationFieldNames.length > 0) {
+              let infoFields = informationFieldNames.map((el) => {
+                if (data[el]) {
+                  return { fieldTitle: el, value: data[el] };
+                }
+                return false;
+              });
+
+              setInformationItems((state) => {
+                return [...state, ...infoFields];
+              });
+            }
+            if (data.jsonData) {
+              const customFields = data.jsonData.map((el) => {
+                return { fieldTitle: el.name, value: el.value };
+              });
+
+              setInformationItems((state) => {
+                return [...state, ...customFields];
+              });
+            }
+            if (subEntityName.length !== 0) {
+              if (subEntityName === "equipment") {
+                fetch(
+                  process.env.REACT_APP_SERVER_URL +
+                    "/api/location/" +
+                    id +
+                    "/equipment?access-token=" +
+                    localStorage.getItem("token")
+                )
+                  .then((res) => res.json())
+                  .then((data) => {
+                    setSubEntity([
+                      {
+                        subEntityName: subEntityName,
+                        subEntityData: data[subEntityName],
+                      },
+                    ]);
+                  });
+              } else {
+                setSubEntity([
+                  {
+                    subEntityName: subEntityName,
+                    subEntityData: data[subEntityName],
+                  },
+                ]);
               }
-              return false;
-            });
-
-            setInformationItems((state) => {
-              return [...state, ...infoFields];
-            });
-          }
-          if (data.jsonData) {
-            const customFields = data.jsonData.map((el) => {
-              return { fieldTitle: el.name, value: el.value };
-            });
-
-            setInformationItems((state) => {
-              return [...state, ...customFields];
-            });
-          }
-          if (subEntityName.length !== 0) {
-            if (subEntityName === "equipment") {
+            }
+            if (type === "equipment") {
               fetch(
                 process.env.REACT_APP_SERVER_URL +
                   "/api/location/" +
-                  id +
+                  data["location_id"] +
                   "/equipment?access-token=" +
                   localStorage.getItem("token")
               )
                 .then((res) => res.json())
                 .then((data) => {
-                  setSubEntity([
-                    {
-                      subEntityName: subEntityName,
-                      subEntityData: data[subEntityName],
-                    },
-                  ]);
+                  let equipment = data["equipment"].find((el) => el.id === id);
+                  if (equipment) {
+                    setSubEntity([
+                      {
+                        subEntityName: "sensors",
+                        subEntityData: equipment["sensors"],
+                      },
+                      {
+                        subEntityName: "motes",
+                        subEntityData: equipment["mote"],
+                      },
+                    ]);
+                  }
                 });
-            } else {
-              setSubEntity([
-                {
-                  subEntityName: subEntityName,
-                  subEntityData: data[subEntityName],
-                },
-              ]);
             }
+          } else {
+            history.replace(`/dashboard/${entityPluralAlias}`);
+            history.push("/404");
           }
-          if (type === "equipment") {
-            fetch(
-              process.env.REACT_APP_SERVER_URL +
-                "/api/location/" +
-                data["location_id"] +
-                "/equipment?access-token=" +
-                localStorage.getItem("token")
-            )
-              .then((res) => res.json())
-              .then((data) => {
-                let equipment = data["equipment"].find((el) => el.id === id);
-                if (equipment) {
-                  setSubEntity([
-                    {
-                      subEntityName: "sensors",
-                      subEntityData: equipment["sensors"],
-                    },
-                    {
-                      subEntityName: "motes",
-                      subEntityData: equipment["mote"],
-                    },
-                  ]);
-                }
-              });
-          }
-          setIsLoading(false);
         });
       } catch {
         history.replace(`/dashboard/${entityPluralAlias}`);
@@ -241,6 +252,7 @@ const CRMEntity = ({ type }) => {
       history.replace(`/dashboard/${entityPluralAlias}`);
       history.push("/404");
     }
+    setIsLoading(false);
   }, []);
 
   return (
