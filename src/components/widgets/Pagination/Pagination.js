@@ -4,26 +4,26 @@ const CustomPagination = ({
   previousLabel,
   nextLabel,
   pageCount,
-  onPageChange,
+  dispatch,
   containerClassName,
   activeClassName,
   initialPage,
   totalRows,
 }) => {
   const handleFirstPageButtonClick = () => {
-    onPageChange(1);
+    dispatch({ page: 1 });
   };
 
   const handleBackButtonClick = () => {
-    onPageChange(initialPage - 1);
+    dispatch({ page: initialPage - 1 });
   };
 
   const handleNextButtonClick = () => {
-    onPageChange(initialPage + 1);
+    dispatch({ page: initialPage + 1 });
   };
 
   const handleLastPageButtonClick = () => {
-    onPageChange(pageCount);
+    dispatch({ page: pageCount });
   };
 
   return (

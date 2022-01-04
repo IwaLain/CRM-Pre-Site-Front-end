@@ -14,7 +14,7 @@ import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 import Loader from "../widgets/Loader/Loader";
 import PropTypes from "prop-types";
-import List from "../pages/List/List";
+import List from "../List/List";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();

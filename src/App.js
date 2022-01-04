@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -7,23 +7,28 @@ import {
 } from "react-router-dom";
 import { GlobalContext } from "./context";
 import DashboardLayout from "./components/layouts/DashboardLayout/DashboardLayout";
-import NotFound from "./components/pages/NotFound/NotFound";
+import NotFound from "./pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
-import LoginPage from "./components/pages/Login/Login";
+import LoginPage from "./pages/Login/Login";
 import "./scss/ui-kit.scss";
 import Profile from "./js/api/profile";
+import { reducer } from "./reducer";
 
 const App = () => {
+  const initialState = {
+    customerStructure: {},
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { customerStructure } = state;
+
   const [userProfile, setUserProfile] = useState({});
   const [selectedCustomer, setSelectedCustomer] = useState({});
   const [equipmentTypeList, setEquipmentTypeList] = useState([]);
 
   const [entityID, setEntityID] = useState();
   const [editId, setEditId] = useState();
-  const [showFormModal, setShowFormModal] = useState(false);
-  const [customerStructure, setCustomerStructure] = useState({});
-  const [customerNetwork, setCustomerNetwork] = useState({});
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
@@ -43,7 +48,7 @@ const App = () => {
               setSelectedCustomer(customer.customer[data.user.last_customer]);
             });
         }
-      } else console.log("Profile not found.");
+      }
     });
   }, []);
 
@@ -60,25 +65,11 @@ const App = () => {
           .then((res) => res.json())
           .then((customerStructure) => {
             if (customerStructure)
-              setCustomerStructure(customerStructure["customerConstruct"]);
-            else console.log("Customer structure not found.");
+              dispatch({
+                customerStructure: customerStructure["customerConstruct"],
+              });
           });
-      } catch (e) {
-        console.log(e);
-      }
-      try {
-        fetch(
-          process.env.REACT_APP_SERVER_URL +
-            "/api/customer/" +
-            selectedCustomer.id +
-            "/network?access-token=" +
-            localStorage.getItem("token")
-        )
-          .then((res) => res.json())
-          .then((data) => setCustomerNetwork(data["Network"]));
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [selectedCustomer, updateTrigger]);
 
@@ -91,18 +82,13 @@ const App = () => {
         entityID,
         setEntityID,
 
-        showFormModal,
-        setShowFormModal,
-
         userProfile,
         setUserProfile,
 
         selectedCustomer,
         setSelectedCustomer,
+
         customerStructure,
-        setCustomerStructure,
-        customerNetwork,
-        setCustomerNetwork,
 
         equipmentTypeList,
         setEquipmentTypeList,

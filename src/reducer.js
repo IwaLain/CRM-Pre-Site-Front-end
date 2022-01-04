@@ -1,5 +1,3 @@
-import formatNames from "./components/ModalComponent/formatNames";
-
 export function reducer(state, action) {
   if (action.type) {
     switch (action.type) {

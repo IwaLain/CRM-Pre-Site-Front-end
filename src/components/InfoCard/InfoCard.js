@@ -14,8 +14,9 @@ const InfoCard = ({
   chooseMode,
   selected,
   changeCustomer,
-  setMode,
-
+  dispatch,
+  currentSubEntityName,
+  setCurrentSubEntityName,
   hideRecordView,
 }) => {
   const [toggleEntityModal, setToggleEntityModal] = useState(false);
@@ -72,6 +73,18 @@ const InfoCard = ({
 
     setProgress(totalProgress);
   }, [type]);
+  useEffect(() => {
+    if (
+      currentSubEntityName &&
+      currentSubEntityName.name &&
+      toggleEntityModal
+    ) {
+      dispatch({ mode: "edit" });
+      setEditId(data.id);
+      toggleModal();
+      setToggleEntityModal(!toggleEntityModal);
+    }
+  }, [toggleEntityModal]);
 
   return (
     <div className="info-card">
@@ -86,14 +99,19 @@ const InfoCard = ({
           color="default"
           className="info-card__edit"
           onClick={() => {
-            if (setMode) {
-              setMode("edit");
-            }
-            if (data) {
-              setEditId(data.id);
-            }
-            if (toggleModal) {
-              toggleModal();
+            if (setCurrentSubEntityName) {
+              setToggleEntityModal(!toggleEntityModal);
+              setCurrentSubEntityName((state) => ({ ...state, name: type }));
+            } else {
+              if (dispatch) {
+                dispatch({ mode: "edit" });
+              }
+              if (data) {
+                setEditId(data.id);
+              }
+              if (toggleModal) {
+                toggleModal();
+              }
             }
           }}
         >
@@ -143,14 +161,19 @@ const InfoCard = ({
               <Button
                 color="default"
                 onClick={() => {
-                  if (setMode) {
-                    setMode("edit");
-                  }
-                  if (data) {
-                    setEditId(data.id);
-                  }
-                  if (toggleModal) {
-                    toggleModal();
+                  if (setCurrentSubEntityName) {
+                    setToggleEntityModal(!toggleEntityModal);
+                    setCurrentSubEntityName({ name: type });
+                  } else {
+                    if (dispatch) {
+                      dispatch({ mode: "edit" });
+                    }
+                    if (data) {
+                      setEditId(data.id);
+                    }
+                    if (toggleModal) {
+                      toggleModal();
+                    }
                   }
                 }}
               >

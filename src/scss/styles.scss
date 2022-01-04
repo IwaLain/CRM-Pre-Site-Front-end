@@ -17,16 +17,16 @@ ul {
   visibility: hidden;
 }
 
-.modal-close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  border: 0;
-  background-color: transparent;
-}
-
+/* Modal */
 .modal-header {
   position: relative;
+}
+
+.modal-body {
+  max-height: 700px;
+  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
 .modal-body > form > div > div {
@@ -42,4 +42,12 @@ ul {
 .modal-footer {
   display: flex;
   justify-content: space-between;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  border: 0;
+  background-color: transparent;
 }

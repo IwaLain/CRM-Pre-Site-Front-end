@@ -1,0 +1,29 @@
+@import "../../scss/scss-variables.scss";
+
+.login__bg {
+  background: url("../../assets/img/login-bg.jpg");
+  background-size: cover;
+}
+
+.card-img {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.invalid {
+  box-shadow: 0 0 1px 0 #f95b5b;
+}
+
+.login__btn {
+  padding: 5px 20px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: $primary;
+
+  @media (max-width: 500px) {
+    & {
+      width: 100%;
+    }
+  }
+}

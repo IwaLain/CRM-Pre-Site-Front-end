@@ -17,8 +17,9 @@ import { alert } from "../../js/helpers/alert";
 import fields from "./fields";
 import formatNames from "./formatNames";
 import { reducer } from "../../reducer";
+import PropTypes from "prop-types";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import "../../scss/modal-sketch.scss";
+
 const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const initialState = {
     formTitle: "",
@@ -36,6 +37,8 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     customFields: [],
     customFieldsCount: 0,
     addFieldModal: false,
+    deleteField: {},
+    confirmModal: false,
 
     facilitiesNames: [],
     equipmentNames: [],
@@ -46,34 +49,36 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { formTitle, entityName, refListNames } = state;
-
-  const [modalFields, setModalFields] = useState([]);
+  const {
+    formTitle,
+    entityName,
+    refListNames,
+    modalFields,
+    customFields,
+    customFieldsCount,
+    addFieldModal,
+    deleteField,
+    confirmModal,
+    facilitiesNames,
+    equipmentNames,
+    gatewaysNames,
+    nodesNames,
+    defaultEntity,
+  } = state;
 
   const [anyImg, setAnyImg] = useState([]);
   const [equipmentImg, setEquipmentImg] = useState([]);
   const [locationImg, setLocationImg] = useState([]);
 
-  const [customFields, setCustomFields] = useState([]);
-  const [customFieldsCount, setCustomFieldsCount] = useState(0);
-  const [addFieldModal, setAddFieldModal] = useState(false);
-
-  const [facilitiesNames, setFacilitiesNames] = useState([]);
-  const [equipmentNames, setEquipmentNames] = useState([]);
-  const [gatewaysNames, setGatewaysNames] = useState([]);
-  const [nodesNames, setNodesNames] = useState([]);
-  const [deleteField, setDeleteField] = useState();
-  const [defaultEntity, setDefaultEntity] = useState({});
-  const [confirmModal, setConfirmModal] = useState(false);
   const {
     equipmentTypeList,
-    customerStructure,
     editId,
     setEditId,
     selectedCustomer,
     updateTrigger,
     setUpdateTrigger,
     entityID,
+    customerStructure,
   } = useContext(GlobalContext);
 
   const {
@@ -84,7 +89,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     unregister,
   } = useForm();
   const toggleConfirmModal = () => {
-    setConfirmModal(!confirmModal);
+    dispatch({ confirmModal: !confirmModal });
   };
   let formattedRouteName;
 
@@ -126,7 +131,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         const re = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/;
 
         if (!re.test(e.target.value)) {
-          console.log("jopa");
+          console.log("test failed");
         }
       }
     }
@@ -135,12 +140,12 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const resetToggle = () => {
     toggle();
     reset({});
-    setDefaultEntity([]);
     setEditId(null);
     setAnyImg([]);
     setLocationImg([]);
     setEquipmentImg([]);
-    setCustomFields([]);
+    dispatch({ defaultEntity: [] });
+    dispatch({ customFields: [] });
   };
 
   const onSubmit = (data) => {
@@ -276,14 +281,12 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
               }
             }
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   };
 
   const toggleAddFieldModal = () => {
-    setAddFieldModal(!addFieldModal);
+    dispatch({ addFieldModal: !addFieldModal });
   };
 
   const handleAddFieldFormSubmit = (e, fields, fieldCount) => {
@@ -296,8 +299,8 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       title: e.target.elements["add-field-field"].value,
     });
 
-    setCustomFieldsCount(fieldCount + 1);
-    setCustomFields(newFields);
+    dispatch({ customFieldsCount: fieldCount + 1 });
+    dispatch({ customFields: newFields });
 
     toggleAddFieldModal();
   };
@@ -305,8 +308,8 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const handleRemoveFieldFormSubmit = (e, fields, fieldId) => {
     const newFields = fields.filter((field) => field.id !== fieldId);
     unregister(fieldId);
-    setDeleteField();
-    setCustomFields(newFields);
+    dispatch({ deleteField: null });
+    dispatch({ customFields: newFields });
   };
   useEffect(() => {
     let name = "";
@@ -315,50 +318,44 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       case "customers":
         dispatch({ formTitle: "Customer Create" });
         name = "customer";
-        setModalFields(fields["customer"]);
         break;
       case "facilities":
         dispatch({ formTitle: "Facility Create" });
         name = "facility";
-        setModalFields(fields["facility"]);
         break;
       case "locations":
         dispatch({ formTitle: "Location create" });
         name = "location";
-        setModalFields(fields["location"]);
         break;
       case "equipment":
         dispatch({ formTitle: "Equipment create" });
         name = "equipment";
-        setModalFields(fields["equipment"]);
         break;
       case "sensors":
         dispatch({ formTitle: "Sensor create" });
         name = "sensor";
-        setModalFields(fields["sensor"]);
         break;
       case "motes":
         dispatch({ formTitle: "Mote create" });
         name = "mote";
-        setModalFields(fields["mote"]);
         break;
       case "nodes":
         dispatch({ formTitle: "Node create" });
         name = "node";
-        setModalFields(fields["node"]);
         break;
       case "routers":
         dispatch({ formTitle: "Router create" });
         name = "router";
-        setModalFields(fields["router"]);
         break;
       case "gateways":
         dispatch({ formTitle: "Gateway create" });
         name = "gateway";
-        setModalFields(fields["gateway"]);
         break;
       default:
         break;
+    }
+    if (name) {
+      dispatch({ modalFields: fields[name] });
     }
     dispatch({
       formTitle: `${name.charAt(0).toUpperCase() + name.slice(1)} ${mode}`,
@@ -414,9 +411,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   refListNames: formatNames(data[subEntity], "object"),
                 });
             });
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (e) {}
         break;
       default:
         break;
@@ -425,53 +420,75 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     if (customerStructure) {
       switch (entity) {
         case "sensors":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setNodesNames(formatNames(customerStructure["nodes"], "object"));
+          dispatch({
+            nodesNames: formatNames(customerStructure["nodes"], "object"),
+          });
 
-          setEquipmentNames(
-            formatNames(customerStructure["equipment"], "object")
-          );
+          dispatch({
+            equipmentNames: formatNames(
+              customerStructure["equipment"],
+              "object"
+            ),
+          });
 
           break;
         case "motes":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setGatewaysNames(
-            formatNames(customerStructure["gateways"], "object")
-          );
+          dispatch({
+            gatewaysNames: formatNames(customerStructure["gateways"], "object"),
+          });
 
-          setEquipmentNames(
-            formatNames(customerStructure["equipment"], "object")
-          );
+          dispatch({
+            equipmentNames: formatNames(
+              customerStructure["equipment"],
+              "object"
+            ),
+          });
           break;
         case "nodes":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setGatewaysNames(
-            formatNames(customerStructure["gateways"], "object")
-          );
+          dispatch({
+            gatewaysNames: formatNames(customerStructure["gateways"], "object"),
+          });
           break;
         case "routers":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setGatewaysNames(
-            formatNames(customerStructure["gateways"], "object")
-          );
+          dispatch({
+            gatewaysNames: formatNames(customerStructure["gateways"], "object"),
+          });
           break;
         case "gateways":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
-
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
           break;
         default:
           break;
@@ -497,14 +514,14 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
               switch (entityName) {
                 case "customer":
                 case "facility":
-                  setDefaultEntity(data[entityName][editId]);
+                  dispatch({ defaultEntity: data[entityName][editId] });
                   reset({
                     ...data[entityName][editId],
                     headname: data[entityName][editId]["head_name"],
                   });
                   break;
                 default:
-                  setDefaultEntity(data[entityName]);
+                  dispatch({ defaultEntity: data[entityName] });
                   let newFields = [];
 
                   if (
@@ -525,8 +542,8 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                       newCount += 1;
                     });
 
-                    setCustomFieldsCount(newCount);
-                    setCustomFields(newFields);
+                    dispatch({ customFieldsCount: newCount });
+                    dispatch({ customFields: newFields });
                   }
 
                   let fieldsToReset = {};
@@ -550,9 +567,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
               }
             }
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [editId]);
 
@@ -940,6 +955,14 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       )}
     </>
   );
+};
+
+ModalSketch.propTypes = {
+  toggle: PropTypes.func,
+  modal: PropTypes.bool,
+  entity: PropTypes.string,
+  subEntity: PropTypes.string,
+  mode: PropTypes.string,
 };
 
 export default ModalSketch;

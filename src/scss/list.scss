@@ -5,6 +5,49 @@
   padding: 15px 0 0 0;
   border-radius: 10px;
   box-shadow: 0 0 0 1px #ddd;
+
+  .progress {
+    width: 100%;
+
+    > .progress-bar {
+      background-color: $success;
+    }
+  }
+
+  table {
+    a {
+      display: inline-block;
+      text-decoration: none;
+      color: black;
+      font-weight: 700;
+      padding: 5px 20px;
+      background-color: $default;
+      border: 1px solid $default;
+      border-radius: 4px;
+
+      &:hover {
+        border: 1px solid black;
+      }
+    }
+  }
+
+  .table-view_btn {
+    background-color: $primary;
+    color: white;
+    border: 1px solid transparent;
+    text-decoration: none;
+    text-align: center;
+    padding: 10px 17px;
+    border-radius: 5px;
+
+    &:hover {
+      border: 1px solid black;
+    }
+  }
+
+  .sc-iwjdpV.kntihR > div {
+    padding: 24px 24px 39px 24px !important;
+  }
 }
 
 .list__header {
@@ -13,30 +56,30 @@
   align-items: center;
   margin-bottom: 10px;
   padding: 0 15px;
-}
 
-.list__header button {
-  background: white;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  padding: 0;
+  button {
+    background: white;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 0;
+  }
 }
 
 .list__title {
   display: flex;
   align-items: center;
   gap: 15px;
-}
 
-.list__title > h3 {
-  margin-bottom: 0;
-}
+  > h3 {
+    margin-bottom: 0;
+  }
 
-.list__title > button {
-  background: $success;
-  color: white;
-  width: 30px;
-  height: 30px;
+  > button {
+    background: $success;
+    color: white;
+    width: 30px;
+    height: 30px;
+  }
 }
 
 .list__options {
@@ -44,10 +87,10 @@
   justify-content: space-between;
   align-items: center;
   gap: 25px;
-}
 
-.list__options .form-label {
-  margin-bottom: 0;
+  .form-label {
+    margin-bottom: 0;
+  }
 }
 
 .list__select-entity {
@@ -68,38 +111,15 @@
   gap: 5px;
   justify-content: space-between;
   align-items: center;
-}
 
-.list__options_btns > .list__add-btn {
-  background-color: $primary;
-  color: white;
-}
+  > .list__add-btn {
+    background-color: $primary;
+    color: white;
+  }
 
-.list__options_btns > button.active {
-  border: 1px solid black;
-}
-
-.list .progress {
-  width: 100%;
-}
-
-.list .progress > .progress-bar {
-  background-color: $success;
-}
-
-.list table a {
-  display: inline-block;
-  text-decoration: none;
-  color: black;
-  font-weight: 700;
-  padding: 5px 20px;
-  background-color: $default;
-  border: 1px solid $default;
-  border-radius: 4px;
-}
-
-.list table a:hover {
-  border: 1px solid black;
+  > button.active {
+    border: 1px solid black;
+  }
 }
 
 @media (max-width: 750px) {
@@ -116,24 +136,6 @@
   .list table td {
     padding: 2px;
   }
-}
-
-.list .table-view_btn {
-  background-color: $primary;
-  color: white;
-  border: 1px solid transparent;
-  text-decoration: none;
-  text-align: center;
-  padding: 10px 17px;
-  border-radius: 5px;
-}
-
-.list .table-view_btn:hover {
-  border: 1px solid black;
-}
-
-.list .sc-iwjdpV.kntihR > div {
-  padding: 24px 24px 39px 24px !important;
 }
 
 @media (max-width: 1024px) {
