@@ -9,7 +9,6 @@ import { alert } from "../../js/helpers/alert";
 const Network = () => {
   const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
   const [network, setNetwork] = useState([]);
-  const [selectedBlock, setSelectedBlock] = useState();
 
   const history = useHistory();
 
@@ -56,7 +55,6 @@ const Network = () => {
                         color="primary"
                         dataBsToggle="collapse"
                         dataBsTarget={`#collapse-${index}`}
-                        onClick={() => setSelectedBlock(index)}
                       >
                         View
                       </Button>
