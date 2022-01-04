@@ -1,28 +1,30 @@
-import React, { useContext, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import { Button, Col, Row } from 'reactstrap'
 import { useForm } from 'react-hook-form'
 import { ToastContainer } from 'react-toastify'
 
-import { GlobalContext } from '../../../context'
 import { reducer } from '../../../reducer'
 
 import { dataValid } from './helpers'
 import Table from './table'
-import Form from './form'
+import Form from './form' 
 import Modal from './modal'
 
 import './ComertialPurpose.scss'
 import './ComertialPurposePrint.scss'
 
 import logo from '../../../assets/img/waites-block-logo-yellow-background.png'
+import customersApi from '../../../js/api/customer'
+import { GlobalContext } from '../../../context'
 
 const ComertialPurpouse = () => {
-  const { customerNetwork } = useContext(GlobalContext)
+  const { userProfile } = useContext(GlobalContext)
 
   const initialState = {
     quote: 'Q' + Math.floor(Date.now() / 1000),
     currentData: [],
     previewData: [],
+    customerNetwork: {},
     modalPDF: false,
     previewList: {
       description: '-',
@@ -35,12 +37,14 @@ const ComertialPurpouse = () => {
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { quote, currentData, modalPDF } = state
+  const { quote, currentData, modalPDF, customerNetwork } = state
 
   const date = new Date().toLocaleDateString('en-US')
 
   const togglePDF = () => dispatch({ modalPDF: !modalPDF })
-  const newQuote = () => {dispatch({ quote: 'Q' + Math.floor(Date.now() / 1000)})}
+  const newQuote = () => {
+    dispatch({ quote: 'Q' + Math.floor(Date.now() / 1000) })
+  }
   const changeCurrentData = (newData) => dispatch({ currentData: newData })
 
   const {
@@ -64,8 +68,16 @@ const ComertialPurpouse = () => {
     errors,
     quote,
     reset,
-    date,
+    date
   }
+
+  useEffect(() => {
+    customersApi.getNetwork(userProfile.last_customer)
+    .then(data => {
+      console.log(data.Network)
+      dispatch({customerNetwork: data.Network})
+    })
+  }, [])
 
   return (
     <div className="purpose" id="purpose">
@@ -87,19 +99,25 @@ const ComertialPurpouse = () => {
         </Col>
       </Row>
 
-      <Form 
-        dataForm={dataForm} 
-        currentData={currentData} 
+      <Form
+        dataForm={dataForm}
+        currentData={currentData}
         togglePDF={togglePDF}
+        modalPDF={modalPDF}
         newQuote={newQuote}
       />
 
-      <Table setData={changeCurrentData} dataForm={dataForm} />
+      <Table 
+        setData={changeCurrentData} 
+        dataForm={dataForm} 
+        customerNetwork={customerNetwork}
+      />
+
       {dataValid(customerNetwork) ? (
         <Row className="purpose__buttons">
           <Col lg={2} md={2}>
             <Button
-              className='btn btn-primary'
+              className="btn btn-primary"
               form="form"
               onClick={(e) => {
                 e.preventDefault()
@@ -115,7 +133,7 @@ const ComertialPurpouse = () => {
           </Col>
           <Col lg={2} md={2}>
             <Button className="btn btn-success " id="purpose" form="form">
-                <i className="fas fa-file-pdf"></i> Create PDF
+              <i className="fas fa-file-pdf"></i> Create PDF
             </Button>
           </Col>
         </Row>
@@ -123,7 +141,13 @@ const ComertialPurpouse = () => {
         ''
       )}
 
-      <Modal currentData={currentData} togglePDF={togglePDF} preview={state} date={date} />
+      <Modal 
+        currentData={currentData} 
+        togglePDF={togglePDF} 
+        preview={state} 
+        date={date} 
+      />
+
       <ToastContainer position="bottom-right" />
     </div>
   )

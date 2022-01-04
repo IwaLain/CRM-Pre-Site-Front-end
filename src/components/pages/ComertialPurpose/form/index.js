@@ -4,7 +4,7 @@ import { Col, Form, FormGroup, Label, Row } from 'reactstrap'
 import Profile from '../../../../js/api/profile'
 import { validation } from '../../../../js/helpers/validation'
 
-const ComertialForm = ({dataForm, currentData, togglePDF, newQuote}) => {
+const ComertialForm = ({dataForm, currentData, togglePDF, newQuote, modalPDF}) => {
 
     const 
     {   trigger, 
@@ -31,7 +31,9 @@ const ComertialForm = ({dataForm, currentData, togglePDF, newQuote}) => {
     }
 
     const onError = () => {
-        togglePDF()
+        if (modalPDF) {
+            togglePDF()
+        }
     }
 
     return (

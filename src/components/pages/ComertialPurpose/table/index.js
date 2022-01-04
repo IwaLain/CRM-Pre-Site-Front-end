@@ -1,13 +1,11 @@
 import { useContext, useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import PropTypes from "prop-types";
-import { GlobalContext } from "../../../../context";
 import { validation } from "../../../../js/helpers/validation";
 import '../../../../scss/ui-kit.scss'
 import { Row } from "reactstrap";
 
-const ComertialPurpose = ({ setData, dataForm }) => {
-  const { customerNetwork } = useContext(GlobalContext);
+const ComertialTable = ({ setData, dataForm, customerNetwork }) => {
 
   const [listData, setListData] = useState([]);
   const { register, trigger } = dataForm
@@ -143,9 +141,9 @@ const ComertialPurpose = ({ setData, dataForm }) => {
   );
 };
 
-ComertialPurpose.propTypes = {
+ComertialTable.propTypes = {
   setData: PropTypes.func,
   dataForm: PropTypes.object
 }
 
-export default ComertialPurpose;
+export default ComertialTable;
