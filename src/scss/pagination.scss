@@ -6,34 +6,30 @@
   list-style: none;
   margin-top: 20px;
   padding: 0;
-}
 
-.pagination a {
-  cursor: default;
-  padding: 10px;
-  border-radius: 5px;
-  color: black;
-  margin: 0 5px;
-  text-decoration: none;
-}
-
-.pagination li:not(.disabled) a:hover {
-  background-color: $default;
-  color: black;
-  cursor: pointer;
-}
-
-.pagination li a {
-  font-weight: bold;
-}
-
-.pagination li.active a {
-  background: $default;
-}
-
-.pagination li.disabled a {
-  pointer-events: none;
-  color: rgb(198, 197, 202);
+  & a {
+    cursor: default;
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+    margin: 0 5px;
+    text-decoration: none;
+  }
+  & li:not(.disabled) a:hover {
+    background-color: $default;
+    color: black;
+    cursor: pointer;
+  }
+  & li a {
+    font-weight: bold;
+  }
+  & li.active a {
+    background: $default;
+  }
+  & li.disabled a {
+    pointer-events: none;
+    color: rgb(198, 197, 202);
+  }
 }
 
 @media (max-width: 600px) {
@@ -91,18 +87,17 @@
   color: rgba(0, 0, 0, 0.54);
   fill: rgba(0, 0, 0, 0.54);
   cursor: pointer;
+  &:hover:not(:disabled),
+  &:focus:not(:disabled) {
+    background: rgba(0, 0, 0, 0.12);
+  }
+  &:disabled {
+    cursor: unset;
+    color: rgba(0, 0, 0, 0.18);
+    fill: rgba(0, 0, 0, 0.18);
+  }
 }
 
-.custom-pagination--btn:hover:not(:disabled),
-.custom-pagination--btn:focus:not(:disabled) {
-  background: rgba(0, 0, 0, 0.12);
-}
-
-.custom-pagination--btn:disabled {
-  cursor: unset;
-  color: rgba(0, 0, 0, 0.18);
-  fill: rgba(0, 0, 0, 0.18);
-}
 .custom-pagination--current-elements {
   margin: 0px 24px;
 }

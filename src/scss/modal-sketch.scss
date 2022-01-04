@@ -1,0 +1,31 @@
+.custom-field__container {
+  display: flex;
+  flex-direction: row;
+}
+.delete-field__btn {
+  color: red;
+  background-color: white;
+
+  border-radius: 0.25rem;
+  margin-left: 5px;
+  padding: 12px 12px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.delete-field__btn:hover,
+.delete-field__btn:focus {
+  color: white;
+  background-color: red;
+  cursor: pointer;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}

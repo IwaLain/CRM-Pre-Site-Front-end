@@ -12,8 +12,8 @@ import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
-import { Spinner } from "reactstrap";
-
+import Loader from "../widgets/Loader/Loader";
+import PropTypes from "prop-types";
 import List from "../List/List";
 const CRMEntity = ({ type }) => {
   type = type.entity;
@@ -87,14 +87,14 @@ const CRMEntity = ({ type }) => {
       setMainImage(res["main-image"]);
     });
   };
-
+  let entityPluralAlias = "";
   switch (type) {
     case "customer":
       getEntityAPI = customersApi.getCustomer;
       deleteEntityImageAPI = customersApi.deleteCustomerImage;
       addEntityImageAPI = customersApi.addCustomerImage;
       setMainEntityImageAPI = customersApi.setMainCustomerImage;
-
+      entityPluralAlias = "customers";
       subEntityName = "facilities";
 
       informationFieldNames = ["address", "phone", "email"];
@@ -105,7 +105,7 @@ const CRMEntity = ({ type }) => {
       deleteEntityImageAPI = facilitiesApi.deleteFacilityImage;
       addEntityImageAPI = facilitiesApi.addFacilityImage;
       setMainEntityImageAPI = facilitiesApi.setMainFacilityImage;
-
+      entityPluralAlias = "facilities";
       subEntityName = "locations";
 
       informationFieldNames = ["address"];
@@ -116,7 +116,7 @@ const CRMEntity = ({ type }) => {
       deleteEntityImageAPI = locationApi.deleteLocationImage;
       addEntityImageAPI = locationApi.addLocationImage;
       setMainEntityImageAPI = locationApi.setMainLocationImage;
-
+      entityPluralAlias = "locations";
       subEntityName = "equipment";
 
       break;
@@ -125,25 +125,6 @@ const CRMEntity = ({ type }) => {
       deleteEntityImageAPI = equipmentApi.deleteImageEquipment;
       addEntityImageAPI = equipmentApi.createImageEquipment;
       setMainEntityImageAPI = equipmentApi.setMainEquipmentImage;
-
-      break;
-    default:
-      break;
-  }
-
-  let entityPluralAlias = "";
-
-  switch (type) {
-    case "customer":
-      entityPluralAlias = "customers";
-      break;
-    case "facility":
-      entityPluralAlias = "facilities";
-      break;
-    case "location":
-      entityPluralAlias = "locations";
-      break;
-    case "equipment":
       entityPluralAlias = "equipment";
       break;
     default:
@@ -265,7 +246,7 @@ const CRMEntity = ({ type }) => {
   return (
     <>
       {!isLoading ? (
-        <>
+        <div className="entity-page">
           <div className="d-flex align-items-center entity-page--header">
             {entityObject && entityObject[`${type}Images`] && (
               <div className="main-img--container">
@@ -301,7 +282,10 @@ const CRMEntity = ({ type }) => {
           {entityObject &&
             subEntity.length > 0 &&
             subEntity.map((subEnt) => (
-              <div className="entity-page--section table-section">
+              <div
+                key={subEnt.subEntityName}
+                className="entity-page--section table-section"
+              >
                 {/* <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2> */}
                 <List
                   type={{
@@ -339,11 +323,25 @@ const CRMEntity = ({ type }) => {
               )}
             </div>
           )}
-        </>
+        </div>
       ) : (
-        <Spinner />
+        <div
+          style={{
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Loader />
+        </div>
       )}
     </>
   );
+};
+CRMEntity.propTypes = {
+  type: PropTypes.shape({
+    entity: PropTypes.string,
+  }),
 };
 export default CRMEntity;

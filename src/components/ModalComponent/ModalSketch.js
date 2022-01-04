@@ -18,6 +18,7 @@ import fields from "./fields";
 import formatNames from "./formatNames";
 import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
 
 const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const initialState = {
@@ -36,6 +37,8 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     customFields: [],
     customFieldsCount: 0,
     addFieldModal: false,
+    deleteField: {},
+    confirmModal: false,
 
     facilitiesNames: [],
     equipmentNames: [],
@@ -54,6 +57,8 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     customFields,
     customFieldsCount,
     addFieldModal,
+    deleteField,
+    confirmModal,
     facilitiesNames,
     equipmentNames,
     gatewaysNames,
@@ -81,8 +86,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     handleSubmit,
     reset,
     formState: { errors },
+    unregister,
   } = useForm();
-
+  const toggleConfirmModal = () => {
+    dispatch({ confirmModal: !confirmModal });
+  };
   let formattedRouteName;
 
   switch (subEntity) {
@@ -297,6 +305,12 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     toggleAddFieldModal();
   };
 
+  const handleRemoveFieldFormSubmit = (e, fields, fieldId) => {
+    const newFields = fields.filter((field) => field.id !== fieldId);
+    unregister(fieldId);
+    dispatch({ deleteField: null });
+    dispatch({ customFields: newFields });
+  };
   useEffect(() => {
     let name = "";
 
@@ -304,47 +318,38 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       case "customers":
         dispatch({ formTitle: "Customer Create" });
         name = "customer";
-
         break;
       case "facilities":
         dispatch({ formTitle: "Facility Create" });
         name = "facility";
-
         break;
       case "locations":
         dispatch({ formTitle: "Location create" });
         name = "location";
-
         break;
       case "equipment":
         dispatch({ formTitle: "Equipment create" });
         name = "equipment";
-
         break;
       case "sensors":
         dispatch({ formTitle: "Sensor create" });
         name = "sensor";
-
         break;
       case "motes":
         dispatch({ formTitle: "Mote create" });
         name = "mote";
-
         break;
       case "nodes":
         dispatch({ formTitle: "Node create" });
         name = "node";
-
         break;
       case "routers":
         dispatch({ formTitle: "Router create" });
         name = "router";
-
         break;
       case "gateways":
         dispatch({ formTitle: "Gateway create" });
         name = "gateway";
-
         break;
       default:
         break;
@@ -651,12 +656,18 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                         ? { display: "inline-block" }
                         : {}
                     }
+                    className="col-3"
                   >
                     <Label for={`${field.title}-field`}>{field.title}</Label>
                     <Col
                       sm={
-                        field.title === "Lat" || field.title === "Lng" ? 10 : 6
+                        field.title === "Lat"
+                          ? 10
+                          : field.title === "Lng"
+                          ? 12
+                          : 6
                       }
+                      className={"col-11"}
                     >
                       <input
                         className={`form-control ${
@@ -915,6 +926,19 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           </Button>
         </ModalFooter>
       </Modal>
+      {deleteField && (
+        <ConfirmModal
+          modal={confirmModal}
+          toggleModal={toggleConfirmModal}
+          title="Delete form field"
+          handleSubmit={(e) => {
+            handleRemoveFieldFormSubmit(e, customFields, deleteField.id);
+          }}
+          modalText={`Are you sure you want to DELETE ${
+            deleteField.title ? deleteField.title : ""
+          } field`}
+        />
+      )}
     </>
   );
 };
