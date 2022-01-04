@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import {
   Button,
   Modal,
@@ -14,40 +14,71 @@ import { useForm } from "react-hook-form";
 import { GlobalContext } from "../../context";
 import AttachmentList from "../AttachmentList/AttachmentList";
 import { alert } from "../../js/helpers/alert";
+import fields from "./fields";
+import formatNames from "./formatNames";
+import { reducer } from "../../reducer";
+import PropTypes from "prop-types";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
 
 const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
-  const [formTitle, setFormTitle] = useState();
+  const initialState = {
+    formTitle: "",
 
-  const [entityName, setEntityName] = useState();
+    entityName: "",
 
-  const [refListNames, setRefListNames] = useState([]);
+    refListNames: [],
 
-  const [modalFields, setModalFields] = useState([]);
+    modalFields: [],
+
+    anyImg: [],
+    equipmentImg: [],
+    locationImg: [],
+
+    customFields: [],
+    customFieldsCount: 0,
+    addFieldModal: false,
+    deleteField: {},
+    confirmModal: false,
+
+    facilitiesNames: [],
+    equipmentNames: [],
+    gatewaysNames: [],
+    nodesNames: [],
+
+    defaultEntity: {},
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const {
+    formTitle,
+    entityName,
+    refListNames,
+    modalFields,
+    customFields,
+    customFieldsCount,
+    addFieldModal,
+    deleteField,
+    confirmModal,
+    facilitiesNames,
+    equipmentNames,
+    gatewaysNames,
+    nodesNames,
+    defaultEntity,
+  } = state;
 
   const [anyImg, setAnyImg] = useState([]);
   const [equipmentImg, setEquipmentImg] = useState([]);
   const [locationImg, setLocationImg] = useState([]);
 
-  const [customFields, setCustomFields] = useState([]);
-  const [customFieldsCount, setCustomFieldsCount] = useState(0);
-  const [addFieldModal, setAddFieldModal] = useState(false);
-
-  const [facilitiesNames, setFacilitiesNames] = useState([]);
-  const [equipmentNames, setEquipmentNames] = useState([]);
-  const [gatewaysNames, setGatewaysNames] = useState([]);
-  const [nodesNames, setNodesNames] = useState([]);
-
-  const [defaultEntity, setDefaultEntity] = useState({});
-
   const {
     equipmentTypeList,
-    customerStructure,
     editId,
     setEditId,
     selectedCustomer,
     updateTrigger,
     setUpdateTrigger,
     entityID,
+    customerStructure,
   } = useContext(GlobalContext);
 
   const {
@@ -55,8 +86,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     handleSubmit,
     reset,
     formState: { errors },
+    unregister,
   } = useForm();
-
+  const toggleConfirmModal = () => {
+    dispatch({ confirmModal: !confirmModal });
+  };
   let formattedRouteName;
 
   switch (subEntity) {
@@ -91,32 +125,27 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       break;
   }
 
-  const formatNames = (list, type) => {
-    const newList = [];
-    switch (type) {
-      case "object":
-        for (const [, value] of Object.entries(list)) {
-          newList.push({ id: value.id, name: value.name || value.serial });
-        }
-        break;
-      case "array":
-        break;
-      default:
-        break;
-    }
+  const checkPhoneField = (e) => {
+    if (e) {
+      if (e.target.value) {
+        const re = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/;
 
-    return newList;
+        if (!re.test(e.target.value)) {
+          console.log("test failed");
+        }
+      }
+    }
   };
 
   const resetToggle = () => {
     toggle();
     reset({});
-    setDefaultEntity([]);
-    setEditId(undefined);
+    setEditId(null);
     setAnyImg([]);
     setLocationImg([]);
     setEquipmentImg([]);
-    setCustomFields([]);
+    dispatch({ defaultEntity: [] });
+    dispatch({ customFields: [] });
   };
 
   const onSubmit = (data) => {
@@ -197,18 +226,24 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         }
-      ).then((res) => {
-        if (res.status === 200) {
-          resetToggle();
-          alert(
-            "success",
-            `${
-              entityName.charAt(0).toUpperCase() + entityName.slice(1)
-            } created.`
-          );
-          setUpdateTrigger(!updateTrigger);
-        } else alert("error", `Request error.`);
-      });
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data) {
+            if (data["success"]) {
+              resetToggle();
+              alert(
+                "success",
+                `${
+                  entityName.charAt(0).toUpperCase() + entityName.slice(1)
+                } created.`
+              );
+              setUpdateTrigger(!updateTrigger);
+            } else if (data.errors && data.errors.includes("ID is invalid")) {
+              alert("error", `Invalid ref object.`);
+            } else alert("error", `Request error.`);
+          }
+        });
     } else if (mode === "edit") {
       try {
         fetch(
@@ -224,26 +259,34 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
           }
-        ).then((res) => {
-          if (res.status === 200) {
-            resetToggle();
-            setUpdateTrigger(!updateTrigger);
-            alert(
-              "success",
-              `${
-                entityName.charAt(0).toUpperCase() + entityName.slice(1)
-              } changed.`
-            );
-          } else alert("error", `Request error.`);
-        });
-      } catch (e) {
-        console.log(e);
-      }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            if (data) {
+              if (data["success"]) {
+                resetToggle();
+                alert(
+                  "success",
+                  `${
+                    entityName.charAt(0).toUpperCase() + entityName.slice(1)
+                  } changed.`
+                );
+                setUpdateTrigger(!updateTrigger);
+              } else {
+                if (data["errors"]) {
+                  data["errors"].split(", ").forEach((err) => {
+                    alert("error", err);
+                  });
+                }
+              }
+            }
+          });
+      } catch (e) {}
     }
   };
 
   const toggleAddFieldModal = () => {
-    setAddFieldModal(!addFieldModal);
+    dispatch({ addFieldModal: !addFieldModal });
   };
 
   const handleAddFieldFormSubmit = (e, fields, fieldCount) => {
@@ -256,320 +299,68 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       title: e.target.elements["add-field-field"].value,
     });
 
-    setCustomFieldsCount(fieldCount + 1);
-    setCustomFields(newFields);
+    dispatch({ customFieldsCount: fieldCount + 1 });
+    dispatch({ customFields: newFields });
 
     toggleAddFieldModal();
   };
 
+  const handleRemoveFieldFormSubmit = (e, fields, fieldId) => {
+    const newFields = fields.filter((field) => field.id !== fieldId);
+    unregister(fieldId);
+    dispatch({ deleteField: null });
+    dispatch({ customFields: newFields });
+  };
   useEffect(() => {
     let name = "";
 
     switch (entity) {
       case "customers":
-        setFormTitle("Customer Create");
+        dispatch({ formTitle: "Customer Create" });
         name = "customer";
-        setModalFields([
-          {
-            title: "Name",
-            inputType: "text",
-            fieldType: "form",
-          },
-          {
-            title: "Email",
-            inputType: "email",
-            fieldType: "form",
-          },
-          {
-            title: "Phone",
-            inputType: "phone",
-            fieldType: "form",
-          },
-          {
-            title: "Address",
-            inputType: "text",
-            fieldType: "form",
-          },
-          {
-            title: "Activity",
-            inputType: "text",
-            fieldType: "form",
-          },
-          {
-            title: "Headname",
-            inputType: "text",
-            fieldType: "form",
-          },
-          {
-            fieldType: "images",
-            types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
-            titleNeeded: true,
-          },
-        ]);
         break;
       case "facilities":
-        setFormTitle("Facility Create");
+        dispatch({ formTitle: "Facility Create" });
         name = "facility";
-        setModalFields([
-          {
-            title: "Customer",
-            fieldType: "form-ref-select",
-            subID: "customer_id",
-          },
-          {
-            title: "Name",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            title: "Lat",
-            fieldType: "form",
-            inputType: "number",
-          },
-          {
-            title: "Lng",
-            fieldType: "form",
-            inputType: "number",
-          },
-          {
-            title: "Address",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            fieldType: "images",
-            types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
-            titleNeeded: true,
-          },
-        ]);
         break;
       case "locations":
-        setFormTitle("Location create");
+        dispatch({ formTitle: "Location create" });
         name = "location";
-        setModalFields([
-          {
-            title: "Facility",
-            fieldType: "form-ref-select",
-            subID: "facility_id",
-          },
-          {
-            title: "Name",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            fieldType: "custom-fields",
-          },
-          {
-            fieldType: "images",
-            types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
-            titleNeeded: true,
-          },
-        ]);
         break;
       case "equipment":
-        setFormTitle("Equipment create");
+        dispatch({ formTitle: "Equipment create" });
         name = "equipment";
-        setModalFields([
-          {
-            title: "Location",
-            fieldType: "form-ref-select",
-            subID: "location_id",
-          },
-          {
-            title: "Name",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            title: "Type",
-            fieldType: "form-type-select",
-            subID: "type_id",
-          },
-          {
-            fieldType: "custom-fields",
-          },
-          {
-            fieldType: "images",
-            types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
-            titleNeeded: true,
-          },
-        ]);
         break;
       case "sensors":
-        setFormTitle("Sensor create");
+        dispatch({ formTitle: "Sensor create" });
         name = "sensor";
-        setModalFields([
-          {
-            title: "Facility",
-            fieldType: "form-customer-entity-select",
-            subID: "facility_id",
-          },
-          {
-            title: "Equipment",
-            fieldType: "form-customer-entity-select",
-            subID: "equipment_id",
-          },
-          {
-            title: "Node",
-            fieldType: "form-customer-entity-select",
-            subID: "node_id",
-          },
-          {
-            title: "Name",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            title: "Location_info",
-            fieldType: "form",
-            inputType: "text",
-          },
-        ]);
         break;
       case "motes":
-        setFormTitle("Mote create");
+        dispatch({ formTitle: "Mote create" });
         name = "mote";
-        setModalFields([
-          {
-            title: "Facility",
-            fieldType: "form-customer-entity-select",
-            subID: "facility_id",
-          },
-          {
-            title: "Equipment",
-            fieldType: "form-customer-entity-select",
-            subID: "equipment_id",
-          },
-          {
-            title: "Gateway",
-            fieldType: "form-customer-entity-select",
-            subID: "gateway_id",
-          },
-          {
-            title: "Name",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            title: "Serial",
-            fieldType: "form",
-            inputType: "number",
-          },
-          {
-            title: "Location_info",
-            fieldType: "form",
-            inputType: "text",
-          },
-        ]);
         break;
       case "nodes":
-        setFormTitle("Node create");
+        dispatch({ formTitle: "Node create" });
         name = "node";
-        setModalFields([
-          {
-            title: "Facility",
-            fieldType: "form-customer-entity-select",
-            subID: "facility_id",
-          },
-          {
-            title: "Gateway",
-            fieldType: "form-customer-entity-select",
-            subID: "gateway_id",
-          },
-          {
-            title: "Name",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            title: "Serial",
-            fieldType: "form",
-            inputType: "number",
-          },
-          {
-            title: "Location_info",
-            fieldType: "form",
-            inputType: "text",
-          },
-        ]);
         break;
       case "routers":
-        setFormTitle("Router create");
+        dispatch({ formTitle: "Router create" });
         name = "router";
-        setModalFields([
-          {
-            title: "Facility",
-            fieldType: "form-customer-entity-select",
-            subID: "facility_id",
-          },
-          {
-            title: "Gateway",
-            fieldType: "form-customer-entity-select",
-            subID: "gateway_id",
-          },
-          {
-            title: "Name",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            title: "Serial",
-            fieldType: "form",
-            inputType: "number",
-          },
-          {
-            title: "Location_info",
-            fieldType: "form",
-            inputType: "text",
-          },
-        ]);
         break;
       case "gateways":
-        setFormTitle("Gateway create");
+        dispatch({ formTitle: "Gateway create" });
         name = "gateway";
-        setModalFields([
-          {
-            title: "Facility",
-            fieldType: "form-customer-entity-select",
-            subID: "facility_id",
-          },
-          {
-            title: "Name",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            title: "Serial",
-            fieldType: "form",
-            inputType: "number",
-          },
-          {
-            title: "Location_info",
-            fieldType: "form",
-            inputType: "text",
-          },
-          {
-            fieldType: "images",
-            fileType: "location",
-            mode: "single",
-            types: [{ typeID: "1" }],
-            titleNeeded: false,
-          },
-          {
-            fieldType: "images",
-            fileType: "equipment",
-            mode: "single",
-            types: [{ typeID: "1" }],
-            titleNeeded: false,
-          },
-        ]);
         break;
       default:
         break;
     }
-    setFormTitle(`${name.charAt(0).toUpperCase() + name.slice(1)} ${mode}`);
-    setEntityName(name);
+    if (name) {
+      dispatch({ modalFields: fields[name] });
+    }
+    dispatch({
+      formTitle: `${name.charAt(0).toUpperCase() + name.slice(1)} ${mode}`,
+    });
+    dispatch({ entityName: name });
   }, [entity, mode]);
 
   useEffect(() => {
@@ -616,11 +407,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             .then((res) => res.json())
             .then((data) => {
               if (Object.keys(data[subEntity]).length > 0)
-                setRefListNames(formatNames(data[subEntity], "object"));
+                dispatch({
+                  refListNames: formatNames(data[subEntity], "object"),
+                });
             });
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (e) {}
         break;
       default:
         break;
@@ -629,53 +420,75 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     if (customerStructure) {
       switch (entity) {
         case "sensors":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setNodesNames(formatNames(customerStructure["nodes"], "object"));
+          dispatch({
+            nodesNames: formatNames(customerStructure["nodes"], "object"),
+          });
 
-          setEquipmentNames(
-            formatNames(customerStructure["equipment"], "object")
-          );
+          dispatch({
+            equipmentNames: formatNames(
+              customerStructure["equipment"],
+              "object"
+            ),
+          });
 
           break;
         case "motes":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setGatewaysNames(
-            formatNames(customerStructure["gateways"], "object")
-          );
+          dispatch({
+            gatewaysNames: formatNames(customerStructure["gateways"], "object"),
+          });
 
-          setEquipmentNames(
-            formatNames(customerStructure["equipment"], "object")
-          );
+          dispatch({
+            equipmentNames: formatNames(
+              customerStructure["equipment"],
+              "object"
+            ),
+          });
           break;
         case "nodes":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setGatewaysNames(
-            formatNames(customerStructure["gateways"], "object")
-          );
+          dispatch({
+            gatewaysNames: formatNames(customerStructure["gateways"], "object"),
+          });
           break;
         case "routers":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
 
-          setGatewaysNames(
-            formatNames(customerStructure["gateways"], "object")
-          );
+          dispatch({
+            gatewaysNames: formatNames(customerStructure["gateways"], "object"),
+          });
           break;
         case "gateways":
-          setFacilitiesNames(
-            formatNames(customerStructure["facilities"], "object")
-          );
-
+          dispatch({
+            facilitiesNames: formatNames(
+              customerStructure["facilities"],
+              "object"
+            ),
+          });
           break;
         default:
           break;
@@ -697,71 +510,76 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         )
           .then((res) => res.json())
           .then((data) => {
-            switch (entityName) {
-              case "customer":
-              case "facility":
-                setDefaultEntity(data[entityName][editId]);
-                reset({
-                  ...data[entityName][editId],
-                  headname: data[entityName][editId]["head_name"],
-                });
-                break;
-              default:
-                setDefaultEntity(data[entityName]);
-                let newFields = [];
+            if (data[entityName]) {
+              switch (entityName) {
+                case "customer":
+                case "facility":
+                  dispatch({ defaultEntity: data[entityName][editId] });
+                  reset({
+                    ...data[entityName][editId],
+                    headname: data[entityName][editId]["head_name"],
+                  });
+                  break;
+                default:
+                  dispatch({ defaultEntity: data[entityName] });
+                  let newFields = [];
 
-                if (
-                  data[entityName]["jsonData"] &&
-                  data[entityName]["jsonData"].length > 0 &&
-                  data[entityName]["jsonData"] !== "null"
-                ) {
-                  let newCount = 0;
+                  if (
+                    data[entityName]["jsonData"] &&
+                    data[entityName]["jsonData"].length > 0 &&
+                    data[entityName]["jsonData"] !== "null"
+                  ) {
+                    let newCount = 0;
 
-                  const jsonData = data[entityName]["jsonData"];
+                    const jsonData = data[entityName]["jsonData"];
 
-                  jsonData.forEach((el) => {
-                    newFields.push({
-                      id: `field${newCount + 1}`,
-                      title: el.name,
-                      value: el.value,
+                    jsonData.forEach((el) => {
+                      newFields.push({
+                        id: `field${newCount + 1}`,
+                        title: el.name,
+                        value: el.value,
+                      });
+                      newCount += 1;
                     });
-                    newCount += 1;
+
+                    dispatch({ customFieldsCount: newCount });
+                    dispatch({ customFields: newFields });
+                  }
+
+                  let fieldsToReset = {};
+
+                  newFields.forEach((field) => {
+                    fieldsToReset[field.id] = field.value;
+                    fieldsToReset[field.name] = field.name;
                   });
 
-                  setCustomFieldsCount(newCount);
-                  setCustomFields(newFields);
-                }
-
-                let fieldsToReset = {};
-
-                newFields.forEach((field) => {
-                  fieldsToReset[field.id] = field.value;
-                  fieldsToReset[field.name] = field.name;
-                });
-
-                if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
-                  reset({
-                    ...data[entityName],
-                    ...fieldsToReset,
-                  });
-                } else {
-                  reset({
-                    ...data[entityName],
-                  });
-                }
-                break;
+                  if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
+                    reset({
+                      ...data[entityName],
+                      ...fieldsToReset,
+                    });
+                  } else {
+                    reset({
+                      ...data[entityName],
+                    });
+                  }
+                  break;
+              }
             }
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [editId]);
 
   return (
     <>
       <Modal isOpen={modal} toggle={resetToggle} size="lg">
-        <ModalHeader>{formTitle}</ModalHeader>
+        <ModalHeader>
+          <button className="modal-close" onClick={resetToggle}>
+            <i className="fas fa-times"></i>
+          </button>
+          {formTitle}
+        </ModalHeader>
         <ModalBody>
           <Form id="form" onSubmit={handleSubmit(onSubmit)}>
             {modalFields.map((field, index) =>
@@ -772,21 +590,32 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <Col sm={6}>
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
                         {...register(field.title.toLowerCase(), {
                           required: {
                             value: true,
-                            message: `${field.title.toLowerCase()} is required.`,
+                            message: `${field.title} is required.`,
                           },
                           pattern: {
                             value: /^[\w-.]+@([\w-]+.)+[\w-]{1,10}$/,
-                            message: `${field.title.toLowerCase()} is not valid. Example: alex@gmail.com`,
+                            message: `${field.title} is not valid. Example: alex@gmail.com`,
                           },
                         })}
                       />
+                      <small
+                        className={
+                          errors[field.title.toLowerCase()]
+                            ? "text-danger"
+                            : "text-danger hidden"
+                        }
+                      >
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 ) : field.inputType === "phone" ? (
@@ -795,9 +624,10 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <Col sm={6}>
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
+                        onInput={checkPhoneField}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
                         {...register(field.title.toLowerCase(), {
                           required: {
@@ -811,17 +641,40 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger validation-error">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 ) : field.inputType === "number" ? (
-                  <FormGroup key={index}>
+                  <FormGroup
+                    key={index}
+                    style={
+                      field.title === "Lat" || field.title === "Lng"
+                        ? { display: "inline-block" }
+                        : {}
+                    }
+                    className="col-3"
+                  >
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={6}>
+                    <Col
+                      sm={
+                        field.title === "Lat"
+                          ? 10
+                          : field.title === "Lng"
+                          ? 12
+                          : 6
+                      }
+                      className={"col-11"}
+                    >
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
+                        type="number"
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
                         {...register(field.title.toLowerCase(), {
                           required: {
@@ -834,6 +687,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger validation-error">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 ) : (
@@ -842,7 +700,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <Col sm={6}>
                       <input
                         className={`form-control ${
-                          errors[field.title] ? "is-invalid" : ""
+                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
                         }`}
                         id={`${field.title}-field`}
                         placeholder={`Enter ${field.title.toLowerCase()}.`}
@@ -857,6 +715,11 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                           },
                         })}
                       />
+                      <small className="text-danger validation-error">
+                        {errors &&
+                          errors[field.title.toLowerCase()] &&
+                          errors[field.title.toLowerCase()].message}
+                      </small>
                     </Col>
                   </FormGroup>
                 )
@@ -888,24 +751,43 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                       <FormGroup key={id}>
                         <Label for={`${id}-field`}>{title}</Label>
                         <Col sm={6}>
-                          <input
-                            className={`form-control ${
-                              errors[`${id}`] ? "is-invalid" : ""
-                            }`}
-                            id={`${id}-field`}
-                            placeholder="Enter value."
-                            {...register(`${id}`, {
-                              required: {
-                                value: true,
-                                message: "Value is required.",
-                              },
-                              minLength: {
-                                value: 3,
-                                message:
-                                  "Value should contain at least 3 symbols.",
-                              },
-                            })}
-                          />
+                          <div className="custom-field__container">
+                            <input
+                              className={`form-control ${
+                                errors[`${id}`] ? "is-invalid" : ""
+                              }`}
+                              id={`${id}-field`}
+                              placeholder="Enter value."
+                              {...register(`${id}`, {
+                                required: {
+                                  value: true,
+                                  message: "Value is required.",
+                                },
+                                minLength: {
+                                  value: 3,
+                                  message:
+                                    "Value should contain at least 3 symbols.",
+                                },
+                              })}
+                            />
+                            <span
+                              className="delete-field__btn"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                dispatch({ deleteField: { id, title } });
+                                toggleConfirmModal();
+                                // toggleConfirmModal(e, customFields, id);
+                              }}
+                            >
+                              <i class="fas fa-times"></i>
+                            </span>
+                          </div>
+                          <small className="text-danger validation-error">
+                            {errors &&
+                              errors[`${id}`] &&
+                              errors[`${id}`].message}
+                          </small>
                         </Col>
                       </FormGroup>
                     ))}
@@ -1058,8 +940,29 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           </Button>
         </ModalFooter>
       </Modal>
+      {deleteField && (
+        <ConfirmModal
+          modal={confirmModal}
+          toggleModal={toggleConfirmModal}
+          title="Delete form field"
+          handleSubmit={(e) => {
+            handleRemoveFieldFormSubmit(e, customFields, deleteField.id);
+          }}
+          modalText={`Are you sure you want to DELETE ${
+            deleteField.title ? deleteField.title : ""
+          } field`}
+        />
+      )}
     </>
   );
+};
+
+ModalSketch.propTypes = {
+  toggle: PropTypes.func,
+  modal: PropTypes.bool,
+  entity: PropTypes.string,
+  subEntity: PropTypes.string,
+  mode: PropTypes.string,
 };
 
 export default ModalSketch;

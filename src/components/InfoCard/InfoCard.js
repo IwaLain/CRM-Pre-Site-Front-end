@@ -1,11 +1,9 @@
 import placeholder from "../../assets/img/company.png";
-import { Progress, FormGroup, Input } from "reactstrap";
+import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
-import "../../scss/info-card.scss";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context";
 import Button from "../UIKit/Button/Button";
-import "../../scss/card-sketch.scss";
 
 const InfoCard = ({
   data,
@@ -14,7 +12,7 @@ const InfoCard = ({
   chooseMode,
   selected,
   changeCustomer,
-  setMode,
+  dispatch,
   currentSubEntityName,
   setCurrentSubEntityName,
   hideRecordView,
@@ -35,38 +33,40 @@ const InfoCard = ({
 
   useEffect(() => {
     let totalProgress = 0;
-    switch (type) {
-      case "customers":
-        if (data.name) totalProgress += 33.333333;
-        if (data.facilities && data.facilities.length > 0)
-          totalProgress += 33.333333;
-        if (data.equipments && data.equipments.length > 0)
-          totalProgress += 33.333333;
-        setSubEntity("Facilities");
-        onSetMainImage(data["customerImages"]);
+    if (type) {
+      switch (type) {
+        case "customers":
+          if (data.name) totalProgress += 33.333333;
+          if (data.facilities && data.facilities.length > 0)
+            totalProgress += 33.333333;
+          if (data.equipments && data.equipments.length > 0)
+            totalProgress += 33.333333;
+          setSubEntity("Facilities");
+          onSetMainImage(data["customerImages"]);
 
-        break;
-      case "facilities":
-        if (data.name) totalProgress += 33.333333;
-        if (data.locations && data.locations.length > 0)
-          totalProgress += 33.333333;
-        if (data.equipments && data.equipments.length > 0)
-          totalProgress += 33.333333;
-        setSubEntity("Locations");
-        onSetMainImage(data["facilityImages"]);
+          break;
+        case "facilities":
+          if (data.name) totalProgress += 33.333333;
+          if (data.locations && data.locations.length > 0)
+            totalProgress += 33.333333;
+          if (data.equipments && data.equipments.length > 0)
+            totalProgress += 33.333333;
+          setSubEntity("Locations");
+          onSetMainImage(data["facilityImages"]);
 
-        break;
-      case "locations":
-        setSubEntity("Equipment");
-        onSetMainImage(data["locationImages"]);
-        break;
-      case "equipment":
-        setSubEntity(["Sensors", "Mote"]);
-        onSetMainImage(data["equipmentImages"]);
-        break;
-      default:
-        setSubEntity("");
-        break;
+          break;
+        case "locations":
+          setSubEntity("Equipment");
+          onSetMainImage(data["locationImages"]);
+          break;
+        case "equipment":
+          setSubEntity(["Sensors", "Mote"]);
+          onSetMainImage(data["equipmentImages"]);
+          break;
+        default:
+          setSubEntity("");
+          break;
+      }
     }
 
     setProgress(totalProgress);
@@ -77,14 +77,15 @@ const InfoCard = ({
       currentSubEntityName.name &&
       toggleEntityModal
     ) {
-      setMode("edit");
+      dispatch({ mode: "edit" });
       setEditId(data.id);
       toggleModal();
       setToggleEntityModal(!toggleEntityModal);
     }
   }, [toggleEntityModal]);
+
   return (
-    <div className="card-sketch">
+    <div className="info-card">
       {chooseMode ? (
         <input
           type="checkbox"
@@ -94,22 +95,28 @@ const InfoCard = ({
       ) : (
         <Button
           color="default"
-          className="card-sketch__edit"
+          className="info-card__edit"
           onClick={() => {
             if (setCurrentSubEntityName) {
               setToggleEntityModal(!toggleEntityModal);
               setCurrentSubEntityName((state) => ({ ...state, name: type }));
             } else {
-              setMode("edit");
-              setEditId(data.id);
-              toggleModal();
+              if (dispatch) {
+                dispatch({ mode: "edit" });
+              }
+              if (data) {
+                setEditId(data.id);
+              }
+              if (toggleModal) {
+                toggleModal();
+              }
             }
           }}
         >
           <i className="far fa-edit"></i>
         </Button>
       )}
-      <div className="card-sketch__body">
+      <div className="info-card__body">
         <div>
           <img
             src={
@@ -120,30 +127,31 @@ const InfoCard = ({
             alt="card error"
           />
         </div>
-        <div className="card-sketch__info">
-          <h4>{data.name}</h4>
-          {type !== "equipment"
-            ? subEntity && (
-                <div>{`${subEntity}: ${
-                  data[subEntity.toLowerCase()].length
-                }`}</div>
-              )
-            : subEntity && (
-                <div>{`${subEntity[0]}/${subEntity[1]}: ${
+        <div className="info-card__info">
+          <h4 title={data && data.name} className="info-card__name">
+            {data && data.name}
+          </h4>
+          <div style={!subEntity ? { visibility: "hidden" } : {}}>
+            {type !== "equipment"
+              ? subEntity &&
+                `${subEntity}: ${data[subEntity.toLowerCase()].length}`
+              : subEntity &&
+                `${subEntity[0]}/${subEntity[1]}: ${
                   data[subEntity[0].toLowerCase()].length +
                   data[subEntity[1].toLowerCase()].length
-                }`}</div>
-              )}
+                }`}
+            {!subEntity && "No data."}
+          </div>
           <div
             className={
               chooseMode
-                ? "card-sketch__btns"
-                : "card-sketch__btns card-sketch__btns-one"
+                ? "info-card__btns"
+                : "info-card__btns info-card__btns-one"
             }
           >
             <Link
-              to={`/dashboard/${type}/${data.id}`}
-              style={hideRecordView ? { visibility: "hidden" } : {}}
+              to={`/${type}/${data && data.id}`}
+              style={data && hideRecordView ? { visibility: "hidden" } : {}}
             >
               View
             </Link>
@@ -155,9 +163,15 @@ const InfoCard = ({
                     setToggleEntityModal(!toggleEntityModal);
                     setCurrentSubEntityName({ name: type });
                   } else {
-                    setMode("edit");
-                    setEditId(data.id);
-                    toggleModal();
+                    if (dispatch) {
+                      dispatch({ mode: "edit" });
+                    }
+                    if (data) {
+                      setEditId(data.id);
+                    }
+                    if (toggleModal) {
+                      toggleModal();
+                    }
                   }
                 }}
               >

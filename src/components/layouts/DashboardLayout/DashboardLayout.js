@@ -1,41 +1,34 @@
-import React, { useContext } from "react";
-import "../../../scss/dashboard.scss";
-import { useEffect, useState } from "react";
+import React, { useContext, useReducer } from "react";
+import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import Header from "../../widgets/Header/Header";
 import Sidebar from "../../widgets/Sidebar/Sidebar";
 import Breadcrumbs from "../../widgets/Breadcrumbs/Breadcrumbs";
-import routes from "../../../routes";
 import { GlobalContext } from "../../../context";
+import { reducer } from "../../../reducer";
+import PropTypes from "prop-types";
+import debounce from "../../../js/helpers/debounce";
 
 const DashboardLayout = ({ children }) => {
   const MOBILE_SIZE = 750;
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= MOBILE_SIZE);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(
-    window.innerWidth <= MOBILE_SIZE
-  );
-
-  const {
-    pagePath,
-    setPageTitle,
-    pageType,
-    setEquipmentTypeList,
-    userProfile,
-  } = useContext(GlobalContext);
-
-  const handleResize = () => {
-    if (window.screen.width <= MOBILE_SIZE) {
-      setIsMobile(true);
-      setSidebarCollapsed(true);
-    } else {
-      setIsMobile(false);
-      setSidebarCollapsed(false);
-    }
+  const initialState = {
+    isMobile: window.innerWidth <= MOBILE_SIZE,
   };
 
-  const toggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { isMobile } = state;
+
+  const { setEquipmentTypeList, userProfile } = useContext(GlobalContext);
+
+  const debouncedResizeHandler = debounce(() => handleResize());
+
+  const handleResize = () => {
+    if (window.innerWidth <= MOBILE_SIZE) {
+      dispatch({ isMobile: true });
+    } else {
+      dispatch({ isMobile: false });
+    }
   };
 
   useEffect(() => {
@@ -48,32 +41,19 @@ const DashboardLayout = ({ children }) => {
         )
           .then((res) => res.json())
           .then((list) => setEquipmentTypeList(list["type"]));
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, []);
 
   useEffect(() => {
-    let filtered = routes.dashboard.filter((route) => {
-      return route.path === pagePath;
-    })[0];
-    filtered && setPageTitle(filtered.name);
-  }, [pagePath]);
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", debouncedResizeHandler);
   }, []);
 
   return (
     <div className="dashboard container-fluid">
-      <Sidebar
-        isMobile={isMobile}
-        toggleSidebar={toggleSidebar}
-        type={pageType && pageType.ref}
-      />
+      <Sidebar isMobile={isMobile} />
       <section>
-        <Header isMobile={isMobile} toggleSidebar={toggleSidebar} />
+        <Header isMobile={isMobile} />
         <main>
           <Breadcrumbs />
           {children}
@@ -82,6 +62,10 @@ const DashboardLayout = ({ children }) => {
       </section>
     </div>
   );
+};
+
+DashboardLayout.propTypes = {
+  children: PropTypes.element,
 };
 
 export default DashboardLayout;

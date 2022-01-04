@@ -1,55 +1,18 @@
-import ReactPaginate from "react-paginate";
-
-import "../../../scss/pagination.scss";
-
-// const Pagination = ({
-//   previousLabel,
-//   nextLabel,
-//   pageCount,
-//   onPageChange,
-//   containerClassName,
-//   activeClassName,
-//   initialPage,
-// }) => {
-//   return (
-//     <ReactPaginate
-//       previousLabel={previousLabel}
-//       nextLabel={nextLabel}
-//       pageCount={pageCount}
-//       initialPage={initialPage}
-//       onPageChange={onPageChange}
-//       containerClassName={containerClassName}
-//       activeClassName={activeClassName}
-//       pageRangeDisplayed={5}
-//     />
-//   );
-// };
-// export default Pagination;
-
-const CustomPagination = ({
-  previousLabel,
-  nextLabel,
-  pageCount,
-  onPageChange,
-  containerClassName,
-  activeClassName,
-  initialPage,
-  totalRows,
-}) => {
+const CustomPagination = ({ pageCount, dispatch, initialPage, totalRows }) => {
   const handleFirstPageButtonClick = () => {
-    onPageChange(1);
+    dispatch({ page: 1 });
   };
 
   const handleBackButtonClick = () => {
-    onPageChange(initialPage - 1);
+    dispatch({ page: initialPage - 1 });
   };
 
   const handleNextButtonClick = () => {
-    onPageChange(initialPage + 1);
+    dispatch({ page: initialPage + 1 });
   };
 
   const handleLastPageButtonClick = () => {
-    onPageChange(pageCount);
+    dispatch({ page: pageCount });
   };
 
   return (

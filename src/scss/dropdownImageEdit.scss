@@ -9,49 +9,48 @@
   top: 0;
   right: 0;
   transform: translate(50%, -50%);
+  .edit-img__menu {
+    min-width: unset;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+    p {
+      margin-bottom: 0;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+    }
+    .edit-img__menu.show {
+      display: flex !important;
+    }
+  }
 }
 
-.edit-img button {
+.edit-img {
+  button {
+    border: 0;
+  }
+}
+.edit-img__btn {
   background: transparent;
-  border: 0;
-}
-
-.edit-img button:hover,
-.edit-img button:active,
-.edit-img button:focus,
-.edit-img button:active:focus {
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-}
-
-.edit-img__btn img {
-  padding: 4px;
-  background-color: black;
-  border-radius: 25px;
-}
-.edit-img .edit-img__menu {
-  min-width: unset;
-  flex-wrap: wrap;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.edit-img__menu img {
-  width: 100px;
-  height: 100px;
-}
-
-.edit-img__menu p {
-  margin-bottom: 0;
-}
-
-.edit-img__menu.show {
-  display: flex !important;
+  img {
+    padding: 4px;
+    background-color: black;
+    border-radius: 25px;
+  }
 }
 
 @media (max-width: 400px) {
   .edit-img__menu {
     flex-direction: column;
   }
+}
+
+.edit-img__icon {
+  font-size: 12px;
+  padding: 6px;
+  border-radius: 50%;
+  background-color: black;
+  color: white;
 }

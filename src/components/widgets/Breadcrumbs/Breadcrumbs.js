@@ -1,6 +1,5 @@
 import withBreadcrumbs from "react-router-breadcrumbs-hoc";
 import { Link } from "react-router-dom";
-import "../../../scss/breadcrumbs.scss";
 import customersApi from "../../../js/api/customer";
 import facilitiesApi from "../../../js/api/facilities";
 import locationApi from "../../../js/api/locations";
@@ -15,7 +14,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
       {breadcrumbs &&
         breadcrumbs.map(({ breadcrumb, match }, index) => {
           if (
-            breadcrumb.key.includes("/dashboard/customers/") &&
+            breadcrumb.key.includes("/customers/") &&
             parseInt(breadcrumb.props.children)
           ) {
             customersApi
@@ -26,7 +25,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
                 );
               });
           } else if (
-            breadcrumb.key.includes("/dashboard/facilities/") &&
+            breadcrumb.key.includes("/facilities/") &&
             parseInt(breadcrumb.props.children)
           ) {
             facilitiesApi
@@ -37,7 +36,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
                 );
               });
           } else if (
-            breadcrumb.key.includes("/dashboard/locations/") &&
+            breadcrumb.key.includes("/locations/") &&
             parseInt(breadcrumb.props.children)
           ) {
             locationApi
@@ -46,7 +45,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
                 setName(location.location.name);
               });
           } else if (
-            breadcrumb.key.includes("/dashboard/equipment/") &&
+            breadcrumb.key.includes("/equipment/") &&
             parseInt(breadcrumb.props.children)
           ) {
             equipmentApi
@@ -58,7 +57,12 @@ const Breadcrumbs = ({ breadcrumbs }) => {
 
           return (
             <div key={match.url} className="breadcrumbs__breadcrumb-item">
-              <Link to={match.url || ""}>
+              <Link
+                to={match.url || ""}
+                data-text={
+                  parseInt(breadcrumb.props.children) ? name : breadcrumb
+                }
+              >
                 {parseInt(breadcrumb.props.children) ? name : breadcrumb}
               </Link>
               {index < breadcrumbs.length - 1 && (

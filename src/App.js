@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -7,50 +7,48 @@ import {
 } from "react-router-dom";
 import { GlobalContext } from "./context";
 import DashboardLayout from "./components/layouts/DashboardLayout/DashboardLayout";
-import NotFound from "./components/pages/NotFound/NotFound";
+import NotFound from "./pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
-import LoginPage from "./components/pages/Login";
-import "./scss/ui-kit.scss";
+import LoginPage from "./pages/Login/Login";
 import Profile from "./js/api/profile";
+import { reducer } from "./reducer";
 
 const App = () => {
-  const [pageTitle, setPageTitle] = useState();
-  const [pageType, setPageType] = useState();
-  const [pagePath, setPagePath] = useState();
+  const initialState = {
+    customerStructure: {},
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { customerStructure } = state;
+
+  const [userProfile, setUserProfile] = useState({});
+  const [selectedCustomer, setSelectedCustomer] = useState({});
+  const [equipmentTypeList, setEquipmentTypeList] = useState([]);
+
   const [entityID, setEntityID] = useState();
   const [editId, setEditId] = useState();
-  const [showFormModal, setShowFormModal] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState({});
-  const [customerStructure, setCustomerStructure] = useState({});
-  const [customerNetwork, setCustomerNetwork] = useState({});
-  const [userProfile, setUserProfile] = useState({});
-  const [equipmentTypeList, setEquipmentTypeList] = useState([]);
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
-    try {
-      Profile.getProfile().then((data) => {
-        if (data) {
-          setUserProfile(data.user);
-          if (data.user.last_customer) {
-            fetch(
-              process.env.REACT_APP_SERVER_URL +
-                "/api/customer/" +
-                data.user.last_customer +
-                "?access-token=" +
-                localStorage.getItem("token")
-            )
-              .then((res) => res.json())
-              .then((customer) => {
-                setSelectedCustomer(customer.customer[data.user.last_customer]);
-              });
-          }
-        } else console.log("Profile not found.");
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    Profile.getProfile().then((data) => {
+      if (data) {
+        setUserProfile(data.user);
+        if (data.user.last_customer) {
+          fetch(
+            process.env.REACT_APP_SERVER_URL +
+              "/api/customer/" +
+              data.user.last_customer +
+              "?access-token=" +
+              localStorage.getItem("token")
+          )
+            .then((res) => res.json())
+            .then((customer) => {
+              setSelectedCustomer(customer.customer[data.user.last_customer]);
+            });
+        }
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -66,61 +64,30 @@ const App = () => {
           .then((res) => res.json())
           .then((customerStructure) => {
             if (customerStructure)
-              setCustomerStructure(customerStructure["customerConstruct"]);
-            else console.log("Customer structure not found.");
+              dispatch({
+                customerStructure: customerStructure["customerConstruct"],
+              });
           });
-      } catch (e) {
-        console.log(e);
-      }
-      try {
-        fetch(
-          process.env.REACT_APP_SERVER_URL +
-            "/api/customer/" +
-            selectedCustomer.id +
-            "/network?access-token=" +
-            localStorage.getItem("token")
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data)
-            setCustomerNetwork(data["Network"])
-          });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   }, [selectedCustomer, updateTrigger]);
 
   return (
     <GlobalContext.Provider
       value={{
-        pageTitle,
-        setPageTitle,
-
-        pageType,
-        setPageType,
-
-        pagePath,
-        setPagePath,
-
         editId,
         setEditId,
 
         entityID,
         setEntityID,
 
-        showFormModal,
-        setShowFormModal,
-
         userProfile,
         setUserProfile,
 
         selectedCustomer,
         setSelectedCustomer,
+
         customerStructure,
-        setCustomerStructure,
-        customerNetwork,
-        setCustomerNetwork,
 
         equipmentTypeList,
         setEquipmentTypeList,
@@ -131,41 +98,41 @@ const App = () => {
     >
       <Router>
         <Switch>
-          <Route path="/dashboard/:path?">
+          <Route path="/:path?">
             {userProfile && Object.keys(userProfile).length > 0 ? (
               <DashboardLayout>
                 <Switch>
-                  {routes.dashboard.map(({ path, children }, index) => {
+                  {routes.map(({ path, children }, index) => {
                     return (
                       <Route key={index} path={path} children={children} />
                     );
                   })}
+                  <Route exact path="/login">
+                    <Redirect to="/customers" />
+                  </Route>
                 </Switch>
               </DashboardLayout>
             ) : (
-              <Redirect to="/login" />
+              <AuthLayout>
+                <Switch>
+                  <Route exact path="/">
+                    {localStorage.getItem("token") ? (
+                      <Redirect to="/customers" />
+                    ) : (
+                      <Redirect to="/login" />
+                    )}
+                  </Route>
+                  <Route path="/login">
+                    {localStorage.getItem("token") ? (
+                      <Redirect to="/customers" />
+                    ) : (
+                      <LoginPage />
+                    )}
+                  </Route>
+                  <Route component={NotFound} />
+                </Switch>
+              </AuthLayout>
             )}
-          </Route>
-          <Route>
-            <AuthLayout>
-              <Switch>
-                <Route exact path="/">
-                  {userProfile && Object.keys(userProfile).length > 0 ? (
-                    <Redirect to="/dashboard" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )}
-                </Route>
-                <Route path="/login">
-                  {userProfile && Object.keys(userProfile).length > 0 ? (
-                    <Redirect to="/dashboard" />
-                  ) : (
-                    <LoginPage />
-                  )}
-                </Route>
-                <Route component={NotFound} />
-              </Switch>
-            </AuthLayout>
           </Route>
         </Switch>
       </Router>

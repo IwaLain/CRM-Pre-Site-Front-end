@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import "../../scss/attachedFiles.scss";
 import { Spinner } from "reactstrap";
+import PropTypes from "prop-types";
 
 const AttachedFiles = ({
   type,
@@ -48,13 +47,22 @@ const AttachedFiles = ({
 
     setFiles(
       attachedFiles.map((file) => {
+        let fileName;
         const fileExtension = file.img.substring(file.img.lastIndexOf("."));
-
+        if (!file.fileName) {
+          fileName = file.img.substring(
+            file.img.lastIndexOf("/") + 1,
+            file.img.lastIndexOf("_")
+          );
+        } else {
+          fileName = file.fileName;
+        }
         const imageTypes = [".jpeg", ".png", ".jpg"];
         const isImage = imageTypes.some((el) => fileExtension.includes(el));
         return {
           ...file,
           isImage: isImage,
+          fileName: fileName,
         };
       })
     );
@@ -74,7 +82,7 @@ const AttachedFiles = ({
             toggleConfirmModal();
           }}
         ></span>
-        <div className="thumbInner">
+        <div className="thumbInner" title={file.fileName}>
           {file.isImage === true ? (
             <img src={file.preview} className="attached--img" alt="..." />
           ) : (
@@ -147,5 +155,14 @@ const AttachedFiles = ({
       </div>
     </>
   );
+};
+AttachedFiles.propTypes = {
+  name: PropTypes.string,
+  onAddFile: PropTypes.func,
+  attachedFiles: PropTypes.array,
+  onRemoveFile: PropTypes.func,
+  accepted: PropTypes.string,
+  multiple: PropTypes.bool,
+  maxFiles: PropTypes.number,
 };
 export default AttachedFiles;
