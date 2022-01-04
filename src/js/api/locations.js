@@ -1,7 +1,5 @@
-import { getToken } from "../helpers/helpers";
-import { apiRequest } from "./api";
-
-const BASE_URL = process.env.REACT_APP_SERVER_URL
+import { getToken } from '../helpers/helpers'
+import { apiRequest, header, BASE_URL} from './api'
 
 const locationApi = {
   getLocations: async (limit, page, search) => {
@@ -21,9 +19,7 @@ const locationApi = {
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/location/tree?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/location/tree?access-token=${token}`
       );
   },
 
@@ -35,9 +31,7 @@ const locationApi = {
         "POST",
         BASE_URL + `/api/location/create?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -49,9 +43,7 @@ const locationApi = {
         "PUT",
         BASE_URL + `/api/location/update/${id}?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -61,9 +53,7 @@ const locationApi = {
     if (token)
       return apiRequest(
         "DELETE",
-        BASE_URL + `/api/location/delete/${id}?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/location/delete/${id}?access-token=${token}`
       );
   },
 
@@ -73,9 +63,7 @@ const locationApi = {
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/location/${id}?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/location/${id}?access-token=${token}`
       );
   },
 
@@ -98,9 +86,7 @@ const locationApi = {
         "PUT",
         BASE_URL + `/api/customer/update/${id}?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -113,9 +99,7 @@ const locationApi = {
         BASE_URL +
           `/api/location/${locationId}/image/create?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -126,9 +110,7 @@ const locationApi = {
       return apiRequest(
         "DELETE",
         BASE_URL +
-          `/api/location/${locationId}/image/delete/${imageId}?access-token=${token}`,
-        {},
-        {}
+          `/api/location/${locationId}/image/delete/${imageId}?access-token=${token}`
       );
   },
   setMainLocationImage: async (locationId, imageId) => {
@@ -140,9 +122,7 @@ const locationApi = {
         BASE_URL +
           `/api/location/${locationId}/set-main-image/${imageId}?access-token=${token}`,
         {},
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 };

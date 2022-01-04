@@ -5,7 +5,7 @@ import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
 import StatisticsDashboard from "./pages/StatisticsDashboard/StatisticsDashboard";
 import Network from "./pages/Network/Network";
-import ComertialPorpose from "./pages/ComertialPurpose/ComertialPurpose";
+import ComertialPorpose from "./pages/ComertialPurpose";
 
 const routes = [
   {

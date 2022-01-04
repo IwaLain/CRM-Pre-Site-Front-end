@@ -2,6 +2,7 @@ import React from "react";
 import "./Preview.scss";
 import logo from "../../../assets/img/waites-block-logo-yellow-background.png";
 import bottom from "../../../assets/img/barcode.png";
+import PropTypes from "prop-types";
 
 // Create Document Component
 const Previews = ({ table, form, date, quote }) => {
@@ -134,6 +135,13 @@ const Previews = ({ table, form, date, quote }) => {
       </div>
     </div>
   );
+};
+
+Previews.propTypes = {
+  table: PropTypes.array,
+  items: PropTypes.object,
+  date: PropTypes.string,
+  quote: PropTypes.string,
 };
 
 export default Previews;

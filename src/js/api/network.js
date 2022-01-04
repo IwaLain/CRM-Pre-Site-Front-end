@@ -1,7 +1,5 @@
-import { getToken } from "../helpers/helpers";
-import { apiRequest } from "./api";
-
-const BASE_URL = process.env.REACT_APP_SERVER_URL
+import { getToken } from '../helpers/helpers'
+import { apiRequest, header, BASE_URL} from './api'
 
 const networkApi = {
   gataway: {
@@ -13,9 +11,7 @@ const networkApi = {
           "POST",
           BASE_URL + `/api/gateway/create?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -27,9 +23,7 @@ const networkApi = {
           "PUT",
           BASE_URL + `/api/gateway/update/${id}?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -39,9 +33,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/gateway/${id}?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/gateway/${id}?access-token=${token}`
         );
     },
 
@@ -51,9 +43,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/gateway/list?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/gateway/list?access-token=${token}`
         );
     },
 
@@ -63,9 +53,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/customer/${id}/gateway?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/customer/${id}/gateway?access-token=${token}`
         );
     },
 
@@ -75,9 +63,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/facility/${id}/gateway?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/facility/${id}/gateway?access-token=${token}`
         );
     },
 
@@ -87,9 +73,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/gateway/type-images?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/gateway/type-images?access-token=${token}`
         );
     },
 
@@ -99,9 +83,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "DELETE",
-          BASE_URL + `/api/gateway/delete/${id}?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/gateway/delete/${id}?access-token=${token}`
         );
     },
   },
@@ -115,9 +97,7 @@ const networkApi = {
           "POST",
           BASE_URL + `/api/node/create?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -129,9 +109,7 @@ const networkApi = {
           "PUT",
           BASE_URL + `/api/node/update/${id}?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -141,9 +119,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/node/${id}?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/node/${id}?access-token=${token}`
         );
     },
 
@@ -153,9 +129,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/node/list?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/node/list?access-token=${token}`
         );
     },
 
@@ -165,9 +139,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "DELETE",
-          BASE_URL + `/api/delete/delete/${id}?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/delete/delete/${id}?access-token=${token}`
         );
     },
   },
@@ -181,9 +153,7 @@ const networkApi = {
           "POST",
           BASE_URL + `/api/mote/create?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -195,9 +165,7 @@ const networkApi = {
           "PUT",
           BASE_URL + `/api/mote/update/${id}?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -207,9 +175,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/mote/${id}?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/mote/${id}?access-token=${token}`
         );
     },
 
@@ -219,9 +185,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/mote/list?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/mote/list?access-token=${token}`
         );
     },
 
@@ -231,9 +195,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "DELETE",
-          BASE_URL + `/api/mote/delete/${id}?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/mote/delete/${id}?access-token=${token}`
         );
     },
   },
@@ -247,9 +209,7 @@ const networkApi = {
           "POST",
           BASE_URL + `/api/router/create?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -261,9 +221,7 @@ const networkApi = {
           "PUT",
           BASE_URL + `/api/router/update/${id}?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -273,9 +231,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/router/${id}?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/router/${id}?access-token=${token}`
         );
     },
 
@@ -285,9 +241,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/routers/list?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/routers/list?access-token=${token}`
         );
     },
 
@@ -313,9 +267,7 @@ const networkApi = {
           "POST",
           BASE_URL + `/api/sensor/create?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -327,9 +279,7 @@ const networkApi = {
           "PUT",
           BASE_URL + `/api/sensor/update/${id}?access-token=${token}`,
           data,
-          {
-            "Content-Type": "application/json",
-          }
+          header
         );
     },
 
@@ -351,9 +301,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "GET",
-          BASE_URL + `/api/sensors/list?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/sensors/list?access-token=${token}`
         );
     },
 
@@ -363,9 +311,7 @@ const networkApi = {
       if (token)
         return await apiRequest(
           "DELETE",
-          BASE_URL + `/api/sensor/delete/${id}?access-token=${token}`,
-          {},
-          {}
+          BASE_URL + `/api/sensor/delete/${id}?access-token=${token}`
         );
     },
   },
