@@ -736,24 +736,38 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                       <FormGroup key={id}>
                         <Label for={`${id}-field`}>{title}</Label>
                         <Col sm={6}>
-                          <input
-                            className={`form-control ${
-                              errors[`${id}`] ? "is-invalid" : ""
-                            }`}
-                            id={`${id}-field`}
-                            placeholder="Enter value."
-                            {...register(`${id}`, {
-                              required: {
-                                value: true,
-                                message: "Value is required.",
-                              },
-                              minLength: {
-                                value: 3,
-                                message:
-                                  "Value should contain at least 3 symbols.",
-                              },
-                            })}
-                          />
+                          <div className="custom-field__container">
+                            <input
+                              className={`form-control ${
+                                errors[`${id}`] ? "is-invalid" : ""
+                              }`}
+                              id={`${id}-field`}
+                              placeholder="Enter value."
+                              {...register(`${id}`, {
+                                required: {
+                                  value: true,
+                                  message: "Value is required.",
+                                },
+                                minLength: {
+                                  value: 3,
+                                  message:
+                                    "Value should contain at least 3 symbols.",
+                                },
+                              })}
+                            />
+                            <span
+                              className="delete-field__btn"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setDeleteField({ id, title });
+                                toggleConfirmModal();
+                                // toggleConfirmModal(e, customFields, id);
+                              }}
+                            >
+                              <i class="fas fa-times"></i>
+                            </span>
+                          </div>
                           <small className="text-danger validation-error">
                             {errors &&
                               errors[`${id}`] &&
