@@ -1,15 +1,4 @@
-import "../../../scss/pagination.scss";
-
-const CustomPagination = ({
-  previousLabel,
-  nextLabel,
-  pageCount,
-  dispatch,
-  containerClassName,
-  activeClassName,
-  initialPage,
-  totalRows,
-}) => {
+const CustomPagination = ({ pageCount, dispatch, initialPage, totalRows }) => {
   const handleFirstPageButtonClick = () => {
     dispatch({ page: 1 });
   };

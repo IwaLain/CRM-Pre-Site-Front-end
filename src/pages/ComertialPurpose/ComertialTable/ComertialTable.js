@@ -3,7 +3,6 @@ import DataTable from "react-data-table-component";
 import { GlobalContext } from "../../../context";
 import { validation } from "../../../js/helpers/validation";
 import { reducer } from "../../../reducer";
-import "../../../scss/ui-kit.scss";
 
 const ComertialPurpose = ({ setData, dataForm }) => {
   const { selectedCustomer } = useContext(GlobalContext);

@@ -1,7 +1,6 @@
 import { useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
 import { GlobalContext } from "../../context";
-import "../../scss/dashboard-page.scss";
 import { alert } from "../../js/helpers/alert";
 import { reducer } from "../../reducer";
 

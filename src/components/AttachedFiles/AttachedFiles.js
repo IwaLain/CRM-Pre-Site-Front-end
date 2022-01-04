@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import "../../scss/attachedFiles.scss";
 import { Spinner } from "reactstrap";
 import PropTypes from "prop-types";
+
 const AttachedFiles = ({
   type,
   name,

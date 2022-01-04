@@ -11,7 +11,6 @@ import NotFound from "./pages/NotFound/NotFound";
 import routes from "./routes";
 import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
 import LoginPage from "./pages/Login/Login";
-import "./scss/ui-kit.scss";
 import Profile from "./js/api/profile";
 import { reducer } from "./reducer";
 

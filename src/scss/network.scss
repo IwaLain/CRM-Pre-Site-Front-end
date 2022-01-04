@@ -1,16 +1,18 @@
-.accordion {
-  width: 100%;
-}
+.network {
+  .accordion {
+    width: 100%;
+  }
 
-.accordion__headers {
-  display: flex;
-  gap: 15px;
-}
+  .accordion__headers {
+    display: flex;
+    gap: 15px;
+  }
 
-.accordion__headers .accordion-header {
-  width: 100%;
-}
+  .accordion__headers .accordion-header {
+    width: 100%;
+  }
 
-.card-body {
-  padding: 0.7rem 0.7rem !important;
+  .card-body {
+    padding: 0.7rem 0.7rem !important;
+  }
 }

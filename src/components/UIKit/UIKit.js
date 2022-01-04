@@ -1,4 +1,3 @@
-import "../../scss/ui-kit.scss";
 import Button from "../UIKit/Button/Button";
 import Badge from "../UIKit/Badge/Badge";
 import Input from "../UIKit/Input/Input";
