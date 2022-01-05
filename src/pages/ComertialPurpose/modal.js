@@ -1,6 +1,6 @@
 import React from 'react'
 import { 
-    Button, 
+    button, 
     Modal, 
     ModalBody, 
     ModalFooter, 
@@ -32,14 +32,15 @@ const ComertialModal = ({togglePDF, preview, date, currentData}) => {
                 />
             </ModalBody>
             <ModalFooter>
-                <Button
+                <button
+                    className="ui-btn ui-btn-secondary"
                     onClick={togglePDF}
                 >
                     Close
-                </Button>
-                <Button className="btn btn-success purposePreview__button" id="purpose" form="form">
+                </button>
+                <button className="ui-btn ui-btn-success purposePreview__button" id="purpose" form="form">
                     <i className="fas fa-file-pdf"></i> Create PDF
-                </Button>
+                </button>
             </ModalFooter>
         </Modal>
     )

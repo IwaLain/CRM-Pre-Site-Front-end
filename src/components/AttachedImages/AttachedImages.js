@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Label } from "reactstrap";
+import { button, Col, Label } from "reactstrap";
 import "./attached-images.scss";
 import star from "../../assets/img/star.svg";
 import uploadImage from "../../js/helpers/convertImage";
@@ -56,10 +56,10 @@ const AttachedImages = ({ attachedImages, title, addImage, deleteImage }) => {
 
           <div className="attached--item">
             <div className="upload-btn-wrapper attached--upload-btn-wrapper">
-              <Button color="secondary" className="attached--upload-btn">
+              <button className="ui-btn ui-btn-secondary" className="attached--upload-btn">
                 <img src={star} alt="star" />
                 Add image
-              </Button>
+              </button>
               <input
                 id="customerImg"
                 type="file"

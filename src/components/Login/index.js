@@ -117,7 +117,7 @@ const LoginPage = () => {
                 </Row>
                 <Row>
                   <FormGroup className="d-flex justify-content-end">
-                    <button className="login__btn">Login</button>
+                    <button className="login__btn ui-btn ui-btn-primary">Login</button>
                   </FormGroup>
                 </Row>
               </Form>

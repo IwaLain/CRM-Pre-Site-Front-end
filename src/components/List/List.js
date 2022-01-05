@@ -9,12 +9,12 @@ import customersApi from "../../js/api/customer";
 import locationApi from "../../js/api/locations";
 import equipmentApi from "../../js/api/equipment";
 import facilitiesApi from "../../js/api/facilities";
-import Button from "../UIKit/Button/Button";
 import ModalSketch from "../ModalComponent/ModalSketch";
 import Loader from "../widgets/Loader/Loader";
 import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import debounce from "../../js/helpers/debounce";
+import Button from "../UIKit/button/button";
 
 const List = ({
   type,
@@ -401,7 +401,7 @@ const List = ({
             <h3>{title}</h3>
             {!hideCreateBtn && (
               <button
-                className="list__add-btn"
+                className="list__add-btn ui-btn ui-btn-success"
                 onClick={() => {
                   dispatch({ mode: "create" });
                   toggleModal();

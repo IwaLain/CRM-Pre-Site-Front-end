@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { GlobalContext } from "../../context";
-import Button from "../../components/UIKit/Button/Button";
 import List from "../../components/List/List";
 import "../../scss/network.scss";
 import { alert } from "../../js/helpers/alert";
+import Button from "../../components/UIKit/button/button";
 
 const Network = () => {
   const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
@@ -52,8 +52,7 @@ const Network = () => {
                       <h5>{key.charAt(0).toUpperCase() + key.slice(1)}</h5>
                       <span>{value.length}</span>
                       <Button
-                        className="dashboard-page__block-view accorion-button collapsed"
-                        color="primary"
+                        className="dashboard-page__block-view accorion-button collapsed ui-btn ui-btn-primary"
                         dataBsToggle="collapse"
                         dataBsTarget={`#collapse-${index}`}
                         onClick={() => setSelectedBlock(index)}
