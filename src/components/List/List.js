@@ -462,7 +462,7 @@ const List = ({
           </div>
         </div>
         {!isLoading ? (
-          <div className="list__content">
+          <div className="list__content table-striped">
             <>
               {view ? (
                 <TableView

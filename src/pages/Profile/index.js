@@ -1,5 +1,5 @@
 import React, { useReducer, useContext, useEffect } from 'react'
-import { Col, Label, Row } from 'reactstrap'
+import { Button, Col, Label, Row } from 'reactstrap'
 
 import convertToBase64 from '../../js/helpers/convertImage'
 import { GlobalContext } from '../../context'
@@ -11,7 +11,6 @@ import UserModal from '../Users/modal'
 import './Profile.scss'
 
 import placeholder from '../../assets/img/profile_placeholder.png'
-import Button from '../../components/UIKit/Button/Button'
 
 const ProfilePage = () => {
   const { userProfile, setUserProfile } = useContext(GlobalContext)
