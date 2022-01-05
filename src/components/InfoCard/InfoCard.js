@@ -20,7 +20,6 @@ const InfoCard = ({
   const [toggleEntityModal, setToggleEntityModal] = useState(false);
   const [subEntity, setSubEntity] = useState("");
   const [progress, setProgress] = useState(0);
-  const { setEditId } = useContext(GlobalContext);
   const [mainImage, setMainImage] = useState();
   const onSetMainImage = (images) => {
     if (images && images.length > 0) {
@@ -78,7 +77,7 @@ const InfoCard = ({
       toggleEntityModal
     ) {
       dispatch({ mode: "edit" });
-      setEditId(data.id);
+      dispatch({ modalDataID: data.id });
       toggleModal();
       setToggleEntityModal(!toggleEntityModal);
     }
@@ -105,7 +104,7 @@ const InfoCard = ({
                 dispatch({ mode: "edit" });
               }
               if (data) {
-                setEditId(data.id);
+                dispatch({ modalDataID: data.id });
               }
               if (toggleModal) {
                 toggleModal();
@@ -167,7 +166,7 @@ const InfoCard = ({
                       dispatch({ mode: "edit" });
                     }
                     if (data) {
-                      setEditId(data.id);
+                      dispatch({ modalDataID: data.id });
                     }
                     if (toggleModal) {
                       toggleModal();

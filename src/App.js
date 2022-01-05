@@ -29,11 +29,9 @@ const App = () => {
   const [equipmentTypeList, setEquipmentTypeList] = useState([]);
 
   const [entityID, setEntityID] = useState();
-  const [editId, setEditId] = useState();
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
-    console.log("profile");
     Profile.getProfile().then((data) => {
       if (data) {
         setUserProfile(data.user);
@@ -50,6 +48,8 @@ const App = () => {
               setSelectedCustomer(customer.customer[data.user.last_customer]);
               dispatch({ isLoading: false });
             });
+        } else {
+          dispatch({ isLoading: false });
         }
       } else {
         dispatch({ isLoading: false });
@@ -59,7 +59,6 @@ const App = () => {
 
   useEffect(() => {
     if (selectedCustomer.id) {
-      console.log("structure");
       try {
         fetch(
           process.env.REACT_APP_SERVER_URL +
@@ -82,9 +81,6 @@ const App = () => {
   return (
     <GlobalContext.Provider
       value={{
-        editId,
-        setEditId,
-
         entityID,
         setEntityID,
 
@@ -115,6 +111,9 @@ const App = () => {
                         <Route key={index} path={path} children={children} />
                       );
                     })}
+                    <Route exact path="/">
+                      <Redirect to="/customers" />
+                    </Route>
                     <Route exact path="/login">
                       <Redirect to="/customers" />
                     </Route>

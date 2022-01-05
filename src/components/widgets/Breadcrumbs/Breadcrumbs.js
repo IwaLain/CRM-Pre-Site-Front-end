@@ -63,10 +63,11 @@ const Breadcrumbs = ({ breadcrumbs }) => {
           return (
             <div key={match.url} className="breadcrumbs__breadcrumb-item">
               <Link
-                to={match.url || ""}
+                to={breadcrumb.key || ""}
                 data-text={
                   parseInt(breadcrumb.props.children) ? name : breadcrumb
                 }
+                style={breadcrumb.key === "/" ? { pointerEvents: "none" } : {}}
               >
                 {parseInt(breadcrumb.props.children) ? name : breadcrumb}
               </Link>
