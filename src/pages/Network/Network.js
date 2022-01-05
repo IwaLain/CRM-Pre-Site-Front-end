@@ -35,7 +35,7 @@ const Network = () => {
   }, [history, selectedCustomer, updateTrigger]);
 
   return (
-    <div>
+    <div className="network">
       <section className="dashboard-page__section">
         <h3>Network</h3>
         <div className="dashboard-page__block-wrapper">

@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
-import "./../../scss/confirmModal.scss";
+
 const ConfirmModal = ({
   modal,
   toggleModal,

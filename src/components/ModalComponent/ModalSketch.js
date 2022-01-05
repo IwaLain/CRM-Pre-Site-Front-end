@@ -19,7 +19,7 @@ import formatNames from "./formatNames";
 import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import "../../scss/modal-sketch.scss";
+
 const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
   const initialState = {
     formTitle: "",

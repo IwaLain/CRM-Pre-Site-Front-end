@@ -70,7 +70,6 @@ const List = ({
 
     selectedCustomer,
     setSelectedCustomer,
-    setCustomerStructure,
     updateTrigger,
   } = useContext(GlobalContext);
 
@@ -208,6 +207,7 @@ const List = ({
   };
 
   const changeCustomer = (id) => {
+    dispatch({ isLoading: true });
     try {
       fetch(
         process.env.REACT_APP_SERVER_URL +
@@ -220,22 +220,8 @@ const List = ({
         .then((customer) => {
           if (customer) {
             setSelectedCustomer(customer.customer[id]);
+            dispatch({ isLoading: false });
           }
-        });
-    } catch (e) {}
-
-    try {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/customer/" +
-          id +
-          "/construct?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((customerStructure) => {
-          if (customerStructure)
-            setCustomerStructure(customerStructure["customerConstruct"]);
         });
     } catch (e) {}
     try {

@@ -1,43 +1,35 @@
 import { getToken } from '../helpers/helpers'
-import { apiRequest } from "./api"
-
-const BASE_URL = process.env.REACT_APP_SERVER_URL
+import { apiRequest, header, BASE_URL} from './api'
 
 const User = {
     get: () => {
         const token = getToken()
 
-        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user?access-token=${token}`, {}, {})
+        if ( token ) return apiRequest( 'GET', BASE_URL + `/api/user?access-token=${token}`)
     },
 
     editRole: (id, data) => {
         const token = getToken()
 
-        if ( token ) return apiRequest('POST', BASE_URL + `/api/role/assign-role/${id}?access-token=${token}`, data, {
-            'Content-Type':'application/json'
-        })
+        if ( token ) return apiRequest('POST', BASE_URL + `/api/role/assign-role/${id}?access-token=${token}`, data, header)
     },
 
     create: (data) => {
         const token = getToken()
 
-        if ( token ) return apiRequest('POST', BASE_URL + `/api/user/create?access-token=${token}`, data, {
-            'Content-Type':'application/json'
-        })
+        if ( token ) return apiRequest('POST', BASE_URL + `/api/user/create?access-token=${token}`, data, header)
     },
 
     edite: (id, data) => {
         const token = getToken()
 
-        if ( token ) return apiRequest('PUT', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, {
-            'Content-Type':'application/json'
-        })
+        if ( token ) return apiRequest('PUT', BASE_URL + `/api/user/update/${id}?access-token=${token}`, data, header)
     },
 
     delete: (id) => {
         const token = getToken()
 
-        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/user/delete/${id}?access-token=${token}`, {}, {})
+        if ( token ) return apiRequest('DELETE', BASE_URL + `/api/user/delete/${id}?access-token=${token}`)
     }
 }
 

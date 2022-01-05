@@ -1,7 +1,4 @@
 import React, { useContext, useReducer } from "react";
-import "../../../scss/dashboard-layout.scss";
-import "../../../scss/header.scss";
-import "../../../scss/sidebar.scss";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import Header from "../../widgets/Header/Header";

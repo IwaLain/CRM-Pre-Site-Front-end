@@ -9,37 +9,32 @@
   top: 0;
   right: 0;
   transform: translate(50%, -50%);
-  & .edit-img__menu {
+  .edit-img__menu {
     min-width: unset;
     flex-wrap: wrap;
     justify-content: center;
     flex-direction: column;
-    & p {
+    p {
       margin-bottom: 0;
     }
-    & img {
+    img {
       width: 100px;
       height: 100px;
     }
-    & .edit-img__menu.show {
+    .edit-img__menu.show {
       display: flex !important;
     }
   }
 }
 
-.edit-img button {
-  border: 0;
-  & button:hover,
-  & button:active,
-  & button:focus,
-  & button:active:focus {
+.edit-img {
+  button {
     border: 0;
-    box-shadow: none;
   }
 }
 .edit-img__btn {
   background: transparent;
-  & img {
+  img {
     padding: 4px;
     background-color: black;
     border-radius: 25px;

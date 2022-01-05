@@ -1,7 +1,5 @@
-import { getToken } from "../helpers/helpers";
-import { apiRequest } from "./api";
-
-const BASE_URL = process.env.REACT_APP_SERVER_URL;
+import { getToken } from '../helpers/helpers'
+import { apiRequest, header, BASE_URL} from './api'
 
 const equipmentApi = {
   getEquipments: async (limit, page, search) => {
@@ -23,9 +21,7 @@ const equipmentApi = {
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/equipment/${equipmentId}?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/equipment/${equipmentId}?access-token=${token}`
       );
   },
 
@@ -35,9 +31,7 @@ const equipmentApi = {
     if (token)
       return apiRequest(
         "GET",
-        BASE_URL + `/api/equipment/type?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/equipment/type?access-token=${token}`
       );
   },
 
@@ -49,9 +43,7 @@ const equipmentApi = {
         "POST",
         BASE_URL + `/api/equipment/create?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -63,9 +55,7 @@ const equipmentApi = {
         "PUT",
         BASE_URL + `/api/equipment/update/${equipmentId}?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -75,9 +65,7 @@ const equipmentApi = {
     if (token)
       return apiRequest(
         "DELETE",
-        BASE_URL + `/api/equipment/delete/${equipmentId}?access-token=${token}`,
-        {},
-        {}
+        BASE_URL + `/api/equipment/delete/${equipmentId}?access-token=${token}`
       );
   },
 
@@ -88,9 +76,7 @@ const equipmentApi = {
       return apiRequest(
         "DELETE",
         BASE_URL +
-          `/api/equipment/${equipmentId}/image/delete/${equipmentImageId}?access-token=${token}`,
-        {},
-        {}
+          `/api/equipment/${equipmentId}/image/delete/${equipmentImageId}?access-token=${token}`
       );
   },
 
@@ -103,9 +89,7 @@ const equipmentApi = {
         BASE_URL +
           `/api/equipment/${equipmentImageId}/image/create?access-token=${token}`,
         data,
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 
@@ -128,9 +112,7 @@ const equipmentApi = {
         BASE_URL +
           `/api/equipment/${equipmentId}/set-main-image/${imageId}?access-token=${token}`,
         {},
-        {
-          "Content-Type": "application/json",
-        }
+        header
       );
   },
 };

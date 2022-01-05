@@ -1,6 +1,5 @@
 import withBreadcrumbs from "react-router-breadcrumbs-hoc";
 import { Link } from "react-router-dom";
-import "../../../scss/breadcrumbs.scss";
 import customersApi from "../../../js/api/customer";
 import facilitiesApi from "../../../js/api/facilities";
 import locationApi from "../../../js/api/locations";
