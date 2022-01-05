@@ -249,7 +249,7 @@ ul {
   }
 
   .progress .progress-bar {
-    background-color: $success;
+    background-color: #c7a62d;
   }
 
   > input {
@@ -620,3 +620,4 @@ h1 {
 @import '../ui/buttons/index.scss';
 @import '../ui/paginations/pagination.scss';
 @import '../ui/tables/tables.scss';
+@import '../ui/inputs.scss';

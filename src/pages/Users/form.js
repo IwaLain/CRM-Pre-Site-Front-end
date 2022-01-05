@@ -84,7 +84,7 @@ const Forms = ({onSubmit, currentUser = '', type}) => {
                         <Col className='forms__item' md={6}>
                             <Label className='w-100'>Role:</Label>
                             <select 
-                                className='ui-kit__select w-100 p-2'
+                                className='default-select w-100 p-2'
                                 {...register('role')}
                             >
                                 <option disabled selected> Select role</option>

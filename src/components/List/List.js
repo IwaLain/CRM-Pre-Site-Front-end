@@ -416,7 +416,7 @@ const List = ({
               <div className="list__select-entity">
                 <Label for="select-entity">{type && `${type.ref}:`}</Label>
                 <select
-                  className="ui-kit__select"
+                  className="default-select"
                   id="select-entity"
                   value={entityID}
                   onChange={handleEntitySelect}
@@ -438,7 +438,7 @@ const List = ({
             {!hideSearch && (
               <div style={{ display: "flex" }}>
                 <input
-                  className="list__search"
+                  className="list__search default-input"
                   type="text"
                   placeholder="Search..."
                   onInput={debouncedSearchHandler}
