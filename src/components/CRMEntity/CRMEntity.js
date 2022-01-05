@@ -15,6 +15,7 @@ import AttachmentList from "../AttachmentList/AttachmentList";
 import Loader from "../widgets/Loader/Loader";
 import PropTypes from "prop-types";
 import List from "../List/List";
+import NotFound from "../../pages/NotFound/NotFound";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
@@ -140,199 +141,209 @@ const CRMEntity = ({ type }) => {
   useEffect(() => {
     setInformationItems([]);
     setIsLoading(true);
-    if (id) {
-      try {
-        getEntityAPI(id).then((data) => {
-          console.log(data.code);
-          if (data.code !== 0) {
-            setEntityID(id);
-            if (type === "customer" || type === "facility") {
-              data = data[type][id];
-            } else {
-              data = data[type];
-            }
-            setEntityObject(data);
 
-            if (data[`${type}Images`]) {
-              setAttachedFiles(data[`${type}Images`]);
+    try {
+      getEntityAPI(id).then((data) => {
+        if (data[type]) {
+          setEntityID(id);
+          if (type === "customer" || type === "facility") {
+            data = data[type][id];
+          } else {
+            data = data[type];
+          }
+          setEntityObject(data);
 
-              setEntityImages(
-                data[`${type}Images`].filter((el) => el.type_id === "1")
-              );
+          if (data[`${type}Images`]) {
+            setAttachedFiles(data[`${type}Images`]);
 
-              const mainImage = getMainImage(
-                data[`${type}Images`].filter((el) => el.type_id === "1")
-              );
+            setEntityImages(
+              data[`${type}Images`].filter((el) => el.type_id === "1")
+            );
 
-              setMainImage(mainImage);
-            }
-            if (informationFieldNames.length > 0) {
-              let infoFields = informationFieldNames.map((el) => {
-                if (data[el]) {
-                  return { fieldTitle: el, value: data[el] };
-                }
-                return false;
-              });
+            const mainImage = getMainImage(
+              data[`${type}Images`].filter((el) => el.type_id === "1")
+            );
 
-              setInformationItems((state) => {
-                return [...state, ...infoFields];
-              });
-            }
-            if (data.jsonData) {
-              const customFields = data.jsonData.map((el) => {
-                return { fieldTitle: el.name, value: el.value };
-              });
-
-              setInformationItems((state) => {
-                return [...state, ...customFields];
-              });
-            }
-            if (subEntityName.length !== 0) {
-              if (subEntityName === "equipment") {
-                fetch(
-                  process.env.REACT_APP_SERVER_URL +
-                    "/api/location/" +
-                    id +
-                    "/equipment?access-token=" +
-                    localStorage.getItem("token")
-                )
-                  .then((res) => res.json())
-                  .then((data) => {
-                    setSubEntity([
-                      {
-                        subEntityName: subEntityName,
-                        subEntityData: data[subEntityName],
-                      },
-                    ]);
-                  });
-              } else {
-                setSubEntity([
-                  {
-                    subEntityName: subEntityName,
-                    subEntityData: data[subEntityName],
-                  },
-                ]);
+            setMainImage(mainImage);
+          }
+          if (informationFieldNames.length > 0) {
+            let infoFields = informationFieldNames.map((el) => {
+              if (data[el]) {
+                return { fieldTitle: el, value: data[el] };
               }
-            }
-            if (type === "equipment") {
+              return false;
+            });
+
+            setInformationItems((state) => {
+              return [...state, ...infoFields];
+            });
+          }
+          if (data.jsonData) {
+            const customFields = data.jsonData.map((el) => {
+              return { fieldTitle: el.name, value: el.value };
+            });
+
+            setInformationItems((state) => {
+              return [...state, ...customFields];
+            });
+          }
+          if (subEntityName.length !== 0) {
+            if (subEntityName === "equipment") {
               fetch(
                 process.env.REACT_APP_SERVER_URL +
                   "/api/location/" +
-                  data["location_id"] +
+                  id +
                   "/equipment?access-token=" +
                   localStorage.getItem("token")
               )
                 .then((res) => res.json())
                 .then((data) => {
-                  let equipment = data["equipment"].find((el) => el.id === id);
-                  if (equipment) {
-                    setSubEntity([
-                      {
-                        subEntityName: "sensors",
-                        subEntityData: equipment["sensors"],
-                      },
-                      {
-                        subEntityName: "motes",
-                        subEntityData: equipment["mote"],
-                      },
-                    ]);
-                  }
+                  setSubEntity([
+                    {
+                      subEntityName: subEntityName,
+                      subEntityData: data[subEntityName],
+                    },
+                  ]);
                 });
+            } else {
+              setSubEntity([
+                {
+                  subEntityName: subEntityName,
+                  subEntityData: data[subEntityName],
+                },
+              ]);
             }
-          } else {
-            history.replace(`/dashboard/${entityPluralAlias}`);
-            history.push("/404");
           }
-        });
-      } catch {
-        history.replace(`/dashboard/${entityPluralAlias}`);
-        history.push("/404");
-      }
-    } else {
-      history.replace(`/dashboard/${entityPluralAlias}`);
-      history.push("/404");
+          if (type === "equipment") {
+            fetch(
+              process.env.REACT_APP_SERVER_URL +
+                "/api/location/" +
+                data["location_id"] +
+                "/equipment?access-token=" +
+                localStorage.getItem("token")
+            )
+              .then((res) => res.json())
+              .then((data) => {
+                let equipment = data["equipment"].find((el) => el.id === id);
+                if (equipment) {
+                  setSubEntity([
+                    {
+                      subEntityName: "sensors",
+                      subEntityData: equipment["sensors"],
+                    },
+                    {
+                      subEntityName: "motes",
+                      subEntityData: equipment["mote"],
+                    },
+                  ]);
+                }
+              });
+          }
+        }
+      });
+    } catch {
+      alert("error", "error");
     }
-    setIsLoading(false);
   }, []);
-
+  useEffect(() => {
+    if (isLoading) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    }
+  }, [isLoading]);
   return (
     <>
       {!isLoading ? (
         <div className="entity-page">
-          <div className="d-flex align-items-center entity-page--header">
-            {entityObject && entityObject[`${type}Images`] && (
-              <div className="main-img--container">
-                <img
-                  src={
-                    mainImage && mainImage.img
-                      ? process.env.REACT_APP_SERVER_URL + "/" + mainImage.img
-                      : logo
-                  }
-                  alt="company img"
-                  className="entity-page--img"
-                ></img>
-                <DropdownImageEdit
-                  images={
-                    entityImages && entityImages.length > 0 ? entityImages : []
-                  }
-                  setMainImage={setMainEntityImage}
-                ></DropdownImageEdit>
+          {entityObject ? (
+            <>
+              <div className="d-flex align-items-center entity-page--header">
+                {entityObject && entityObject[`${type}Images`] && (
+                  <div className="main-img--container">
+                    <img
+                      src={
+                        mainImage && mainImage.img
+                          ? process.env.REACT_APP_SERVER_URL +
+                            "/" +
+                            mainImage.img
+                          : logo
+                      }
+                      alt="company img"
+                      className="entity-page--img"
+                    ></img>
+                    <DropdownImageEdit
+                      images={
+                        entityImages && entityImages.length > 0
+                          ? entityImages
+                          : []
+                      }
+                      setMainImage={setMainEntityImage}
+                    ></DropdownImageEdit>
+                  </div>
+                )}
+                <h1 className="page-title">
+                  {entityObject && entityObject.name}
+                </h1>
               </div>
-            )}
-            <h1 className="page-title">{entityObject && entityObject.name}</h1>
-          </div>
 
-          {entityObject && informationItems.length > 0 && (
-            <div className="entity-page--section">
-              <InformationComponent
-                items={informationItems}
-                title={`Information ${type}`}
-              ></InformationComponent>
-            </div>
-          )}
-
-          {entityObject &&
-            subEntity.length > 0 &&
-            subEntity.map((subEnt) => (
-              <div
-                key={subEnt.subEntityName}
-                className="entity-page--section table-section"
-              >
-                {/* <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2> */}
-                <List
-                  type={{
-                    entity: subEnt.subEntityName,
-                    ref: entityPluralAlias,
-                  }}
-                  title={
-                    subEnt.subEntityName.charAt(0).toUpperCase() +
-                    subEnt.subEntityName.slice(1)
-                  }
-                  hideSelect
-                  hideChangeView
-                  initBlockView={
-                    subEnt.subEntityName !== "sensors" &&
-                    subEnt.subEntityName !== "motes"
-                  }
-                  hideCreateBtn
-                  hideRecordView={
-                    subEnt.subEntityName === "sensors" ||
-                    subEnt.subEntityName === "motes"
-                  }
-                />
-              </div>
-            ))}
-
-          {entityObject && entityObject[`${type}Images`] && (
-            <div className="entity-page--section">
-              <h2 className="page-subtitle">{`Attachments`}</h2>
-              {attachedFiles && (
-                <AttachmentList
-                  attachedFiles={attachedFiles}
-                  onAddFileServer={addEntityImageServer}
-                  onRemoveFileServer={deleteEntityImageServer}
-                />
+              {entityObject && informationItems.length > 0 && (
+                <div className="entity-page--section">
+                  <InformationComponent
+                    items={informationItems}
+                    title={`Information ${type}`}
+                  ></InformationComponent>
+                </div>
               )}
+
+              {entityObject &&
+                subEntity.length > 0 &&
+                subEntity.map((subEnt) => (
+                  <div
+                    key={subEnt.subEntityName}
+                    className="entity-page--section table-section"
+                  >
+                    {/* <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2> */}
+                    <List
+                      type={{
+                        entity: subEnt.subEntityName,
+                        ref: entityPluralAlias,
+                      }}
+                      title={
+                        subEnt.subEntityName.charAt(0).toUpperCase() +
+                        subEnt.subEntityName.slice(1)
+                      }
+                      hideSelect
+                      hideChangeView
+                      initBlockView={
+                        subEnt.subEntityName !== "sensors" &&
+                        subEnt.subEntityName !== "motes"
+                      }
+                      hideCreateBtn
+                      hideRecordView={
+                        subEnt.subEntityName === "sensors" ||
+                        subEnt.subEntityName === "motes"
+                      }
+                    />
+                  </div>
+                ))}
+
+              {entityObject && entityObject[`${type}Images`] && (
+                <div className="entity-page--section">
+                  <h2 className="page-subtitle">{`Attachments`}</h2>
+                  {attachedFiles && (
+                    <AttachmentList
+                      attachedFiles={attachedFiles}
+                      onAddFileServer={addEntityImageServer}
+                      onRemoveFileServer={deleteEntityImageServer}
+                    />
+                  )}
+                </div>
+              )}
+            </>
+          ) : (
+            <div style={{ position: "relative", height: "85vh" }}>
+              <NotFound />
             </div>
           )}
         </div>

@@ -20,9 +20,11 @@ const Breadcrumbs = ({ breadcrumbs }) => {
             customersApi
               .getCustomer(breadcrumb.props.children)
               .then((customer) => {
-                setName(
-                  customer.customer[Object.keys(customer.customer)[0]].name
-                );
+                if (customer && customer.customer) {
+                  setName(
+                    customer.customer[Object.keys(customer.customer)[0]].name
+                  );
+                }
               });
           } else if (
             breadcrumb.key.includes("/facilities/") &&
@@ -31,9 +33,10 @@ const Breadcrumbs = ({ breadcrumbs }) => {
             facilitiesApi
               .getFacility(breadcrumb.props.children)
               .then((facility) => {
-                setName(
-                  facility.facility[Object.keys(facility.facility)[0]].name
-                );
+                if (facility && facility.facility)
+                  setName(
+                    facility.facility[Object.keys(facility.facility)[0]].name
+                  );
               });
           } else if (
             breadcrumb.key.includes("/locations/") &&
@@ -42,7 +45,8 @@ const Breadcrumbs = ({ breadcrumbs }) => {
             locationApi
               .getLocation(breadcrumb.props.children)
               .then((location) => {
-                setName(location.location.name);
+                if (location && location.location)
+                  setName(location.location.name);
               });
           } else if (
             breadcrumb.key.includes("/equipment/") &&
@@ -51,7 +55,8 @@ const Breadcrumbs = ({ breadcrumbs }) => {
             equipmentApi
               .getEquipment(breadcrumb.props.children)
               .then((equipment) => {
-                setName(equipment.equipment.name);
+                if (equipment && equipment.equipment)
+                  setName(equipment.equipment.name);
               });
           }
 
