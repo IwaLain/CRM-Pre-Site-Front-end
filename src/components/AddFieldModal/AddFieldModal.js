@@ -31,7 +31,7 @@ const AddFieldModal = ({ modal, toggle, addFieldHandler }) => {
         </ModalBody>
         <ModalFooter>
           <Button
-            color="primary"
+            className="ui-btn ui-btn-primary"
             onClick={() => {
               if (newField === "") {
                 setShowError(true);
@@ -46,7 +46,7 @@ const AddFieldModal = ({ modal, toggle, addFieldHandler }) => {
             Add Field
           </Button>
           <Button
-            color="secondary"
+            className="ui-btn ui-btn-secondary"
             onClick={() => {
               toggle();
               setNewField("");

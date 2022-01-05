@@ -793,7 +793,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     ))}
                   <FormGroup>
                     <Col>
-                      <Button color="primary" onClick={toggleAddFieldModal}>
+                      <Button className="ui-btn ui-btn-primary" onClick={toggleAddFieldModal}>
                         Add field
                       </Button>
                     </Col>
@@ -903,6 +903,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         </ModalBody>
         <ModalFooter>
           <Button
+            className="ui-btn ui-btn-secondary"
             onClick={(e) => {
               e.preventDefault();
               resetToggle();
@@ -911,7 +912,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           >
             Cancel
           </Button>
-          <Button color="primary" form="form">
+          <Button className="ui-btn ui-btn-primary" form="form">
             Submit
           </Button>
         </ModalFooter>
@@ -934,8 +935,8 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={toggleAddFieldModal}>Cancel</Button>
-          <Button form="add-field-form" color="primary">
+          <Button className="ui-btn ui-btn-secondary" onClick={toggleAddFieldModal}>Cancel</Button>
+          <Button className="ui-btn ui-btn-primary" form="add-field-form">
             Add
           </Button>
         </ModalFooter>

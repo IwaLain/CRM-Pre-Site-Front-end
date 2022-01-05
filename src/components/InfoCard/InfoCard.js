@@ -94,7 +94,7 @@ const InfoCard = ({
         />
       ) : (
         <Button
-          color="default"
+          className="ui-btn ui-btn-secondary"
           className="info-card__edit"
           onClick={() => {
             if (setCurrentSubEntityName) {
@@ -157,7 +157,7 @@ const InfoCard = ({
             </Link>
             {chooseMode && (
               <Button
-                color="default"
+                className="ui-btn ui-btn-secondary"
                 onClick={() => {
                   if (setCurrentSubEntityName) {
                     setToggleEntityModal(!toggleEntityModal);

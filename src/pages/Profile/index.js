@@ -121,7 +121,7 @@ const ProfilePage = () => {
                   <td className="profile__desc">
                     <Row>
                       <Button
-                        className="profile__button btn btn-primary"
+                        className="ui-btn ui-btn-primary"
                         onClick={toggleEditProfile}
                       >
                         <i className="fas fa-user-edit"></i>

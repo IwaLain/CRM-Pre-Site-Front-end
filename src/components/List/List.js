@@ -401,7 +401,7 @@ const List = ({
             <h3>{title}</h3>
             {!hideCreateBtn && (
               <button
-                className="list__add-btn"
+                className="list__add-btn ui-btn ui-btn-success"
                 onClick={() => {
                   dispatch({ mode: "create" });
                   toggleModal();
@@ -450,12 +450,12 @@ const List = ({
                 <Button
                   type="list-view"
                   onClick={() => dispatch({ view: true })}
-                  className={view ? "active" : ""}
+                  className={view ? "active" : "ui-btn ui-btn-secondary"}
                 ></Button>
                 <Button
                   type="block-view"
                   onClick={() => dispatch({ view: false })}
-                  className={!view ? "active" : ""}
+                  className={!view ? "active" : "ui-btn ui-btn-success"}
                 ></Button>
               </div>
             )}

@@ -73,14 +73,14 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                     <Row>
                         <Col md={6}>
                             <Button
-                                className='formUser__cancel'
+                                className='formUser__cancel ui-btn ui-btn-secondary'
                                 onClick={toggle}>
                                 Cancel
                             </Button>
                         </Col>
                         <Col md={6} className="d-flex justify-content-end">
                             <Button
-                                className='formUser__submit'
+                                className='formUser__submit ui-btn ui-btn-primary'
                                 form='form'>
                                 Submit
                             </Button>

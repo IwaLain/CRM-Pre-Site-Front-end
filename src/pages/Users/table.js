@@ -77,7 +77,7 @@ const UserTable = ({ users, editeTable, changeTable }) => {
     {
       cell: (row) => (
         <button
-          className="button-edit ui-btn ui-btn-primary"
+          className="button-edit ui-btn ui-btn-info"
           onClick={() => {
             toggleEditUser(true)
             current(row)

@@ -21,8 +21,8 @@ const ConfirmModal = ({
           {modalText && <p className="confirm-modal--text ">{modalText}</p>}
         </ModalBody>
         <ModalFooter>
-          <Button onClick={toggleModal}>Cancel</Button>
-          <Button onClick={handleConfirmModalFormSubmit} color="primary">
+          <Button className="ui-btn ui-btn-secondary" onClick={toggleModal}>Cancel</Button>
+          <Button className="ui-btn ui-btn-primary" onClick={handleConfirmModalFormSubmit}>
             Submit
           </Button>
         </ModalFooter>

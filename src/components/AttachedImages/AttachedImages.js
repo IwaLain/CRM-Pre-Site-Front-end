@@ -56,7 +56,7 @@ const AttachedImages = ({ attachedImages, title, addImage, deleteImage }) => {
 
           <div className="attached--item">
             <div className="upload-btn-wrapper attached--upload-btn-wrapper">
-              <Button color="secondary" className="attached--upload-btn">
+              <Button className="ui-btn ui-btn-secondary" className="attached--upload-btn">
                 <img src={star} alt="star" />
                 Add image
               </Button>

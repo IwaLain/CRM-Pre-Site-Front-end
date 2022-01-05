@@ -57,14 +57,14 @@ const TableView = ({
       cell: (row) => (
         <>
           <Link
-            className="table-view_btn me-2"
+            className="table-view_btn ui-btn ui-btn-info me-2"
             to={`/${type.entity}/${row.id}`}
             style={hideRecordView && { visibility: "hidden" }}
           >
             View
           </Link>
           <Button
-            color="default"
+            className="ui-btn ui-btn-secondary"
             onClick={() => {
               dispatch({ mode: "edit" });
               setEditId(row.id);

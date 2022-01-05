@@ -39,7 +39,9 @@ const ComertialPurpouse = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { quote, currentData, modalPDF, customerNetwork } = state
 
-  const date = new Date().toLocaleDateString('en-US')
+  const d = new Date()
+  const date = ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) + "/" +
+  d.getFullYear();
 
   const togglePDF = () => dispatch({ modalPDF: !modalPDF })
   const newQuote = () => {
@@ -117,7 +119,7 @@ const ComertialPurpouse = () => {
         <Row className="purpose__buttons">
           <Col lg={2} md={2}>
             <Button
-              className="btn btn-primary"
+              className="ui-btn ui-btn-info"
               form="form"
               onClick={(e) => {
                 e.preventDefault()
@@ -132,7 +134,7 @@ const ComertialPurpouse = () => {
             </Button>
           </Col>
           <Col lg={2} md={2}>
-            <Button className="btn btn-success " id="purpose" form="form">
+            <Button className="ui-btn ui-btn-success" id="purpose" form="form">
               <i className="fas fa-file-pdf"></i> Create PDF
             </Button>
           </Col>

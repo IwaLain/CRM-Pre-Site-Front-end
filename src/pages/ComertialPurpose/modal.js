@@ -33,11 +33,12 @@ const ComertialModal = ({togglePDF, preview, date, currentData}) => {
             </ModalBody>
             <ModalFooter>
                 <Button
+                    className="ui-btn ui-btn-secondary"
                     onClick={togglePDF}
                 >
                     Close
                 </Button>
-                <Button className="btn btn-success purposePreview__button" id="purpose" form="form">
+                <Button className="ui-btn ui-btn-success purposePreview__button" id="purpose" form="form">
                     <i className="fas fa-file-pdf"></i> Create PDF
                 </Button>
             </ModalFooter>
