@@ -1,13 +1,14 @@
 import React, { useEffect, useReducer } from 'react'
-import { Button, Col, Row } from 'reactstrap'
-import User from '../../../js/api/users'
+import { Col, Row } from 'reactstrap'
+import User from '../../js/api/users'
 
 import UserTable from './table'
 import UserModal from './modal'
-import { reducer } from '../../../reducer'
-import Loader from '../../../js/helpers/loader'
+import { reducer } from '../../reducer'
+import Loader from '../../js/helpers/loader'
 
 import './Users.scss'
+import Button from '../../ui/buttons'
 
 const UsersPage = () => {
   const initialState = {
@@ -38,14 +39,14 @@ const UsersPage = () => {
   }, [])
 
   return (
-    <div className="Users">
+    <div className="users">
       <Row className="align-items-center justify-content-xs-between">
         <Col lg={1} md={2} sm={2} xs={6}>
           <h3 className="users__title">Users</h3>
         </Col>
         <Col md={6} sm={3} xs={6} className="users__button">
           <Button
-            className="btn-success"
+            className="btn-primary"
             onClick={(e) => {
               e.preventDefault()
               toggleAddUser()
@@ -59,7 +60,9 @@ const UsersPage = () => {
       {!isLoading ? (
         <UserTable editeTable={editeTable} changeTable={changeTable} users={users} />
       ) : (
-        <Loader />
+        <div className='users__loader'>
+          <Loader />
+        </div>
       )}
 
       {modalAddUser ? (

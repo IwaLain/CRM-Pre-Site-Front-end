@@ -1,5 +1,5 @@
-import UsersPage from "./pages/Users/Users";
-import Profile from "./pages/Profile/Profile";
+import UsersPage from "./pages/Users";
+import Profile from "./pages/Profile";
 import List from "./components/List/List";
 import React from "react";
 import CRMEntity from "./components/CRMEntity/CRMEntity";
