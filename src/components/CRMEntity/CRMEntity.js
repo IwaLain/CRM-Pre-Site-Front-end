@@ -99,11 +99,11 @@ const CRMEntity = ({ type }) => {
       subEntityName = "facilities";
 
       informationFieldNames = [
-        "address",
-        "phone",
-        "email",
-        "activity",
-        "head_name",
+        { title: "address", name: "address" },
+        { title: "phone", name: "phone" },
+        { title: "email", name: "email" },
+        { title: "activity", name: "activity" },
+        { title: "Headname", name: "head_name" },
       ];
 
       break;
@@ -115,7 +115,11 @@ const CRMEntity = ({ type }) => {
       entityPluralAlias = "facilities";
       subEntityName = "locations";
 
-      informationFieldNames = ["address"];
+      informationFieldNames = [
+        { title: "address", name: "address" },
+        { title: "lat", name: "lat" },
+        { title: "lng", name: "lng" },
+      ];
 
       break;
     case "location":
@@ -168,8 +172,8 @@ const CRMEntity = ({ type }) => {
           }
           if (informationFieldNames.length > 0) {
             let infoFields = informationFieldNames.map((el) => {
-              if (data[el]) {
-                return { fieldTitle: el, value: data[el] };
+              if (data[el.name]) {
+                return { fieldTitle: el.title, value: data[el.name] };
               }
               return false;
             });
@@ -217,6 +221,31 @@ const CRMEntity = ({ type }) => {
           if (type === "equipment") {
             fetch(
               process.env.REACT_APP_SERVER_URL +
+                "/api/equipment/type?access-token=" +
+                localStorage.getItem("token")
+            )
+              .then((res) => res.json())
+              .then((resData) => {
+                if (resData && resData.type) {
+                  let equipmentTypes = resData.type;
+
+                  const equipmentType = equipmentTypes.find(
+                    (el) => el.id === data["type_id"]
+                  );
+
+                  if (equipmentType && equipmentType.name) {
+                    setInformationItems((state) => {
+                      return [
+                        { fieldTitle: "type", value: equipmentType.name },
+                        ...state,
+                      ];
+                    });
+                  }
+                }
+              });
+
+            fetch(
+              process.env.REACT_APP_SERVER_URL +
                 "/api/location/" +
                 data["location_id"] +
                 "/equipment?access-token=" +
@@ -239,24 +268,30 @@ const CRMEntity = ({ type }) => {
                 }
               });
           }
+        } else {
+          setEntityObject(null);
         }
+        setIsLoading(false);
       });
     } catch {
-      alert("error", "error");
+      setEntityObject(null);
+      setIsLoading(false);
+      alert("error", "Request error");
     }
   }, []);
-  useEffect(() => {
-    if (isLoading) {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 300);
-    }
-  }, [isLoading]);
+
+  // useEffect(() => {
+  //   if (isLoading) {
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 1500);
+  //   }
+  // }, [isLoading]);
   return (
     <>
-      {!isLoading ? (
+      {!isLoading && entityObject !== undefined ? (
         <div className="entity-page">
-          {entityObject ? (
+          {entityObject && entityObject !== null ? (
             <>
               <div className="d-flex align-items-center entity-page--header">
                 {entityObject && entityObject[`${type}Images`] && (
@@ -291,7 +326,7 @@ const CRMEntity = ({ type }) => {
                 <div className="entity-page--section">
                   <InformationComponent
                     items={informationItems}
-                    title={`Information ${type}`}
+                    title={`${type} Information`}
                   ></InformationComponent>
                 </div>
               )}
