@@ -249,7 +249,7 @@ const CRMEntity = ({ type }) => {
     if (isLoading) {
       setTimeout(() => {
         setIsLoading(false);
-      }, 1000);
+      }, 300);
     }
   }, [isLoading]);
   return (
