@@ -4,7 +4,7 @@ import { Progress } from "reactstrap";
 import { GlobalContext } from "../../context";
 import { Link } from "react-router-dom";
 import Input from "../UIKit/Input/Input";
-import Button from "../UIKit/Button/Button";
+import button from "../UIKit/button/button";
 
 const paginationComponentOptions = {
   noRowsPerPage: true,
@@ -61,9 +61,9 @@ const TableView = ({
             to={`/${type.entity}/${row.id}`}
             style={hideRecordView && { visibility: "hidden" }}
           >
-            View
+            <i className="far fa-eye"></i>
           </Link>
-          <Button
+          <button
             className="ui-btn ui-btn-secondary"
             onClick={() => {
               dispatch({ mode: "edit" });
@@ -71,8 +71,8 @@ const TableView = ({
               toggleModal();
             }}
           >
-            Edit
-          </Button>
+            <i className="far fa-edit users-table__img" alt="edite"></i>
+          </button>
         </>
       ),
       width: "171px",

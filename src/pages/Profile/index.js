@@ -1,5 +1,5 @@
 import React, { useReducer, useContext, useEffect } from 'react'
-import { Button, Col, Label, Row } from 'reactstrap'
+import { button, Col, Label, Row } from 'reactstrap'
 
 import convertToBase64 from '../../js/helpers/convertImage'
 import { GlobalContext } from '../../context'
@@ -119,13 +119,13 @@ const ProfilePage = () => {
                   </td>
                   <td className="profile__desc">
                     <Row>
-                      <Button
+                      <button
                         className="ui-btn ui-btn-primary"
                         onClick={toggleEditProfile}
                       >
                         <i className="fas fa-user-edit"></i>
                         Edit Profile
-                      </Button>
+                      </button>
                     </Row>
                   </td>
                 </tr>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import {
-  Button,
+  button,
   Modal,
   ModalBody,
   ModalFooter,
@@ -793,9 +793,9 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     ))}
                   <FormGroup>
                     <Col>
-                      <Button className="ui-btn ui-btn-primary" onClick={toggleAddFieldModal}>
+                      <button className="ui-btn ui-btn-primary" onClick={toggleAddFieldModal}>
                         Add field
-                      </Button>
+                      </button>
                     </Col>
                   </FormGroup>
                 </>
@@ -902,7 +902,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button
+          <button
             className="ui-btn ui-btn-secondary"
             onClick={(e) => {
               e.preventDefault();
@@ -911,10 +911,10 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             }}
           >
             Cancel
-          </Button>
-          <Button className="ui-btn ui-btn-primary" form="form">
+          </button>
+          <button className="ui-btn ui-btn-primary" form="form">
             Submit
-          </Button>
+          </button>
         </ModalFooter>
       </Modal>
       <Modal isOpen={addFieldModal} toggle={toggleAddFieldModal}>
@@ -935,10 +935,10 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button className="ui-btn ui-btn-secondary" onClick={toggleAddFieldModal}>Cancel</Button>
-          <Button className="ui-btn ui-btn-primary" form="add-field-form">
+          <button className="ui-btn ui-btn-secondary" onClick={toggleAddFieldModal}>Cancel</button>
+          <button className="ui-btn ui-btn-primary" form="add-field-form">
             Add
-          </Button>
+          </button>
         </ModalFooter>
       </Modal>
       {deleteField && (

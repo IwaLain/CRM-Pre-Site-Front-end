@@ -31,7 +31,7 @@ const Button = ({
   return (
     <button
       className={
-        type ? `${className} ui-kit__type-btn` : `${className} ui-kit__btn`
+        type ? `${className}` : `${className} `
       }
       style={formattedStyle}
       onClick={onClick}

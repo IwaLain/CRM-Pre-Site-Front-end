@@ -240,7 +240,6 @@ ul {
     position: absolute;
     top: 5px;
     right: 5px;
-    padding: 3px 3px 3px 5px;
   }
 
   .progress {
@@ -294,7 +293,6 @@ ul {
 
   > a {
     padding: 4px 30px;
-    border-radius: 2px;
     text-decoration: none;
     color: white;
     background-color: $primary;
@@ -303,7 +301,6 @@ ul {
 
   > a:hover {
     color: white;
-    border: 1px solid black;
   }
 }
 
@@ -620,3 +617,22 @@ h1 {
 @import '../ui/buttons/index.scss';
 @import '../ui/paginations/pagination.scss';
 @import '../ui/tables/tables.scss';
+
+
+.button-edit {
+  background-color: #444;
+}
+
+.ui-btn-danger {
+  background-color: rgb(136, 0, 0);
+}
+
+.profile__desc {
+  i {
+    margin-right: 5px;
+  }
+}
+
+.dashboard-page__block .dashboard-page__block-view {
+  padding: 0px 10px;
+}

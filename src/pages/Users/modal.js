@@ -2,7 +2,7 @@ import React, {
     useEffect, 
     useReducer} from 'react'
 import { 
-    Button, 
+    button, 
     Col, 
     FormGroup, 
     Modal, 
@@ -72,18 +72,18 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                 <FormGroup md={12} className='formUser__buttons'>
                     <Row>
                         <Col md={6}>
-                            <Button
+                            <button
                                 className='formUser__cancel ui-btn ui-btn-secondary'
                                 onClick={toggle}>
                                 Cancel
-                            </Button>
+                            </button>
                         </Col>
                         <Col md={6} className="d-flex justify-content-end">
-                            <Button
+                            <button
                                 className='formUser__submit ui-btn ui-btn-primary'
                                 form='form'>
                                 Submit
-                            </Button>
+                            </button>
                         </Col>
                     </Row>
                 </FormGroup>

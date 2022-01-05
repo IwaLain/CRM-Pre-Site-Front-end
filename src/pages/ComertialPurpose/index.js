@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Button, Col, Row } from 'reactstrap'
+import { button, Col, Row } from 'reactstrap'
 import { useForm } from 'react-hook-form'
 import { ToastContainer } from 'react-toastify'
 
@@ -40,7 +40,7 @@ const ComertialPurpouse = () => {
   const { quote, currentData, modalPDF, customerNetwork } = state
 
   const d = new Date()
-  const date = ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) + "/" +
+  const date = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
   d.getFullYear();
 
   const togglePDF = () => dispatch({ modalPDF: !modalPDF })
@@ -118,7 +118,7 @@ const ComertialPurpouse = () => {
       {dataValid(customerNetwork) ? (
         <Row className="purpose__buttons">
           <Col lg={2} md={2}>
-            <Button
+            <button
               className="ui-btn ui-btn-info"
               form="form"
               onClick={(e) => {
@@ -131,12 +131,12 @@ const ComertialPurpouse = () => {
               }}
             >
               <i className="far fa-eye"></i> Preview
-            </Button>
+            </button>
           </Col>
           <Col lg={2} md={2}>
-            <Button className="ui-btn ui-btn-success" id="purpose" form="form">
+            <button className="ui-btn ui-btn-success" id="purpose" form="form">
               <i className="fas fa-file-pdf"></i> Create PDF
-            </Button>
+            </button>
           </Col>
         </Row>
       ) : (

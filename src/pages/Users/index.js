@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react'
-import { Button, Col, Row } from 'reactstrap'
+import { button, Col, Row } from 'reactstrap'
 import User from '../../js/api/users'
 
 import UserTable from './table'

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
+import { Modal, ModalHeader, ModalBody, ModalFooter, button } from "reactstrap";
 
 const ConfirmModal = ({
   modal,
@@ -21,10 +21,10 @@ const ConfirmModal = ({
           {modalText && <p className="confirm-modal--text ">{modalText}</p>}
         </ModalBody>
         <ModalFooter>
-          <Button className="ui-btn ui-btn-secondary" onClick={toggleModal}>Cancel</Button>
-          <Button className="ui-btn ui-btn-primary" onClick={handleConfirmModalFormSubmit}>
+          <button className="ui-btn ui-btn-secondary" onClick={toggleModal}>Cancel</button>
+          <button className="ui-btn ui-btn-primary" onClick={handleConfirmModalFormSubmit}>
             Submit
-          </Button>
+          </button>
         </ModalFooter>
       </Modal>
     </>

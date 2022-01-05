@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { GlobalContext } from "../../context";
-import Button from "../../components/UIKit/Button/Button";
 import List from "../../components/List/List";
 import "../../scss/network.scss";
 import { alert } from "../../js/helpers/alert";
+import Button from "../../components/UIKit/button/button";
 
 const Network = () => {
   const { selectedCustomer, updateTrigger } = useContext(GlobalContext);

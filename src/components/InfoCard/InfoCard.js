@@ -3,7 +3,7 @@ import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context";
-import Button from "../UIKit/Button/Button";
+import button from "../UIKit/button/button";
 
 const InfoCard = ({
   data,
@@ -93,9 +93,8 @@ const InfoCard = ({
           onChange={() => changeCustomer(data.id)}
         />
       ) : (
-        <Button
-          className="ui-btn ui-btn-secondary"
-          className="info-card__edit"
+        <button
+          className="info-card__edit ui-btn ui-btn-secondary"
           onClick={() => {
             if (setCurrentSubEntityName) {
               setToggleEntityModal(!toggleEntityModal);
@@ -114,7 +113,7 @@ const InfoCard = ({
           }}
         >
           <i className="far fa-edit"></i>
-        </Button>
+        </button>
       )}
       <div className="info-card__body">
         <div>
@@ -145,8 +144,8 @@ const InfoCard = ({
           <div
             className={
               chooseMode
-                ? "info-card__btns"
-                : "info-card__btns info-card__btns-one"
+                ? "info-card__btns ui-btn ui-btn-secondary"
+                : "info-card__btns info-card__btns-one ui-btn ui-btn-secondary"
             }
           >
             <Link
@@ -156,7 +155,7 @@ const InfoCard = ({
               View
             </Link>
             {chooseMode && (
-              <Button
+              <button
                 className="ui-btn ui-btn-secondary"
                 onClick={() => {
                   if (setCurrentSubEntityName) {
@@ -176,7 +175,7 @@ const InfoCard = ({
                 }}
               >
                 <span>Edit</span>
-              </Button>
+              </button>
             )}
           </div>
         </div>

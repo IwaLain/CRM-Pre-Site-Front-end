@@ -6,7 +6,7 @@ import {
   ModalBody,
   Input,
   Label,
-  Button,
+  button,
 } from "reactstrap";
 const AddFieldModal = ({ modal, toggle, addFieldHandler }) => {
   const [newField, setNewField] = useState("");
@@ -30,7 +30,7 @@ const AddFieldModal = ({ modal, toggle, addFieldHandler }) => {
           )}
         </ModalBody>
         <ModalFooter>
-          <Button
+          <button
             className="ui-btn ui-btn-primary"
             onClick={() => {
               if (newField === "") {
@@ -44,8 +44,8 @@ const AddFieldModal = ({ modal, toggle, addFieldHandler }) => {
             }}
           >
             Add Field
-          </Button>
-          <Button
+          </button>
+          <button
             className="ui-btn ui-btn-secondary"
             onClick={() => {
               toggle();
@@ -54,7 +54,7 @@ const AddFieldModal = ({ modal, toggle, addFieldHandler }) => {
             }}
           >
             Cancel
-          </Button>
+          </button>
         </ModalFooter>
       </Modal>
     </>

@@ -9,12 +9,12 @@ import customersApi from "../../js/api/customer";
 import locationApi from "../../js/api/locations";
 import equipmentApi from "../../js/api/equipment";
 import facilitiesApi from "../../js/api/facilities";
-import Button from "../UIKit/Button/Button";
 import ModalSketch from "../ModalComponent/ModalSketch";
 import Loader from "../widgets/Loader/Loader";
 import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import debounce from "../../js/helpers/debounce";
+import Button from "../UIKit/button/button";
 
 const List = ({
   type,
@@ -450,12 +450,12 @@ const List = ({
                 <Button
                   type="list-view"
                   onClick={() => dispatch({ view: true })}
-                  className={view ? "active" : "ui-btn ui-btn-secondary"}
+                  className={view ? "active" : ""}
                 ></Button>
                 <Button
                   type="block-view"
                   onClick={() => dispatch({ view: false })}
-                  className={!view ? "active" : "ui-btn ui-btn-success"}
+                  className={!view ? "active" : ""}
                 ></Button>
               </div>
             )}
