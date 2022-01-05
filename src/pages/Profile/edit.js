@@ -1,9 +1,9 @@
 import React from 'react'
-import Profile from '../../../../js/api/profile'
+import Profile from '../../js/api/profile'
 import PropTypes from 'prop-types'
-import User from '../../../../js/api/users'
-import { alert } from '../../../../js/helpers/alert'
-import Forms from '../../Users/form'
+import User from '../../js/api/users'
+import { alert } from '../../js/helpers/alert'
+import Forms from '../Users/form'
 
 const ProfileEdit = ({ currentUser, editeMethod, toggle }) => {
   const onSubmit = (e) => {

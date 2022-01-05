@@ -1,9 +1,9 @@
 import React from 'react'
 import { Row } from 'reactstrap';
-import User from '../../../../js/api/users';
+import User from '../../js/api/users';
 import PropTypes from "prop-types";
-import { alert } from '../../../../js/helpers/alert';
-import Forms from '../form';
+import { alert } from '../../js/helpers/alert';
+import Forms from './form';
 
 const UserEdit = ({ currentUser, editeMethod, toggle }) => {
 

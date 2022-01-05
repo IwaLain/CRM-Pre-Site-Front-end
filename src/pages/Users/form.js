@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Col, Form, Label, Row } from 'reactstrap';
 import PropTypes from "prop-types";
-import InputForm from '../../../../js/helpers/input';
+import InputForm from '../../js/helpers/input';
 
 const Forms = ({onSubmit, currentUser = '', type}) => {
     const {
@@ -64,6 +64,7 @@ const Forms = ({onSubmit, currentUser = '', type}) => {
     return (
         <Row>
             <Form
+            
                 id='form'
                 onSubmit={handleSubmit(onSubmit)}
             >

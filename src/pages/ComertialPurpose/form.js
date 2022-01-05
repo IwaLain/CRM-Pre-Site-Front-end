@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Col, Form, FormGroup, Label, Row } from "reactstrap";
-import Profile from "../../../js/api/profile";
-import { validation } from "../../../js/helpers/validation";
+import Profile from "../../js/api/profile";
+import { validation } from "../../js/helpers/validation";
 
 const ComertialForm = ({
   dataForm,
