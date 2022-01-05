@@ -207,7 +207,6 @@ const List = ({
   };
 
   const changeCustomer = (id) => {
-    dispatch({ isLoading: true });
     try {
       fetch(
         process.env.REACT_APP_SERVER_URL +
@@ -220,7 +219,6 @@ const List = ({
         .then((customer) => {
           if (customer) {
             setSelectedCustomer(customer.customer[id]);
-            dispatch({ isLoading: false });
           }
         });
     } catch (e) {}

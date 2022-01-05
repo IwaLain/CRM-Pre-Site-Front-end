@@ -13,14 +13,16 @@ import AuthLayout from "./components/layouts/AuthLayout/AuthLayout";
 import LoginPage from "./pages/Login/Login";
 import Profile from "./js/api/profile";
 import { reducer } from "./reducer";
+import Loader from "./js/helpers/loader";
 
 const App = () => {
   const initialState = {
     customerStructure: {},
+    isLoading: true,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { customerStructure } = state;
+  const { customerStructure, isLoading } = state;
 
   const [userProfile, setUserProfile] = useState({});
   const [selectedCustomer, setSelectedCustomer] = useState({});
@@ -31,6 +33,7 @@ const App = () => {
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
+    console.log("profile");
     Profile.getProfile().then((data) => {
       if (data) {
         setUserProfile(data.user);
@@ -45,14 +48,18 @@ const App = () => {
             .then((res) => res.json())
             .then((customer) => {
               setSelectedCustomer(customer.customer[data.user.last_customer]);
+              dispatch({ isLoading: false });
             });
         }
+      } else {
+        dispatch({ isLoading: false });
       }
     });
   }, []);
 
   useEffect(() => {
     if (selectedCustomer.id) {
+      console.log("structure");
       try {
         fetch(
           process.env.REACT_APP_SERVER_URL +
@@ -96,46 +103,51 @@ const App = () => {
         setUpdateTrigger,
       }}
     >
-      <Router>
-        <Switch>
-          <Route path="/:path?">
-            {userProfile && Object.keys(userProfile).length > 0 ? (
-              <DashboardLayout>
-                <Switch>
-                  {routes.map(({ path, children }, index) => {
-                    return (
-                      <Route key={index} path={path} children={children} />
-                    );
-                  })}
-                  <Route exact path="/login">
-                    <Redirect to="/customers" />
-                  </Route>
-                </Switch>
-              </DashboardLayout>
-            ) : (
-              <AuthLayout>
-                <Switch>
-                  <Route exact path="/">
-                    {localStorage.getItem("token") ? (
+      {!isLoading ? (
+        <Router>
+          <Switch>
+            <Route path="/:path?">
+              {userProfile && Object.keys(userProfile).length > 0 ? (
+                <DashboardLayout>
+                  <Switch>
+                    {routes.map(({ path, children }, index) => {
+                      return (
+                        <Route key={index} path={path} children={children} />
+                      );
+                    })}
+                    <Route exact path="/login">
                       <Redirect to="/customers" />
-                    ) : (
-                      <Redirect to="/login" />
-                    )}
-                  </Route>
-                  <Route path="/login">
-                    {localStorage.getItem("token") ? (
-                      <Redirect to="/customers" />
-                    ) : (
+                    </Route>
+                    <Route component={NotFound} />
+                  </Switch>
+                </DashboardLayout>
+              ) : (
+                <AuthLayout>
+                  <Switch>
+                    <Route path="/login">
                       <LoginPage />
-                    )}
-                  </Route>
-                  <Route component={NotFound} />
-                </Switch>
-              </AuthLayout>
-            )}
-          </Route>
-        </Switch>
-      </Router>
+                    </Route>
+                    <Route>
+                      <Redirect to="/login" />
+                    </Route>
+                  </Switch>
+                </AuthLayout>
+              )}
+            </Route>
+          </Switch>
+        </Router>
+      ) : (
+        <div
+          style={{
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Loader />
+        </div>
+      )}
     </GlobalContext.Provider>
   );
 };
