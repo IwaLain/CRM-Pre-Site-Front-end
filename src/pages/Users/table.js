@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import DataTable from 'react-data-table-component'
-import { Col, Row } from 'reactstrap'
+import { Button, Col, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
-import User from '../../../../js/api/users'
+import User from '../../js/api/users'
 
-import UserModal from '../modal'
+import UserModal from './modal'
 
-import { alert } from '../../../../js/helpers/alert'
-
-import Button from '../../../UIKit/Button/Button'
+import { alert } from '../../js/helpers/alert'
 
 const UserTable = ({ users, editeTable, changeTable }) => {
   const [currentUser, setCurrentUser] = useState([])
@@ -78,29 +76,29 @@ const UserTable = ({ users, editeTable, changeTable }) => {
     },
     {
       cell: (row) => (
-        <Button
-          className="btn btn-primary"
+        <button
+          className="button-edit btn"
           onClick={() => {
             toggleEditUser(true)
             current(row)
           }}
         >
           <i className="far fa-edit users-table__img" alt="edite"></i>
-        </Button>
+        </button>
       ),
       right: true,
       grow: 0
     },
     {
       cell: (row) => (
-        <Button
-          className="btn btn-danger"
+        <button
+          className="button-delete btn"
           onClick={() => {
             deleteUser(row.id)
           }}
         >
           <i className="far fa-trash-alt users-table__img" alt="delete"></i>
-        </Button>
+        </button>
       ),
       grow: 0
     }

@@ -21,7 +21,8 @@ import { useContext } from "react";
 import { getToken } from "../../js/helpers/helpers";
 
 const LoginPage = () => {
-  const { setUserProfile, setSelectedCustomer } = useContext(GlobalContext);
+  const { setUserProfile, setSelectedCustomer, setIsLogged } =
+    useContext(GlobalContext);
 
   const {
     register,
@@ -55,26 +56,24 @@ const LoginPage = () => {
 
         if (token) {
           Profile.getProfile().then((data) => {
-            if (data) {
-              setUserProfile(data.user);
-              if (data.user.last_customer) {
-                try {
-                  fetch(
-                    process.env.REACT_APP_SERVER_URL +
-                      "/api/customer/" +
-                      data.user.last_customer +
-                      "?access-token=" +
-                      localStorage.getItem("token")
-                  )
-                    .then((res) => res.json())
-                    .then((customer) => {
-                      setSelectedCustomer(
-                        customer.customer[data.user.last_customer]
-                      );
-                    });
-                } catch (e) {
-                  console.log(e);
-                }
+            setUserProfile(data.user);
+            if (data.user.last_customer) {
+              try {
+                fetch(
+                  process.env.REACT_APP_SERVER_URL +
+                    "/api/customer/" +
+                    data.user.last_customer +
+                    "?access-token=" +
+                    localStorage.getItem("token")
+                )
+                  .then((res) => res.json())
+                  .then((customer) => {
+                    setSelectedCustomer(
+                      customer.customer[data.user.last_customer]
+                    );
+                  });
+              } catch (e) {
+                console.log(e);
               }
             }
           });

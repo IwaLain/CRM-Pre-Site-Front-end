@@ -1,9 +1,9 @@
 import React from 'react'
-import { alert } from '../../../../js/helpers/alert';
-import User from '../../../../js/api/users';
+import { alert } from '../../js/helpers/alert';
+import User from '../../js/api/users';
 import PropTypes from "prop-types";
 import { Row } from 'reactstrap';
-import Form from '../form';
+import Form from './form';
 
 const UserAdd = ({ changeTable, toggle }) => {
 
