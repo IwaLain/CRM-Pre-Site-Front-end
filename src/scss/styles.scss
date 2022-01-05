@@ -225,7 +225,7 @@ ul {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-gap: 10px;
-  padding: 0 15px 15px 15px;
+  // padding: 0 15px 15px 15px;
 }
 
 .info-card {
@@ -481,7 +481,7 @@ ul {
 }
 
 .breadcrumbs {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 /* Statistics Dashboard */
@@ -618,3 +618,5 @@ h1 {
 }
 
 @import '../ui/buttons/index.scss';
+@import '../ui/paginations/pagination.scss';
+@import '../ui/tables/tables.scss';

@@ -1,14 +1,8 @@
 @import "./scss-variables.scss";
 
 .list {
-  background-color: white;
-  padding: 15px 0 0 0;
-  border-radius: 10px;
-  box-shadow: 0 0 0 1px #ddd;
-
   .progress {
     width: 100%;
-
     > .progress-bar {
       background-color: $success;
     }
@@ -158,7 +152,6 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    padding: 0 15px;
 
     button {
       background: white;

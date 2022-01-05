@@ -106,7 +106,7 @@ const UserTable = ({ users, editeTable, changeTable }) => {
 
   return (
     <Row className="mt-3">
-      <Col md={12}>
+      <Col md={12} className='table-striped'>
         <DataTable
           columns={columns}
           data={users}
