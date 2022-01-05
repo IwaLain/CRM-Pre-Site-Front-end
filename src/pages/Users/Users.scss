@@ -11,12 +11,28 @@
       text-align: right;
     }
   }
+
+  &__loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+  }
 }
 
 .users-table__img {
   width: 16px;
   height: 16px;
   cursor: pointer;
+  color: #fff;
+}
+
+.button-edit {
+  background-color: $primary !important;
+}
+
+.button-delete {
+  background-color: $danger !important;
 }
 
 .table-responsive {

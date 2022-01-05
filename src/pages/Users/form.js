@@ -64,6 +64,7 @@ const Forms = ({onSubmit, currentUser = '', type}) => {
     return (
         <Row>
             <Form
+            
                 id='form'
                 onSubmit={handleSubmit(onSubmit)}
             >

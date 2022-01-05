@@ -38,7 +38,7 @@ const UsersPage = () => {
   }, [])
 
   return (
-    <div className="Users">
+    <div className="users">
       <Row className="align-items-center justify-content-xs-between">
         <Col lg={1} md={2} sm={2} xs={6}>
           <h3 className="users__title">Users</h3>
@@ -59,7 +59,9 @@ const UsersPage = () => {
       {!isLoading ? (
         <UserTable editeTable={editeTable} changeTable={changeTable} users={users} />
       ) : (
-        <Loader />
+        <div className='users__loader'>
+          <Loader />
+        </div>
       )}
 
       {modalAddUser ? (
