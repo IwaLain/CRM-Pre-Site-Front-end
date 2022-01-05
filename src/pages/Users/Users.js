@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import "./Users.scss";
 import User from "../../js/api/users";
 import UserTable from "./UserTable/UserTable";
