@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import DataTable from 'react-data-table-component'
-import { Button, Col, Row } from 'reactstrap'
+import { Col, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
 import User from '../../js/api/users'
@@ -77,7 +77,7 @@ const UserTable = ({ users, editeTable, changeTable }) => {
     {
       cell: (row) => (
         <button
-          className="button-edit btn"
+          className="button-edit ui-btn ui-btn-primary"
           onClick={() => {
             toggleEditUser(true)
             current(row)
@@ -92,7 +92,7 @@ const UserTable = ({ users, editeTable, changeTable }) => {
     {
       cell: (row) => (
         <button
-          className="button-delete btn"
+          className="button-delete ui-btn ui-btn-danger"
           onClick={() => {
             deleteUser(row.id)
           }}

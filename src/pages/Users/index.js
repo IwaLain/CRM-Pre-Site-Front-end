@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react'
-import { Col, Row } from 'reactstrap'
+import { Button, Col, Row } from 'reactstrap'
 import User from '../../js/api/users'
 
 import UserTable from './table'
@@ -8,7 +8,6 @@ import { reducer } from '../../reducer'
 import Loader from '../../js/helpers/loader'
 
 import './Users.scss'
-import Button from '../../ui/buttons'
 
 const UsersPage = () => {
   const initialState = {
@@ -45,15 +44,15 @@ const UsersPage = () => {
           <h3 className="users__title">Users</h3>
         </Col>
         <Col md={6} sm={3} xs={6} className="users__button">
-          <Button
-            className="btn-primary"
+          <button
+            className="ui-btn ui-btn-success"
             onClick={(e) => {
               e.preventDefault()
               toggleAddUser()
             }}
           >
             <i className="fas fa-user-plus"></i> Add User
-          </Button>
+          </button>
         </Col>
       </Row>
 
