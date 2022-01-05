@@ -417,7 +417,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         break;
     }
 
-    if (customerStructure) {
+    if (customerStructure && Object.keys(customerStructure).length > 0) {
       switch (entity) {
         case "sensors":
           dispatch({

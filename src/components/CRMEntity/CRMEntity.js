@@ -15,6 +15,7 @@ import AttachmentList from "../AttachmentList/AttachmentList";
 import Loader from "../widgets/Loader/Loader";
 import PropTypes from "prop-types";
 import List from "../List/List";
+import NotFound from "../../pages/NotFound/NotFound";
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
@@ -97,7 +98,13 @@ const CRMEntity = ({ type }) => {
       entityPluralAlias = "customers";
       subEntityName = "facilities";
 
-      informationFieldNames = ["address", "phone", "email"];
+      informationFieldNames = [
+        "address",
+        "phone",
+        "email",
+        "activity",
+        "head_name",
+      ];
 
       break;
     case "facility":
@@ -134,10 +141,11 @@ const CRMEntity = ({ type }) => {
   useEffect(() => {
     setInformationItems([]);
     setIsLoading(true);
-    if (id) {
-      setEntityID(id);
-      try {
-        getEntityAPI(id).then((data) => {
+
+    try {
+      getEntityAPI(id).then((data) => {
+        if (data[type]) {
+          setEntityID(id);
           if (type === "customer" || type === "facility") {
             data = data[type][id];
           } else {
@@ -231,96 +239,111 @@ const CRMEntity = ({ type }) => {
                 }
               });
           }
-          setIsLoading(false);
-        });
-      } catch {
-        history.replace(`/dashboard/${entityPluralAlias}`);
-        history.push("/404");
-      }
-    } else {
-      history.replace(`/dashboard/${entityPluralAlias}`);
-      history.push("/404");
+        }
+      });
+    } catch {
+      alert("error", "error");
     }
   }, []);
-
+  useEffect(() => {
+    if (isLoading) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+    }
+  }, [isLoading]);
   return (
     <>
       {!isLoading ? (
         <div className="entity-page">
-          <div className="d-flex align-items-center entity-page--header">
-            {entityObject && entityObject[`${type}Images`] && (
-              <div className="main-img--container">
-                <img
-                  src={
-                    mainImage && mainImage.img
-                      ? process.env.REACT_APP_SERVER_URL + "/" + mainImage.img
-                      : logo
-                  }
-                  alt="company img"
-                  className="entity-page--img"
-                ></img>
-                <DropdownImageEdit
-                  images={
-                    entityImages && entityImages.length > 0 ? entityImages : []
-                  }
-                  setMainImage={setMainEntityImage}
-                ></DropdownImageEdit>
+          {entityObject ? (
+            <>
+              <div className="d-flex align-items-center entity-page--header">
+                {entityObject && entityObject[`${type}Images`] && (
+                  <div className="main-img--container">
+                    <img
+                      src={
+                        mainImage && mainImage.img
+                          ? process.env.REACT_APP_SERVER_URL +
+                            "/" +
+                            mainImage.img
+                          : logo
+                      }
+                      alt="company img"
+                      className="entity-page--img"
+                    ></img>
+                    <DropdownImageEdit
+                      images={
+                        entityImages && entityImages.length > 0
+                          ? entityImages
+                          : []
+                      }
+                      setMainImage={setMainEntityImage}
+                    ></DropdownImageEdit>
+                  </div>
+                )}
+                <h1 className="page-title">
+                  {entityObject && entityObject.name}
+                </h1>
               </div>
-            )}
-            <h1 className="page-title">{entityObject && entityObject.name}</h1>
-          </div>
 
-          {entityObject && informationItems.length > 0 && (
-            <div className="entity-page--section">
-              <InformationComponent
-                items={informationItems}
-                title={`Information ${type}`}
-              ></InformationComponent>
-            </div>
-          )}
-
-          {entityObject &&
-            subEntity.length > 0 &&
-            subEntity.map((subEnt) => (
-              <div
-                key={subEnt.subEntityName}
-                className="entity-page--section table-section"
-              >
-                {/* <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2> */}
-                <List
-                  type={{
-                    entity: subEnt.subEntityName,
-                    ref: entityPluralAlias,
-                  }}
-                  title={
-                    subEnt.subEntityName.charAt(0).toUpperCase() +
-                    subEnt.subEntityName.slice(1)
-                  }
-                  hideSelect
-                  hideChangeView
-                  initBlockView={
-                    subEnt.subEntityName !== "sensors" &&
-                    subEnt.subEntityName !== "motes"
-                  }
-                  hideCreateBtn
-                  hideRecordView={
-                    subEnt.subEntityName === "sensors" ||
-                    subEnt.subEntityName === "motes"
-                  }
-                />
-              </div>
-            ))}
-
-          {entityObject && entityObject[`${type}Images`] && (
-            <div className="entity-page--section">
-              <h2 className="page-subtitle">{`Attachments`}</h2>
-              {attachedFiles && (
-                <AttachmentList
-                  attachedFiles={attachedFiles}
-                  onAddFileServer={addEntityImageServer}
-                  onRemoveFileServer={deleteEntityImageServer}
-                />
+              {entityObject && informationItems.length > 0 && (
+                <div className="entity-page--section">
+                  <InformationComponent
+                    items={informationItems}
+                    title={`Information ${type}`}
+                  ></InformationComponent>
+                </div>
               )}
+
+              {entityObject &&
+                subEntity.length > 0 &&
+                subEntity.map((subEnt) => (
+                  <div
+                    key={subEnt.subEntityName}
+                    className="entity-page--section table-section"
+                  >
+                    {/* <h2 className="page-subtitle">{`${subEnt.subEntityName}`}</h2> */}
+                    <List
+                      type={{
+                        entity: subEnt.subEntityName,
+                        ref: entityPluralAlias,
+                      }}
+                      title={
+                        subEnt.subEntityName.charAt(0).toUpperCase() +
+                        subEnt.subEntityName.slice(1)
+                      }
+                      hideSelect
+                      hideChangeView
+                      initBlockView={
+                        subEnt.subEntityName !== "sensors" &&
+                        subEnt.subEntityName !== "motes"
+                      }
+                      hideCreateBtn
+                      hideRecordView={
+                        subEnt.subEntityName === "sensors" ||
+                        subEnt.subEntityName === "motes"
+                      }
+                    />
+                  </div>
+                ))}
+
+              {entityObject && entityObject[`${type}Images`] && (
+                <div className="entity-page--section">
+                  <h2 className="page-subtitle">{`Attachments`}</h2>
+                  {attachedFiles && (
+                    <AttachmentList
+                      attachedFiles={attachedFiles}
+                      onAddFileServer={addEntityImageServer}
+                      onRemoveFileServer={deleteEntityImageServer}
+                    />
+                  )}
+                </div>
+              )}
+            </>
+          ) : (
+            <div style={{ position: "relative", height: "85vh" }}>
+              <NotFound />
             </div>
           )}
         </div>
