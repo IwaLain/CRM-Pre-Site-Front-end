@@ -185,7 +185,7 @@ const AttachmentList = ({
           <div className="col">
             <AttachedFiles
               type="2"
-              name={titleNeeded ? "Shemas" : ""}
+              name={titleNeeded ? "Schemas" : ""}
               accepted=".jpg, .jpeg, .png, .csv,.doc,.docx, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
               onAddFile={onAddImage}
               onRemoveFile={onRemoveImage}

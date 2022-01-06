@@ -355,17 +355,17 @@ ul {
 
 .dropzone {
   display: flex;
-  justify-content: center;
+
   text-align: center;
   position: relative;
-
+  align-items: center;
   padding: 10px;
   background: white;
   border-radius: 5px;
   border: 2px dashed rgb(0, 135, 247);
   border-image: none;
   width: 100%;
-  min-height: 100px;
+  min-height: 120px;
   .thumbsContainer {
     display: flex;
     flex-direction: row;
@@ -417,10 +417,10 @@ ul {
     }
   }
 
-  .dropzone--placeholder {
+  &.dropzone--placeholder {
     justify-content: center;
     align-items: center;
-    &-text {
+    .dropzone--placeholder-text {
       max-width: 200px;
       opacity: 0.5;
     }

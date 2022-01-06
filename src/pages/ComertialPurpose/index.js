@@ -3,51 +3,51 @@ import { button, Col, Row } from 'reactstrap'
 import { useForm } from 'react-hook-form'
 import { ToastContainer } from 'react-toastify'
 
-import { reducer } from '../../reducer'
+import { reducer } from "../../reducer";
 
-import { dataValid } from './helpers'
-import Table from './table'
-import Form from './form' 
-import Modal from './modal'
+import { dataValid } from "./helpers";
+import Table from "./table";
+import Form from "./form";
+import Modal from "./modal";
 
-import './ComertialPurpose.scss'
-import './ComertialPurposePrint.scss'
+import "./ComertialPurpose.scss";
+import "./ComertialPurposePrint.scss";
 
-import logo from '../../assets/img/waites-block-logo-yellow-background.png'
-import customersApi from '../../js/api/customer'
-import { GlobalContext } from '../../context'
+import logo from "../../assets/img/waites-block-logo-yellow-background.png";
+import customersApi from "../../js/api/customer";
+import { GlobalContext } from "../../context";
 
 const ComertialPurpouse = () => {
   const { selectedCustomer, userProfile } = useContext(GlobalContext)
 
   const initialState = {
-    quote: 'Q' + Math.floor(Date.now() / 1000),
+    quote: "Q" + Math.floor(Date.now() / 1000),
     currentData: [],
     previewData: [],
     customerNetwork: {},
     modalPDF: false,
     previewList: {
-      description: '-',
-      quantity: '',
+      description: "-",
+      quantity: "",
       cost: 0,
-      units: '',
-      item: '',
-      price: 0
-    }
-  }
+      units: "",
+      item: "",
+      price: 0,
+    },
+  };
 
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const { quote, currentData, modalPDF, customerNetwork } = state
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { quote, currentData, modalPDF, customerNetwork } = state;
 
   const d = new Date()
   const date = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
   d.getFullYear();
 
-  const togglePDF = () => dispatch({ modalPDF: !modalPDF })
+  const togglePDF = () => dispatch({ modalPDF: !modalPDF });
   const newQuote = () => {
-    dispatch({ quote: 'Q' + Math.floor(Date.now() / 1000) })
-  }
-  const changeCurrentData = (newData) => dispatch({ currentData: newData })
+    dispatch({ quote: "Q" + Math.floor(Date.now() / 1000) });
+  };
+  const changeCurrentData = (newData) => dispatch({ currentData: newData });
 
   const {
     formState: { errors },
@@ -55,12 +55,12 @@ const ComertialPurpouse = () => {
     getValues,
     register,
     trigger,
-    reset
+    reset,
   } = useForm({
     defaultValues: {
-      quote: quote
-    }
-  })
+      quote: quote,
+    },
+  });
 
   const dataForm = {
     handleSubmit,
@@ -70,8 +70,8 @@ const ComertialPurpouse = () => {
     errors,
     quote,
     reset,
-    date
-  }
+    date,
+  };
 
   useEffect(() => {
     customersApi.getNetwork(selectedCustomer.id === undefined ? userProfile.last_customer : selectedCustomer.id)
@@ -109,9 +109,9 @@ const ComertialPurpouse = () => {
         newQuote={newQuote}
       />
 
-      <Table 
-        setData={changeCurrentData} 
-        dataForm={dataForm} 
+      <Table
+        setData={changeCurrentData}
+        dataForm={dataForm}
         customerNetwork={customerNetwork}
       />
 
@@ -122,12 +122,12 @@ const ComertialPurpouse = () => {
               className="ui-btn ui-btn-info"
               form="form"
               onClick={(e) => {
-                e.preventDefault()
+                e.preventDefault();
 
-                dispatch({ previewData: getValues() })
-                dispatch({ previewList: currentData })
+                dispatch({ previewData: getValues() });
+                dispatch({ previewList: currentData });
 
-                togglePDF(true)
+                togglePDF(true);
               }}
             >
               <i className="far fa-eye"></i> Preview
@@ -140,19 +140,19 @@ const ComertialPurpouse = () => {
           </Col>
         </Row>
       ) : (
-        ''
+        ""
       )}
 
-      <Modal 
-        currentData={currentData} 
-        togglePDF={togglePDF} 
-        preview={state} 
-        date={date} 
+      <Modal
+        currentData={currentData}
+        togglePDF={togglePDF}
+        preview={state}
+        date={date}
       />
 
       <ToastContainer position="bottom-right" />
     </div>
-  )
-}
+  );
+};
 
-export default ComertialPurpouse
+export default ComertialPurpouse;

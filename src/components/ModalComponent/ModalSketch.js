@@ -20,7 +20,16 @@ import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 
-const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
+const ModalSketch = ({
+  toggle,
+  modal,
+  entity,
+  subEntity,
+  mode,
+  data,
+  dataID,
+  parentDispatch,
+}) => {
   const initialState = {
     formTitle: "",
 
@@ -72,8 +81,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
 
   const {
     equipmentTypeList,
-    editId,
-    setEditId,
     selectedCustomer,
     updateTrigger,
     setUpdateTrigger,
@@ -125,27 +132,15 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
       break;
   }
 
-  const checkPhoneField = (e) => {
-    if (e) {
-      if (e.target.value) {
-        const re = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/;
-
-        if (!re.test(e.target.value)) {
-          console.log("test failed");
-        }
-      }
-    }
-  };
-
   const resetToggle = () => {
     toggle();
     reset({});
-    setEditId(null);
     setAnyImg([]);
     setLocationImg([]);
     setEquipmentImg([]);
     dispatch({ defaultEntity: [] });
     dispatch({ customFields: [] });
+    parentDispatch({ modalDataID: null });
   };
 
   const onSubmit = (data) => {
@@ -251,7 +246,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             "/api/" +
             entityName +
             "/update/" +
-            editId +
+            dataID +
             "?access-token=" +
             localStorage.getItem("token"),
           {
@@ -311,6 +306,67 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     dispatch({ deleteField: null });
     dispatch({ customFields: newFields });
   };
+
+  useEffect(() => {
+    if (data && dataID) {
+      switch (entityName) {
+        case "customer":
+        case "facility":
+          dispatch({ defaultEntity: data[entity][dataID] });
+          reset({
+            ...data[entity][dataID],
+            headname: data[entity][dataID]["head_name"],
+          });
+          break;
+        default:
+          const formattedData = data[entity].find((el) => el.id === dataID);
+          dispatch({ defaultEntity: formattedData });
+          let newFields = [];
+
+          if (
+            formattedData["jsonData"] &&
+            formattedData["jsonData"].length > 0 &&
+            formattedData["jsonData"] !== "null"
+          ) {
+            let newCount = 0;
+
+            const jsonData = formattedData["jsonData"];
+
+            jsonData.forEach((el) => {
+              newFields.push({
+                id: `field${newCount + 1}`,
+                title: el.name,
+                value: el.value,
+              });
+              newCount += 1;
+            });
+
+            dispatch({ customFieldsCount: newCount });
+            dispatch({ customFields: newFields });
+          }
+
+          let fieldsToReset = {};
+
+          newFields.forEach((field) => {
+            fieldsToReset[field.id] = field.value;
+            fieldsToReset[field.name] = field.name;
+          });
+
+          if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
+            reset({
+              ...formattedData,
+              ...fieldsToReset,
+            });
+          } else {
+            reset({
+              ...formattedData,
+            });
+          }
+          break;
+      }
+    }
+  }, [data, dataID, toggle]);
+
   useEffect(() => {
     let name = "";
 
@@ -417,7 +473,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
         break;
     }
 
-    if (customerStructure) {
+    if (customerStructure && Object.keys(customerStructure).length > 0) {
       switch (entity) {
         case "sensors":
           dispatch({
@@ -496,81 +552,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
     }
   }, [customerStructure, subEntity, entity]);
 
-  useEffect(() => {
-    if (editId && entityName && mode === "edit") {
-      try {
-        fetch(
-          process.env.REACT_APP_SERVER_URL +
-            "/api/" +
-            entityName +
-            "/" +
-            editId +
-            "?access-token=" +
-            localStorage.getItem("token")
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            if (data[entityName]) {
-              switch (entityName) {
-                case "customer":
-                case "facility":
-                  dispatch({ defaultEntity: data[entityName][editId] });
-                  reset({
-                    ...data[entityName][editId],
-                    headname: data[entityName][editId]["head_name"],
-                  });
-                  break;
-                default:
-                  dispatch({ defaultEntity: data[entityName] });
-                  let newFields = [];
-
-                  if (
-                    data[entityName]["jsonData"] &&
-                    data[entityName]["jsonData"].length > 0 &&
-                    data[entityName]["jsonData"] !== "null"
-                  ) {
-                    let newCount = 0;
-
-                    const jsonData = data[entityName]["jsonData"];
-
-                    jsonData.forEach((el) => {
-                      newFields.push({
-                        id: `field${newCount + 1}`,
-                        title: el.name,
-                        value: el.value,
-                      });
-                      newCount += 1;
-                    });
-
-                    dispatch({ customFieldsCount: newCount });
-                    dispatch({ customFields: newFields });
-                  }
-
-                  let fieldsToReset = {};
-
-                  newFields.forEach((field) => {
-                    fieldsToReset[field.id] = field.value;
-                    fieldsToReset[field.name] = field.name;
-                  });
-
-                  if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
-                    reset({
-                      ...data[entityName],
-                      ...fieldsToReset,
-                    });
-                  } else {
-                    reset({
-                      ...data[entityName],
-                    });
-                  }
-                  break;
-              }
-            }
-          });
-      } catch (e) {}
-    }
-  }, [editId]);
-
   return (
     <>
       <Modal isOpen={modal} toggle={resetToggle} size="lg">
@@ -585,68 +566,62 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             {modalFields.map((field, index) =>
               field.fieldType === "form" ? (
                 field.inputType === "email" ? (
-                  <FormGroup key={index}>
+                  <FormGroup key={index} className="col-sm-6">
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={6}>
-                      <input
-                        className={`form-control ${
-                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
-                        }`}
-                        id={`${field.title}-field`}
-                        placeholder={`Enter ${field.title.toLowerCase()}.`}
-                        {...register(field.title.toLowerCase(), {
-                          required: {
-                            value: true,
-                            message: `${field.title} is required.`,
-                          },
-                          pattern: {
-                            value: /^[\w-.]+@([\w-]+.)+[\w-]{1,10}$/,
-                            message: `${field.title} is not valid. Example: alex@gmail.com`,
-                          },
-                        })}
-                      />
-                      <small
-                        className={
-                          errors[field.title.toLowerCase()]
-                            ? "text-danger"
-                            : "text-danger hidden"
-                        }
-                      >
-                        {errors &&
-                          errors[field.title.toLowerCase()] &&
-                          errors[field.title.toLowerCase()].message}
-                      </small>
-                    </Col>
+                    <input
+                      className={`form-control ${
+                        errors[field.title.toLowerCase()] ? "is-invalid" : ""
+                      }`}
+                      id={`${field.title}-field`}
+                      placeholder={`Enter ${field.title.toLowerCase()}.`}
+                      {...register(field.title.toLowerCase(), {
+                        required: {
+                          value: true,
+                          message: `${field.title} is required.`,
+                        },
+                        pattern: {
+                          value: /^[\w-.]+@([\w-]+.)+[\w-]{1,10}$/,
+                          message: `${field.title} is not valid. Example: alex@gmail.com`,
+                        },
+                      })}
+                    />
+                    <small
+                      className={
+                        errors[field.title.toLowerCase()]
+                          ? "text-danger"
+                          : "text-danger hidden"
+                      }
+                    >
+                      {errors &&
+                        errors[field.title.toLowerCase()] &&
+                        errors[field.title.toLowerCase()].message}
+                    </small>
                   </FormGroup>
                 ) : field.inputType === "phone" ? (
-                  <FormGroup key={index}>
+                  <FormGroup key={index} className="col-sm-6">
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={6}>
-                      <input
-                        className={`form-control ${
-                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
-                        }`}
-                        id={`${field.title}-field`}
-                        onInput={checkPhoneField}
-                        placeholder={`Enter ${field.title.toLowerCase()}.`}
-                        {...register(field.title.toLowerCase(), {
-                          required: {
-                            value: true,
-                            message: `${field.title} is required.`,
-                          },
-                          pattern: {
-                            value:
-                              /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
-                            message: `${field.title} is not valid. Example: +123456789098`,
-                          },
-                        })}
-                      />
-                      <small className="text-danger validation-error">
-                        {errors &&
-                          errors[field.title.toLowerCase()] &&
-                          errors[field.title.toLowerCase()].message}
-                      </small>
-                    </Col>
+                    <input
+                      className={`form-control ${
+                        errors[field.title.toLowerCase()] ? "is-invalid" : ""
+                      }`}
+                      id={`${field.title}-field`}
+                      placeholder={`Enter ${field.title.toLowerCase()}.`}
+                      {...register(field.title.toLowerCase(), {
+                        required: {
+                          value: true,
+                          message: `${field.title} is required.`,
+                        },
+                        pattern: {
+                          value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
+                          message: `${field.title} is not valid. Example: +123456789098`,
+                        },
+                      })}
+                    />
+                    <small className="text-danger validation-error">
+                      {errors &&
+                        errors[field.title.toLowerCase()] &&
+                        errors[field.title.toLowerCase()].message}
+                    </small>
                   </FormGroup>
                 ) : field.inputType === "number" ? (
                   <FormGroup
@@ -695,100 +670,92 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     </Col>
                   </FormGroup>
                 ) : (
-                  <FormGroup key={index}>
+                  <FormGroup key={index} className="col-sm-6">
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col sm={6}>
-                      <input
-                        className={`form-control ${
-                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
-                        }`}
-                        id={`${field.title}-field`}
-                        placeholder={`Enter ${field.title.toLowerCase()}.`}
-                        {...register(field.title.toLowerCase(), {
-                          required: {
-                            value: true,
-                            message: `${field.title} is required.`,
-                          },
-                          minLength: {
-                            value: 3,
-                            message: `${field.title} should contain at least 3 symbols.`,
-                          },
-                        })}
-                      />
-                      <small className="text-danger validation-error">
-                        {errors &&
-                          errors[field.title.toLowerCase()] &&
-                          errors[field.title.toLowerCase()].message}
-                      </small>
-                    </Col>
+                    <input
+                      className={`form-control ${
+                        errors[field.title.toLowerCase()] ? "is-invalid" : ""
+                      }`}
+                      id={`${field.title}-field`}
+                      placeholder={`Enter ${field.title.toLowerCase()}.`}
+                      {...register(field.title.toLowerCase(), {
+                        required: {
+                          value: true,
+                          message: `${field.title} is required.`,
+                        },
+                        minLength: {
+                          value: 3,
+                          message: `${field.title} should contain at least 3 symbols.`,
+                        },
+                      })}
+                    />
+                    <small className="text-danger validation-error">
+                      {errors &&
+                        errors[field.title.toLowerCase()] &&
+                        errors[field.title.toLowerCase()].message}
+                    </small>
                   </FormGroup>
                 )
               ) : field.fieldType === "form-ref-select" ? (
-                <FormGroup key={index}>
+                <FormGroup key={index} className="col-sm-6">
                   <Label for="select-ref">
                     {subEntity.charAt(0).toUpperCase() + subEntity.slice(1)}
                   </Label>
-                  <Col sm={6}>
-                    <select
-                      id="select-ref"
-                      className="default-select"
-                      {...register(field.subID)}
-                      disabled={refListNames.length < 1}
-                    >
-                      {refListNames &&
-                        refListNames.map((ref) => (
-                          <option key={ref.id} value={ref.id}>
-                            {ref.name}
-                          </option>
-                        ))}
-                    </select>
-                  </Col>
+                  <select
+                    id="select-ref"
+                    className="ui-kit__select"
+                    {...register(field.subID)}
+                    disabled={refListNames.length < 1}
+                  >
+                    {refListNames &&
+                      refListNames.map((ref) => (
+                        <option key={ref.id} value={ref.id}>
+                          {ref.name}
+                        </option>
+                      ))}
+                  </select>
                 </FormGroup>
               ) : field.fieldType === "custom-fields" ? (
                 <>
                   {customFields &&
                     customFields.map(({ id, title }) => (
-                      <FormGroup key={id}>
+                      <FormGroup key={id} className="col-sm-6">
                         <Label for={`${id}-field`}>{title}</Label>
-                        <Col sm={6}>
-                          <div className="custom-field__container">
-                            <input
-                              className={`form-control ${
-                                errors[`${id}`] ? "is-invalid" : ""
-                              }`}
-                              id={`${id}-field`}
-                              placeholder="Enter value."
-                              {...register(`${id}`, {
-                                required: {
-                                  value: true,
-                                  message: "Value is required.",
-                                },
-                                minLength: {
-                                  value: 3,
-                                  message:
-                                    "Value should contain at least 3 symbols.",
-                                },
-                              })}
-                            />
-                            <span
-                              className="delete-field__btn"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                dispatch({ deleteField: { id, title } });
-                                toggleConfirmModal();
-                                // toggleConfirmModal(e, customFields, id);
-                              }}
-                            >
-                              <i class="fas fa-times"></i>
-                            </span>
-                          </div>
-                          <small className="text-danger validation-error">
-                            {errors &&
-                              errors[`${id}`] &&
-                              errors[`${id}`].message}
-                          </small>
-                        </Col>
+                        <div className="custom-field__container">
+                          <input
+                            className={`form-control ${
+                              errors[`${id}`] ? "is-invalid" : ""
+                            }`}
+                            id={`${id}-field`}
+                            placeholder="Enter value."
+                            {...register(`${id}`, {
+                              required: {
+                                value: true,
+                                message: "Value is required.",
+                              },
+                              minLength: {
+                                value: 3,
+                                message:
+                                  "Value should contain at least 3 symbols.",
+                              },
+                            })}
+                          />
+                          <span
+                            className="delete-field__btn"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              dispatch({ deleteField: { id, title } });
+                              toggleConfirmModal();
+                              // toggleConfirmModal(e, customFields, id);
+                            }}
+                          >
+                            <i class="fas fa-times"></i>
+                          </span>
+                        </div>
+                        <small className="text-danger validation-error">
+                          {errors && errors[`${id}`] && errors[`${id}`].message}
+                        </small>
                       </FormGroup>
                     ))}
                   <FormGroup>
@@ -825,75 +792,71 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   />
                 </div>
               ) : field.fieldType === "form-type-select" ? (
-                <FormGroup key={index}>
+                <FormGroup key={index} className="col-sm-6">
                   <Label for={`${field.title.toLowerCase()}-field`}>
                     {field.title}
                   </Label>
-                  <Col sm={6}>
-                    <select
-                      key={index}
-                      id={`${field.title.toLowerCase()}-field`}
-                      className="default-input"
-                      {...register(field.subID)}
-                      disabled={equipmentTypeList.length < 1}
-                    >
-                      {equipmentTypeList &&
-                        equipmentTypeList.map((type) => (
-                          <option key={type.id} value={type.id}>
-                            {type.name}
-                          </option>
-                        ))}
-                    </select>
-                  </Col>
+                  <select
+                    key={index}
+                    id={`${field.title.toLowerCase()}-field`}
+                    className="ui-kit__select"
+                    {...register(field.subID)}
+                    disabled={equipmentTypeList.length < 1}
+                  >
+                    {equipmentTypeList &&
+                      equipmentTypeList.map((type) => (
+                        <option key={type.id} value={type.id}>
+                          {type.name}
+                        </option>
+                      ))}
+                  </select>
                 </FormGroup>
               ) : field.fieldType === "form-customer-entity-select" ? (
-                <FormGroup key={index}>
+                <FormGroup key={index} className="col-sm-6">
                   <Label for={`${field.title}-field`}>{field.title}</Label>
-                  <Col sm={6}>
-                    <select
-                      key={index}
-                      id={`${field.title}-field`}
-                      className="default-select"
-                      disabled={
-                        field.title === "Facility"
-                          ? facilitiesNames.length < 1
-                          : field.title === "Equipment"
-                          ? equipmentNames.length < 1
-                          : field.title === "Node"
-                          ? nodesNames.length < 1
-                          : gatewaysNames.length < 1
-                      }
-                      {...register(field.subID)}
-                    >
-                      {field.title === "Facility"
-                        ? facilitiesNames &&
-                          facilitiesNames.map((facility) => (
-                            <option key={facility.id} value={facility.id}>
-                              {facility.name}
-                            </option>
-                          ))
+                  <select
+                    key={index}
+                    id={`${field.title}-field`}
+                    className="ui-kit__select"
+                    disabled={
+                      field.title === "Facility"
+                        ? facilitiesNames.length < 1
                         : field.title === "Equipment"
-                        ? equipmentNames &&
-                          equipmentNames.map((equipment) => (
-                            <option key={equipment.id} value={equipment.id}>
-                              {equipment.name}
-                            </option>
-                          ))
+                        ? equipmentNames.length < 1
                         : field.title === "Node"
-                        ? nodesNames &&
-                          nodesNames.map((node) => (
-                            <option key={node.id} value={node.id}>
-                              {node.name}
-                            </option>
-                          ))
-                        : gatewaysNames &&
-                          gatewaysNames.map((gateway) => (
-                            <option key={gateway.id} value={gateway.id}>
-                              {gateway.name}
-                            </option>
-                          ))}
-                    </select>
-                  </Col>
+                        ? nodesNames.length < 1
+                        : gatewaysNames.length < 1
+                    }
+                    {...register(field.subID)}
+                  >
+                    {field.title === "Facility"
+                      ? facilitiesNames &&
+                        facilitiesNames.map((facility) => (
+                          <option key={facility.id} value={facility.id}>
+                            {facility.name}
+                          </option>
+                        ))
+                      : field.title === "Equipment"
+                      ? equipmentNames &&
+                        equipmentNames.map((equipment) => (
+                          <option key={equipment.id} value={equipment.id}>
+                            {equipment.name}
+                          </option>
+                        ))
+                      : field.title === "Node"
+                      ? nodesNames &&
+                        nodesNames.map((node) => (
+                          <option key={node.id} value={node.id}>
+                            {node.name}
+                          </option>
+                        ))
+                      : gatewaysNames &&
+                        gatewaysNames.map((gateway) => (
+                          <option key={gateway.id} value={gateway.id}>
+                            {gateway.name}
+                          </option>
+                        ))}
+                  </select>
                 </FormGroup>
               ) : (
                 <div key={index}>Bad field</div>
@@ -907,7 +870,6 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
             onClick={(e) => {
               e.preventDefault();
               resetToggle();
-              setEditId(undefined);
             }}
           >
             Cancel
@@ -926,11 +888,9 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
               handleAddFieldFormSubmit(e, customFields, customFieldsCount)
             }
           >
-            <FormGroup>
+            <FormGroup className="col-sm-12">
               <Label for="add-field-field">Field title</Label>
-              <Col sm={12}>
-                <input className="form-control" id="add-field-field" />
-              </Col>
+              <input className="form-control" id="add-field-field" />
             </FormGroup>
           </Form>
         </ModalBody>

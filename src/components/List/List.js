@@ -34,6 +34,7 @@ const List = ({
     searchQuery: "",
     requests: {},
     isLoading: false,
+    selectIsLoaded: false,
     view: true,
     screenSize: window.innerWidth,
     totalRows: Math.ceil(0),
@@ -43,6 +44,8 @@ const List = ({
     page: 1,
     modal: false,
     prevSelectedAll: false,
+    modalData: {},
+    modalDataID: null,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -51,6 +54,7 @@ const List = ({
     searchQuery,
     requests,
     isLoading,
+    selectIsLoaded,
     view,
     screenSize,
     totalRows,
@@ -60,6 +64,8 @@ const List = ({
     prevSelectedAll,
     page,
     mode,
+    modalData,
+    modalDataID,
   } = state;
 
   const RECORDS_PER_PAGE = 20;
@@ -83,7 +89,7 @@ const List = ({
     return formattedNames;
   };
 
-  const debouncedSearchHandler = debounce((e) => handleSearch(e));
+  const debouncedSearchHandler = debounce((e) => handleSearch(e), 500);
 
   const handleSearch = (e) => {
     dispatch({ searchQuery: e.target.value });
@@ -207,7 +213,6 @@ const List = ({
   };
 
   const changeCustomer = (id) => {
-    dispatch({ isLoading: true });
     try {
       fetch(
         process.env.REACT_APP_SERVER_URL +
@@ -220,7 +225,6 @@ const List = ({
         .then((customer) => {
           if (customer) {
             setSelectedCustomer(customer.customer[id]);
-            dispatch({ isLoading: false });
           }
         });
     } catch (e) {}
@@ -336,7 +340,7 @@ const List = ({
   }, [requests, updateTrigger]);
 
   useEffect(() => {
-    if (requests.ref)
+    if (requests.ref) {
       try {
         requests.ref(-1).then((res) => {
           if (Object.keys(res[type.ref]).length > 0 && !hideSelect) {
@@ -350,8 +354,10 @@ const List = ({
               setEntityID(selectedCustomer.id);
             } else setEntityID(formattedNames[0].id);
           }
+          dispatch({ selectIsLoaded: true });
         });
       } catch (e) {}
+    }
   }, [requests.ref]);
 
   useEffect(() => {
@@ -391,6 +397,9 @@ const List = ({
         modal={modal}
         toggle={toggleModal}
         mode={mode}
+        data={data}
+        dataID={modalDataID}
+        parentDispatch={dispatch}
       />
       <div className="list">
         <div className="list__header">

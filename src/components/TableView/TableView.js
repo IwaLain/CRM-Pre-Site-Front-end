@@ -26,7 +26,7 @@ const TableView = ({
   const [listData, setListData] = useState([]);
   const [progressField, SetProgressField] = useState("Progress");
 
-  const { setEditId, selectedCustomer } = useContext(GlobalContext);
+  const { selectedCustomer } = useContext(GlobalContext);
 
   const staticColsStart = [
     {
@@ -66,7 +66,7 @@ const TableView = ({
             className="ui-btn ui-btn-secondary"
             onClick={() => {
               dispatch({ mode: "edit" });
-              setEditId(row.id);
+              dispatch({ modalDataID: row.id });
               toggleModal();
             }}
           >

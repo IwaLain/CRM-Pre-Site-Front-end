@@ -1,15 +1,23 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { useHistory } from "react-router";
 import { GlobalContext } from "../../context";
 import List from "../../components/List/List";
 import "../../scss/network.scss";
 import { alert } from "../../js/helpers/alert";
 import Button from "../../components/UIKit/button/Button";
+import { reducer } from "../../reducer";
 
 const Network = () => {
   const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
   const [network, setNetwork] = useState([]);
-  const [selectedBlock, setSelectedBlock] = useState();
+
+  const initialState = {
+    isLoading: false,
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const { isLoading } = state;
 
   const history = useHistory();
 
@@ -17,7 +25,8 @@ const Network = () => {
     if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
       history.push("/customers");
       alert("error", "You need to select customer first.");
-    } else
+    } else {
+      dispatch({ isLoading: true });
       try {
         fetch(
           process.env.REACT_APP_SERVER_URL +
@@ -28,10 +37,11 @@ const Network = () => {
         )
           .then((res) => res.json())
           .then((network) => {
-            console.log(Object.entries(network.Network));
             setNetwork(Object.entries(network.Network));
+            dispatch({ isLoading: false });
           });
       } catch (e) {}
+    }
   }, [history, selectedCustomer, updateTrigger]);
 
   return (
@@ -55,7 +65,6 @@ const Network = () => {
                         className="dashboard-page__block-view accorion-button collapsed ui-btn ui-btn-info"
                         dataBsToggle="collapse"
                         dataBsTarget={`#collapse-${index}`}
-                        onClick={() => setSelectedBlock(index)}
                       >
                         View
                       </Button>

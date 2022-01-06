@@ -72,17 +72,13 @@ const LoginPage = () => {
                         customer.customer[data.user.last_customer]
                       );
                     });
-                } catch (e) {
-                  console.log(e);
-                }
+                } catch (e) {}
               }
             }
           });
         }
       });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   return (
