@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, FormGroup, button, Col } from "reactstrap";
+import { Form, FormGroup, Button, Col } from "reactstrap";
 import { useForm } from "react-hook-form";
 import FieldComponent from "./FieldComponent/FieldComponent";
 import { alert } from "../../js/helpers/alert";
@@ -88,9 +88,9 @@ const FormComponent = ({
           {addFieldBtn && (
             <FormGroup row>
               <Col sm={2} className="offset-md-2">
-                <button className="ui-btn ui-btn-primary" onClick={toggle}>
+                <Button className="ui-btn ui-btn-primary" onClick={toggle}>
                   Add field
-                </button>
+                </Button>
               </Col>
             </FormGroup>
           )}

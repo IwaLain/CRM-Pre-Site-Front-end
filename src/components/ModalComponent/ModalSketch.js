@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import {
-  button,
+  Button,
   Modal,
   ModalBody,
   ModalFooter,
@@ -19,6 +19,7 @@ import formatNames from "./formatNames";
 import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
+
 
 const ModalSketch = ({
   toggle,
@@ -144,25 +145,9 @@ const ModalSketch = ({
   };
 
   const onSubmit = (data) => {
-    const body = {};
+    const body = { ...data };
 
-    if (data["name"]) body["name"] = data["name"];
-    if (data["serial"]) body["serial"] = data["serial"];
-    if (data["email"]) body["email"] = data["email"];
-    if (data["phone"]) body["phone"] = data["phone"];
-    if (data["address"]) body["address"] = data["address"];
-    if (data["activity"]) body["activity"] = data["activity"];
-    if (data["headname"]) body["head_name"] = data["headname"];
-    if (data["location_info"]) body["location_info"] = data["location_info"];
-    if (data["lat"]) body["lat"] = data["lat"];
-    if (data["lng"]) body["lng"] = data["lng"];
-
-    if (data["facility_id"]) body["facility_id"] = data["facility_id"];
-    if (data["location_id"]) body["location_id"] = data["location_id"];
-    if (data["equipment_id"]) body["equipment_id"] = data["equipment_id"];
-    if (data["type_id"]) body["type_id"] = data["type_id"];
-    if (data["node_id"]) body["node_id"] = data["node_id"];
-    if (data["gateway_id"]) body["gateway_id"] = data["gateway_id"];
+    console.log(body);
 
     const jsonData = [];
 
@@ -236,7 +221,7 @@ const ModalSketch = ({
               setUpdateTrigger(!updateTrigger);
             } else if (data.errors && data.errors.includes("ID is invalid")) {
               alert("error", `Invalid ref object.`);
-            } else alert("error", `Request error.`);
+            } else alert("error", data.errors);
           }
         });
     } else if (mode === "edit") {
@@ -284,20 +269,36 @@ const ModalSketch = ({
     dispatch({ addFieldModal: !addFieldModal });
   };
 
+  const checkAddFieldValidation = (e) => {
+    if (e.target.value.length > 2) {
+      e.target.classList.remove("is-invalid");
+      document.querySelector("#add-field-notification").style.visibility =
+        "hidden";
+    } else {
+      e.target.classList.add("is-invalid");
+      document.querySelector("#add-field-notification").style.visibility =
+        "visible";
+    }
+  };
+
   const handleAddFieldFormSubmit = (e, fields, fieldCount) => {
     e.preventDefault();
+    if (e.target.elements["add-field-field"].value.length > 2) {
+      const newFields = fields;
 
-    const newFields = fields;
+      newFields.push({
+        id: `field${fieldCount + 1}`,
+        title: e.target.elements["add-field-field"].value,
+      });
 
-    newFields.push({
-      id: `field${fieldCount + 1}`,
-      title: e.target.elements["add-field-field"].value,
-    });
-
-    dispatch({ customFieldsCount: fieldCount + 1 });
-    dispatch({ customFields: newFields });
-
-    toggleAddFieldModal();
+      dispatch({ customFieldsCount: fieldCount + 1 });
+      dispatch({ customFields: newFields });
+      toggleAddFieldModal();
+    } else {
+      e.target.elements["add-field-field"].classList.add("is-invalid");
+      document.querySelector("#add-field-notification").style.visibility =
+        "visible";
+    }
   };
 
   const handleRemoveFieldFormSubmit = (e, fields, fieldId) => {
@@ -315,7 +316,7 @@ const ModalSketch = ({
           dispatch({ defaultEntity: data[entity][dataID] });
           reset({
             ...data[entity][dataID],
-            headname: data[entity][dataID]["head_name"],
+            head_name: data[entity][dataID]["head_name"],
           });
           break;
         default:
@@ -747,7 +748,6 @@ const ModalSketch = ({
                               e.stopPropagation();
                               dispatch({ deleteField: { id, title } });
                               toggleConfirmModal();
-                              // toggleConfirmModal(e, customFields, id);
                             }}
                           >
                             <i class="fas fa-times"></i>
@@ -760,9 +760,9 @@ const ModalSketch = ({
                     ))}
                   <FormGroup>
                     <Col>
-                      <button className="ui-btn ui-btn-primary" onClick={toggleAddFieldModal}>
+                      <Button className="ui-btn ui-btn-primary" onClick={toggleAddFieldModal}>
                         Add field
-                      </button>
+                      </Button>
                     </Col>
                   </FormGroup>
                 </>
@@ -884,13 +884,24 @@ const ModalSketch = ({
         <ModalBody>
           <Form
             id="add-field-form"
+            className="add-field-form"
             onSubmit={(e) =>
               handleAddFieldFormSubmit(e, customFields, customFieldsCount)
             }
           >
             <FormGroup className="col-sm-12">
               <Label for="add-field-field">Field title</Label>
-              <input className="form-control" id="add-field-field" />
+              <input
+                className="form-control"
+                id="add-field-field"
+                onInput={checkAddFieldValidation}
+              />
+              <small
+                className="text-danger validation-error"
+                id="add-field-notification"
+              >
+                Field must contain at least 3 symbols.
+              </small>
             </FormGroup>
           </Form>
         </ModalBody>

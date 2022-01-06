@@ -171,7 +171,7 @@ ul {
     overflow-x: auto;
   }
 
-  .modal-body > form > div > div {
+  .modal-body > form > div {
     position: relative;
   }
   .modal-body > form .form-label{
@@ -181,7 +181,7 @@ ul {
 
   .modal-body > form > div small {
     position: absolute;
-    top: -20px;
+    top: 10px;
     right: 0;
   }
 
@@ -210,6 +210,18 @@ ul {
     display: flex;
     flex-direction: row;
   }
+
+  .modal-body > .add-field-form {
+    div {
+      position: relative;
+    }
+
+    > div > small {
+      visibility: hidden;
+      top: 10px;
+    }
+  }
+
   .delete-field__btn {
     color: red;
     background-color: white;
