@@ -166,13 +166,13 @@ ul {
     overflow-x: auto;
   }
 
-  .modal-body > form > div > div {
+  .modal-body > form > div {
     position: relative;
   }
 
   .modal-body > form > div small {
     position: absolute;
-    top: -20px;
+    top: 10px;
     right: 0;
   }
 

@@ -144,25 +144,9 @@ const ModalSketch = ({
   };
 
   const onSubmit = (data) => {
-    const body = {};
+    const body = { ...data };
 
-    if (data["name"]) body["name"] = data["name"];
-    if (data["serial"]) body["serial"] = data["serial"];
-    if (data["email"]) body["email"] = data["email"];
-    if (data["phone"]) body["phone"] = data["phone"];
-    if (data["address"]) body["address"] = data["address"];
-    if (data["activity"]) body["activity"] = data["activity"];
-    if (data["headname"]) body["head_name"] = data["headname"];
-    if (data["location_info"]) body["location_info"] = data["location_info"];
-    if (data["lat"]) body["lat"] = data["lat"];
-    if (data["lng"]) body["lng"] = data["lng"];
-
-    if (data["facility_id"]) body["facility_id"] = data["facility_id"];
-    if (data["location_id"]) body["location_id"] = data["location_id"];
-    if (data["equipment_id"]) body["equipment_id"] = data["equipment_id"];
-    if (data["type_id"]) body["type_id"] = data["type_id"];
-    if (data["node_id"]) body["node_id"] = data["node_id"];
-    if (data["gateway_id"]) body["gateway_id"] = data["gateway_id"];
+    console.log(body);
 
     const jsonData = [];
 
@@ -236,7 +220,7 @@ const ModalSketch = ({
               setUpdateTrigger(!updateTrigger);
             } else if (data.errors && data.errors.includes("ID is invalid")) {
               alert("error", `Invalid ref object.`);
-            } else alert("error", `Request error.`);
+            } else alert("error", data.errors);
           }
         });
     } else if (mode === "edit") {
@@ -315,7 +299,7 @@ const ModalSketch = ({
           dispatch({ defaultEntity: data[entity][dataID] });
           reset({
             ...data[entity][dataID],
-            headname: data[entity][dataID]["head_name"],
+            head_name: data[entity][dataID]["head_name"],
           });
           break;
         default:
@@ -747,7 +731,6 @@ const ModalSketch = ({
                               e.stopPropagation();
                               dispatch({ deleteField: { id, title } });
                               toggleConfirmModal();
-                              // toggleConfirmModal(e, customFields, id);
                             }}
                           >
                             <i class="fas fa-times"></i>
