@@ -3,10 +3,15 @@
     .form-label {
         margin-bottom: 0;
     }
-
+    .table-striped input {  
+        background-color: transparent;
+    }
     input, textarea {
-        border: none !important;
+        border: none !important;        
         background-color: #fafafa;
+        &::placeholder {
+            color: #777;        
+        }
     }
 
     &__title {
