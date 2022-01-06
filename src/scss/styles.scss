@@ -193,6 +193,18 @@ ul {
     display: flex;
     flex-direction: row;
   }
+
+  .modal-body > .add-field-form {
+    div {
+      position: relative;
+    }
+
+    > div > small {
+      visibility: hidden;
+      top: 10px;
+    }
+  }
+
   .delete-field__btn {
     color: red;
     background-color: white;
