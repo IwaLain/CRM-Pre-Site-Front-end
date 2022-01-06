@@ -17,11 +17,8 @@ import logo from "../../assets/img/waites-block-logo-yellow-background.png";
 import customersApi from "../../js/api/customer";
 import { GlobalContext } from "../../context";
 
-import { useHistory } from "react-router-dom";
-import { alert } from "../../js/helpers/alert";
-
 const ComertialPurpouse = () => {
-  const { userProfile, selectedCustomer } = useContext(GlobalContext);
+  const { userProfile } = useContext(GlobalContext);
 
   const initialState = {
     quote: "Q" + Math.floor(Date.now() / 1000),
@@ -41,8 +38,6 @@ const ComertialPurpouse = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const { quote, currentData, modalPDF, customerNetwork } = state;
-
-  const history = useHistory();
 
   const date = new Date().toLocaleDateString("en-US");
 
@@ -78,16 +73,10 @@ const ComertialPurpouse = () => {
 
   useEffect(() => {
     customersApi.getNetwork(userProfile.last_customer).then((data) => {
+      console.log(data.Network);
       dispatch({ customerNetwork: data.Network });
     });
   }, []);
-
-  useEffect(() => {
-    if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
-      history.push("/customers");
-      alert("error", "You need to select customer first.");
-    }
-  }, [history, selectedCustomer]);
 
   return (
     <div className="purpose" id="purpose">
