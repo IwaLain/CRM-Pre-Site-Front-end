@@ -19,7 +19,6 @@
     .form-label {
       margin-bottom: 0;
       min-width: 150px;
-      font-size: 10px;
 
       @media (max-width: 445px) {
         min-width: 100px;
@@ -90,10 +89,14 @@
 
     .profile__desc {
       margin-left: 20px;
+
+      i {
+        margin-right: 5px;
+      }
     }
 
     td {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
   }
 }

@@ -67,6 +67,14 @@
         display: flex;
         justify-content: end;
         margin-left: auto;
+        
+        button {
+            padding: 5px 10px;
+        }
+
+        i {
+            margin-right: 5px;
+        }
     }
 
     &__total {
