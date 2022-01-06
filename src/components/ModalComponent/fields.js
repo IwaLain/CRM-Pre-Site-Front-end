@@ -26,7 +26,7 @@ export default {
       fieldType: "form",
     },
     {
-      title: "Head_name",
+      title: "Head name",
       inputType: "text",
       fieldType: "form",
     },

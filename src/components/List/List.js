@@ -14,7 +14,7 @@ import Loader from "../widgets/Loader/Loader";
 import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import debounce from "../../js/helpers/debounce";
-import Button from "../UIKit/button/Button";
+import Button from "../UIKit/Button/Button";
 
 const List = ({
   type,
@@ -423,7 +423,7 @@ const List = ({
           <div className="list__options">
             {type && type.ref && !hideSelect && (
               <div className="list__select-entity">
-                <Label for="select-entity">{type && `${type.ref}:`}</Label>
+                <Label for="select-entity">{type && `${type.ref.charAt(0).toUpperCase() + type.ref.slice(1)}:`}</Label>
                 <select
                   className="default-select"
                   id="select-entity"
