@@ -134,7 +134,7 @@ const ComertialTable = ({ setData, dataForm, customerNetwork }) => {
   ];
 
   return (
-    <Row className="purpose__table">
+    <Row className="purpose__table table-striped">
       <DataTable columns={columns} data={listData} />
     </Row>
   );
