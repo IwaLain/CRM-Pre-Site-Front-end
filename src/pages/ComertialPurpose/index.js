@@ -18,7 +18,7 @@ import customersApi from '../../js/api/customer'
 import { GlobalContext } from '../../context'
 
 const ComertialPurpouse = () => {
-  const { userProfile } = useContext(GlobalContext)
+  const { selectedCustomer, userProfile } = useContext(GlobalContext)
 
   const initialState = {
     quote: 'Q' + Math.floor(Date.now() / 1000),
@@ -74,7 +74,7 @@ const ComertialPurpouse = () => {
   }
 
   useEffect(() => {
-    customersApi.getNetwork(userProfile.last_customer)
+    customersApi.getNetwork(selectedCustomer.id === undefined ? userProfile.last_customer : selectedCustomer.id)
     .then(data => {
       console.log(data.Network)
       dispatch({customerNetwork: data.Network})
