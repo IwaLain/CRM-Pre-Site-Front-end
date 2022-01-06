@@ -3,7 +3,6 @@ import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context";
-import button from "../UIKit/button/button";
 
 const InfoCard = ({
   data,

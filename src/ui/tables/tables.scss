@@ -19,7 +19,8 @@
     & .rdt_TableBody {
       & .rdt_TableRow {
         border: none;
-        & .rdt_TableCell {
+        & .rdt_TableCell {          
+          font-size: 14px;
           color: $darkGray;
         }
         &:nth-of-type(odd) {

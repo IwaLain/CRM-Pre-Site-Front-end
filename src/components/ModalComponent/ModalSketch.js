@@ -731,7 +731,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                   <Col sm={6}>
                     <select
                       id="select-ref"
-                      className="ui-kit__select"
+                      className="default-select"
                       {...register(field.subID)}
                       disabled={refListNames.length < 1}
                     >
@@ -833,7 +833,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <select
                       key={index}
                       id={`${field.title.toLowerCase()}-field`}
-                      className="ui-kit__select"
+                      className="default-input"
                       {...register(field.subID)}
                       disabled={equipmentTypeList.length < 1}
                     >
@@ -853,7 +853,7 @@ const ModalSketch = ({ toggle, modal, entity, subEntity, mode }) => {
                     <select
                       key={index}
                       id={`${field.title}-field`}
-                      className="ui-kit__select"
+                      className="default-select"
                       disabled={
                         field.title === "Facility"
                           ? facilitiesNames.length < 1

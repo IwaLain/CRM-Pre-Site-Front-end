@@ -110,14 +110,12 @@ ul {
     top: 0;
     z-index: 50;
     font-size: 1.1em;
-
     .logo-sidebar {
       margin-bottom: 35px;
     }
 
     .logo {
       margin-bottom: 35px;
-
       img:nth-child(1) {
         width: 30px;
         max-width: 45px;
@@ -128,18 +126,25 @@ ul {
     nav {
       .fa-ul {
         list-style: none;
-        margin-left: 2.25rem;
+        margin-left: 30px;
+      }
+
+      .fa-ul li {
+        height: 50px;
       }
 
       > ul > li > a > i {
         margin-right: 10px;
+        font-size: 1.25em;
       }
 
       > ul > li > a {
         text-decoration: none;
         color: #fff;
         font-weight: bold;
-        font-size: 1.25em;
+        margin-left: 10px;
+        font-size: 1em;
+        letter-spacing: 0.05rem;
       }
     }
   }
@@ -168,6 +173,10 @@ ul {
 
   .modal-body > form > div > div {
     position: relative;
+  }
+  .modal-body > form .form-label{
+    font-size: 14px;
+    margin-bottom: 5px;
   }
 
   .modal-body > form > div small {
@@ -237,7 +246,7 @@ ul {
   display: flex;
   flex-direction: column;
   min-width: 350px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+  border: 1px solid #dedede;
   border-radius: 4px;
 
   .info-card__edit {
@@ -252,7 +261,7 @@ ul {
   }
 
   .progress .progress-bar {
-    background-color: $success;
+    background-color: #dab738;
   }
 
   > input {
@@ -278,7 +287,6 @@ ul {
   align-items: center;
   padding: 8px 10px;
   width: 100%;
-
   > *:not(:last-child) {
     margin-bottom: 7px;
   }
@@ -465,13 +473,11 @@ ul {
 
 .breadcrumbs__breadcrumb-item:not(:last-child) > a:hover {
   text-decoration: underline;
-  font-weight: bold;
   color: black;
 }
 
-.breadcrumbs__breadcrumb-item:last-child {
-  font-weight: bold;
-}
+// .breadcrumbs__breadcrumb-item:last-child {
+// }
 
 .breadcrumbs__breadcrumb-item:last-child > a:hover {
   color: black;
@@ -500,7 +506,7 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid;
+  border: 1px solid #dedede;
   border-radius: 4px;
   padding: 10px 50px;
   width: 100%;
@@ -620,10 +626,10 @@ h1 {
   border: 1px solid black;
 }
 
-@import '../ui/buttons/buttons.scss';
-@import '../ui/paginations/pagination.scss';
-@import '../ui/tables/tables.scss';
-
+@import "../ui/buttons/buttons.scss";
+@import "../ui/paginations/pagination.scss";
+@import "../ui/tables/tables.scss";
+@import "../ui/inputs.scss";
 
 .button-edit {
   margin-right: 5px;
@@ -640,4 +646,8 @@ h1 {
   > i {
     margin-right: 5px;
   }
+}
+
+.dashboard-page__block .dashboard-page__block-view {
+  padding: 0px 10px;
 }
