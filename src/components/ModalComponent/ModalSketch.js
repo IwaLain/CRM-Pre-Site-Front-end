@@ -268,20 +268,36 @@ const ModalSketch = ({
     dispatch({ addFieldModal: !addFieldModal });
   };
 
+  const checkAddFieldValidation = (e) => {
+    if (e.target.value.length > 2) {
+      e.target.classList.remove("is-invalid");
+      document.querySelector("#add-field-notification").style.visibility =
+        "hidden";
+    } else {
+      e.target.classList.add("is-invalid");
+      document.querySelector("#add-field-notification").style.visibility =
+        "visible";
+    }
+  };
+
   const handleAddFieldFormSubmit = (e, fields, fieldCount) => {
     e.preventDefault();
+    if (e.target.elements["add-field-field"].value.length > 2) {
+      const newFields = fields;
 
-    const newFields = fields;
+      newFields.push({
+        id: `field${fieldCount + 1}`,
+        title: e.target.elements["add-field-field"].value,
+      });
 
-    newFields.push({
-      id: `field${fieldCount + 1}`,
-      title: e.target.elements["add-field-field"].value,
-    });
-
-    dispatch({ customFieldsCount: fieldCount + 1 });
-    dispatch({ customFields: newFields });
-
-    toggleAddFieldModal();
+      dispatch({ customFieldsCount: fieldCount + 1 });
+      dispatch({ customFields: newFields });
+      toggleAddFieldModal();
+    } else {
+      e.target.elements["add-field-field"].classList.add("is-invalid");
+      document.querySelector("#add-field-notification").style.visibility =
+        "visible";
+    }
   };
 
   const handleRemoveFieldFormSubmit = (e, fields, fieldId) => {
@@ -866,13 +882,24 @@ const ModalSketch = ({
         <ModalBody>
           <Form
             id="add-field-form"
+            className="add-field-form"
             onSubmit={(e) =>
               handleAddFieldFormSubmit(e, customFields, customFieldsCount)
             }
           >
             <FormGroup className="col-sm-12">
               <Label for="add-field-field">Field title</Label>
-              <input className="form-control" id="add-field-field" />
+              <input
+                className="form-control"
+                id="add-field-field"
+                onInput={checkAddFieldValidation}
+              />
+              <small
+                className="text-danger validation-error"
+                id="add-field-notification"
+              >
+                Field must contain at least 3 symbols.
+              </small>
             </FormGroup>
           </Form>
         </ModalBody>
