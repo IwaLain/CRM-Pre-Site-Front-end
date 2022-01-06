@@ -450,12 +450,12 @@ const List = ({
                 <Button
                   type="list-view"
                   onClick={() => dispatch({ view: true })}
-                  className={view ? "active" : ""}
+                  className={`ui-btn ui-btn-success ${view ? "active" : ""}`}
                 ></Button>
                 <Button
                   type="block-view"
                   onClick={() => dispatch({ view: false })}
-                  className={!view ? "active" : ""}
+                  className={`ui-btn ui-btn-success ${!view ? "active" : ""}`}
                 ></Button>
               </div>
             )}

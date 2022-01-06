@@ -14,7 +14,7 @@ const InputForm = ({
       <input
         type={type}
         placeholder={placeholder}
-        className={`ui-form-control ${errors ? "is-invalid" : ""}`}
+        className={`form-control ${errors ? "is-invalid" : ""}`}
         {...register(type, validation(type))}
         onKeyUp={() => {
           trigger(type);

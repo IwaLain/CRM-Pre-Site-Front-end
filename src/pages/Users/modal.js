@@ -54,15 +54,18 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
         >
             <ModalHeader className='modal__head'>
                 <Row>
-                    <Col>
+                    <Col md={12}>
                         {formTitle}
                     </Col>
-                    <span
-                        type="button"
-                        className="btn-close"
-                        aria-label="Close"
-                        onClick={toggle}>
-                    </span>
+                    <Col>
+                        <span
+                            type="button"
+                            className="modal-close"
+                            aria-label="Close"
+                            onClick={toggle}>
+                                <i class="fas fa-times"></i>
+                        </span>
+                    </Col>
                 </Row>
             </ModalHeader>
             <ModalBody>

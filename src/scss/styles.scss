@@ -179,6 +179,10 @@ ul {
   .modal-footer {
     display: flex;
     justify-content: space-between;
+
+    button {
+      padding: 5px 15px;
+    }
   }
 
   .modal-close {
@@ -287,15 +291,15 @@ ul {
   font-weight: bold;
 
   > button {
-    padding: 4px 30px;
-    border-radius: 2px;
+    padding: 4px 15px;
+    // border-radius: 2px;
   }
 
   > a {
-    padding: 4px 30px;
+    padding: 4px 15px;
     text-decoration: none;
     color: white;
-    background-color: $primary;
+    // background-color: $primary;
     border: 1px solid transparent;
   }
 
@@ -518,8 +522,10 @@ ul {
 }
 
 .dashboard-page__block .dashboard-page__block-view {
-  padding: 5px 20px;
-  font-size: 0.6em;
+  margin-top: 10px;
+  padding: 5px 15px;
+  font-size: 0.5em;
+  letter-spacing: 0.3px;
 }
 
 .ui-kit__category-wrapper {
@@ -614,13 +620,13 @@ h1 {
   border: 1px solid black;
 }
 
-@import '../ui/buttons/index.scss';
+@import '../ui/buttons/buttons.scss';
 @import '../ui/paginations/pagination.scss';
 @import '../ui/tables/tables.scss';
 
 
 .button-edit {
-  background-color: #444;
+  margin-right: 5px;
 }
 
 .ui-btn-danger {
@@ -628,11 +634,10 @@ h1 {
 }
 
 .profile__desc {
-  i {
+  > button {
+    padding: 5px 10px;
+  }
+  > i {
     margin-right: 5px;
   }
-}
-
-.dashboard-page__block .dashboard-page__block-view {
-  padding: 0px 10px;
 }

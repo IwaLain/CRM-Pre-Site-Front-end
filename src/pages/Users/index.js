@@ -39,11 +39,11 @@ const UsersPage = () => {
 
   return (
     <div className="users">
-      <Row className="align-items-center justify-content-xs-between">
-        <Col lg={1} md={2} sm={2} xs={6}>
-          <h3 className="users__title">Users</h3>
+      <div className="users__header">
+        <Col className="users__title">
+          <h3>Users</h3>
         </Col>
-        <Col md={6} sm={3} xs={6} className="users__button">
+        <Col className="users__button">
           <button
             className="ui-btn ui-btn-success"
             onClick={(e) => {
@@ -54,7 +54,7 @@ const UsersPage = () => {
             <i className="fas fa-user-plus"></i> Add User
           </button>
         </Col>
-      </Row>
+      </div>
 
       {!isLoading ? (
         <UserTable editeTable={editeTable} changeTable={changeTable} users={users} />

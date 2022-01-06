@@ -76,32 +76,27 @@ const UserTable = ({ users, editeTable, changeTable }) => {
     },
     {
       cell: (row) => (
-        <button
-          className="button-edit ui-btn ui-btn-info"
-          onClick={() => {
-            toggleEditUser(true)
-            current(row)
-          }}
-        >
-          <i className="far fa-edit users-table__img" alt="edite"></i>
-        </button>
+        <div className='buttons-group'>
+          <button
+            className="button-edit ui-btn ui-btn-secondary"
+            onClick={() => {
+              toggleEditUser(true)
+              current(row)
+            }}
+          >
+            <i className="far fa-edit users-table__img" alt="edite"></i>
+          </button>
+          <button
+            className="button-delete ui-btn ui-btn-danger"
+            onClick={() => {
+              deleteUser(row.id)
+            }}
+          >
+            <i className="far fa-trash-alt users-table__img" alt="delete"></i>
+          </button>
+        </div>
       ),
-      right: true,
-      grow: 0
     },
-    {
-      cell: (row) => (
-        <button
-          className="button-delete ui-btn ui-btn-danger"
-          onClick={() => {
-            deleteUser(row.id)
-          }}
-        >
-          <i className="far fa-trash-alt users-table__img" alt="delete"></i>
-        </button>
-      ),
-      grow: 0
-    }
   ]
 
   return (

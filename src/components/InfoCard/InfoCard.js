@@ -144,11 +144,12 @@ const InfoCard = ({
           <div
             className={
               chooseMode
-                ? "info-card__btns ui-btn ui-btn-secondary"
-                : "info-card__btns info-card__btns-one ui-btn ui-btn-secondary"
+                ? "info-card__btns"
+                : "info-card__btns info-card__btns-one"
             }
           >
             <Link
+              className="ui-btn ui-btn-info"
               to={`/${type}/${data && data.id}`}
               style={data && hideRecordView ? { visibility: "hidden" } : {}}
             >

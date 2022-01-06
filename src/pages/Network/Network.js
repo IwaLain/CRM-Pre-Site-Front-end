@@ -52,7 +52,7 @@ const Network = () => {
                       <h5>{key.charAt(0).toUpperCase() + key.slice(1)}</h5>
                       <span>{value.length}</span>
                       <Button
-                        className="dashboard-page__block-view accorion-button collapsed ui-btn ui-btn-primary"
+                        className="dashboard-page__block-view accorion-button collapsed ui-btn ui-btn-info"
                         dataBsToggle="collapse"
                         dataBsTarget={`#collapse-${index}`}
                         onClick={() => setSelectedBlock(index)}

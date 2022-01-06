@@ -1,15 +1,27 @@
 @import '../../scss/scss-variables.scss';
 
 .users {
-  &__title {
-    line-height: 1.3;
-    padding-top: 5px;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #fafafa;
+  }
+
+  .users__title {
+    display: flex;
+    align-items: center;
+
+    > h3 {
+      margin: 0;
+      padding: 0;
+    }
   }
 
   &__button {
-    @media (max-width: 600px) {
-      text-align: right;
-    }
+      display: flex;
+      justify-content: end;
   }
 
   &__loader {
@@ -17,6 +29,14 @@
     align-items: center;
     justify-content: center;
     height: 60vh;
+  }
+
+  & .buttons-group {
+    display: flex;
+  }
+
+  .btn-close {
+    
   }
 }
 

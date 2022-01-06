@@ -41,9 +41,9 @@ const Button = ({
     >
       {type ? (
         type === "list-view" ? (
-          <img src={listView} alt="list-view error" />
+          <i class="fas fa-bars" alt="list-view error"></i>
         ) : type === "block-view" ? (
-          <img src={blockView} alt="block-view error" />
+          <i class="fas fa-th-large" alt="block-view error"></i>
         ) : (
           children
         )

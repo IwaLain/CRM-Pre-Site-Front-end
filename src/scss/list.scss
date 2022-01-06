@@ -146,10 +146,7 @@
     margin-bottom: 10px;
 
     button {
-      background: white;
       border: 1px solid transparent;
-      border-radius: 4px;
-      padding: 0;
     }
 
     @media (max-width: 1024px) {
@@ -220,12 +217,16 @@
     align-items: center;
 
     > .list__add-btn {
-      background-color: $primary;
       color: white;
     }
 
+    > button {
+      padding: 3px 5px;
+      color: #fff
+    }
+
     > button.active {
-      border: 1px solid black;
+      opacity: 0.6;
     }
   }
 
