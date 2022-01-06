@@ -75,6 +75,7 @@ const TableView = ({
         </>
       ),
       width: "171px",
+      right: true
     },
   ];
 

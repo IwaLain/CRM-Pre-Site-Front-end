@@ -225,11 +225,13 @@
 
     > button {
       padding: 3px 5px;
-      color: #fff
+      color: #fff;
+      opacity: 0.6;
     }
 
     > button.active {
-      opacity: 0.6;
+      background-color: $success;
+      opacity: 1;
     }
   }
 

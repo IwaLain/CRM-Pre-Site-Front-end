@@ -57,6 +57,7 @@ const Forms = ({onSubmit, currentUser = '', type}) => {
             {type: 'username', title: 'User Name', errors: errors.username, required: 1},
             {type: 'email', title: 'Email', errors: errors.email, required: 1},
             {type: 'phone', title: 'Phone', errors: errors.phone, required: 1},
+            {type: 'password', title: 'Password', errors: errors.password, required: 1},
         ]
         : null
     } 

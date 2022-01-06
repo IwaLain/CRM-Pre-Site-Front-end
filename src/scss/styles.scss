@@ -239,7 +239,8 @@ ul {
 }
 
 .info-card_group {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-gap: 10px;
   // padding: 0 15px 15px 15px;
@@ -249,7 +250,8 @@ ul {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 350px;
+  min-width: 390px;
+  max-width: 390px;
   border: 1px solid #dedede;
   border-radius: 4px;
 

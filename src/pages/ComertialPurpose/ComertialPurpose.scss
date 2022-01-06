@@ -1,16 +1,21 @@
 .purpose {
+    padding: 20px;
+    box-shadow: 1px 1px 5px 0px rgb(133, 133, 133);
+    max-width: 900px;
 
     .form-label {
         margin-bottom: 0;
     }
+
     .table-striped input {  
         background-color: transparent;
     }
+
     input, textarea {
         border: none !important;        
         background-color: #fafafa;
         &::placeholder {
-            color: #777;        
+            color: #777;
         }
     }
 
@@ -45,7 +50,7 @@
     }
 
     &__adress {
-        text-align: justify;
+        text-align: right;
         margin-bottom: 20px;
     }
 
