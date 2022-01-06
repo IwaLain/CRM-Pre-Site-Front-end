@@ -3,16 +3,16 @@ import PropTypes from "prop-types";
 import { Col, Form, FormGroup, Label, Row } from "reactstrap";
 import Profile from "../../js/api/profile";
 import { validation } from "../../js/helpers/validation";
+import { alert } from "../../js/helpers/alert";
 
 const ComertialForm = ({
   dataForm,
   currentData,
   togglePDF,
-  newQuote,
   modalPDF,
+  resetForm,
 }) => {
-  const { trigger, errors, register, quote, date, handleSubmit, reset } =
-    dataForm;
+  const { trigger, errors, register, quote, date, handleSubmit } = dataForm;
 
   const onSubmit = (e) => {
     const data = {
@@ -24,8 +24,12 @@ const ComertialForm = ({
       quote: quote,
       items: currentData,
     };
-    Profile.createPdf(data, date);
-    reset({ ...register, quote: newQuote() });
+
+    Profile.createPdf(data, date)
+    .then(data => {
+      alert('success', 'PDF successful created!')
+    });
+    resetForm()
   };
 
   const onError = () => {
@@ -37,8 +41,8 @@ const ComertialForm = ({
   return (
     <Row>
       <Form id="form" onSubmit={handleSubmit(onSubmit, onError)}>
-        <Row className="purpose__form">
-          <Col lg={3} md={5} className="purpose__form-quote">
+        <Row className="purpose__form justify-content-between">
+          <Col md={5} className="purpose__form-quote">
             <FormGroup className="purpose__quote">
               <Col>
                 <h3>Quote #</h3>
@@ -82,50 +86,52 @@ const ComertialForm = ({
               />
             </FormGroup>
           </Col>
-          <Col
-            lg={{ offset: 1, size: 3 }}
-            md={5}
-            className="purpose__description"
-          >
+          <Col md={5} className="purpose__description">
             <Row className="purpose__info">
               <Col>
                 <Label>Date</Label>
               </Col>
-              {date}
+              <Col className="text-end">
+                {date}
+              </Col>
             </Row>
             <Row className="purpose__info my-2">
               <Col>
                 <Label className="form__require">Expires</Label>
               </Col>
-              <input
-                name="expires"
-                type="text"
-                placeholder="Expires..."
-                className={`ui-kit__textarea form-control ${
-                  errors.expires ? "is-invalid" : ""
-                }`}
-                {...register("expires", validation("text"))}
-                onKeyUp={() => {
-                  trigger("expires");
-                }}
-              />
+              <Col>
+                <input
+                  name="expires"
+                  type="text"
+                  placeholder="Expires..."
+                  className={`ui-kit__textarea form-control ${
+                    errors.expires ? "is-invalid" : ""
+                  }`}
+                  {...register("expires", validation("text"))}
+                  onKeyUp={() => {
+                    trigger("expires");
+                  }}
+                />
+              </Col>
             </Row>
             <Row className="purpose__info">
               <Col>
                 <Label className="form__require">Memo</Label>
               </Col>
-              <input
-                name="memo"
-                type="text"
-                placeholder="Memo..."
-                className={`ui-kit__textarea form-control ${
-                  errors.memo ? "is-invalid" : ""
-                }`}
-                {...register("memo", validation("text"))}
-                onKeyUp={() => {
-                  trigger("memo");
-                }}
-              />
+              <Col>
+                <input
+                  name="memo"
+                  type="text"
+                  placeholder="Memo..."
+                  className={`ui-kit__textarea form-control ${
+                    errors.memo ? "is-invalid" : ""
+                  }`}
+                  {...register("memo", validation("text"))}
+                  onKeyUp={() => {
+                    trigger("memo");
+                  }}
+                />
+              </Col>
             </Row>
           </Col>
         </Row>
