@@ -14,7 +14,7 @@ import Loader from "../widgets/Loader/Loader";
 import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import debounce from "../../js/helpers/debounce";
-import Button from "../UIKit/button/button";
+import Button from "../UIKit/button/Button";
 
 const List = ({
   type,

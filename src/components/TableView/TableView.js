@@ -4,7 +4,6 @@ import { Progress } from "reactstrap";
 import { GlobalContext } from "../../context";
 import { Link } from "react-router-dom";
 import Input from "../UIKit/Input/Input";
-import button from "../UIKit/button/button";
 
 const paginationComponentOptions = {
   noRowsPerPage: true,

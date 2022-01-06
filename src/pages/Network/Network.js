@@ -4,7 +4,7 @@ import { GlobalContext } from "../../context";
 import List from "../../components/List/List";
 import "../../scss/network.scss";
 import { alert } from "../../js/helpers/alert";
-import Button from "../../components/UIKit/button/button";
+import Button from "../../components/UIKit/button/Button";
 
 const Network = () => {
   const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
