@@ -248,7 +248,7 @@ ul {
   }
 
   .progress .progress-bar {
-    background-color: #c7a62d;
+    background-color: #dab738;
   }
 
   > input {
@@ -617,6 +617,7 @@ h1 {
 @import '../ui/buttons/index.scss';
 @import '../ui/paginations/pagination.scss';
 @import '../ui/tables/tables.scss';
+@import '../ui/inputs.scss';
 
 
 .button-edit {
