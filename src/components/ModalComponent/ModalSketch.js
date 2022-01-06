@@ -20,7 +20,6 @@ import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 
-
 const ModalSketch = ({
   toggle,
   modal,
@@ -145,7 +144,10 @@ const ModalSketch = ({
   };
 
   const onSubmit = (data) => {
+    console.log(data);
     const body = { ...data };
+    if (data["head name"]) body["head_name"] = data["head name"];
+    if (data["location info"]) body["location_info"] = data["location info"];
 
     console.log(body);
 
@@ -310,28 +312,35 @@ const ModalSketch = ({
 
   useEffect(() => {
     if (data && dataID) {
+      let formattedData = [];
+      let newFields = [];
+      let newCount = [];
+
+      let jsonData = [];
+      let fieldsToReset = {};
+
       switch (entityName) {
         case "customer":
         case "facility":
           dispatch({ defaultEntity: data[entity][dataID] });
           reset({
             ...data[entity][dataID],
-            head_name: data[entity][dataID]["head_name"],
+            ["head name"]: data[entity][dataID]["head_name"],
           });
           break;
-        default:
-          const formattedData = data[entity].find((el) => el.id === dataID);
+        case "sensor":
+          formattedData = data[entity].find((el) => el.id === dataID);
           dispatch({ defaultEntity: formattedData });
-          let newFields = [];
+          newFields = [];
 
           if (
             formattedData["jsonData"] &&
             formattedData["jsonData"].length > 0 &&
             formattedData["jsonData"] !== "null"
           ) {
-            let newCount = 0;
+            newCount = 0;
 
-            const jsonData = formattedData["jsonData"];
+            jsonData = formattedData["jsonData"];
 
             jsonData.forEach((el) => {
               newFields.push({
@@ -346,7 +355,53 @@ const ModalSketch = ({
             dispatch({ customFields: newFields });
           }
 
-          let fieldsToReset = {};
+          fieldsToReset = {};
+
+          newFields.forEach((field) => {
+            fieldsToReset[field.id] = field.value;
+            fieldsToReset[field.name] = field.name;
+          });
+
+          if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
+            reset({
+              ...formattedData,
+              ...fieldsToReset,
+            });
+          } else {
+            reset({
+              ...formattedData,
+              ["location info"]: formattedData["location_info"],
+            });
+          }
+          break;
+        default:
+          formattedData = data[entity].find((el) => el.id === dataID);
+          dispatch({ defaultEntity: formattedData });
+          newFields = [];
+
+          if (
+            formattedData["jsonData"] &&
+            formattedData["jsonData"].length > 0 &&
+            formattedData["jsonData"] !== "null"
+          ) {
+            newCount = 0;
+
+            jsonData = formattedData["jsonData"];
+
+            jsonData.forEach((el) => {
+              newFields.push({
+                id: `field${newCount + 1}`,
+                title: el.name,
+                value: el.value,
+              });
+              newCount += 1;
+            });
+
+            dispatch({ customFieldsCount: newCount });
+            dispatch({ customFields: newFields });
+          }
+
+          fieldsToReset = {};
 
           newFields.forEach((field) => {
             fieldsToReset[field.id] = field.value;
@@ -760,7 +815,10 @@ const ModalSketch = ({
                     ))}
                   <FormGroup>
                     <Col>
-                      <Button className="ui-btn ui-btn-primary" onClick={toggleAddFieldModal}>
+                      <Button
+                        className="ui-btn ui-btn-primary"
+                        onClick={toggleAddFieldModal}
+                      >
                         Add field
                       </Button>
                     </Col>
@@ -906,7 +964,12 @@ const ModalSketch = ({
           </Form>
         </ModalBody>
         <ModalFooter>
-          <button className="ui-btn ui-btn-secondary" onClick={toggleAddFieldModal}>Cancel</button>
+          <button
+            className="ui-btn ui-btn-secondary"
+            onClick={toggleAddFieldModal}
+          >
+            Cancel
+          </button>
           <button className="ui-btn ui-btn-primary" form="add-field-form">
             Add
           </button>
