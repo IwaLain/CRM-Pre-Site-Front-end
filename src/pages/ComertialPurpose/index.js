@@ -83,12 +83,13 @@ const ComertialPurpouse = () => {
     .then(data => {
       dispatch({customerNetwork: data.Network})
     })
+    console.log(customerNetwork)
   }, [])
 
   return (
     <div className="purpose" id="purpose">
       <Row className="justify-content-between">
-        <Col md={5} className="purpose__title">
+        <Col md={6} className="purpose__title">
           <h3>Commercial Purpose</h3>
           <div>
             <img src={logo} alt="logo" />

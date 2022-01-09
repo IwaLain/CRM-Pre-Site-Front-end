@@ -40,15 +40,11 @@ const UserEdit = ({ currentUser, editeMethod, toggle }) => {
     };
 
     return (
-        <div>
-            <Row>
-                <Forms 
-                    onSubmit={onSubmit} 
-                    currentUser={currentUser}
-                    type={'edit'}
-                />
-            </Row>
-        </div>
+        <Forms 
+            onSubmit={onSubmit} 
+            currentUser={currentUser}
+            type={'edit'}
+        />
     )
 }
 

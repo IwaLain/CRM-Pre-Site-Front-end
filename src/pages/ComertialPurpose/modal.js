@@ -1,10 +1,12 @@
 import React from 'react'
 import { 
     button, 
+    Col, 
     Modal, 
     ModalBody, 
     ModalFooter, 
-    ModalHeader 
+    ModalHeader, 
+    Row
 } from 'reactstrap'
 import PropTypes from "prop-types";
 
@@ -21,7 +23,20 @@ const ComertialModal = ({togglePDF, preview, date, currentData}) => {
             size='lg'
         >
             <ModalHeader>
-                Preview PDF
+                <Row>
+                    <Col md={12}>
+                        Preview PDF
+                    </Col>
+                    <Col>
+                        <span
+                            type="button"
+                            className="modal-close"
+                            aria-label="Close"
+                            onClick={togglePDF}>
+                                <i class="fas fa-times"></i>
+                        </span>
+                    </Col>
+                </Row>
             </ModalHeader>
             <ModalBody>
                 <Previews 
