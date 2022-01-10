@@ -42,7 +42,7 @@ const ComertialForm = ({
     <Row>
       <Form id="form" onSubmit={handleSubmit(onSubmit, onError)}>
         <Row className="purpose__form justify-content-between">
-          <Col md={5} className="purpose__form-quote">
+          <Col md={6} className="purpose__form-quote">
             <FormGroup className="purpose__quote">
               <Col>
                 <h3>Quote #</h3>

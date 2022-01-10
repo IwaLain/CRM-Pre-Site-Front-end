@@ -1,6 +1,6 @@
 .purpose {
-    padding: 20px;
-    box-shadow: 1px 1px 5px 0px rgb(133, 133, 133);
+    padding: 25px 30px;
+    box-shadow: 3px 3px 8px 0px rgb(228, 228, 228);
     max-width: 900px;
 
     .form-label {
@@ -42,6 +42,7 @@
         textarea {
             width: 100%;
             margin-bottom: 20px;
+            resize: none;
         }
     }
 
@@ -61,11 +62,7 @@
 
         input {
             max-width: 180px;
-            text-align: right;
         }
-
-        ::-webkit-input-placeholder { text-align:left; }
-        input:-moz-placeholder { text-align:left; }
     }
 
     &__table {

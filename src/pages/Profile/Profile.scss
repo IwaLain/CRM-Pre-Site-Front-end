@@ -1,28 +1,28 @@
-.profile {
-  &__container {
-    h3 {
-      padding: 0;
-      margin: 0;
-      margin-bottom: 20px;
-    }
+.profile { 
+  padding: 20px;
+  box-shadow: 3px 3px 8px 0px rgb(228, 228, 228);
+  max-width: 600px;
+
+  @media (max-width: 480px) {
+    box-shadow: none;
+  }
+
+  .row > &__list {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   &__item {
-    align-items: center;
-    padding-bottom: 5px;
-    margin-bottom: 20px;
+    display: flex;
+    margin-bottom: 30px;
+    font-size: 16px;
+    border-bottom: 1px solid #acacac;
 
-    @media (max-width: 445px) {
-      min-width: 200px;
-    }
-
-    .form-label {
-      margin-bottom: 0;
-      min-width: 150px;
-
-      @media (max-width: 445px) {
-        min-width: 100px;
-      }
+    @media (max-width: 480px) {
+      display: block;
+      text-align: center;
+      margin-bottom: 10px;
     }
   }
 
@@ -42,16 +42,10 @@
     }
   }
 
-  &__list {
-    display: flex;
-    margin-bottom: 10px;
-  }
-
   &__avatar {
     display: flex;
     justify-content: center;
     margin-bottom: 10px;
-    margin-left: 25px;
     & input[type='file'] {
       display: none;
     }
@@ -61,42 +55,32 @@
     }
   }
 
-  &__button.btn {
-    max-width: 150px;
-    margin-left: 25px;
-    margin-right: auto;
-    margin-top: 10px;
-  }
-
   &__desc {
     color: #666;
+
+    @media (max-width: 480px) {
+      margin-top: 5px;
+    }
   }
 
   &__username {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
     padding-top: 10px;
     font-size: 24px;
   }
 
-  table {
-    font-size: 16px;
+  &__btn {
+    margin-top: 40px;
+    
+    button {
+      margin-left: auto;
+      padding: 5px 10px;
 
-    .profile__title {
-      text-align: right;
-    }
-
-    .profile__desc {
-      margin-left: 20px;
-
-      i {
-        margin-right: 5px;
+      @media (max-width: 480px) {
+        margin-right: auto;
       }
-    }
-
-    td {
-      margin-bottom: 20px;
     }
   }
 }
@@ -110,18 +94,6 @@
   background: #eeeeee;
   object-fit: cover;
   border-radius: 50%;
-
-  &-edit {
-    .profile__placeholder {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      width: 16px;
-      height: 16px;
-      z-index: 10;
-      visibility: hidden;
-    }
-  }
 
   &:hover,
   &-edit:hover > & {

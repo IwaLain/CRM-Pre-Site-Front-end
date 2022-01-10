@@ -72,7 +72,7 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                 {formComponent}
             </ModalBody>
             <ModalFooter>
-                <FormGroup md={12} className='formUser__buttons'>
+                <div md={12} className='formUser__buttons'>
                     <Row>
                         <Col md={6}>
                             <button
@@ -89,7 +89,7 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                             </button>
                         </Col>
                     </Row>
-                </FormGroup>
+                </div>
             </ModalFooter>
         </Modal>
     )
