@@ -1,4 +1,4 @@
-import Button from "../UIKit/Button/Button";
+import button from "../UIKit/button/button";
 import Badge from "../UIKit/Badge/Badge";
 import Input from "../UIKit/Input/Input";
 import Select from "../UIKit/Select/Select";
@@ -11,12 +11,12 @@ const UIKit = () => {
       <h3 className="mb-5">Page SubTitle - H3</h3>
       <h3>Buttons</h3>
       <div className="ui-kit__category-wrapper mb-5">
-        <Button color="success">Success</Button>
-        <Button color="danger">Danger</Button>
-        <Button color="warning">Warning</Button>
-        <Button color="primary">Primary</Button>
-        <Button color="info">Info</Button>
-        <Button color="default">Default</Button>
+        <button color="success">Success</button>
+        <button color="danger">Danger</button>
+        <button color="warning">Warning</button>
+        <button color="primary">Primary</button>
+        <button color="info">Info</button>
+        <button color="default">Default</button>
       </div>
       <h3>Badges</h3>
       <div className="ui-kit__category-wrapper mb-5">
@@ -60,8 +60,8 @@ const UIKit = () => {
       </div>
       <h3>Controls</h3>
       <div className="ui-kit__category-wrapper">
-        <Button type="list-view" />
-        <Button type="block-view" />
+        <button type="list-view" />
+        <button type="block-view" />
       </div>
     </div>
   );

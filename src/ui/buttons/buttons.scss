@@ -1,0 +1,60 @@
+@import '../_variables.scss';
+
+.ui-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 32px;
+    min-height: 32px;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    line-height: 1.5;
+    padding: 3px 7px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+
+    > a {
+        border-radius: 5px;
+        line-height: 1.5;
+    }
+
+    &-primary {
+        background-color: $info;
+    }
+    &-secondary {
+        background-color: $secondary;
+    }
+    &-success {
+        background-color: $success;
+    }
+    &-info {
+        background-color: $info;
+    }
+    &-warning {
+        background-color: $warning;
+    }
+    &-danger {
+        background-color: $danger;
+    }
+    &-focus {
+        background-color: $focus;
+    }
+    &-alt {
+        background-color: $alt;
+    }
+    &-light {
+        background-color: $light;
+    }
+    &-dark {
+        background-color: $dark;
+    }
+
+    .fa-edit, .fa-trash-alt {
+        font-size: 14px;
+    }
+}

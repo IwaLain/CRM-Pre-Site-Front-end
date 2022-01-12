@@ -3,7 +3,6 @@ import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context";
-import Button from "../UIKit/Button/Button";
 
 const InfoCard = ({
   data,
@@ -20,7 +19,6 @@ const InfoCard = ({
   const [toggleEntityModal, setToggleEntityModal] = useState(false);
   const [subEntity, setSubEntity] = useState("");
   const [progress, setProgress] = useState(0);
-  const { setEditId } = useContext(GlobalContext);
   const [mainImage, setMainImage] = useState();
   const onSetMainImage = (images) => {
     if (images && images.length > 0) {
@@ -78,7 +76,7 @@ const InfoCard = ({
       toggleEntityModal
     ) {
       dispatch({ mode: "edit" });
-      setEditId(data.id);
+      dispatch({ modalDataID: data.id });
       toggleModal();
       setToggleEntityModal(!toggleEntityModal);
     }
@@ -93,9 +91,8 @@ const InfoCard = ({
           onChange={() => changeCustomer(data.id)}
         />
       ) : (
-        <Button
-          color="default"
-          className="info-card__edit"
+        <button
+          className="info-card__edit ui-btn ui-btn-secondary"
           onClick={() => {
             if (setCurrentSubEntityName) {
               setToggleEntityModal(!toggleEntityModal);
@@ -105,7 +102,7 @@ const InfoCard = ({
                 dispatch({ mode: "edit" });
               }
               if (data) {
-                setEditId(data.id);
+                dispatch({ modalDataID: data.id });
               }
               if (toggleModal) {
                 toggleModal();
@@ -114,7 +111,7 @@ const InfoCard = ({
           }}
         >
           <i className="far fa-edit"></i>
-        </Button>
+        </button>
       )}
       <div className="info-card__body">
         <div>
@@ -150,14 +147,15 @@ const InfoCard = ({
             }
           >
             <Link
+              className="ui-btn ui-btn-info"
               to={`/${type}/${data && data.id}`}
               style={data && hideRecordView ? { visibility: "hidden" } : {}}
             >
               View
             </Link>
             {chooseMode && (
-              <Button
-                color="default"
+              <button
+                className="ui-btn ui-btn-secondary"
                 onClick={() => {
                   if (setCurrentSubEntityName) {
                     setToggleEntityModal(!toggleEntityModal);
@@ -167,7 +165,7 @@ const InfoCard = ({
                       dispatch({ mode: "edit" });
                     }
                     if (data) {
-                      setEditId(data.id);
+                      dispatch({ modalDataID: data.id });
                     }
                     if (toggleModal) {
                       toggleModal();
@@ -176,7 +174,7 @@ const InfoCard = ({
                 }}
               >
                 <span>Edit</span>
-              </Button>
+              </button>
             )}
           </div>
         </div>

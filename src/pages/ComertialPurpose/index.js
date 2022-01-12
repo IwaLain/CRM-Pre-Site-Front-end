@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useReducer } from "react";
-import { Button, Col, Row } from "reactstrap";
-import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
+import React, { useContext, useEffect, useReducer } from 'react'
+import { Col, Row } from 'reactstrap'
+import { useForm } from 'react-hook-form'
+import { ToastContainer } from 'react-toastify'
 
 import { reducer } from "../../reducer";
 
@@ -18,7 +18,7 @@ import customersApi from "../../js/api/customer";
 import { GlobalContext } from "../../context";
 
 const ComertialPurpouse = () => {
-  const { userProfile } = useContext(GlobalContext);
+  const { selectedCustomer, userProfile } = useContext(GlobalContext)
 
   const initialState = {
     quote: "Q" + Math.floor(Date.now() / 1000),
@@ -34,12 +34,15 @@ const ComertialPurpouse = () => {
       item: "",
       price: 0,
     },
+    resetTable: false,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { quote, currentData, modalPDF, customerNetwork } = state;
+  const { quote, currentData, modalPDF, customerNetwork, resetTable } = state;
 
-  const date = new Date().toLocaleDateString("en-US");
+  const d = new Date()
+  const date = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+  d.getFullYear();
 
   const togglePDF = () => dispatch({ modalPDF: !modalPDF });
   const newQuote = () => {
@@ -71,23 +74,28 @@ const ComertialPurpouse = () => {
     date,
   };
 
+  const resetForm = () => {
+    reset({ ...register, quote: newQuote() })
+  }
+
   useEffect(() => {
-    customersApi.getNetwork(userProfile.last_customer).then((data) => {
-      console.log(data.Network);
-      dispatch({ customerNetwork: data.Network });
-    });
-  }, []);
+    customersApi.getNetwork(selectedCustomer.id === undefined ? userProfile.last_customer : selectedCustomer.id)
+    .then(data => {
+      dispatch({customerNetwork: data.Network})
+    })
+    console.log(customerNetwork)
+  }, [])
 
   return (
     <div className="purpose" id="purpose">
-      <Row className="purpose__title-print">
-        <Col lg={4} md={5} sm={6} className="purpose__title">
+      <Row className="justify-content-between">
+        <Col md={6} className="purpose__title">
           <h3>Commercial Purpose</h3>
           <div>
             <img src={logo} alt="logo" />
           </div>
         </Col>
-        <Col lg={4} md={5} sm={6} className="purpose__adress">
+        <Col md={5} className="purpose__adress">
           Waites Sensor Techologies, Inc.
           <br />
           20 W. 11th St. Suite 200
@@ -104,6 +112,7 @@ const ComertialPurpouse = () => {
         togglePDF={togglePDF}
         modalPDF={modalPDF}
         newQuote={newQuote}
+        resetForm={resetForm}
       />
 
       <Table
@@ -115,8 +124,8 @@ const ComertialPurpouse = () => {
       {dataValid(customerNetwork) ? (
         <Row className="purpose__buttons">
           <Col lg={2} md={2}>
-            <Button
-              className="btn btn-primary"
+            <button
+              className="ui-btn ui-btn-info"
               form="form"
               onClick={(e) => {
                 e.preventDefault();
@@ -128,12 +137,12 @@ const ComertialPurpouse = () => {
               }}
             >
               <i className="far fa-eye"></i> Preview
-            </Button>
+            </button>
           </Col>
           <Col lg={2} md={2}>
-            <Button className="btn btn-success " id="purpose" form="form">
+            <button className="ui-btn ui-btn-success" id="purpose" form="form">
               <i className="fas fa-file-pdf"></i> Create PDF
-            </Button>
+            </button>
           </Col>
         </Row>
       ) : (

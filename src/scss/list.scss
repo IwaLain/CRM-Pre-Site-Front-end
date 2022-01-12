@@ -1,16 +1,11 @@
 @import "./scss-variables.scss";
 
 .list {
-  background-color: white;
-  padding: 15px 0 0 0;
-  border-radius: 10px;
-  box-shadow: 0 0 0 1px #ddd;
-
   .progress {
     width: 100%;
-
+    height: 8px;
     > .progress-bar {
-      background-color: $success;
+      background-color: #dab738;
     }
   }
 
@@ -32,17 +27,9 @@
   }
 
   .table-view_btn {
-    background-color: $primary;
     color: white;
-    border: 1px solid transparent;
     text-decoration: none;
     text-align: center;
-    padding: 10px 17px;
-    border-radius: 5px;
-
-    &:hover {
-      border: 1px solid black;
-    }
   }
 
   .sc-iwjdpV.kntihR > div {
@@ -158,13 +145,11 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    padding: 0 15px;
-
+    padding: 10px;
+    background-color: #fafafa;
+    border-radius: 5px;
     button {
-      background: white;
       border: 1px solid transparent;
-      border-radius: 4px;
-      padding: 0;
     }
 
     @media (max-width: 1024px) {
@@ -235,12 +220,18 @@
     align-items: center;
 
     > .list__add-btn {
-      background-color: $primary;
       color: white;
     }
 
+    > button {
+      padding: 3px 5px;
+      color: #fff;
+      opacity: 0.6;
+    }
+
     > button.active {
-      border: 1px solid black;
+      background-color: $success;
+      opacity: 1;
     }
   }
 

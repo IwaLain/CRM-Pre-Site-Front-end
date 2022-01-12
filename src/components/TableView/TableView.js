@@ -4,7 +4,6 @@ import { Progress } from "reactstrap";
 import { GlobalContext } from "../../context";
 import { Link } from "react-router-dom";
 import Input from "../UIKit/Input/Input";
-import Button from "../UIKit/Button/Button";
 
 const paginationComponentOptions = {
   noRowsPerPage: true,
@@ -27,7 +26,7 @@ const TableView = ({
   const [listData, setListData] = useState([]);
   const [progressField, SetProgressField] = useState("Progress");
 
-  const { setEditId, selectedCustomer } = useContext(GlobalContext);
+  const { selectedCustomer } = useContext(GlobalContext);
 
   const staticColsStart = [
     {
@@ -57,25 +56,26 @@ const TableView = ({
       cell: (row) => (
         <>
           <Link
-            className="table-view_btn me-2"
+            className="table-view_btn ui-btn ui-btn-info me-2"
             to={`/${type.entity}/${row.id}`}
             style={hideRecordView && { visibility: "hidden" }}
           >
-            View
+            <i className="far fa-eye"></i>
           </Link>
-          <Button
-            color="default"
+          <button
+            className="ui-btn ui-btn-secondary"
             onClick={() => {
               dispatch({ mode: "edit" });
-              setEditId(row.id);
+              dispatch({ modalDataID: row.id });
               toggleModal();
             }}
           >
-            Edit
-          </Button>
+            <i className="far fa-edit users-table__img" alt="edite"></i>
+          </button>
         </>
       ),
       width: "171px",
+      right: true
     },
   ];
 

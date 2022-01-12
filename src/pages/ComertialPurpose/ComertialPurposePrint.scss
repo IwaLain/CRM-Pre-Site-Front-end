@@ -39,11 +39,6 @@
         height: 120vh;
     }
 
-    .purpose__title-print {
-        display: flex !important;
-
-    }
-
     .purpose__title {
         width: 45% !important;
 
@@ -57,6 +52,10 @@
     }
 
     .purpose__quote {
+        textarea {
+            margin-bottom: 10px;
+        }
+        
         input {
             text-align: right;
         }

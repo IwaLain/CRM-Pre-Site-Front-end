@@ -72,17 +72,13 @@ const LoginPage = () => {
                         customer.customer[data.user.last_customer]
                       );
                     });
-                } catch (e) {
-                  console.log(e);
-                }
+                } catch (e) {}
               }
             }
           });
         }
       });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   return (
@@ -117,7 +113,7 @@ const LoginPage = () => {
                 </Row>
                 <Row>
                   <FormGroup className="d-flex justify-content-end">
-                    <button className="login__btn">Login</button>
+                    <button className="login__btn ui-btn ui-btn-primary">Login</button>
                   </FormGroup>
                 </Row>
               </Form>

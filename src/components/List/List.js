@@ -9,12 +9,12 @@ import customersApi from "../../js/api/customer";
 import locationApi from "../../js/api/locations";
 import equipmentApi from "../../js/api/equipment";
 import facilitiesApi from "../../js/api/facilities";
-import Button from "../UIKit/Button/Button";
 import ModalSketch from "../ModalComponent/ModalSketch";
 import Loader from "../widgets/Loader/Loader";
 import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import debounce from "../../js/helpers/debounce";
+import Button from "../UIKit/Button/Button";
 
 const List = ({
   type,
@@ -34,6 +34,7 @@ const List = ({
     searchQuery: "",
     requests: {},
     isLoading: false,
+    selectIsLoaded: false,
     view: true,
     screenSize: window.innerWidth,
     totalRows: Math.ceil(0),
@@ -43,6 +44,8 @@ const List = ({
     page: 1,
     modal: false,
     prevSelectedAll: false,
+    modalData: {},
+    modalDataID: null,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -51,6 +54,7 @@ const List = ({
     searchQuery,
     requests,
     isLoading,
+    selectIsLoaded,
     view,
     screenSize,
     totalRows,
@@ -60,6 +64,8 @@ const List = ({
     prevSelectedAll,
     page,
     mode,
+    modalData,
+    modalDataID,
   } = state;
 
   const RECORDS_PER_PAGE = 20;
@@ -83,7 +89,7 @@ const List = ({
     return formattedNames;
   };
 
-  const debouncedSearchHandler = debounce((e) => handleSearch(e));
+  const debouncedSearchHandler = debounce((e) => handleSearch(e), 500);
 
   const handleSearch = (e) => {
     dispatch({ searchQuery: e.target.value });
@@ -207,7 +213,6 @@ const List = ({
   };
 
   const changeCustomer = (id) => {
-    dispatch({ isLoading: true });
     try {
       fetch(
         process.env.REACT_APP_SERVER_URL +
@@ -220,7 +225,6 @@ const List = ({
         .then((customer) => {
           if (customer) {
             setSelectedCustomer(customer.customer[id]);
-            dispatch({ isLoading: false });
           }
         });
     } catch (e) {}
@@ -336,7 +340,7 @@ const List = ({
   }, [requests, updateTrigger]);
 
   useEffect(() => {
-    if (requests.ref)
+    if (requests.ref) {
       try {
         requests.ref(-1).then((res) => {
           if (Object.keys(res[type.ref]).length > 0 && !hideSelect) {
@@ -350,8 +354,10 @@ const List = ({
               setEntityID(selectedCustomer.id);
             } else setEntityID(formattedNames[0].id);
           }
+          dispatch({ selectIsLoaded: true });
         });
       } catch (e) {}
+    }
   }, [requests.ref]);
 
   useEffect(() => {
@@ -391,6 +397,9 @@ const List = ({
         modal={modal}
         toggle={toggleModal}
         mode={mode}
+        data={data}
+        dataID={modalDataID}
+        parentDispatch={dispatch}
       />
       <div className="list">
         <div className="list__header">
@@ -401,7 +410,7 @@ const List = ({
             <h3>{title}</h3>
             {!hideCreateBtn && (
               <button
-                className="list__add-btn"
+                className="list__add-btn ui-btn ui-btn-success"
                 onClick={() => {
                   dispatch({ mode: "create" });
                   toggleModal();
@@ -416,7 +425,7 @@ const List = ({
               <div className="list__select-entity">
                 <Label for="select-entity">{type && `${type.ref}:`}</Label>
                 <select
-                  className="ui-kit__select"
+                  className="default-select"
                   id="select-entity"
                   value={entityID}
                   onChange={handleEntitySelect}
@@ -438,7 +447,7 @@ const List = ({
             {!hideSearch && (
               <div style={{ display: "flex" }}>
                 <input
-                  className="list__search"
+                  className="list__search default-input"
                   type="text"
                   placeholder="Search..."
                   onInput={debouncedSearchHandler}
@@ -450,19 +459,19 @@ const List = ({
                 <Button
                   type="list-view"
                   onClick={() => dispatch({ view: true })}
-                  className={view ? "active" : ""}
+                  className={`ui-btn ui-btn-success ${view ? "active" : ""}`}
                 ></Button>
                 <Button
                   type="block-view"
                   onClick={() => dispatch({ view: false })}
-                  className={!view ? "active" : ""}
+                  className={`ui-btn ui-btn-success ${!view ? "active" : ""}`}
                 ></Button>
               </div>
             )}
           </div>
         </div>
         {!isLoading ? (
-          <div className="list__content">
+          <div className="list__content table-striped">
             <>
               {view ? (
                 <TableView

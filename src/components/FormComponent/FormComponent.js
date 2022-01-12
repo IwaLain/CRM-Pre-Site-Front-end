@@ -88,7 +88,7 @@ const FormComponent = ({
           {addFieldBtn && (
             <FormGroup row>
               <Col sm={2} className="offset-md-2">
-                <Button color="primary" onClick={toggle}>
+                <Button className="ui-btn ui-btn-primary" onClick={toggle}>
                   Add field
                 </Button>
               </Col>
@@ -98,10 +98,10 @@ const FormComponent = ({
           <FormGroup row>
             <Col sm={4} className="offset-md-2">
               <div className="btn-toolbar ">
-                <Button color="primary" className="me-3" type="submit">
+                <button className="ui-btn ui-btn-primary" className="me-3" type="submit">
                   Submit
-                </Button>
-                <Button type="reset">Cancel</Button>
+                </button>
+                <button type="reset">Cancel</button>
               </div>
             </Col>
           </FormGroup>

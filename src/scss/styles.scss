@@ -110,14 +110,12 @@ ul {
     top: 0;
     z-index: 50;
     font-size: 1.1em;
-
     .logo-sidebar {
       margin-bottom: 35px;
     }
 
     .logo {
       margin-bottom: 35px;
-
       img:nth-child(1) {
         width: 30px;
         max-width: 45px;
@@ -128,18 +126,25 @@ ul {
     nav {
       .fa-ul {
         list-style: none;
-        margin-left: 2.25rem;
+        margin-left: 30px;
+      }
+
+      .fa-ul li {
+        height: 40px;
       }
 
       > ul > li > a > i {
         margin-right: 10px;
+        font-size: 1.25em;
       }
 
       > ul > li > a {
         text-decoration: none;
         color: #fff;
         font-weight: bold;
-        font-size: 1.25em;
+        margin-left: 10px;
+        font-size: 1em;
+        letter-spacing: 0.05rem;
       }
     }
   }
@@ -166,19 +171,31 @@ ul {
     overflow-x: auto;
   }
 
-  .modal-body > form > div > div {
+  .modal-body > form > div {
     position: relative;
+  }
+  .modal-body > form .form-label{
+    font-size: 14px;
+    margin-bottom: 5px;
   }
 
   .modal-body > form > div small {
     position: absolute;
-    top: -20px;
+    top: 10px;
     right: 0;
   }
 
   .modal-footer {
     display: flex;
     justify-content: space-between;
+
+    button {
+      padding: 5px 15px;
+    }
+
+    i {
+      margin-right: 5px;
+    }
   }
 
   .modal-close {
@@ -193,6 +210,18 @@ ul {
     display: flex;
     flex-direction: row;
   }
+
+  .modal-body > .add-field-form {
+    div {
+      position: relative;
+    }
+
+    > div > small {
+      visibility: hidden;
+      top: 10px;
+    }
+  }
+
   .delete-field__btn {
     color: red;
     background-color: white;
@@ -223,24 +252,23 @@ ul {
 
 .info-card_group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  grid-gap: 10px;
-  padding: 0 15px 15px 15px;
+  grid-auto-columns: minmax(15rem, auto);
+  grid-template-columns: repeat(auto-fill, minmax(320px, auto));
+  grid-gap: 1rem;
+  // padding: 0 15px 15px 15px;
 }
 
 .info-card {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 350px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+  min-width: 320px;
+  max-width: 390px;
+  border: 1px solid #dedede;
   border-radius: 4px;
 
   .info-card__edit {
     position: absolute;
     top: 5px;
     right: 5px;
-    padding: 3px 3px 3px 5px;
   }
 
   .progress {
@@ -249,7 +277,7 @@ ul {
   }
 
   .progress .progress-bar {
-    background-color: $success;
+    background-color: #dab738;
   }
 
   > input {
@@ -275,7 +303,6 @@ ul {
   align-items: center;
   padding: 8px 10px;
   width: 100%;
-
   > *:not(:last-child) {
     margin-bottom: 7px;
   }
@@ -288,22 +315,20 @@ ul {
   font-weight: bold;
 
   > button {
-    padding: 4px 30px;
-    border-radius: 2px;
+    padding: 4px 15px;
+    // border-radius: 2px;
   }
 
   > a {
-    padding: 4px 30px;
-    border-radius: 2px;
+    padding: 4px 15px;
     text-decoration: none;
     color: white;
-    background-color: $primary;
+    // background-color: $primary;
     border: 1px solid transparent;
   }
 
   > a:hover {
     color: white;
-    border: 1px solid black;
   }
 }
 
@@ -346,17 +371,17 @@ ul {
 
 .dropzone {
   display: flex;
-  justify-content: center;
+
   text-align: center;
   position: relative;
-
+  align-items: center;
   padding: 10px;
   background: white;
   border-radius: 5px;
   border: 2px dashed rgb(0, 135, 247);
   border-image: none;
   width: 100%;
-  min-height: 100px;
+  min-height: 120px;
   .thumbsContainer {
     display: flex;
     flex-direction: row;
@@ -408,10 +433,10 @@ ul {
     }
   }
 
-  .dropzone--placeholder {
+  &.dropzone--placeholder {
     justify-content: center;
     align-items: center;
-    &-text {
+    .dropzone--placeholder-text {
       max-width: 200px;
       opacity: 0.5;
     }
@@ -464,13 +489,11 @@ ul {
 
 .breadcrumbs__breadcrumb-item:not(:last-child) > a:hover {
   text-decoration: underline;
-  font-weight: bold;
   color: black;
 }
 
-.breadcrumbs__breadcrumb-item:last-child {
-  font-weight: bold;
-}
+// .breadcrumbs__breadcrumb-item:last-child {
+// }
 
 .breadcrumbs__breadcrumb-item:last-child > a:hover {
   color: black;
@@ -481,7 +504,7 @@ ul {
 }
 
 .breadcrumbs {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 /* Statistics Dashboard */
@@ -499,7 +522,7 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid;
+  border: 1px solid #dedede;
   border-radius: 4px;
   padding: 10px 50px;
   width: 100%;
@@ -521,8 +544,10 @@ ul {
 }
 
 .dashboard-page__block .dashboard-page__block-view {
-  padding: 5px 20px;
-  font-size: 0.6em;
+  margin-top: 10px;
+  padding: 5px 15px;
+  font-size: 0.5em;
+  letter-spacing: 0.3px;
 }
 
 .ui-kit__category-wrapper {
@@ -615,4 +640,30 @@ h1 {
 .ui-kit__textarea:active {
   outline: none;
   border: 1px solid black;
+}
+
+@import "../ui/buttons/buttons.scss";
+@import "../ui/paginations/pagination.scss";
+@import "../ui/tables/tables.scss";
+@import "../ui/inputs.scss";
+
+.button-edit {
+  margin-right: 5px;
+}
+
+.ui-btn-danger {
+  background-color: rgb(136, 0, 0);
+}
+
+.profile__desc {
+  > button {
+    padding: 5px 10px;
+  }
+  > i {
+    margin-right: 5px;
+  }
+}
+
+.dashboard-page__block .dashboard-page__block-view {
+  padding: 0px 10px;
 }

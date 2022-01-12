@@ -31,7 +31,7 @@ const Button = ({
   return (
     <button
       className={
-        type ? `${className} ui-kit__type-btn` : `${className} ui-kit__btn`
+        type ? `${className}` : `${className} `
       }
       style={formattedStyle}
       onClick={onClick}
@@ -41,9 +41,9 @@ const Button = ({
     >
       {type ? (
         type === "list-view" ? (
-          <img src={listView} alt="list-view error" />
+          <i class="fas fa-bars" alt="list-view error"></i>
         ) : type === "block-view" ? (
-          <img src={blockView} alt="block-view error" />
+          <i class="fas fa-th-large" alt="block-view error"></i>
         ) : (
           children
         )
