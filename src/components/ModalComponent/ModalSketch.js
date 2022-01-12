@@ -624,7 +624,7 @@ const ModalSketch = ({
                         errors[field.title.toLowerCase()].message}
                     </small>
                   </FormGroup>
-                ) : field.inputType === "number" ? (
+                ) :  field.inputType === "number" ? (
                   <FormGroup
                     key={index}
                     style={
@@ -632,43 +632,79 @@ const ModalSketch = ({
                         ? { display: "inline-block" }
                         : {}
                     }
-                    className="col-3"
+                    className={
+                      field.title === "Lat" || field.title === "Lng"
+                        ? "col-3"
+                        : "col-sm-6"
+                    }
                   >
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col
-                      sm={
-                        field.title === "Lat"
-                          ? 10
-                          : field.title === "Lng"
-                          ? 12
-                          : 6
-                      }
-                      className={"col-11"}
-                    >
-                      <input
-                        className={`form-control ${
-                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
-                        }`}
-                        id={`${field.title}-field`}
-                        type="number"
-                        placeholder={`Enter ${field.title.toLowerCase()}.`}
-                        {...register(field.title.toLowerCase(), {
-                          required: {
-                            value: true,
-                            message: `${field.title} is required.`,
-                          },
-                          pattern: {
-                            value: /^-?[0-9]\d*\.?\d*$/,
-                            message: `${field.title} is number only.`,
-                          },
-                        })}
-                      />
-                      <small className="text-danger validation-error">
-                        {errors &&
-                          errors[field.title.toLowerCase()] &&
-                          errors[field.title.toLowerCase()].message}
-                      </small>
-                    </Col>
+                    {field.title === "Serial" ? (
+                      <>
+                        <input
+                          className={`form-control ${
+                            errors[field.title.toLowerCase()]
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                          id={`${field.title}-field`}
+                          type="number"
+                          placeholder={`Enter ${field.title.toLowerCase()}.`}
+                          {...register(field.title.toLowerCase(), {
+                            required: {
+                              value: true,
+                              message: `${field.title} is required.`,
+                            },
+                            pattern: {
+                              value: /^-?[0-9]\d*\.?\d*$/,
+                              message: `${field.title} is number only.`,
+                            },
+                          })}
+                        />
+                        <small className="text-danger validation-error">
+                          {errors &&
+                            errors[field.title.toLowerCase()] &&
+                            errors[field.title.toLowerCase()].message}
+                        </small>
+                      </>
+                    ) : (
+                      <Col
+                        sm={
+                          field.title === "Lat"
+                            ? 10
+                            : field.title === "Lng"
+                            ? 12
+                            : 6
+                        }
+                        className={"col-11"}
+                      >
+                        <input
+                          className={`form-control ${
+                            errors[field.title.toLowerCase()]
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                          id={`${field.title}-field`}
+                          type="number"
+                          placeholder={`Enter ${field.title.toLowerCase()}.`}
+                          {...register(field.title.toLowerCase(), {
+                            required: {
+                              value: true,
+                              message: `${field.title} is required.`,
+                            },
+                            pattern: {
+                              value: /^-?[0-9]\d*\.?\d*$/,
+                              message: `${field.title} is number only.`,
+                            },
+                          })}
+                        />
+                        <small className="text-danger validation-error">
+                          {errors &&
+                            errors[field.title.toLowerCase()] &&
+                            errors[field.title.toLowerCase()].message}
+                        </small>
+                      </Col>
+                    )}
                   </FormGroup>
                 ) : (
                   <FormGroup key={index} className="col-sm-6">
@@ -697,7 +733,7 @@ const ModalSketch = ({
                     </small>
                   </FormGroup>
                 )
-              ) : field.fieldType === "form-ref-select" ? (
+              ): field.fieldType === "form-ref-select" ? (
                 <FormGroup key={index} className="col-sm-6">
                   <Label for="select-ref">
                     {subEntity.charAt(0).toUpperCase() + subEntity.slice(1)}
