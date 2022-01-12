@@ -10,7 +10,7 @@ import {
 } from 'reactstrap'
 import PropTypes from "prop-types";
 
-import Previews from './'
+import Previews from './preview'
 
 const ComertialModal = ({togglePDF, preview, date, currentData}) => {
     const {previewData, quote, modalPDF} = preview

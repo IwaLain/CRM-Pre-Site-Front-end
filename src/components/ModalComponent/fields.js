@@ -248,6 +248,7 @@ export default {
       inputType: "text",
     },
     {
+      title: "location image",
       fieldType: "images",
       fileType: "location",
       mode: "single",
@@ -255,6 +256,7 @@ export default {
       titleNeeded: false,
     },
     {
+      title: "equipment image",
       fieldType: "images",
       fileType: "equipment",
       mode: "single",
