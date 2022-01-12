@@ -33,12 +33,10 @@ const UserAdd = ({ changeTable, toggle }) => {
     
     return (
         <div>
-            <Row>
-                <Form 
-                    onSubmit={onSubmit} 
-                    type={'add'}
-                />
-            </Row>
+            <Form 
+                onSubmit={onSubmit} 
+                type={'add'}
+            />
         </div>
     )
 }

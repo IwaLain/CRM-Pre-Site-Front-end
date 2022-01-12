@@ -1,0 +1,30 @@
+@import "../_variables";
+.rdt_Table {
+  & .rdt_TableHead {
+    & .rdt_TableHeadRow {    
+      border: none;
+      & .rdt_TableCol {
+        & .rdt_TableCol_Sortable {
+          font-weight: bold;
+          vertical-align: bottom;
+          letter-spacing: 0.3px;
+          font-size: 14px;
+        }
+      }
+    } 
+  }
+  & .rdt_TableBody {
+    & .rdt_TableRow {
+      border: none;
+      & .rdt_TableCell {
+        
+      }
+      &:nth-of-type(odd) {
+        background-color: $light;
+      } 
+      &:hover {
+        background: $softBlue;
+      }
+    } 
+  }
+}

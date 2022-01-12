@@ -82,28 +82,14 @@ const Forms = ({ onSubmit, currentUser = "", type }) => {
           { type: "phone", title: "Phone", errors: errors.phone, required: 1 },
           { type: "role", title: "Role", errors: errors.role, required: 0 },
         ]
-      : type === "profile"
-      ? [
-          {
-            type: "firstname",
-            title: "First Name",
-            errors: errors.firstname,
-            required: 0,
-          },
-          {
-            type: "lastname",
-            title: "Last Name",
-            errors: errors.lastname,
-            required: 0,
-          },
-          {
-            type: "username",
-            title: "User Name",
-            errors: errors.username,
-            required: 1,
-          },
-          { type: "email", title: "Email", errors: errors.email, required: 1 },
-          { type: "phone", title: "Phone", errors: errors.phone, required: 1 },
+        : type === 'profile'
+        ?
+        [
+            {type: 'firstname', title: 'First Name', errors: errors.firstname, required: 0},
+            {type: 'lastname', title: 'Lust Name', errors: errors.lastname, required: 0},
+            {type: 'username', title: 'User Name', errors: errors.username, required: 1},
+            {type: 'email', title: 'Email', errors: errors.email, required: 1},
+            {type: 'phone', title: 'Phone', errors: errors.phone, required: 1},
         ]
       : null;
   };

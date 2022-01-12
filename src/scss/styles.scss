@@ -252,16 +252,16 @@ ul {
 
 .info-card_group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  grid-gap: 10px;
+  grid-auto-columns: minmax(15rem, auto);
+  grid-template-columns: repeat(auto-fill, minmax(320px, auto));
+  grid-gap: 1rem;
   // padding: 0 15px 15px 15px;
 }
 
 .info-card {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 350px;
+  min-width: 320px;
+  max-width: 390px;
   border: 1px solid #dedede;
   border-radius: 4px;
 

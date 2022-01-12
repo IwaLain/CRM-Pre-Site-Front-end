@@ -1,5 +1,5 @@
 import React, { useReducer, useContext, useEffect } from 'react'
-import { button, Col, Label, Row } from 'reactstrap'
+import { Col, Label, Row } from 'reactstrap'
 
 import convertToBase64 from '../../js/helpers/convertImage'
 import { GlobalContext } from '../../context'
@@ -17,7 +17,7 @@ const ProfilePage = () => {
 
   const initialState = {
     profile: userProfile,
-    loadedImg: process.env.REACT_APP_SERVER_URL + '/' + userProfile.img,
+    loadedImg: userProfile.img,
     modalEditProfile: false,
     img: ''
   }
@@ -26,8 +26,6 @@ const ProfilePage = () => {
   const { profile, loadedImg, modalEditProfile, img } = state
 
   const profileData = [
-    { title: 'Avatar', desc: profile.img },
-    { title: 'Username', desc: profile.username },
     { title: 'First Name', desc: profile.first_name },
     { title: 'Last Name', desc: profile.last_name },
     { title: 'Phone', desc: profile.phone },
@@ -36,12 +34,18 @@ const ProfilePage = () => {
   ]
 
   const toggleEditProfile = () => dispatch({ modalEditProfile: !modalEditProfile })
-
-  const editeProfile = (data) => {
-    dispatch({ profile: data })
-  }
-
+  const editeProfile = (data) => dispatch({ profile: data })
   const checkEmpty = (data) => (data ? data : '--')
+  const checkImgProfile = (newLoadedImg) => {
+    if (newLoadedImg === null || '') {
+      return placeholder
+    } else {
+      if(newLoadedImg.includes('blob:'))
+        return newLoadedImg
+      else 
+        return process.env.REACT_APP_SERVER_URL + '/' + newLoadedImg
+    }
+  }
 
   useEffect(() => {
     Profile.getProfile().then((data) => {
@@ -49,90 +53,81 @@ const ProfilePage = () => {
     })
   }, [])
 
-  const setNewImage = (img) => {
+  const setNewImage = (newImage) => {
     let data = {
-      img: img
+      img: newImage
     }
 
-    setUserProfile({ ...userProfile, img: loadedImg })
     Profile.updateProfile(profile.id, data)
+    .then(data => {
+      setUserProfile({ ...userProfile, img: loadedImg })
+    })
   }
 
   const addImageHandler = (e) => {
     const file = e.target.files[0]
-
     if (file) {
-      convertToBase64(file).then((res) => dispatch({ img: res }))
+      convertToBase64(file).then(res => dispatch({ img: res }))
       const url = URL.createObjectURL(file)
       dispatch({ loadedImg: url })
       setNewImage(img)
     }
+
+    console.log(img)
+
+    e.target.value = ""
   }
 
   return (
-    <div className="container-fluid profile__container">
+    <div className="profile">
       <Row>
         <h3>Profile</h3>
       </Row>
-      <Row className="profile__item">
-        <Row md="12" className="profile">
-          <Col className="profile__data">
-            <table>
-              <tbody>
-                {profileData.map((data) =>
-                  data.title === 'Avatar' ? (
-                    <tr className="profile__list" key={data.title}>
-                      <td className="profile__title">
-                        <Label>{data.title}</Label>
-                      </td>
-                      <td className="profile__avatar">
-                        <Label className="image-field" for="image-field">
-                          <img
-                            className="profile__img"
-                            src={loadedImg !== '' || null ? loadedImg : placeholder}
-                            alt="Avatar"
-                          />
-                        </Label>
-                        <input
-                          className="form-control"
-                          id="image-field"
-                          type="file"
-                          accept=".png, .jpg, .jpeg"
-                          onChange={addImageHandler}
-                        />
-                      </td>
-                    </tr>
-                  ) : (
-                    <tr className="profile__list" key={data.title}>
-                      <td className="profile__title">
-                        <Label>{data.title}</Label>
-                      </td>
-                      <td className="profile__desc">
-                        <div className="profile__desc">{checkEmpty(data.desc)}</div>
-                      </td>
-                    </tr>
-                  )
-                )}
-                <tr className="profile__list" key="profile__button">
-                  <td className="profile__title">
-                    <Label></Label>
-                  </td>
-                  <td className="profile__desc">
-                    <Row>
-                      <button
-                        className="ui-btn ui-btn-primary"
-                        onClick={toggleEditProfile}
-                      >
-                        <i className="fas fa-user-edit"></i>
-                        Edit Profile
-                      </button>
-                    </Row>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </Col>
-        </Row>
+      <Row>
+        <div className='profile__title'>
+          <div className='profile__avatar'>
+              <Label className="image-field" for="image-field">
+                <img
+                  className="profile__img"
+                  src={checkImgProfile(loadedImg)}
+                  alt="Avatar"
+                />
+              </Label>
+              <input
+                className="form-control"
+                id="image-field"
+                type="file"
+                accept=".png, .jpg, .jpeg"
+                onChange={addImageHandler}
+              />
+          </div>
+          <div className='profile__username'>
+            {profile.username}
+          </div>
+        </div>
+        <ul className='profile__list'>
+          {
+            profileData.map((data) =>
+              <li className='profile__item' key={data.title}>
+                <Col>
+                  {data.title}
+                </Col>
+                <Col>
+                  <div className="profile__desc">{checkEmpty(data.desc)}</div>
+                </Col>
+              </li>           
+            )
+          }
+        </ul>
+        <div className='profile__btn' key='profile__btn'>
+          <button
+              className="ui-btn ui-btn-primary"
+              onClick={toggleEditProfile}
+            >
+            <i className="fas fa-user-edit"></i>
+            Edit Profile
+          </button>
+        </div>
       </Row>
       {modalEditProfile ? (
         <UserModal
