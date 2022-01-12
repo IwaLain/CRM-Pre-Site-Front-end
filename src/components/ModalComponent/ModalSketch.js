@@ -766,8 +766,13 @@ const ModalSketch = ({
                     </Col>
                   </FormGroup>
                 </>
-              ) : field.fieldType === "images" ? (
-                <div key={index}>
+              ) : field.fieldType === "images" ? (                
+                <div 
+                  key={index}                  
+                  className={`${
+                    (field.title === "location image" || field.title === "equipment image") ? "col-sm-6" : ""
+                  }`}
+                >
                   {!field.titleNeeded && <span>{field.fileType} image</span>}
                   <AttachmentList
                     key={index}
