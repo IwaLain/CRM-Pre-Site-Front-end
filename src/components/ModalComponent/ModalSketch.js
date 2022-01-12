@@ -563,7 +563,7 @@ const ModalSketch = ({
           {formTitle}
         </ModalHeader>
         <ModalBody>
-          <Form id="form" onSubmit={handleSubmit(onSubmit)}>
+          <Form id="form" className="row" onSubmit={handleSubmit(onSubmit)}>
             {modalFields.map((field, index) =>
               field.fieldType === "form" ? (
                 field.inputType === "email" ? (
