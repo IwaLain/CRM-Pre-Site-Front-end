@@ -35,22 +35,7 @@ const App = () => {
     Profile.getProfile().then((data) => {
       if (data) {
         setUserProfile(data.user);
-        if (data.user.last_customer) {
-          fetch(
-            process.env.REACT_APP_SERVER_URL +
-              "/api/customer/" +
-              data.user.last_customer +
-              "?access-token=" +
-              localStorage.getItem("token")
-          )
-            .then((res) => res.json())
-            .then((customer) => {
-              setSelectedCustomer(customer.customer[data.user.last_customer]);
-              dispatch({ isLoading: false });
-            });
-        } else {
-          dispatch({ isLoading: false });
-        }
+        dispatch({ isLoading: false });
       } else {
         dispatch({ isLoading: false });
       }
@@ -75,6 +60,8 @@ const App = () => {
               });
           });
       } catch (e) {}
+    } else if (localStorage.getItem("selectedCustomer")) {
+      setSelectedCustomer(JSON.parse(localStorage.getItem("selectedCustomer")));
     }
   }, [selectedCustomer, updateTrigger]);
 

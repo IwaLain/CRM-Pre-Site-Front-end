@@ -21,16 +21,6 @@ export default {
       fieldType: "form",
     },
     {
-      title: "Activity",
-      inputType: "text",
-      fieldType: "form",
-    },
-    {
-      title: "Head name",
-      inputType: "text",
-      fieldType: "form",
-    },
-    {
       fieldType: "images",
       types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
       titleNeeded: true,

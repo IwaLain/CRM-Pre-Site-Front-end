@@ -350,9 +350,9 @@ const CRMEntity = ({ type }) => {
                       }
                       hideSelect
                       hideChangeView
-                      initBlockView={
-                        subEnt.subEntityName !== "sensors" &&
-                        subEnt.subEntityName !== "motes"
+                      initTableView={
+                        subEnt.subEntityName === "sensors" ||
+                        subEnt.subEntityName === "motes"
                       }
                       hideCreateBtn
                       hideRecordView={

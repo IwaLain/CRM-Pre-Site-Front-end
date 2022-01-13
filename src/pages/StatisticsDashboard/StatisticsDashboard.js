@@ -40,7 +40,7 @@ const StatisticsDashboard = () => {
   useEffect(() => {
     if (!selectedCustomer || !(Object.keys(selectedCustomer).length > 0)) {
       history.push("/customers");
-      alert("error", "You need to select customer first.");
+      alert("error", "You need to select customer first");
     }
   }, [history, selectedCustomer]);
 

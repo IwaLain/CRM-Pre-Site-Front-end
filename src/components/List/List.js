@@ -15,6 +15,8 @@ import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import debounce from "../../js/helpers/debounce";
 import Button from "../UIKit/Button/Button";
+import { useHistory } from "react-router-dom";
+import { alert } from "../../js/helpers/alert";
 
 const List = ({
   type,
@@ -27,7 +29,7 @@ const List = ({
   hideChangeView,
   showProgress,
   hideRecordView,
-  initBlockView,
+  initTableView,
 }) => {
   const initialState = {
     data: {},
@@ -35,7 +37,7 @@ const List = ({
     requests: {},
     isLoading: false,
     selectIsLoaded: false,
-    view: true,
+    view: false,
     screenSize: window.innerWidth,
     totalRows: Math.ceil(0),
     totalPages: 0,
@@ -46,6 +48,7 @@ const List = ({
     prevSelectedAll: false,
     modalData: {},
     modalDataID: null,
+    singleAlias: "",
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -54,7 +57,6 @@ const List = ({
     searchQuery,
     requests,
     isLoading,
-    selectIsLoaded,
     view,
     screenSize,
     totalRows,
@@ -64,20 +66,16 @@ const List = ({
     prevSelectedAll,
     page,
     mode,
-    modalData,
     modalDataID,
+    singleAlias,
   } = state;
+
+  const history = useHistory();
 
   const RECORDS_PER_PAGE = 20;
 
-  const {
-    entityID,
-    setEntityID,
-
-    selectedCustomer,
-    setSelectedCustomer,
-    updateTrigger,
-  } = useContext(GlobalContext);
+  const { entityID, setEntityID, selectedCustomer, updateTrigger } =
+    useContext(GlobalContext);
 
   const formatNames = (data) => {
     const formattedNames = [];
@@ -212,41 +210,11 @@ const List = ({
     dispatch({ modal: !modal });
   };
 
-  const changeCustomer = (id) => {
-    try {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/customer/" +
-          id +
-          "?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((customer) => {
-          if (customer) {
-            setSelectedCustomer(customer.customer[id]);
-          }
-        });
-    } catch (e) {}
-    try {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/user/last-customer/" +
-          id +
-          "?access-token=" +
-          localStorage.getItem("token"),
-        {
-          method: "PUT",
-        }
-      );
-    } catch (e) {}
-  };
-
   useEffect(() => {
-    if (initBlockView) {
-      dispatch({ view: false });
+    if (initTableView) {
+      dispatch({ view: true });
     }
-  }, [initBlockView]);
+  }, [initTableView]);
 
   useEffect(() => {
     if (type) {
@@ -324,6 +292,26 @@ const List = ({
   }, [selectedCustomer]);
 
   useEffect(() => {
+    if (history && history.location && history.location.pathname) {
+      switch (history.location.pathname) {
+        case "/facilities":
+        case "/locations":
+        case "/equipment":
+          if (
+            !selectedCustomer ||
+            !(Object.keys(selectedCustomer).length > 0)
+          ) {
+            history.push("/customers");
+            alert("error", "You need to select customer first");
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }, [history, selectedCustomer]);
+
+  useEffect(() => {
     if (requests.list) {
       dispatch({ isLoading: true });
       try {
@@ -389,6 +377,40 @@ const List = ({
     }
   }, [entityID]);
 
+  useEffect(() => {
+    if (type && type.entity) {
+      switch (type.entity) {
+        case "customers":
+          dispatch({ singleAlias: "Customer" });
+          break;
+        case "facilities":
+          dispatch({ singleAlias: "Facility" });
+          break;
+        case "locations":
+          dispatch({ singleAlias: "Location" });
+          break;
+        case "gateways":
+          dispatch({ singleAlias: "Gateway" });
+          break;
+        case "nodes":
+          dispatch({ singleAlias: "Node" });
+          break;
+        case "motes":
+          dispatch({ singleAlias: "Mote" });
+          break;
+        case "sensors":
+          dispatch({ singleAlias: "Sensor" });
+          break;
+        case "routers":
+          dispatch({ singleAlias: "Router" });
+          break;
+        default:
+          dispatch({ singleAlias: type.entity });
+          break;
+      }
+    }
+  }, [type]);
+
   return (
     <>
       <ModalSketch
@@ -416,14 +438,17 @@ const List = ({
                   toggleModal();
                 }}
               >
-                +
+                {`Add ${singleAlias}`}
               </button>
             )}
           </div>
           <div className="list__options">
             {type && type.ref && !hideSelect && (
               <div className="list__select-entity">
-                <Label for="select-entity">{type && `${type.ref.charAt(0).toUpperCase() + type.ref.slice(1)}:`}</Label>
+                <Label for="select-entity">
+                  {type &&
+                    `${type.ref.charAt(0).toUpperCase() + type.ref.slice(1)}:`}
+                </Label>
                 <select
                   className="default-select"
                   id="select-entity"
@@ -449,7 +474,7 @@ const List = ({
                 <input
                   className="list__search default-input"
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search"
                   onInput={debouncedSearchHandler}
                 />
               </div>
@@ -483,7 +508,6 @@ const List = ({
                   toggleModal={toggleModal}
                   modal={modal}
                   chooseMode={chooseMode}
-                  changeCustomer={changeCustomer}
                   hideRecordView={hideRecordView}
                   perPage={RECORDS_PER_PAGE}
                   showProgress={showProgress}
@@ -508,7 +532,6 @@ const List = ({
                         dispatch={dispatch}
                         chooseMode={chooseMode}
                         selected={record[1].id === selectedCustomer.id}
-                        changeCustomer={changeCustomer}
                         hideRecordView={hideRecordView}
                       />
                     ))
@@ -568,7 +591,7 @@ List.propTypes = {
   hideChangeView: PropTypes.bool,
   showProgress: PropTypes.bool,
   hideRecordView: PropTypes.bool,
-  initBlockView: PropTypes.bool,
+  initTableView: PropTypes.bool,
 };
 
 export default List;

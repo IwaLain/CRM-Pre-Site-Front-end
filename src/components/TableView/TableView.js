@@ -3,7 +3,6 @@ import DataTable from "react-data-table-component";
 import { Progress } from "reactstrap";
 import { GlobalContext } from "../../context";
 import { Link } from "react-router-dom";
-import Input from "../UIKit/Input/Input";
 
 const paginationComponentOptions = {
   noRowsPerPage: true,
@@ -16,8 +15,6 @@ const TableView = ({
   page,
   dispatch,
   toggleModal,
-  chooseMode,
-  changeCustomer,
   showProgress,
   hideRecordView,
   perPage,
@@ -25,22 +22,6 @@ const TableView = ({
   const [cols, setCols] = useState([]);
   const [listData, setListData] = useState([]);
   const [progressField, SetProgressField] = useState("Progress");
-
-  const { selectedCustomer } = useContext(GlobalContext);
-
-  const staticColsStart = [
-    {
-      cell: (row) => (
-        <Input
-          type="checkbox"
-          checked={row.id === selectedCustomer.id}
-          onChange={() => changeCustomer(row.id)}
-          style={!chooseMode ? { visibility: "hidden" } : {}}
-        />
-      ),
-      width: "0px",
-    },
-  ];
 
   const staticColsEnd = [
     {
@@ -75,7 +56,7 @@ const TableView = ({
         </>
       ),
       width: "171px",
-      right: true
+      right: true,
     },
   ];
 
@@ -248,7 +229,7 @@ const TableView = ({
     <>
       {listData && Object.keys(listData).length > 0 && cols.length > 0 ? (
         <DataTable
-          columns={[...staticColsStart, ...cols, ...staticColsEnd]}
+          columns={[...cols, ...staticColsEnd]}
           data={listData}
           pagination={Math.ceil(totalRows / perPage) > 1}
           paginationServer

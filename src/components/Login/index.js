@@ -48,7 +48,7 @@ const LoginPage = () => {
           alert("error", data.errors);
         } else {
           localStorage.setItem("token", data.token);
-          alert("success", "Login success");
+          alert("success", "Success Login");
         }
 
         const token = getToken();
@@ -57,23 +57,6 @@ const LoginPage = () => {
           Profile.getProfile().then((data) => {
             if (data) {
               setUserProfile(data.user);
-              if (data.user.last_customer) {
-                try {
-                  fetch(
-                    process.env.REACT_APP_SERVER_URL +
-                      "/api/customer/" +
-                      data.user.last_customer +
-                      "?access-token=" +
-                      localStorage.getItem("token")
-                  )
-                    .then((res) => res.json())
-                    .then((customer) => {
-                      setSelectedCustomer(
-                        customer.customer[data.user.last_customer]
-                      );
-                    });
-                } catch (e) {}
-              }
             }
           });
         }
@@ -97,7 +80,7 @@ const LoginPage = () => {
                       type={"username"}
                       data={dataInput}
                       errors={errors.username}
-                      placeholder={"username..."}
+                      placeholder="Username"
                     />
                   </FormGroup>
                 </Row>
@@ -107,13 +90,15 @@ const LoginPage = () => {
                       type={"password"}
                       data={dataInput}
                       errors={errors.password}
-                      placeholder={"password..."}
+                      placeholder="Password"
                     />
                   </FormGroup>
                 </Row>
                 <Row>
                   <FormGroup className="d-flex justify-content-end">
-                    <button className="login__btn ui-btn ui-btn-primary">Login</button>
+                    <button className="login__btn ui-btn ui-btn-primary">
+                      Login
+                    </button>
                   </FormGroup>
                 </Row>
               </Form>

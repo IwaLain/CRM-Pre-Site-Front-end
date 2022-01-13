@@ -25,11 +25,10 @@ const ComertialForm = ({
       items: currentData,
     };
 
-    Profile.createPdf(data, date)
-    .then(data => {
-      alert('success', 'PDF successful created!')
+    Profile.createPdf(data, date).then((data) => {
+      alert("success", "PDF successful created!");
     });
-    resetForm()
+    resetForm();
   };
 
   const onError = () => {
@@ -61,7 +60,7 @@ const ComertialForm = ({
                 name="bill"
                 type="text"
                 rows="4"
-                placeholder="Enter your bill..."
+                placeholder="Enter your bill"
                 className={`ui-kit__textarea form-control ${
                   errors.bill ? "is-invalid" : ""
                 }`}
@@ -75,7 +74,7 @@ const ComertialForm = ({
                 name="ship"
                 type="text"
                 rows="4"
-                placeholder="Enter your ship..."
+                placeholder="Enter your ship"
                 className={`ui-kit__textarea form-control ${
                   errors.ship ? "is-invalid" : ""
                 }`}
@@ -91,9 +90,7 @@ const ComertialForm = ({
               <Col>
                 <Label>Date</Label>
               </Col>
-              <Col className="text-end">
-                {date}
-              </Col>
+              <Col className="text-end">{date}</Col>
             </Row>
             <Row className="purpose__info my-2">
               <Col>
@@ -103,7 +100,7 @@ const ComertialForm = ({
                 <input
                   name="expires"
                   type="text"
-                  placeholder="Expires..."
+                  placeholder="Expires"
                   className={`ui-kit__textarea form-control ${
                     errors.expires ? "is-invalid" : ""
                   }`}
@@ -122,7 +119,7 @@ const ComertialForm = ({
                 <input
                   name="memo"
                   type="text"
-                  placeholder="Memo..."
+                  placeholder="Memo"
                   className={`ui-kit__textarea form-control ${
                     errors.memo ? "is-invalid" : ""
                   }`}

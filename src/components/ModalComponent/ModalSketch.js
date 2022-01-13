@@ -20,7 +20,6 @@ import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 
-
 const ModalSketch = ({
   toggle,
   modal,
@@ -141,7 +140,9 @@ const ModalSketch = ({
     setEquipmentImg([]);
     dispatch({ defaultEntity: [] });
     dispatch({ customFields: [] });
-    parentDispatch({ modalDataID: null });
+    if (parentDispatch) {
+      parentDispatch({ modalDataID: null });
+    }
   };
 
   const onSubmit = (data) => {
@@ -216,11 +217,11 @@ const ModalSketch = ({
                 "success",
                 `${
                   entityName.charAt(0).toUpperCase() + entityName.slice(1)
-                } created.`
+                } created`
               );
               setUpdateTrigger(!updateTrigger);
             } else if (data.errors && data.errors.includes("ID is invalid")) {
-              alert("error", `Invalid ref object.`);
+              alert("error", `Invalid ref object`);
             } else alert("error", data.errors);
           }
         });
@@ -249,7 +250,7 @@ const ModalSketch = ({
                   "success",
                   `${
                     entityName.charAt(0).toUpperCase() + entityName.slice(1)
-                  } changed.`
+                  } changed`
                 );
                 setUpdateTrigger(!updateTrigger);
               } else {
@@ -365,6 +366,8 @@ const ModalSketch = ({
           }
           break;
       }
+    } else if (data["createName"]) {
+      reset({ name: data["createName"] });
     }
   }, [data, dataID, toggle]);
 
@@ -574,11 +577,11 @@ const ModalSketch = ({
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
                       }`}
                       id={`${field.title}-field`}
-                      placeholder={`Enter ${field.title.toLowerCase()}.`}
+                      placeholder={`Enter ${field.title.toLowerCase()}`}
                       {...register(field.title.toLowerCase(), {
                         required: {
                           value: true,
-                          message: `${field.title} is required.`,
+                          message: `${field.title} is required`,
                         },
                         pattern: {
                           value: /^[\w-.]+@([\w-]+.)+[\w-]{1,10}$/,
@@ -606,11 +609,11 @@ const ModalSketch = ({
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
                       }`}
                       id={`${field.title}-field`}
-                      placeholder={`Enter ${field.title.toLowerCase()}.`}
+                      placeholder={`Enter ${field.title.toLowerCase()}`}
                       {...register(field.title.toLowerCase(), {
                         required: {
                           value: true,
-                          message: `${field.title} is required.`,
+                          message: `${field.title} is required`,
                         },
                         pattern: {
                           value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
@@ -624,7 +627,7 @@ const ModalSketch = ({
                         errors[field.title.toLowerCase()].message}
                     </small>
                   </FormGroup>
-                ) :  field.inputType === "number" ? (
+                ) : field.inputType === "number" ? (
                   <FormGroup
                     key={index}
                     style={
@@ -648,16 +651,12 @@ const ModalSketch = ({
                               : ""
                           }`}
                           id={`${field.title}-field`}
-                          type="number"
-                          placeholder={`Enter ${field.title.toLowerCase()}.`}
+                          type="text"
+                          placeholder={`Enter ${field.title.toLowerCase()}`}
                           {...register(field.title.toLowerCase(), {
                             required: {
                               value: true,
-                              message: `${field.title} is required.`,
-                            },
-                            pattern: {
-                              value: /^-?[0-9]\d*\.?\d*$/,
-                              message: `${field.title} is number only.`,
+                              message: `${field.title} is required`,
                             },
                           })}
                         />
@@ -685,16 +684,16 @@ const ModalSketch = ({
                               : ""
                           }`}
                           id={`${field.title}-field`}
-                          type="number"
-                          placeholder={`Enter ${field.title.toLowerCase()}.`}
+                          type="text"
+                          placeholder={`Enter ${field.title.toLowerCase()}`}
                           {...register(field.title.toLowerCase(), {
                             required: {
                               value: true,
-                              message: `${field.title} is required.`,
+                              message: `${field.title} is required`,
                             },
                             pattern: {
-                              value: /^-?[0-9]\d*\.?\d*$/,
-                              message: `${field.title} is number only.`,
+                              value: /^[0-9][\d\.\,\'\"\°\s\N\E]{0,255}$/,
+                              message: `${field.title} needs to be map coordinate`,
                             },
                           })}
                         />
@@ -714,15 +713,15 @@ const ModalSketch = ({
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
                       }`}
                       id={`${field.title}-field`}
-                      placeholder={`Enter ${field.title.toLowerCase()}.`}
+                      placeholder={`Enter ${field.title.toLowerCase()}`}
                       {...register(field.title.toLowerCase(), {
                         required: {
                           value: true,
-                          message: `${field.title} is required.`,
+                          message: `${field.title} is required`,
                         },
                         minLength: {
                           value: 3,
-                          message: `${field.title} should contain at least 3 symbols.`,
+                          message: `${field.title} should contain at least 3 symbols`,
                         },
                       })}
                     />
@@ -733,7 +732,7 @@ const ModalSketch = ({
                     </small>
                   </FormGroup>
                 )
-              ): field.fieldType === "form-ref-select" ? (
+              ) : field.fieldType === "form-ref-select" ? (
                 <FormGroup key={index} className="col-sm-6">
                   <Label for="select-ref">
                     {subEntity.charAt(0).toUpperCase() + subEntity.slice(1)}
@@ -764,16 +763,11 @@ const ModalSketch = ({
                               errors[`${id}`] ? "is-invalid" : ""
                             }`}
                             id={`${id}-field`}
-                            placeholder="Enter value."
+                            placeholder="Enter value"
                             {...register(`${id}`, {
                               required: {
                                 value: true,
-                                message: "Value is required.",
-                              },
-                              minLength: {
-                                value: 3,
-                                message:
-                                  "Value should contain at least 3 symbols.",
+                                message: "Value is required",
                               },
                             })}
                           />
@@ -796,17 +790,23 @@ const ModalSketch = ({
                     ))}
                   <FormGroup>
                     <Col>
-                      <Button className="ui-btn ui-btn-primary" onClick={toggleAddFieldModal}>
+                      <Button
+                        className="ui-btn ui-btn-primary"
+                        onClick={toggleAddFieldModal}
+                      >
                         Add field
                       </Button>
                     </Col>
                   </FormGroup>
                 </>
-              ) : field.fieldType === "images" ? (                
-                <div 
-                  key={index}                  
+              ) : field.fieldType === "images" ? (
+                <div
+                  key={index}
                   className={`${
-                    (field.title === "location image" || field.title === "equipment image") ? "col-sm-6" : ""
+                    field.title === "location image" ||
+                    field.title === "equipment image"
+                      ? "col-sm-6"
+                      : ""
                   }`}
                 >
                   {!field.titleNeeded && <span>{field.fileType} image</span>}
@@ -947,7 +947,12 @@ const ModalSketch = ({
           </Form>
         </ModalBody>
         <ModalFooter>
-          <button className="ui-btn ui-btn-secondary" onClick={toggleAddFieldModal}>Cancel</button>
+          <button
+            className="ui-btn ui-btn-secondary"
+            onClick={toggleAddFieldModal}
+          >
+            Cancel
+          </button>
           <button className="ui-btn ui-btn-primary" form="add-field-form">
             Add
           </button>

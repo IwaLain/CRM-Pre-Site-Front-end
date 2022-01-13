@@ -57,7 +57,7 @@ const FormComponent = ({
     reset,
   } = useForm();
   const onSubmit = () => {
-    alert("success", "Success save");
+    alert("success", "Successfully saved");
     reset();
   };
 
@@ -98,7 +98,11 @@ const FormComponent = ({
           <FormGroup row>
             <Col sm={4} className="offset-md-2">
               <div className="btn-toolbar ">
-                <button className="ui-btn ui-btn-primary" className="me-3" type="submit">
+                <button
+                  className="ui-btn ui-btn-primary"
+                  className="me-3"
+                  type="submit"
+                >
                   Submit
                 </button>
                 <button type="reset">Cancel</button>

@@ -1,16 +1,13 @@
 import placeholder from "../../assets/img/company.png";
 import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import { GlobalContext } from "../../context";
+import { useEffect, useState } from "react";
 
 const InfoCard = ({
   data,
   type,
   toggleModal,
   chooseMode,
-  selected,
-  changeCustomer,
   dispatch,
   currentSubEntityName,
   setCurrentSubEntityName,
@@ -84,35 +81,6 @@ const InfoCard = ({
 
   return (
     <div className="info-card">
-      {chooseMode ? (
-        <input
-          type="checkbox"
-          checked={selected}
-          onChange={() => changeCustomer(data.id)}
-        />
-      ) : (
-        <button
-          className="info-card__edit ui-btn ui-btn-secondary"
-          onClick={() => {
-            if (setCurrentSubEntityName) {
-              setToggleEntityModal(!toggleEntityModal);
-              setCurrentSubEntityName((state) => ({ ...state, name: type }));
-            } else {
-              if (dispatch) {
-                dispatch({ mode: "edit" });
-              }
-              if (data) {
-                dispatch({ modalDataID: data.id });
-              }
-              if (toggleModal) {
-                toggleModal();
-              }
-            }
-          }}
-        >
-          <i className="far fa-edit"></i>
-        </button>
-      )}
       <div className="info-card__body">
         <div>
           <img
@@ -153,29 +121,27 @@ const InfoCard = ({
             >
               View
             </Link>
-            {chooseMode && (
-              <button
-                className="ui-btn ui-btn-secondary"
-                onClick={() => {
-                  if (setCurrentSubEntityName) {
-                    setToggleEntityModal(!toggleEntityModal);
-                    setCurrentSubEntityName({ name: type });
-                  } else {
-                    if (dispatch) {
-                      dispatch({ mode: "edit" });
-                    }
-                    if (data) {
-                      dispatch({ modalDataID: data.id });
-                    }
-                    if (toggleModal) {
-                      toggleModal();
-                    }
+            <button
+              className="ui-btn ui-btn-secondary"
+              onClick={() => {
+                if (setCurrentSubEntityName) {
+                  setToggleEntityModal(!toggleEntityModal);
+                  setCurrentSubEntityName({ name: type });
+                } else {
+                  if (dispatch) {
+                    dispatch({ mode: "edit" });
                   }
-                }}
-              >
-                <span>Edit</span>
-              </button>
-            )}
+                  if (data) {
+                    dispatch({ modalDataID: data.id });
+                  }
+                  if (toggleModal) {
+                    toggleModal();
+                  }
+                }
+              }}
+            >
+              <span>Edit</span>
+            </button>
           </div>
         </div>
       </div>

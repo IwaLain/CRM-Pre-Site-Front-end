@@ -21,7 +21,7 @@ const ProfileEdit = ({ currentUser, editeMethod, toggle }) => {
       if (!data) {
         alert("error", "Something went wrong");
       } else {
-        alert("success", "Profile success edited");
+        alert("success", "Profile successfully edited");
       }
     });
 
