@@ -14,7 +14,7 @@ const ProfileEdit = ({ currentUser, editeMethod, toggle }) => {
       username: e.username,
       email: e.email,
       phone: e.phone,
-      role: e.role,
+      role: currentUser.role,
     };
 
     Profile.updateProfile(currentUser.id, data).then((data) => {

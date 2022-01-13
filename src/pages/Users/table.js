@@ -96,6 +96,7 @@ const UserTable = ({ users, editeTable, changeTable }) => {
           </button>
         </div>
       ),
+      right: true
     },
   ]
 

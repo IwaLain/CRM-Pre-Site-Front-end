@@ -45,6 +45,8 @@ const ComertialTable = ({ setData, dataForm, customerNetwork }) => {
       } else return el;
     });
 
+    console.dir(register)
+
     setListData(newData);
     if (setData) {
       setData(newData);

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react'
-import { button, Col, Row } from 'reactstrap'
+import { Col, Row } from 'reactstrap'
 import { useForm } from 'react-hook-form'
 import { ToastContainer } from 'react-toastify'
 
@@ -34,10 +34,11 @@ const ComertialPurpouse = () => {
       item: "",
       price: 0,
     },
+    resetTable: false,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { quote, currentData, modalPDF, customerNetwork } = state;
+  const { quote, currentData, modalPDF, customerNetwork, resetTable } = state;
 
   const d = new Date()
   const date = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
@@ -73,24 +74,28 @@ const ComertialPurpouse = () => {
     date,
   };
 
+  const resetForm = () => {
+    reset({ ...register, quote: newQuote() })
+  }
+
   useEffect(() => {
     customersApi.getNetwork(selectedCustomer.id === undefined ? userProfile.last_customer : selectedCustomer.id)
     .then(data => {
-      console.log(data.Network)
       dispatch({customerNetwork: data.Network})
     })
+    console.log(customerNetwork)
   }, [])
 
   return (
     <div className="purpose" id="purpose">
-      <Row className="purpose__title-print">
-        <Col lg={4} md={5} sm={6} className="purpose__title">
+      <Row className="justify-content-between">
+        <Col md={6} className="purpose__title">
           <h3>Commercial Purpose</h3>
           <div>
             <img src={logo} alt="logo" />
           </div>
         </Col>
-        <Col lg={4} md={5} sm={6} className="purpose__adress">
+        <Col md={5} className="purpose__adress">
           Waites Sensor Techologies, Inc.
           <br />
           20 W. 11th St. Suite 200
@@ -107,6 +112,7 @@ const ComertialPurpouse = () => {
         togglePDF={togglePDF}
         modalPDF={modalPDF}
         newQuote={newQuote}
+        resetForm={resetForm}
       />
 
       <Table
