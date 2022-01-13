@@ -8,6 +8,7 @@ const InfoCard = ({
   data,
   type,
   toggleModal,
+  toggleConfirmModal,
   chooseMode,
   selected,
   changeCustomer,
@@ -84,35 +85,24 @@ const InfoCard = ({
 
   return (
     <div className="info-card">
-      {chooseMode ? (
-        <input
-          type="checkbox"
-          checked={selected}
-          onChange={() => changeCustomer(data.id)}
-        />
-      ) : (
+      {
         <button
-          className="info-card__edit ui-btn ui-btn-secondary"
+          className="info-card__edit ui-btn ui-btn-danger"
           onClick={() => {
-            if (setCurrentSubEntityName) {
-              setToggleEntityModal(!toggleEntityModal);
-              setCurrentSubEntityName((state) => ({ ...state, name: type }));
-            } else {
-              if (dispatch) {
-                dispatch({ mode: "edit" });
-              }
-              if (data) {
-                dispatch({ modalDataID: data.id });
-              }
-              if (toggleModal) {
-                toggleModal();
-              }
+            if (dispatch) {
+              dispatch({ mode: "edit" });
+            }
+            if (data) {
+              dispatch({ modalDataID: data.id });
+            }
+            if (toggleConfirmModal) {
+              toggleConfirmModal();
             }
           }}
         >
-          <i className="far fa-edit"></i>
+          <i className="far fa-trash-alt"></i>
         </button>
-      )}
+      }
       <div className="info-card__body">
         <div>
           <img
@@ -153,29 +143,28 @@ const InfoCard = ({
             >
               View
             </Link>
-            {chooseMode && (
-              <button
-                className="ui-btn ui-btn-secondary"
-                onClick={() => {
-                  if (setCurrentSubEntityName) {
-                    setToggleEntityModal(!toggleEntityModal);
-                    setCurrentSubEntityName({ name: type });
-                  } else {
-                    if (dispatch) {
-                      dispatch({ mode: "edit" });
-                    }
-                    if (data) {
-                      dispatch({ modalDataID: data.id });
-                    }
-                    if (toggleModal) {
-                      toggleModal();
-                    }
+
+            <button
+              className="ui-btn ui-btn-secondary"
+              onClick={() => {
+                if (setCurrentSubEntityName) {
+                  setToggleEntityModal(!toggleEntityModal);
+                  setCurrentSubEntityName({ name: type });
+                } else {
+                  if (dispatch) {
+                    dispatch({ mode: "edit" });
                   }
-                }}
-              >
-                <span>Edit</span>
-              </button>
-            )}
+                  if (data) {
+                    dispatch({ modalDataID: data.id });
+                  }
+                  if (toggleModal) {
+                    toggleModal();
+                  }
+                }
+              }}
+            >
+              <span>Edit</span>
+            </button>
           </div>
         </div>
       </div>
