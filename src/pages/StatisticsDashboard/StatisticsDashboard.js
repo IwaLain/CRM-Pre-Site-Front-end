@@ -56,30 +56,30 @@ const StatisticsDashboard = () => {
               statistics
             </h3>
             <div className="dashboard-page__block-wrapper">
-              <div className="dashboard-page__block">
+              <a href="/facilities" className="dashboard-page__block">
                 <h5>Facilities</h5>
                 <span>
                   {selectedCustomer &&
-                    Object.keys(selectedCustomer).length &&
+                    Object.keys(selectedCustomer).length > 0 &&
                     selectedCustomer.facilities.length}
                 </span>
-              </div>
-              <div className="dashboard-page__block">
+              </a>
+              <a href="/locations" className="dashboard-page__block">
                 <h5>Locations</h5>
                 <span>
                   {selectedCustomer &&
-                    Object.keys(selectedCustomer).length &&
+                    Object.keys(selectedCustomer).length > 0 &&
                     selectedCustomer.locations.length}
                 </span>
-              </div>
-              <div className="dashboard-page__block">
+              </a>
+              <a href="/equipment" className="dashboard-page__block">
                 <h5>Equipment</h5>
                 <span>
                   {selectedCustomer &&
-                    Object.keys(selectedCustomer).length &&
+                    Object.keys(selectedCustomer).length > 0 &&
                     selectedCustomer.equipments.length}
                 </span>
-              </div>
+              </a>
             </div>
           </section>
           <section
@@ -91,10 +91,14 @@ const StatisticsDashboard = () => {
               {customerNetwork &&
                 Object.keys(customerNetwork).length > 0 &&
                 Object.entries(customerNetwork).map(([key, block], index) => (
-                  <div key={index} className="dashboard-page__block">
+                  <a
+                    href="/network"
+                    key={index}
+                    className="dashboard-page__block"
+                  >
                     <h5>{key.charAt(0).toUpperCase() + key.slice(1)}</h5>
                     <span>{block.length}</span>
-                  </div>
+                  </a>
                 ))}
             </div>
           </section>
