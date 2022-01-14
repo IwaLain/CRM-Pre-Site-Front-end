@@ -18,8 +18,7 @@ const ConfirmModal = ({
       <Modal isOpen={modal} toggle={toggleModal}>
         <ModalHeader>{title && title}</ModalHeader>
         <ModalBody>
-          {modalText && <p className="confirm-modal--text ">{modalText}</p>}{" "}
-          <p className="confirm-modal--text ">{`Are you sure you want DELETE this?`}</p>
+          {modalText && <p className="confirm-modal--text ">{modalText}</p>}
         </ModalBody>
         <ModalFooter>
           <button className="ui-btn ui-btn-secondary" onClick={toggleModal}>

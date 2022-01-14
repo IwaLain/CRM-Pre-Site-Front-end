@@ -511,6 +511,7 @@ const List = ({
         handleSubmit={(e) => {
           handleDeleteEntityObject(modalDataID);
         }}
+        modalText="Are you sure you want DELETE this?"
       />
       <SliderModal
         data={data}
