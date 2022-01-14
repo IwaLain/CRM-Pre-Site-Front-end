@@ -148,8 +148,6 @@ const ModalSketch = ({
   const onSubmit = (data) => {
     const body = { ...data };
 
-    console.log(body);
-
     const jsonData = [];
 
     for (const [key, value] of Object.entries(data)) {
@@ -321,8 +319,17 @@ const ModalSketch = ({
           });
           break;
         default:
-          const formattedData = data[entity].find((el) => el.id === dataID);
-          dispatch({ defaultEntity: formattedData });
+          let formattedData;
+          if (data) {
+            if (data[entity].length > 0) {
+              formattedData = data[entity].find((el) => el.id === dataID);
+              dispatch({ defaultEntity: formattedData });
+            } else if (Object.keys(data[entity]).length > 0) {
+              formattedData = data[entity][dataID];
+              dispatch({ defaultEntity: formattedData });
+            }
+          }
+
           let newFields = [];
 
           if (
