@@ -146,7 +146,6 @@ const ModalSketch = ({
   };
 
   const onSubmit = (data) => {
-    console.log(data);
     const body = { ...data };
     if (data["head name"]) body["head_name"] = data["head name"];
     if (data["location info"]) body["location_info"] = data["location info"];
