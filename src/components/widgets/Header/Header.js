@@ -9,7 +9,7 @@ const Header = () => {
     customerNames: {},
     modal: false,
     createName: "",
-    selectedOption: "",
+    selectedOption: {},
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -24,6 +24,10 @@ const Header = () => {
   };
 
   const changeCustomer = ({ value, __isNew__ }) => {
+    dispatch({
+      selectedOption: customerNames.find((el) => el.value === value),
+    });
+
     if (__isNew__) {
       dispatch({ createName: value });
       toggleModal();
@@ -49,7 +53,9 @@ const Header = () => {
       } catch (e) {}
     }
 
-    dispatch({ selectedOption: value });
+    dispatch({
+      selectedOption: customerNames.find((el) => el.value === value),
+    });
   };
 
   useEffect(() => {
@@ -68,6 +74,11 @@ const Header = () => {
             formattedNames.push({ value: id, label: name });
           });
           dispatch({ customerNames: formattedNames });
+          dispatch({
+            selectedOption: formattedNames.find(
+              (el) => el.value === selectedCustomer.id
+            ),
+          });
         });
     } catch (e) {}
   }, [updateTrigger]);
@@ -89,6 +100,7 @@ const Header = () => {
             onChange={(e) => {
               changeCustomer(e);
             }}
+            value={selectedOption}
             placeholder="Choose customer"
           />
         </span>
