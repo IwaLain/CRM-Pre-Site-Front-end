@@ -531,6 +531,17 @@ ul {
   padding: 25px 50px;
   width: 100%;
   background-color: white;
+  text-decoration: none;
+  color: black;
+}
+
+.dashboard-page__block:hover {
+  border: 1px solid black;
+  color: black;
+}
+
+.dashboard-page__block:hover > h5 {
+  color: $primary;
 }
 
 .dashboard-page__block > span {

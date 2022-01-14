@@ -498,6 +498,12 @@ const List = ({
       localStorage.getItem("token");
     fetch(url, { method: "DELETE" }).then(() => {
       dispatch({ modalDataID: null });
+      if (selectedCustomer) {
+        if (deleteEntityId === selectedCustomer.id) {
+          setSelectedCustomer({});
+          localStorage.removeItem("selectedCustomer");
+        }
+      }
       setUpdateTrigger(!updateTrigger);
     });
   };
