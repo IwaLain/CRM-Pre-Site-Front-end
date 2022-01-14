@@ -51,7 +51,7 @@ const List = ({
     modalData: {},
     modalDataID: null,
     sliderModal: false,
-    entityImagesName: "",
+    entityImages: [],
     confirmModal: false,
   };
 
@@ -72,7 +72,7 @@ const List = ({
     mode,
     modalDataID,
     sliderModal,
-    entityImagesName,
+    entityImages,
     confirmModal,
   } = state;
 
@@ -514,12 +514,9 @@ const List = ({
         modalText="Are you sure you want DELETE this?"
       />
       <SliderModal
-        data={data}
-        dataID={modalDataID}
         modal={sliderModal}
         toggleModal={toggleSliderModal}
-        entity={type && type.entity}
-        entityImagesName={entityImagesName}
+        entityImages={entityImages}
       />
       <ModalSketch
         entity={type && type.entity}
@@ -621,7 +618,7 @@ const List = ({
                   hideRecordView={hideRecordView}
                   perPage={RECORDS_PER_PAGE}
                   showProgress={showProgress}
-                  entityImagesName={entityImagesName}
+                  entityImages={entityImages}
                 />
               ) : (
                 <div

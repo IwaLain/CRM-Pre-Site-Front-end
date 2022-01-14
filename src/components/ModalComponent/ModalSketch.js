@@ -147,6 +147,8 @@ const ModalSketch = ({
 
   const onSubmit = (data) => {
     const body = { ...data };
+    if (data["head name"]) body["head_name"] = data["head name"];
+    if (data["location info"]) body["location_info"] = data["location info"];
 
     const jsonData = [];
 
@@ -309,14 +311,67 @@ const ModalSketch = ({
 
   useEffect(() => {
     if (data && dataID) {
+      let formattedData = [];
+      let newFields = [];
+      let newCount = [];
+
+      let jsonData = [];
+      let fieldsToReset = {};
+
       switch (entityName) {
         case "customer":
         case "facility":
           dispatch({ defaultEntity: data[entity][dataID] });
           reset({
             ...data[entity][dataID],
-            head_name: data[entity][dataID]["head_name"],
+            ["head name"]: data[entity][dataID]["head_name"],
           });
+          break;
+        case "sensor":
+          formattedData = data[entity].find((el) => el.id === dataID);
+          dispatch({ defaultEntity: formattedData });
+          newFields = [];
+
+          if (
+            formattedData["jsonData"] &&
+            formattedData["jsonData"].length > 0 &&
+            formattedData["jsonData"] !== "null"
+          ) {
+            newCount = 0;
+
+            jsonData = formattedData["jsonData"];
+
+            jsonData.forEach((el) => {
+              newFields.push({
+                id: `field${newCount + 1}`,
+                title: el.name,
+                value: el.value,
+              });
+              newCount += 1;
+            });
+
+            dispatch({ customFieldsCount: newCount });
+            dispatch({ customFields: newFields });
+          }
+
+          fieldsToReset = {};
+
+          newFields.forEach((field) => {
+            fieldsToReset[field.id] = field.value;
+            fieldsToReset[field.name] = field.name;
+          });
+
+          if (fieldsToReset && Object.keys(fieldsToReset).length > 0) {
+            reset({
+              ...formattedData,
+              ...fieldsToReset,
+            });
+          } else {
+            reset({
+              ...formattedData,
+              ["location info"]: formattedData["location_info"],
+            });
+          }
           break;
         default:
           let formattedData;
@@ -337,9 +392,9 @@ const ModalSketch = ({
             formattedData["jsonData"].length > 0 &&
             formattedData["jsonData"] !== "null"
           ) {
-            let newCount = 0;
+            newCount = 0;
 
-            const jsonData = formattedData["jsonData"];
+            jsonData = formattedData["jsonData"];
 
             jsonData.forEach((el) => {
               newFields.push({
@@ -354,7 +409,7 @@ const ModalSketch = ({
             dispatch({ customFields: newFields });
           }
 
-          let fieldsToReset = {};
+          fieldsToReset = {};
 
           newFields.forEach((field) => {
             fieldsToReset[field.id] = field.value;

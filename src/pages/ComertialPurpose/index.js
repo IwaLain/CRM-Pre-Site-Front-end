@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useReducer } from 'react'
-import { Col, Row } from 'reactstrap'
-import { useForm } from 'react-hook-form'
-import { ToastContainer } from 'react-toastify'
+import React, { useContext, useEffect, useReducer } from "react";
+import { Col, Row } from "reactstrap";
+import { useForm } from "react-hook-form";
+import { ToastContainer } from "react-toastify";
 
 import { reducer } from "../../reducer";
 
@@ -18,7 +18,7 @@ import customersApi from "../../js/api/customer";
 import { GlobalContext } from "../../context";
 
 const ComertialPurpouse = () => {
-  const { selectedCustomer, userProfile } = useContext(GlobalContext)
+  const { selectedCustomer, userProfile } = useContext(GlobalContext);
 
   const initialState = {
     quote: "Q" + Math.floor(Date.now() / 1000),
@@ -40,9 +40,13 @@ const ComertialPurpouse = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { quote, currentData, modalPDF, customerNetwork, resetTable } = state;
 
-  const d = new Date()
-  const date = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-  d.getFullYear();
+  const d = new Date();
+  const date =
+    ("0" + d.getDate()).slice(-2) +
+    "-" +
+    ("0" + (d.getMonth() + 1)).slice(-2) +
+    "-" +
+    d.getFullYear();
 
   const togglePDF = () => dispatch({ modalPDF: !modalPDF });
   const newQuote = () => {
@@ -75,16 +79,20 @@ const ComertialPurpouse = () => {
   };
 
   const resetForm = () => {
-    reset({ ...register, quote: newQuote() })
-  }
+    reset({ ...register, quote: newQuote() });
+  };
 
   useEffect(() => {
-    customersApi.getNetwork(selectedCustomer.id === undefined ? userProfile.last_customer : selectedCustomer.id)
-    .then(data => {
-      dispatch({customerNetwork: data.Network})
-    })
-    console.log(customerNetwork)
-  }, [])
+    customersApi
+      .getNetwork(
+        selectedCustomer.id === undefined
+          ? userProfile.last_customer
+          : selectedCustomer.id
+      )
+      .then((data) => {
+        dispatch({ customerNetwork: data.Network });
+      });
+  }, []);
 
   return (
     <div className="purpose" id="purpose">
