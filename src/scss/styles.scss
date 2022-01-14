@@ -301,7 +301,7 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px 10px;
+  justify-content: center;
   width: 100%;
   > *:not(:last-child) {
     margin-bottom: 7px;
@@ -347,8 +347,8 @@ ul {
   justify-items: center;
 
   > .info-card {
-    min-width: 116px;
-    max-width: 116px;
+    min-width: 117px;
+    max-width: 117px;
 
     > .info-card__body {
       flex-direction: column;
@@ -676,4 +676,8 @@ h1 {
 /* Select */
 .css-b62m3t-container {
   width: 250px;
+}
+
+.table-images {
+  cursor: pointer;
 }

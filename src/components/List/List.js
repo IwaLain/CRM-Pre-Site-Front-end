@@ -15,6 +15,8 @@ import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import debounce from "../../js/helpers/debounce";
 import Button from "../UIKit/Button/Button";
+import SliderModal from "../SliderModal/SliderModal";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import { useHistory } from "react-router-dom";
 import { alert } from "../../js/helpers/alert";
 
@@ -48,7 +50,9 @@ const List = ({
     prevSelectedAll: false,
     modalData: {},
     modalDataID: null,
-    singleAlias: "",
+    sliderModal: false,
+    entityImagesName: "",
+    confirmModal: false,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -67,15 +71,23 @@ const List = ({
     page,
     mode,
     modalDataID,
-    singleAlias,
+    sliderModal,
+    entityImagesName,
+    confirmModal,
   } = state;
 
   const history = useHistory();
 
   const RECORDS_PER_PAGE = 20;
 
-  const { entityID, setEntityID, selectedCustomer, updateTrigger } =
-    useContext(GlobalContext);
+  const {
+    entityID,
+    setEntityID,
+    selectedCustomer,
+    updateTrigger,
+    setSelectedCustomer,
+    setUpdateTrigger,
+  } = useContext(GlobalContext);
 
   const formatNames = (data) => {
     const formattedNames = [];
@@ -206,8 +218,73 @@ const List = ({
     } else dispatch({ prevSelectedAll: false });
   };
 
+  let singleAlias = "";
+
+  switch (type.entity) {
+    case "customers":
+      singleAlias = "customer";
+
+      break;
+    case "facilities":
+      singleAlias = "facility";
+
+      break;
+    case "locations":
+      singleAlias = "location";
+
+      break;
+    case "equipment":
+      singleAlias = "equipment";
+
+      break;
+    case "gateways":
+      singleAlias = "gateway";
+
+      break;
+    default:
+      break;
+  }
+
   const toggleModal = () => {
     dispatch({ modal: !modal });
+  };
+
+  const toggleSliderModal = () => {
+    dispatch({ sliderModal: !sliderModal });
+  };
+
+  const toggleConfirmModal = () => {
+    dispatch({ confirmModal: !confirmModal });
+  };
+
+  const changeCustomer = (id) => {
+    try {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/customer/" +
+          id +
+          "?access-token=" +
+          localStorage.getItem("token")
+      )
+        .then((res) => res.json())
+        .then((customer) => {
+          if (customer) {
+            setSelectedCustomer(customer.customer[id]);
+          }
+        });
+    } catch (e) {}
+    try {
+      fetch(
+        process.env.REACT_APP_SERVER_URL +
+          "/api/user/last-customer/" +
+          id +
+          "?access-token=" +
+          localStorage.getItem("token"),
+        {
+          method: "PUT",
+        }
+      );
+    } catch (e) {}
   };
 
   useEffect(() => {
@@ -411,8 +488,45 @@ const List = ({
     }
   }, [type]);
 
+  const handleDeleteEntityObject = (deleteEntityId) => {
+    let url =
+      process.env.REACT_APP_SERVER_URL +
+      "/api/" +
+      `${singleAlias}/delete/` +
+      deleteEntityId +
+      "?access-token=" +
+      localStorage.getItem("token");
+    fetch(url, { method: "DELETE" }).then(() => {
+      dispatch({ modalDataID: null });
+      setUpdateTrigger(!updateTrigger);
+    });
+  };
+
   return (
     <>
+      <ConfirmModal
+        modal={confirmModal}
+        toggleModal={toggleConfirmModal}
+        title={`Delete ${singleAlias}`}
+        handleSubmit={(e) => {
+          handleDeleteEntityObject(modalDataID);
+          // handleRemoveFieldFormSubmit(e, customFields, deleteField.id);
+        }}
+        name={
+          data &&
+          Object.keys(data).length > 0 &&
+          modalDataID &&
+          data[type.entity][modalDataID].name
+        }
+      />
+      <SliderModal
+        data={data}
+        dataID={modalDataID}
+        modal={sliderModal}
+        toggleModal={toggleSliderModal}
+        entity={type && type.entity}
+        entityImagesName={entityImagesName}
+      />
       <ModalSketch
         entity={type && type.entity}
         subEntity={type && type.ref}
@@ -506,11 +620,14 @@ const List = ({
                   page={page}
                   dispatch={dispatch}
                   toggleModal={toggleModal}
+                  toggleSliderModal={toggleSliderModal}
+                  toggleConfirmModal={toggleConfirmModal}
                   modal={modal}
                   chooseMode={chooseMode}
                   hideRecordView={hideRecordView}
                   perPage={RECORDS_PER_PAGE}
                   showProgress={showProgress}
+                  entityImagesName={entityImagesName}
                 />
               ) : (
                 <div
@@ -529,6 +646,7 @@ const List = ({
                         data={record[1]}
                         type={type.entity}
                         toggleModal={toggleModal}
+                        toggleConfirmModal={toggleConfirmModal}
                         dispatch={dispatch}
                         chooseMode={chooseMode}
                         selected={record[1].id === selectedCustomer.id}

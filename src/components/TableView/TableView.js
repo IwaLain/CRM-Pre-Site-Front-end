@@ -1,7 +1,6 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Progress } from "reactstrap";
-import { GlobalContext } from "../../context";
 import { Link } from "react-router-dom";
 
 const paginationComponentOptions = {
@@ -18,6 +17,8 @@ const TableView = ({
   showProgress,
   hideRecordView,
   perPage,
+  toggleSliderModal,
+  toggleConfirmModal,
 }) => {
   const [cols, setCols] = useState([]);
   const [listData, setListData] = useState([]);
@@ -44,7 +45,7 @@ const TableView = ({
             <i className="far fa-eye"></i>
           </Link>
           <button
-            className="ui-btn ui-btn-secondary"
+            className="ui-btn ui-btn-secondary me-2"
             onClick={() => {
               dispatch({ mode: "edit" });
               dispatch({ modalDataID: row.id });
@@ -52,6 +53,15 @@ const TableView = ({
             }}
           >
             <i className="far fa-edit users-table__img" alt="edite"></i>
+          </button>
+          <button
+            className="ui-btn ui-btn-danger"
+            onClick={() => {
+              dispatch({ modalDataID: row.id });
+              toggleConfirmModal();
+            }}
+          >
+            <i className="far fa-trash-alt  users-table__img" alt="edite"></i>
           </button>
         </>
       ),
@@ -163,7 +173,7 @@ const TableView = ({
                 {value["facilities"].length}
               </>
             ) : (
-              "No facilities."
+              "No facilities"
             );
         if (value.locations)
           obj["Locations"] =
@@ -173,7 +183,7 @@ const TableView = ({
                 {value["locations"].length}
               </>
             ) : (
-              "No locations."
+              "No locations"
             );
         if (value.equipments || value.equipment)
           obj["Equipment"] =
@@ -188,7 +198,7 @@ const TableView = ({
                 {value["equipment"].length}
               </>
             ) : (
-              "No equipment."
+              "No equipment"
             );
         if (value.sensors && value.mote)
           obj["Sensors/motes"] = value.sensors.length + value.mote.length;
@@ -199,12 +209,19 @@ const TableView = ({
         if (value[singleAlias + "Images"])
           obj["Images"] =
             value[singleAlias + "Images"].length > 0 ? (
-              <>
+              <div
+                className="table-images"
+                onClick={() => {
+                  dispatch({ modalDataID: value.id });
+                  dispatch({ entityImagesName: singleAlias + "Images" });
+                  toggleSliderModal();
+                }}
+              >
                 <i className="fas fa-images me-1"></i>
                 {value[singleAlias + "Images"].length}
-              </>
+              </div>
             ) : (
-              "No images."
+              "No images"
             );
         newData.push(obj);
       }

@@ -941,7 +941,7 @@ const ModalSketch = ({
                 className="text-danger validation-error"
                 id="add-field-notification"
               >
-                Field must contain at least 3 symbols.
+                Field must contain at least 3 symbols
               </small>
             </FormGroup>
           </Form>

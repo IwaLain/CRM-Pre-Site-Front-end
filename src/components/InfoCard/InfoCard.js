@@ -7,6 +7,7 @@ const InfoCard = ({
   data,
   type,
   toggleModal,
+  toggleConfirmModal,
   chooseMode,
   dispatch,
   currentSubEntityName,
@@ -81,6 +82,22 @@ const InfoCard = ({
 
   return (
     <div className="info-card">
+      <button
+        className="info-card__edit ui-btn ui-btn-danger"
+        onClick={() => {
+          if (dispatch) {
+            dispatch({ mode: "edit" });
+          }
+          if (data) {
+            dispatch({ modalDataID: data.id });
+          }
+          if (toggleConfirmModal) {
+            toggleConfirmModal();
+          }
+        }}
+      >
+        <i className="far fa-trash-alt"></i>
+      </button>
       <div className="info-card__body">
         <div>
           <img
