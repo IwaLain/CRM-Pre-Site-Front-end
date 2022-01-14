@@ -43,7 +43,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedCustomer.id) {
+    if (selectedCustomer && selectedCustomer.id) {
       try {
         fetch(
           process.env.REACT_APP_SERVER_URL +

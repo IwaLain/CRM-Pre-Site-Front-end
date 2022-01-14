@@ -10,17 +10,23 @@ const Header = () => {
     modal: false,
     createName: "",
     selectedOption: null,
+    inputValue: "",
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { customerNames, modal, createName, selectedOption } = state;
+  const { customerNames, modal, createName, selectedOption, inputValue } =
+    state;
 
   const { selectedCustomer, setSelectedCustomer, updateTrigger } =
     useContext(GlobalContext);
 
   const toggleModal = () => {
     dispatch({ modal: !modal });
+  };
+
+  const inputChangeHandler = (e) => {
+    dispatch({ inputValue: e });
   };
 
   const changeCustomer = ({ value, __isNew__ }) => {
@@ -52,10 +58,6 @@ const Header = () => {
           });
       } catch (e) {}
     }
-
-    dispatch({
-      selectedOption: customerNames.find((el) => el.value === value),
-    });
   };
 
   useEffect(() => {
@@ -75,6 +77,7 @@ const Header = () => {
           });
           dispatch({ customerNames: formattedNames });
           if (selectedCustomer && Object.keys(selectedCustomer).length > 0) {
+            console.log(selectedCustomer);
             dispatch({
               selectedOption: formattedNames.find(
                 (el) => el.value === selectedCustomer.id
@@ -84,6 +87,13 @@ const Header = () => {
         });
     } catch (e) {}
   }, [updateTrigger]);
+
+  useEffect(() => {
+    if (selectedCustomer && Object.keys(selectedCustomer).length < 1) {
+      dispatch({ selectedOption: null });
+      dispatch({ inputValue: "" });
+    }
+  }, [selectedCustomer]);
 
   return (
     <>
@@ -103,6 +113,8 @@ const Header = () => {
               changeCustomer(e);
             }}
             value={selectedOption}
+            inputValue={inputValue}
+            onInputChange={inputChangeHandler}
             placeholder="Choose customer"
           />
         </span>
