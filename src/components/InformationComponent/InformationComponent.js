@@ -10,8 +10,8 @@ const InformationComponent = ({ items, title }) => {
         {items &&
           items.map((item, i) => (
             <div key={`info-field-${i}`} className="information--item ">
-              <div className="ui-kit__badge field-name">{item.fieldTitle}:</div>
-              <div className="ui-kit__badge field-value">{item.value}</div>
+              <span className="field-name">{item.fieldTitle}:</span>
+              <span className="field-value">{item.value}</span>
             </div>
           ))}
       </div>

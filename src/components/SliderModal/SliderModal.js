@@ -90,7 +90,12 @@ const SliderModal = ({
   return (
     <>
       <Modal isOpen={modal} toggle={toggleModal}>
-        <ModalHeader>{title && title}</ModalHeader>
+        <ModalHeader>
+          {"Images"}
+          <button class="modal-close" onClick={toggleModal}>
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </ModalHeader>
         <ModalBody>
           {/* <Carousel
             interval={false}
@@ -124,12 +129,6 @@ const SliderModal = ({
           </Carousel> */}
           <UncontrolledCarousel items={items} interval={false} />
         </ModalBody>
-        <ModalFooter>
-          {/* <button className="ui-btn ui-btn-secondary" onClick={toggleModal}>Cancel</button>
-          <button className="ui-btn ui-btn-primary" onClick={handleConfirmModalFormSubmit}>
-            Submit
-          </button> */}
-        </ModalFooter>
       </Modal>
     </>
   );

@@ -26,8 +26,6 @@ const CRMEntity = ({ type }) => {
   let addEntityImageAPI;
   let setMainEntityImageAPI;
 
-  const history = useHistory();
-
   let subEntityName = "";
   const [isLoading, setIsLoading] = useState(false);
 
@@ -291,50 +289,47 @@ const CRMEntity = ({ type }) => {
         <div className="entity-page">
           {entityObject && entityObject !== null ? (
             <>
-              <div className="d-flex align-items-center entity-page--header">
-                {entityObject && entityObject[`${type}Images`] && (
-                  <div className="main-img--container">
-                    <img
-                      src={
-                        mainImage && mainImage.img
-                          ? process.env.REACT_APP_SERVER_URL +
-                            "/" +
-                            mainImage.img
-                          : logo
-                      }
-                      alt="company img"
-                      className="entity-page--img"
-                    ></img>
-                    <DropdownImageEdit
-                      images={
-                        entityImages && entityImages.length > 0
-                          ? entityImages
-                          : []
-                      }
-                      setMainImage={setMainEntityImage}
-                    ></DropdownImageEdit>
-                  </div>
-                )}
-                <h1 className="page-title">
-                  {entityObject && entityObject.name}
-                </h1>
-                {entityObject && informationItems.length > 0 && (
-                  <div className="information__container">
-                    <InformationComponent
-                      items={informationItems}
-                      title={`${type} Information`}
-                    ></InformationComponent>
-                  </div>
-                )}
+              <div className="entity-page--header">
+                <div className="entity-information">
+                  {entityObject && entityObject[`${type}Images`] && (
+                    <div className="main-img--container">
+                      <img
+                        src={
+                          mainImage && mainImage.img
+                            ? process.env.REACT_APP_SERVER_URL +
+                              "/" +
+                              mainImage.img
+                            : logo
+                        }
+                        alt="company img"
+                        className="entity-page--img"
+                      ></img>
+                      <DropdownImageEdit
+                        images={
+                          entityImages && entityImages.length > 0
+                            ? entityImages
+                            : []
+                        }
+                        setMainImage={setMainEntityImage}
+                      ></DropdownImageEdit>
+                    </div>
+                  )}
+                  {entityObject && (
+                    <div className="entity-name__container">
+                      <h3 className="page-title ">{entityObject.name}</h3>
+                    </div>
+                  )}
+
+                  {entityObject && informationItems.length > 0 && (
+                    <div className="information__container">
+                      <InformationComponent
+                        items={informationItems}
+                        title={`${type} Information`}
+                      ></InformationComponent>
+                    </div>
+                  )}
+                </div>
               </div>
-
-              {/* <div className="entity-page--section">
-                <InformationComponent
-                  items={informationItems}
-                  title={`${type} Information`}
-                ></InformationComponent>
-              </div> */}
-
               {entityObject &&
                 subEntity.length > 0 &&
                 subEntity.map((subEnt) => (
