@@ -1,8 +1,21 @@
+import { useContext } from "react";
 import logo from "../../../assets/img/company.png";
 import { Link } from "react-router-dom";
 import logoText from "../../../assets/img/logo-text.svg";
+import Profile from "../../../js/api/profile";
+import { GlobalContext } from "../../../context";
 
 const Sidebar = ({ isMobile }) => {
+  const { selectedCustomer } = useContext(GlobalContext);
+
+  const handleLogout = () => {
+    Profile.setlastCustomer(selectedCustomer.id);
+    Profile.logoutRequest().then(() => {
+      localStorage.removeItem("token");
+      window.location.reload();
+    });
+  };
+
   return (
     <aside>
       <div className="logo sidebar">
@@ -14,7 +27,7 @@ const Sidebar = ({ isMobile }) => {
       <nav>
         <ul className="fa-ul">
           <li>
-            <Link to={`/dashboard`}>
+            <Link to="/dashboard">
               <span className="fa-li">
                 <i className="fas fa-chart-bar"></i>
               </span>
@@ -24,7 +37,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/customers`}>
+            <Link to="/customers">
               <span className="fa-li">
                 <i className="fas fa-user"></i>
               </span>
@@ -34,7 +47,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/facilities`}>
+            <Link to="/facilities">
               <span className="fa-li">
                 <i className="fas fa-industry"></i>
               </span>
@@ -44,7 +57,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/locations`}>
+            <Link to="/locations">
               <span className="fa-li">
                 <i className="fas fa-map-marker-alt"></i>
               </span>
@@ -54,7 +67,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/equipment`}>
+            <Link to="/equipment">
               <span className="fa-li">
                 <i className="fas fa-tools"></i>
               </span>
@@ -64,7 +77,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/network`}>
+            <Link to="/network">
               <span className="fa-li">
                 <i className="fas fa-network-wired"></i>
               </span>
@@ -74,7 +87,7 @@ const Sidebar = ({ isMobile }) => {
             </Link>
           </li>
           <li>
-            <Link to={`/purpose`}>
+            <Link to="/purpose">
               <span className="fa-li">
                 <i className="fas fa-file-alt"></i>
               </span>
@@ -82,6 +95,36 @@ const Sidebar = ({ isMobile }) => {
                 Commercial Purpose
               </span>
             </Link>
+          </li>
+          <li>
+            <Link to="/profile">
+              <span className="fa-li">
+                <i className="fas fa-user"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Profile
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/users">
+              <span className="fa-li">
+                <i className="fas fa-users"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Users
+              </span>
+            </Link>
+          </li>
+          <li>
+            <a href="#" onClick={handleLogout}>
+              <span className="fa-li">
+                <i class="fas fa-sign-out-alt"></i>
+              </span>
+              <span style={isMobile ? { visibility: "hidden" } : {}}>
+                Logout
+              </span>
+            </a>
           </li>
         </ul>
       </nav>

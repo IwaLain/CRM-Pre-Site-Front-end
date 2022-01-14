@@ -102,8 +102,6 @@ const CRMEntity = ({ type }) => {
         { title: "address", name: "address" },
         { title: "phone", name: "phone" },
         { title: "email", name: "email" },
-        { title: "activity", name: "activity" },
-        { title: "Headname", name: "head_name" },
       ];
 
       break;
@@ -320,16 +318,22 @@ const CRMEntity = ({ type }) => {
                 <h1 className="page-title">
                   {entityObject && entityObject.name}
                 </h1>
+                {entityObject && informationItems.length > 0 && (
+                  <div className="information__container">
+                    <InformationComponent
+                      items={informationItems}
+                      title={`${type} Information`}
+                    ></InformationComponent>
+                  </div>
+                )}
               </div>
 
-              {entityObject && informationItems.length > 0 && (
-                <div className="entity-page--section">
-                  <InformationComponent
-                    items={informationItems}
-                    title={`${type} Information`}
-                  ></InformationComponent>
-                </div>
-              )}
+              {/* <div className="entity-page--section">
+                <InformationComponent
+                  items={informationItems}
+                  title={`${type} Information`}
+                ></InformationComponent>
+              </div> */}
 
               {entityObject &&
                 subEntity.length > 0 &&
@@ -350,11 +354,10 @@ const CRMEntity = ({ type }) => {
                       }
                       hideSelect
                       hideChangeView
-                      initBlockView={
-                        subEnt.subEntityName !== "sensors" &&
-                        subEnt.subEntityName !== "motes"
+                      initTableView={
+                        subEnt.subEntityName === "sensors" ||
+                        subEnt.subEntityName === "motes"
                       }
-                      hideCreateBtn
                       hideRecordView={
                         subEnt.subEntityName === "sensors" ||
                         subEnt.subEntityName === "motes"

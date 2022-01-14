@@ -140,7 +140,9 @@ const ModalSketch = ({
     setEquipmentImg([]);
     dispatch({ defaultEntity: [] });
     dispatch({ customFields: [] });
-    parentDispatch({ modalDataID: null });
+    if (parentDispatch) {
+      parentDispatch({ modalDataID: null });
+    }
   };
 
   const onSubmit = (data) => {
@@ -218,11 +220,11 @@ const ModalSketch = ({
                 "success",
                 `${
                   entityName.charAt(0).toUpperCase() + entityName.slice(1)
-                } created.`
+                } created`
               );
               setUpdateTrigger(!updateTrigger);
             } else if (data.errors && data.errors.includes("ID is invalid")) {
-              alert("error", `Invalid ref object.`);
+              alert("error", `Invalid ref object`);
             } else alert("error", data.errors);
           }
         });
@@ -251,7 +253,7 @@ const ModalSketch = ({
                   "success",
                   `${
                     entityName.charAt(0).toUpperCase() + entityName.slice(1)
-                  } changed.`
+                  } changed`
                 );
                 setUpdateTrigger(!updateTrigger);
               } else {
@@ -420,6 +422,8 @@ const ModalSketch = ({
           }
           break;
       }
+    } else if (data["createName"]) {
+      reset({ name: data["createName"] });
     }
   }, [data, dataID, toggle]);
 
@@ -629,11 +633,11 @@ const ModalSketch = ({
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
                       }`}
                       id={`${field.title}-field`}
-                      placeholder={`Enter ${field.title.toLowerCase()}.`}
+                      placeholder={`Enter ${field.title.toLowerCase()}`}
                       {...register(field.title.toLowerCase(), {
                         required: {
                           value: true,
-                          message: `${field.title} is required.`,
+                          message: `${field.title} is required`,
                         },
                         pattern: {
                           value: /^[\w-.]+@([\w-]+.)+[\w-]{1,10}$/,
@@ -661,11 +665,11 @@ const ModalSketch = ({
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
                       }`}
                       id={`${field.title}-field`}
-                      placeholder={`Enter ${field.title.toLowerCase()}.`}
+                      placeholder={`Enter ${field.title.toLowerCase()}`}
                       {...register(field.title.toLowerCase(), {
                         required: {
                           value: true,
-                          message: `${field.title} is required.`,
+                          message: `${field.title} is required`,
                         },
                         pattern: {
                           value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
@@ -687,43 +691,75 @@ const ModalSketch = ({
                         ? { display: "inline-block" }
                         : {}
                     }
-                    className="col-3"
+                    className={
+                      field.title === "Lat" || field.title === "Lng"
+                        ? "col-3"
+                        : "col-sm-6"
+                    }
                   >
                     <Label for={`${field.title}-field`}>{field.title}</Label>
-                    <Col
-                      sm={
-                        field.title === "Lat"
-                          ? 10
-                          : field.title === "Lng"
-                          ? 12
-                          : 6
-                      }
-                      className={"col-11"}
-                    >
-                      <input
-                        className={`form-control ${
-                          errors[field.title.toLowerCase()] ? "is-invalid" : ""
-                        }`}
-                        id={`${field.title}-field`}
-                        type="number"
-                        placeholder={`Enter ${field.title.toLowerCase()}.`}
-                        {...register(field.title.toLowerCase(), {
-                          required: {
-                            value: true,
-                            message: `${field.title} is required.`,
-                          },
-                          pattern: {
-                            value: /^-?[0-9]\d*\.?\d*$/,
-                            message: `${field.title} is number only.`,
-                          },
-                        })}
-                      />
-                      <small className="text-danger validation-error">
-                        {errors &&
-                          errors[field.title.toLowerCase()] &&
-                          errors[field.title.toLowerCase()].message}
-                      </small>
-                    </Col>
+                    {field.title === "Serial" ? (
+                      <>
+                        <input
+                          className={`form-control ${
+                            errors[field.title.toLowerCase()]
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                          id={`${field.title}-field`}
+                          type="text"
+                          placeholder={`Enter ${field.title.toLowerCase()}`}
+                          {...register(field.title.toLowerCase(), {
+                            required: {
+                              value: true,
+                              message: `${field.title} is required`,
+                            },
+                          })}
+                        />
+                        <small className="text-danger validation-error">
+                          {errors &&
+                            errors[field.title.toLowerCase()] &&
+                            errors[field.title.toLowerCase()].message}
+                        </small>
+                      </>
+                    ) : (
+                      <Col
+                        sm={
+                          field.title === "Lat"
+                            ? 10
+                            : field.title === "Lng"
+                            ? 12
+                            : 6
+                        }
+                        className={"col-11"}
+                      >
+                        <input
+                          className={`form-control ${
+                            errors[field.title.toLowerCase()]
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                          id={`${field.title}-field`}
+                          type="text"
+                          placeholder={`Enter ${field.title.toLowerCase()}`}
+                          {...register(field.title.toLowerCase(), {
+                            required: {
+                              value: true,
+                              message: `${field.title} is required`,
+                            },
+                            pattern: {
+                              value: /^[0-9][\d\.\,\'\"\°\s\N\E]{0,255}$/,
+                              message: `${field.title} needs to be map coordinate`,
+                            },
+                          })}
+                        />
+                        <small className="text-danger validation-error">
+                          {errors &&
+                            errors[field.title.toLowerCase()] &&
+                            errors[field.title.toLowerCase()].message}
+                        </small>
+                      </Col>
+                    )}
                   </FormGroup>
                 ) : (
                   <FormGroup key={index} className="col-sm-6">
@@ -733,15 +769,15 @@ const ModalSketch = ({
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
                       }`}
                       id={`${field.title}-field`}
-                      placeholder={`Enter ${field.title.toLowerCase()}.`}
+                      placeholder={`Enter ${field.title.toLowerCase()}`}
                       {...register(field.title.toLowerCase(), {
                         required: {
                           value: true,
-                          message: `${field.title} is required.`,
+                          message: `${field.title} is required`,
                         },
                         minLength: {
                           value: 3,
-                          message: `${field.title} should contain at least 3 symbols.`,
+                          message: `${field.title} should contain at least 3 symbols`,
                         },
                       })}
                     />
@@ -783,16 +819,11 @@ const ModalSketch = ({
                               errors[`${id}`] ? "is-invalid" : ""
                             }`}
                             id={`${id}-field`}
-                            placeholder="Enter value."
+                            placeholder="Enter value"
                             {...register(`${id}`, {
                               required: {
                                 value: true,
-                                message: "Value is required.",
-                              },
-                              minLength: {
-                                value: 3,
-                                message:
-                                  "Value should contain at least 3 symbols.",
+                                message: "Value is required",
                               },
                             })}
                           />
@@ -825,7 +856,15 @@ const ModalSketch = ({
                   </FormGroup>
                 </>
               ) : field.fieldType === "images" ? (
-                <div key={index}>
+                <div
+                  key={index}
+                  className={`${
+                    field.title === "location image" ||
+                    field.title === "equipment image"
+                      ? "col-sm-6"
+                      : ""
+                  }`}
+                >
                   {!field.titleNeeded && <span>{field.fileType} image</span>}
                   <AttachmentList
                     key={index}
@@ -958,7 +997,7 @@ const ModalSketch = ({
                 className="text-danger validation-error"
                 id="add-field-notification"
               >
-                Field must contain at least 3 symbols.
+                Field must contain at least 3 symbols
               </small>
             </FormGroup>
           </Form>

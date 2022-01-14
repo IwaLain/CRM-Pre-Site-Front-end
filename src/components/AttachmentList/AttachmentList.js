@@ -61,7 +61,7 @@ const AttachmentList = ({
             "success",
             `${
               type === "1" ? "Image" : type === "2" ? "Schema" : "Document"
-            } added.`
+            } added`
           );
           newFiles = responseData.map((file) => {
             return {
@@ -78,7 +78,7 @@ const AttachmentList = ({
           "success",
           `${
             type === "1" ? "Image" : type === "2" ? "Schema" : "Document"
-          } added.`
+          } added`
         );
         setCreatedFiles((state) => [...state, ...data]);
       }
@@ -121,7 +121,7 @@ const AttachmentList = ({
         "success",
         `${
           type === "1" ? "Image" : type === "2" ? "Schema" : "Document"
-        } removed.`
+        } removed`
       );
       setFilesFunction((state) => {
         const updatedFiles = state.filter((el) => el.id !== file.id);

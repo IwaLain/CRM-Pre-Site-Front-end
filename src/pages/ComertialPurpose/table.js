@@ -5,22 +5,21 @@ import { validation } from "../../js/helpers/validation";
 import { Row } from "reactstrap";
 
 const ComertialTable = ({ setData, dataForm, customerNetwork }) => {
-
   const [listData, setListData] = useState([]);
-  const { register, trigger } = dataForm
+  const { register, trigger } = dataForm;
 
   const priceValidation = (e) => {
-      if (e.target.value === 0 || e.target.value === '') {
-        e.target.classList.add('is-invalid')
-      } else {
-        e.target.classList.remove('is-invalid')
-      }
-  }
+    if (e.target.value === 0 || e.target.value === "") {
+      e.target.classList.add("is-invalid");
+    } else {
+      e.target.classList.remove("is-invalid");
+    }
+  };
 
   const handleDescriptionChange = (e) => {
     const newData = listData.map((el) => {
       if (el["item"] === e.target.id.split("-")[1]) {
-        priceValidation(e)
+        priceValidation(e);
         return {
           ...el,
           description: e.target.value,
@@ -45,7 +44,7 @@ const ComertialTable = ({ setData, dataForm, customerNetwork }) => {
       } else return el;
     });
 
-    console.dir(register)
+    console.dir(register);
 
     setListData(newData);
     if (setData) {
@@ -87,15 +86,17 @@ const ComertialTable = ({ setData, dataForm, customerNetwork }) => {
           type="text"
           id={`description-${row.item}`}
           name={`description-${row.item}`}
-          placeholder="Enter description..."
-          className={`form-control ${'description-' + row.item === '' ? 'is-invalid' : ''}`}
+          placeholder="Enter description"
+          className={`form-control ${
+            "description-" + row.item === "" ? "is-invalid" : ""
+          }`}
           onInput={(e) => {
-              handleDescriptionChange(e)
-              priceValidation(e)
-            }}
-          {...register(`description-${row.item}`, validation('text'))}
-          onKeyUp = {() => {
-            trigger(`description-${row.item}`)
+            handleDescriptionChange(e);
+            priceValidation(e);
+          }}
+          {...register(`description-${row.item}`, validation("text"))}
+          onKeyUp={() => {
+            trigger(`description-${row.item}`);
           }}
         />
       ),
@@ -116,15 +117,17 @@ const ComertialTable = ({ setData, dataForm, customerNetwork }) => {
           name={`price-${row.item}`}
           type="number"
           min="0"
-          placeholder="Enter price..."
-          className={`form-control ${'price-' + row.item === '' ? 'is-invalid' : ''}`}
+          placeholder="Enter price"
+          className={`form-control ${
+            "price-" + row.item === "" ? "is-invalid" : ""
+          }`}
           onInput={(e) => {
-              handlePriceChange(e)
-              priceValidation(e)
-            }}
-          {...register(`price-${row.item}`, validation('price'))}
-          onKeyUp = {() => {
-            trigger(`price-${row.item}`)
+            handlePriceChange(e);
+            priceValidation(e);
+          }}
+          {...register(`price-${row.item}`, validation("price"))}
+          onKeyUp={() => {
+            trigger(`price-${row.item}`);
           }}
         />
       ),
@@ -144,7 +147,7 @@ const ComertialTable = ({ setData, dataForm, customerNetwork }) => {
 
 ComertialTable.propTypes = {
   setData: PropTypes.func,
-  dataForm: PropTypes.object
-}
+  dataForm: PropTypes.object,
+};
 
 export default ComertialTable;

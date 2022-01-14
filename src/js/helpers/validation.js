@@ -1,6 +1,7 @@
 const regex = {
   password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/,
-  email: /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
+  email:
+    /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
   phone: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
 };
 
@@ -8,42 +9,42 @@ export const validation = (type) => {
   switch (type) {
     case "username":
       return {
-        required: "UserName is Required",
+        required: "Username is required",
         minLength: {
           value: 2,
-          message: "Minimum 2 simvols",
+          message: "Minimum 2 symbols",
         },
       };
     case "password":
       return {
-        required: "Password is Required",
+        required: "Password is required",
         minLength: {
           value: 4,
-          message: "Minimum 4 simvols",
+          message: "Minimum 4 symbols",
         },
         maxLength: {
           value: 15,
-          message: "Minimum 15 simvols",
+          message: "Minimum 15 symbols",
         },
       };
     case "email":
       return {
-        required: "Email is Required",
+        required: "Email is required",
         pattern: {
           value: regex.email,
-          message: "Email must be like exampl@mail.com",
+          message: "Wrong email. Example tolik@gmail.com",
         },
       };
     case "phone":
       return {
-        required: "Phone is Required",
+        required: "Phone is required",
         minLength: {
           value: 9,
-          message: "Minimum 9 simvols",
+          message: "Minimum 9 symbols",
         },
         pattern: {
           value: regex.phone,
-          message: "Phone must be like 555-555-5555",
+          message: "Wrong phone. Example: 555-555-5555",
         },
       };
     case "role":
@@ -55,7 +56,7 @@ export const validation = (type) => {
       };
     case "name":
       return {
-        required: "Name is Required",
+        required: "Name is required",
         minLength: {
           value: 3,
           message: "Name should contain at least 3 symbols.",
@@ -63,7 +64,7 @@ export const validation = (type) => {
       };
     case "address":
       return {
-        required: "Address is Required",
+        required: "Address is required",
         minLength: {
           value: 3,
           message: "Address should contain at least 3 symbols.",
@@ -71,7 +72,7 @@ export const validation = (type) => {
       };
     case "text":
       return {
-        required: `${type} is Required`,
+        required: `${type} is required`,
         minLength: {
           value: 3,
           message: `${type} should contain at least 3 symbols.`,
@@ -79,18 +80,18 @@ export const validation = (type) => {
       };
     case "description":
       return {
-        required: `${type} is Required`,
+        required: `${type} is required`,
         maxLength: {
           value: 15,
-          message: "Max 15 simvols",
+          message: "Max 15 symbols",
         },
       };
     case "price":
       return {
-        required: `${type} is Required`,
+        required: `${type} is required`,
         minLength: {
           value: 1,
-          message: "Min 1 number",
+          message: "Should contain at least 1 number",
         },
       };
     default:

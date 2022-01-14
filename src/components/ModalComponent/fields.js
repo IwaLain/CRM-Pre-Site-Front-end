@@ -21,16 +21,6 @@ export default {
       fieldType: "form",
     },
     {
-      title: "Activity",
-      inputType: "text",
-      fieldType: "form",
-    },
-    {
-      title: "Head name",
-      inputType: "text",
-      fieldType: "form",
-    },
-    {
       fieldType: "images",
       types: [{ typeID: "1" }, { typeID: "2" }, { typeID: "3" }],
       titleNeeded: true,
@@ -248,6 +238,7 @@ export default {
       inputType: "text",
     },
     {
+      title: "location image",
       fieldType: "images",
       fileType: "location",
       mode: "single",
@@ -255,6 +246,7 @@ export default {
       titleNeeded: false,
     },
     {
+      title: "equipment image",
       fieldType: "images",
       fileType: "equipment",
       mode: "single",

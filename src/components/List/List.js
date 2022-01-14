@@ -15,6 +15,10 @@ import { reducer } from "../../reducer";
 import PropTypes from "prop-types";
 import debounce from "../../js/helpers/debounce";
 import Button from "../UIKit/Button/Button";
+import SliderModal from "../SliderModal/SliderModal";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import { useHistory } from "react-router-dom";
+import { alert } from "../../js/helpers/alert";
 
 const List = ({
   type,
@@ -27,7 +31,7 @@ const List = ({
   hideChangeView,
   showProgress,
   hideRecordView,
-  initBlockView,
+  initTableView,
 }) => {
   const initialState = {
     data: {},
@@ -35,7 +39,7 @@ const List = ({
     requests: {},
     isLoading: false,
     selectIsLoaded: false,
-    view: true,
+    view: false,
     screenSize: window.innerWidth,
     totalRows: Math.ceil(0),
     totalPages: 0,
@@ -46,6 +50,9 @@ const List = ({
     prevSelectedAll: false,
     modalData: {},
     modalDataID: null,
+    sliderModal: false,
+    entityImagesName: "",
+    confirmModal: false,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -54,7 +61,6 @@ const List = ({
     searchQuery,
     requests,
     isLoading,
-    selectIsLoaded,
     view,
     screenSize,
     totalRows,
@@ -64,19 +70,23 @@ const List = ({
     prevSelectedAll,
     page,
     mode,
-    modalData,
     modalDataID,
+    sliderModal,
+    entityImagesName,
+    confirmModal,
   } = state;
+
+  const history = useHistory();
 
   const RECORDS_PER_PAGE = 20;
 
   const {
     entityID,
     setEntityID,
-
     selectedCustomer,
-    setSelectedCustomer,
     updateTrigger,
+    setSelectedCustomer,
+    setUpdateTrigger,
   } = useContext(GlobalContext);
 
   const formatNames = (data) => {
@@ -208,8 +218,43 @@ const List = ({
     } else dispatch({ prevSelectedAll: false });
   };
 
+  let singleAlias = "";
+
+  switch (type.entity) {
+    case "customers":
+      singleAlias = "customer";
+
+      break;
+    case "facilities":
+      singleAlias = "facility";
+
+      break;
+    case "locations":
+      singleAlias = "location";
+
+      break;
+    case "equipment":
+      singleAlias = "equipment";
+
+      break;
+    case "gateways":
+      singleAlias = "gateway";
+
+      break;
+    default:
+      break;
+  }
+
   const toggleModal = () => {
     dispatch({ modal: !modal });
+  };
+
+  const toggleSliderModal = () => {
+    dispatch({ sliderModal: !sliderModal });
+  };
+
+  const toggleConfirmModal = () => {
+    dispatch({ confirmModal: !confirmModal });
   };
 
   const changeCustomer = (id) => {
@@ -243,10 +288,10 @@ const List = ({
   };
 
   useEffect(() => {
-    if (initBlockView) {
-      dispatch({ view: false });
+    if (initTableView) {
+      dispatch({ view: true });
     }
-  }, [initBlockView]);
+  }, [initTableView]);
 
   useEffect(() => {
     if (type) {
@@ -324,6 +369,26 @@ const List = ({
   }, [selectedCustomer]);
 
   useEffect(() => {
+    if (history && history.location && history.location.pathname) {
+      switch (history.location.pathname) {
+        case "/facilities":
+        case "/locations":
+        case "/equipment":
+          if (
+            !selectedCustomer ||
+            !(Object.keys(selectedCustomer).length > 0)
+          ) {
+            history.push("/customers");
+            alert("error", "You need to select customer first");
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }, [history, selectedCustomer]);
+
+  useEffect(() => {
     if (requests.list) {
       dispatch({ isLoading: true });
       try {
@@ -389,8 +454,79 @@ const List = ({
     }
   }, [entityID]);
 
+  useEffect(() => {
+    if (type && type.entity) {
+      switch (type.entity) {
+        case "customers":
+          dispatch({ singleAlias: "Customer" });
+          break;
+        case "facilities":
+          dispatch({ singleAlias: "Facility" });
+          break;
+        case "locations":
+          dispatch({ singleAlias: "Location" });
+          break;
+        case "gateways":
+          dispatch({ singleAlias: "Gateway" });
+          break;
+        case "nodes":
+          dispatch({ singleAlias: "Node" });
+          break;
+        case "motes":
+          dispatch({ singleAlias: "Mote" });
+          break;
+        case "sensors":
+          dispatch({ singleAlias: "Sensor" });
+          break;
+        case "routers":
+          dispatch({ singleAlias: "Router" });
+          break;
+        default:
+          dispatch({ singleAlias: type.entity });
+          break;
+      }
+    }
+  }, [type]);
+
+  const handleDeleteEntityObject = (deleteEntityId) => {
+    let url =
+      process.env.REACT_APP_SERVER_URL +
+      "/api/" +
+      `${singleAlias}/delete/` +
+      deleteEntityId +
+      "?access-token=" +
+      localStorage.getItem("token");
+    fetch(url, { method: "DELETE" }).then(() => {
+      dispatch({ modalDataID: null });
+      setUpdateTrigger(!updateTrigger);
+    });
+  };
+
   return (
     <>
+      <ConfirmModal
+        modal={confirmModal}
+        toggleModal={toggleConfirmModal}
+        title={`Delete ${singleAlias}`}
+        handleSubmit={(e) => {
+          handleDeleteEntityObject(modalDataID);
+          // handleRemoveFieldFormSubmit(e, customFields, deleteField.id);
+        }}
+        name={
+          data &&
+          Object.keys(data).length > 0 &&
+          modalDataID &&
+          data[type.entity][modalDataID].name
+        }
+      />
+      <SliderModal
+        data={data}
+        dataID={modalDataID}
+        modal={sliderModal}
+        toggleModal={toggleSliderModal}
+        entity={type && type.entity}
+        entityImagesName={entityImagesName}
+      />
       <ModalSketch
         entity={type && type.entity}
         subEntity={type && type.ref}
@@ -416,14 +552,17 @@ const List = ({
                   toggleModal();
                 }}
               >
-                +
+                {`Add ${singleAlias}`}
               </button>
             )}
           </div>
           <div className="list__options">
             {type && type.ref && !hideSelect && (
               <div className="list__select-entity">
-                <Label for="select-entity">{type && `${type.ref.charAt(0).toUpperCase() + type.ref.slice(1)}:`}</Label>
+                <Label for="select-entity">
+                  {type &&
+                    `${type.ref.charAt(0).toUpperCase() + type.ref.slice(1)}:`}
+                </Label>
                 <select
                   className="default-select"
                   id="select-entity"
@@ -449,7 +588,7 @@ const List = ({
                 <input
                   className="list__search default-input"
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search"
                   onInput={debouncedSearchHandler}
                 />
               </div>
@@ -481,12 +620,14 @@ const List = ({
                   page={page}
                   dispatch={dispatch}
                   toggleModal={toggleModal}
+                  toggleSliderModal={toggleSliderModal}
+                  toggleConfirmModal={toggleConfirmModal}
                   modal={modal}
                   chooseMode={chooseMode}
-                  changeCustomer={changeCustomer}
                   hideRecordView={hideRecordView}
                   perPage={RECORDS_PER_PAGE}
                   showProgress={showProgress}
+                  entityImagesName={entityImagesName}
                 />
               ) : (
                 <div
@@ -505,10 +646,10 @@ const List = ({
                         data={record[1]}
                         type={type.entity}
                         toggleModal={toggleModal}
+                        toggleConfirmModal={toggleConfirmModal}
                         dispatch={dispatch}
                         chooseMode={chooseMode}
                         selected={record[1].id === selectedCustomer.id}
-                        changeCustomer={changeCustomer}
                         hideRecordView={hideRecordView}
                       />
                     ))
@@ -568,7 +709,7 @@ List.propTypes = {
   hideChangeView: PropTypes.bool,
   showProgress: PropTypes.bool,
   hideRecordView: PropTypes.bool,
-  initBlockView: PropTypes.bool,
+  initTableView: PropTypes.bool,
 };
 
 export default List;

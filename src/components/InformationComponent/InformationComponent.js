@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const InformationComponent = ({ items, title }) => {
   return (
     <>
-      <h2 className="page-subtitle">{title}</h2>
+      {/* <h2 className="page-subtitle">{title}</h2> */}
 
       <div className="information--list">
         {items &&
