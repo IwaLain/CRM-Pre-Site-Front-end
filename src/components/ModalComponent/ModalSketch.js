@@ -211,6 +211,9 @@ const ModalSketch = ({
         .then((res) => res.json())
         .then((data) => {
           if (data) {
+            if (parentDispatch && entityName === "customer") {
+              parentDispatch({ createdRecord: data["customer"] });
+            }
             if (data["success"]) {
               resetToggle();
               alert(
@@ -633,7 +636,9 @@ const ModalSketch = ({
               field.fieldType === "form" ? (
                 field.inputType === "email" ? (
                   <FormGroup key={index} className="col-sm-6">
-                    <Label for={`${field.title}-field`}>{field.title}</Label>
+                    <Label className="required" for={`${field.title}-field`}>
+                      {field.title}
+                    </Label>
                     <input
                       className={`form-control ${
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
@@ -665,7 +670,9 @@ const ModalSketch = ({
                   </FormGroup>
                 ) : field.inputType === "phone" ? (
                   <FormGroup key={index} className="col-sm-6">
-                    <Label for={`${field.title}-field`}>{field.title}</Label>
+                    <Label className="required" for={`${field.title}-field`}>
+                      {field.title}
+                    </Label>
                     <input
                       className={`form-control ${
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
@@ -703,7 +710,9 @@ const ModalSketch = ({
                         : "col-sm-6"
                     }
                   >
-                    <Label for={`${field.title}-field`}>{field.title}</Label>
+                    <Label className="required" for={`${field.title}-field`}>
+                      {field.title}
+                    </Label>
                     {field.title === "Serial" ? (
                       <>
                         <input
@@ -769,7 +778,9 @@ const ModalSketch = ({
                   </FormGroup>
                 ) : (
                   <FormGroup key={index} className="col-sm-6">
-                    <Label for={`${field.title}-field`}>{field.title}</Label>
+                    <Label className="required" for={`${field.title}-field`}>
+                      {field.title}
+                    </Label>
                     <input
                       className={`form-control ${
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
@@ -818,7 +829,9 @@ const ModalSketch = ({
                   {customFields &&
                     customFields.map(({ id, title }) => (
                       <FormGroup key={id} className="col-sm-6">
-                        <Label for={`${id}-field`}>{title}</Label>
+                        <Label className="required" for={`${id}-field`}>
+                          {title}
+                        </Label>
                         <div className="custom-field__container">
                           <input
                             className={`form-control ${

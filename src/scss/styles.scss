@@ -146,6 +146,11 @@ ul {
         font-size: 1em;
         letter-spacing: 0.05rem;
       }
+
+      .sidebar-bottom-nav {
+        position: absolute;
+        bottom: 10px;
+      }
     }
   }
 
@@ -160,6 +165,17 @@ ul {
 }
 
 .modal {
+  .form-label {
+    position: relative;
+  }
+  .form-label.required::after {
+    position: absolute;
+    content: "*";
+    top: 0;
+    right: -10px;
+    color: red;
+  }
+
   .modal-header {
     position: relative;
   }
@@ -535,12 +551,12 @@ ul {
   color: black;
 }
 
-.dashboard-page__block:hover {
+.dashboard-page .dashboard-page__block:hover {
   border: 1px solid black;
   color: black;
 }
 
-.dashboard-page__block:hover > h5 {
+.dashboard-page .dashboard-page__block:hover > h5 {
   color: $primary;
 }
 
@@ -691,4 +707,31 @@ h1 {
 
 .table-images {
   cursor: pointer;
+}
+
+/* Progress */
+.list {
+  .progress-33 {
+    > .progress {
+      > .progress-bar {
+        background-color: $danger;
+      }
+    }
+  }
+
+  .progress-66 {
+    > .progress {
+      > .progress-bar {
+        background-color: $main-primary;
+      }
+    }
+  }
+
+  .progress-100 {
+    > .progress {
+      > .progress-bar {
+        background-color: $success;
+      }
+    }
+  }
 }

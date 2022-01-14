@@ -218,33 +218,6 @@ const List = ({
     } else dispatch({ prevSelectedAll: false });
   };
 
-  let singleAlias = "";
-
-  switch (type.entity) {
-    case "customers":
-      singleAlias = "customer";
-
-      break;
-    case "facilities":
-      singleAlias = "facility";
-
-      break;
-    case "locations":
-      singleAlias = "location";
-
-      break;
-    case "equipment":
-      singleAlias = "equipment";
-
-      break;
-    case "gateways":
-      singleAlias = "gateway";
-
-      break;
-    default:
-      break;
-  }
-
   const toggleModal = () => {
     dispatch({ modal: !modal });
   };
@@ -292,6 +265,40 @@ const List = ({
       dispatch({ view: true });
     }
   }, [initTableView]);
+
+  let singleAlias = "";
+
+  switch (type.entity) {
+    case "customers":
+      singleAlias = "customer";
+      break;
+    case "facilities":
+      singleAlias = "facility";
+      break;
+    case "locations":
+      singleAlias = "location";
+      break;
+    case "equipment":
+      singleAlias = "equipment";
+      break;
+    case "gateways":
+      singleAlias = "gateway";
+      break;
+    case "routers":
+      singleAlias = "router";
+      break;
+    case "nodes":
+      singleAlias = "node";
+      break;
+    case "motes":
+      singleAlias = "mote";
+      break;
+    case "sensors":
+      singleAlias = "sensor";
+      break;
+    default:
+      break;
+  }
 
   useEffect(() => {
     if (type) {
@@ -549,6 +556,17 @@ const List = ({
                   toggleModal();
                 }}
               >
+                {singleAlias === "customer" ? (
+                  <i class="fas fa-user" aria-hidden="true"></i>
+                ) : singleAlias === "facility" ? (
+                  <i class="fas fa-industry" aria-hidden="true"></i>
+                ) : singleAlias === "location" ? (
+                  <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                ) : singleAlias === "equipment" ? (
+                  <i class="fas fa-tools" aria-hidden="true"></i>
+                ) : (
+                  <i class="fas fa-network-wired" aria-hidden="true"></i>
+                )}
                 {`Add ${singleAlias}`}
               </button>
             )}
@@ -627,42 +645,43 @@ const List = ({
                   entityImages={entityImages}
                 />
               ) : (
-                <div
-                  className={
-                    screenSize > 1020
-                      ? "info-card_group"
-                      : "info-card_group dense"
-                  }
-                >
+                <>
                   {data &&
                   data[type.entity] &&
                   Object.keys(data[type.entity]).length > 0 ? (
-                    Object.entries(data[type.entity]).map((record) => (
-                      <InfoCard
-                        key={record[1].id}
-                        data={record[1]}
-                        type={type.entity}
-                        toggleModal={toggleModal}
-                        toggleConfirmModal={toggleConfirmModal}
-                        dispatch={dispatch}
-                        chooseMode={chooseMode}
-                        selected={record[1].id === selectedCustomer.id}
-                        hideRecordView={hideRecordView}
-                      />
-                    ))
+                    <div
+                      className={
+                        screenSize > 1020
+                          ? "info-card_group"
+                          : "info-card_group dense"
+                      }
+                    >
+                      {Object.entries(data[type.entity]).map((record) => (
+                        <InfoCard
+                          key={record[1].id}
+                          data={record[1]}
+                          type={type.entity}
+                          toggleModal={toggleModal}
+                          toggleConfirmModal={toggleConfirmModal}
+                          dispatch={dispatch}
+                          chooseMode={chooseMode}
+                          selected={record[1].id === selectedCustomer.id}
+                          hideRecordView={hideRecordView}
+                        />
+                      ))}
+                    </div>
                   ) : (
                     <p
                       style={{
                         display: "flex",
                         justifyContent: "center",
-                        padding: "24px",
                         margin: "0",
                       }}
                     >
                       There are no records to display
                     </p>
                   )}
-                </div>
+                </>
               )}
               {!view && totalPages > 1 && (
                 <CustomPagination

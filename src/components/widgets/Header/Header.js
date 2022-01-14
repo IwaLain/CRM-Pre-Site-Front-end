@@ -11,17 +11,28 @@ const Header = () => {
     createName: "",
     selectedOption: null,
     inputValue: "",
+    createdRecord: {},
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { customerNames, modal, createName, selectedOption, inputValue } =
-    state;
+  const {
+    customerNames,
+    modal,
+    createName,
+    selectedOption,
+    inputValue,
+    createdRecord,
+  } = state;
 
   const { selectedCustomer, setSelectedCustomer, updateTrigger } =
     useContext(GlobalContext);
 
   const toggleModal = () => {
+    if (modal) {
+      dispatch({ selectedOption: null });
+      dispatch({ inputValue: "" });
+    }
     dispatch({ modal: !modal });
   };
 
@@ -77,7 +88,6 @@ const Header = () => {
           });
           dispatch({ customerNames: formattedNames });
           if (selectedCustomer && Object.keys(selectedCustomer).length > 0) {
-            console.log(selectedCustomer);
             dispatch({
               selectedOption: formattedNames.find(
                 (el) => el.value === selectedCustomer.id
@@ -86,6 +96,12 @@ const Header = () => {
           }
         });
     } catch (e) {}
+    if (createdRecord && Object.keys(createdRecord).length > 0) {
+      dispatch({
+        selectedOption: { label: createdRecord.name, value: createdRecord.id },
+      });
+      dispatch({ createdRecord: {} });
+    }
   }, [updateTrigger]);
 
   useEffect(() => {
@@ -103,6 +119,7 @@ const Header = () => {
         toggle={toggleModal}
         mode="create"
         data={{ createName }}
+        parentDispatch={dispatch}
       />
       <header style={{ zIndex: 10 }}>
         <span></span>

@@ -136,6 +136,7 @@ const InfoCard = ({
               to={`/${type}/${data && data.id}`}
               style={data && hideRecordView ? { visibility: "hidden" } : {}}
             >
+              <i class="fas fa-eye"></i>
               View
             </Link>
             <button
@@ -157,12 +158,26 @@ const InfoCard = ({
                 }
               }}
             >
-              <span>Edit</span>
+              <span>
+                <i class="fas fa-pencil-alt"></i>Edit
+              </span>
             </button>
           </div>
         </div>
       </div>
-      {progress ? <Progress value={progress} /> : null}
+      {progress && (
+        <div
+          className={
+            progress < 34
+              ? `progress-33`
+              : progress < 67
+              ? "progress-66"
+              : "progress-100"
+          }
+        >
+          <Progress value={progress} />
+        </div>
+      )}
     </div>
   );
 };
