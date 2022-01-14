@@ -213,7 +213,7 @@ const TableView = ({
                 className="table-images"
                 onClick={() => {
                   dispatch({ modalDataID: value.id });
-                  dispatch({ entityImagesName: singleAlias + "Images" });
+                  dispatch({ entityImages: value[singleAlias + "Images"] });
                   toggleSliderModal();
                 }}
               >

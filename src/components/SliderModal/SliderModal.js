@@ -17,13 +17,10 @@ import "./slider-modal.scss";
 const SliderModal = ({
   modal,
   toggleModal,
-  handleSubmit,
+
   title,
-  modalText,
-  dataID,
-  data,
-  entityImagesName,
-  entity,
+
+  entityImages,
 }) => {
   const [itemLength, setItemLength] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -31,8 +28,7 @@ const SliderModal = ({
   const [activeIndex, setActiveIndex] = useState(0);
   useEffect(() => {
     if (modal) {
-      console.log(data[entity][dataID][entityImagesName]);
-      const imageArr = data[entity][dataID][entityImagesName];
+      const imageArr = entityImages;
       if (imageArr) {
         setItemLength(imageArr.filter((el) => el.type_id === "1").length);
         setItems(
