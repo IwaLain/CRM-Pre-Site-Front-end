@@ -510,14 +510,7 @@ const List = ({
         title={`Delete ${singleAlias}`}
         handleSubmit={(e) => {
           handleDeleteEntityObject(modalDataID);
-          // handleRemoveFieldFormSubmit(e, customFields, deleteField.id);
         }}
-        name={
-          data &&
-          Object.keys(data).length > 0 &&
-          modalDataID &&
-          data[type.entity][modalDataID].name
-        }
       />
       <SliderModal
         data={data}

@@ -7,7 +7,6 @@ const ConfirmModal = ({
   handleSubmit,
   title,
   modalText,
-  name,
 }) => {
   const handleConfirmModalFormSubmit = async (e) => {
     e.preventDefault();
@@ -20,9 +19,7 @@ const ConfirmModal = ({
         <ModalHeader>{title && title}</ModalHeader>
         <ModalBody>
           {modalText && <p className="confirm-modal--text ">{modalText}</p>}{" "}
-          {name && (
-            <p className="confirm-modal--text ">{`Are you sure you want DELETE ${name}?`}</p>
-          )}
+          <p className="confirm-modal--text ">{`Are you sure you want DELETE this?`}</p>
         </ModalBody>
         <ModalFooter>
           <button className="ui-btn ui-btn-secondary" onClick={toggleModal}>

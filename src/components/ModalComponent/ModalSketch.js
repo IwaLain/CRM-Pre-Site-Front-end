@@ -151,8 +151,6 @@ const ModalSketch = ({
     if (data["head name"]) body["head_name"] = data["head name"];
     if (data["location info"]) body["location_info"] = data["location info"];
 
-    console.log(body);
-
     const jsonData = [];
 
     for (const [key, value] of Object.entries(data)) {
@@ -377,9 +375,18 @@ const ModalSketch = ({
           }
           break;
         default:
-          formattedData = data[entity].find((el) => el.id === dataID);
-          dispatch({ defaultEntity: formattedData });
-          newFields = [];
+          let formattedData;
+          if (data) {
+            if (data[entity].length > 0) {
+              formattedData = data[entity].find((el) => el.id === dataID);
+              dispatch({ defaultEntity: formattedData });
+            } else if (Object.keys(data[entity]).length > 0) {
+              formattedData = data[entity][dataID];
+              dispatch({ defaultEntity: formattedData });
+            }
+          }
+
+          let newFields = [];
 
           if (
             formattedData["jsonData"] &&

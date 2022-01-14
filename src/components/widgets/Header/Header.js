@@ -9,7 +9,7 @@ const Header = () => {
     customerNames: {},
     modal: false,
     createName: "",
-    selectedOption: {},
+    selectedOption: null,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -74,11 +74,13 @@ const Header = () => {
             formattedNames.push({ value: id, label: name });
           });
           dispatch({ customerNames: formattedNames });
-          dispatch({
-            selectedOption: formattedNames.find(
-              (el) => el.value === selectedCustomer.id
-            ),
-          });
+          if (selectedCustomer && Object.keys(selectedCustomer).length > 0) {
+            dispatch({
+              selectedOption: formattedNames.find(
+                (el) => el.value === selectedCustomer.id
+              ),
+            });
+          }
         });
     } catch (e) {}
   }, [updateTrigger]);
