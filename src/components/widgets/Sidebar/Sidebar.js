@@ -12,6 +12,7 @@ const Sidebar = ({ isMobile }) => {
     Profile.setlastCustomer(selectedCustomer.id);
     Profile.logoutRequest().then(() => {
       localStorage.removeItem("token");
+      localStorage.removeItem("selectedCustomer");
       window.location.reload();
     });
   };
