@@ -57,7 +57,7 @@ const TableView = ({
           <button
             className="ui-btn ui-btn-danger"
             onClick={() => {
-              dispatch({ modalDataID: row.id });
+              dispatch({ recordToDelete: row.id });
               toggleConfirmModal();
             }}
           >

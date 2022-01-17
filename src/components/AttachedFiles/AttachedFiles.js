@@ -105,7 +105,7 @@ const AttachedFiles = ({
         handleSubmit={() => {
           onRemoveFile(removeFile, type);
         }}
-        modalText={`Are you sure you want to DELETE file`}
+        modalText={`Are you sure you want to delete file`}
       />
       {name && <h3 className="page-subtitle fw-normal">{name}</h3>}
       <div

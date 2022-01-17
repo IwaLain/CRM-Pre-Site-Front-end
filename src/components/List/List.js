@@ -53,6 +53,7 @@ const List = ({
     sliderModal: false,
     entityImages: [],
     confirmModal: false,
+    recordToDelete: null,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -74,6 +75,7 @@ const List = ({
     sliderModal,
     entityImages,
     confirmModal,
+    recordToDelete,
   } = state;
 
   const history = useHistory();
@@ -228,36 +230,6 @@ const List = ({
 
   const toggleConfirmModal = () => {
     dispatch({ confirmModal: !confirmModal });
-  };
-
-  const changeCustomer = (id) => {
-    try {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/customer/" +
-          id +
-          "?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((customer) => {
-          if (customer) {
-            setSelectedCustomer(customer.customer[id]);
-          }
-        });
-    } catch (e) {}
-    try {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/user/last-customer/" +
-          id +
-          "?access-token=" +
-          localStorage.getItem("token"),
-        {
-          method: "PUT",
-        }
-      );
-    } catch (e) {}
   };
 
   useEffect(() => {
@@ -503,7 +475,7 @@ const List = ({
       deleteEntityId +
       "?access-token=" +
       localStorage.getItem("token");
-    fetch(url, { method: "DELETE" }).then(() => {
+    fetch(url, { method: "delete" }).then(() => {
       dispatch({ modalDataID: null });
       if (selectedCustomer) {
         if (deleteEntityId === selectedCustomer.id) {
@@ -522,9 +494,9 @@ const List = ({
         toggleModal={toggleConfirmModal}
         title={`Delete ${singleAlias}`}
         handleSubmit={(e) => {
-          handleDeleteEntityObject(modalDataID);
+          handleDeleteEntityObject(recordToDelete);
         }}
-        modalText="Are you sure you want DELETE this?"
+        modalText="Are you sure you want delete this?"
       />
       <SliderModal
         modal={sliderModal}

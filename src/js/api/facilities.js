@@ -1,5 +1,5 @@
-import { getToken } from '../helpers/helpers'
-import { apiRequest, header, BASE_URL} from './api'
+import { getToken } from "../helpers/helpers";
+import { apiRequest, header, BASE_URL } from "./api";
 
 const facilitiesApi = {
   getFacilities: async (limit, page, search) => {
@@ -53,7 +53,7 @@ const facilitiesApi = {
 
     if (token)
       return apiRequest(
-        "DELETE",
+        "delete",
         BASE_URL + `/api/facility/delete/${facilityId}?access-token=${token}`
       );
   },
@@ -63,7 +63,7 @@ const facilitiesApi = {
 
     if (token)
       return apiRequest(
-        "DELETE",
+        "delete",
         BASE_URL +
           `/api/facility/${facilityId}/image/delete/${imageId}?access-token=${token}`
       );

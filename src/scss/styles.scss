@@ -124,9 +124,15 @@ ul {
     }
 
     nav {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: calc(100% - 60px);
+
       .fa-ul {
         list-style: none;
         margin-left: 30px;
+        margin-bottom: 0;
       }
 
       .fa-ul li {
@@ -145,11 +151,6 @@ ul {
         margin-left: 10px;
         font-size: 1em;
         letter-spacing: 0.05rem;
-      }
-
-      .sidebar-bottom-nav {
-        position: absolute;
-        bottom: 10px;
       }
     }
   }
@@ -271,7 +272,6 @@ ul {
   grid-auto-columns: minmax(15rem, auto);
   grid-template-columns: repeat(auto-fill, minmax(320px, auto));
   grid-gap: 1rem;
-  // padding: 0 15px 15px 15px;
 }
 
 .info-card {
@@ -316,12 +316,20 @@ ul {
 .info-card__info {
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
+  margin: 0 10px;
   justify-content: center;
   width: 100%;
   > *:not(:last-child) {
     margin-bottom: 7px;
   }
+}
+
+.info-card__entities {
+  display: flex;
+}
+
+.info-card__entities > div {
+  margin-right: 10px;
 }
 
 .info-card__btns {
@@ -330,15 +338,15 @@ ul {
   font-weight: bold;
 
   > button {
-    padding: 4px 30px;
-    // border-radius: 2px;
+    padding: 4px 0;
+    width: 50%;
   }
 
   > a {
-    padding: 4px 30px;
+    padding: 4px 0;
+    width: 50%;
     text-decoration: none;
     color: white;
-    // background-color: $primary;
     border: 1px solid transparent;
   }
 
@@ -625,7 +633,7 @@ h1 {
   }
 
   &:disabled {
-    background-color: rgba($color: $primary, $alpha: .5)
+    background-color: rgba($color: $primary, $alpha: 0.5);
   }
 }
 
@@ -717,30 +725,34 @@ header .css-b62m3t-container {
 }
 
 header .css-1s2u09g-control {
-    background-color: transparent;
-    border: none;
-    text-align: center;
+  background-color: transparent;
+  border: none;
+  text-align: center;
 }
 
 header .css-tlfecz-indicatorContainer {
-    color: black;
+  color: black;
 }
 
 header .css-1okebmr-indicatorSeparator {
-    display: none;
+  display: none;
 }
 
 header .css-1pahdxg-control {
-    border: none;
-    text-align: center;
+  border: none;
+  text-align: center;
 }
 
 header .css-6j8wv5-Input > input {
-    caret-color: transparent;
+  caret-color: transparent;
 }
 
 .table-images {
   cursor: pointer;
+
+  &.disabled {
+    cursor: auto;
+  }
 }
 
 /* Progress */

@@ -87,7 +87,7 @@ const ModalSketch = ({
     entityID,
     customerStructure,
     submitPreventer,
-    setSubmitPreventer
+    setSubmitPreventer,
   } = useContext(GlobalContext);
 
   const {
@@ -151,7 +151,6 @@ const ModalSketch = ({
     setSubmitPreventer(true);
 
     const body = { ...data };
-    if (data["head name"]) body["head_name"] = data["head name"];
     if (data["location info"]) body["location_info"] = data["location info"];
 
     const jsonData = [];
@@ -231,7 +230,7 @@ const ModalSketch = ({
               alert("error", `Invalid ref object`);
             } else alert("error", data.errors);
           }
-        setSubmitPreventer(false);
+          setSubmitPreventer(false);
         });
     } else if (mode === "edit") {
       try {
@@ -335,7 +334,6 @@ const ModalSketch = ({
           dispatch({ defaultEntity: data[entity][dataID] });
           reset({
             ...data[entity][dataID],
-            ["head name"]: data[entity][dataID]["head_name"],
           });
           break;
         case "sensor":
@@ -998,8 +996,12 @@ const ModalSketch = ({
           >
             Cancel
           </button>
-          <button disabled={submitPreventer} className="submit-btn ui-btn ui-btn-primary" form="form">
-            {submitPreventer ? '...' : 'Submit'}
+          <button
+            disabled={submitPreventer}
+            className="submit-btn ui-btn ui-btn-primary"
+            form="form"
+          >
+            {submitPreventer ? "..." : "Submit"}
           </button>
         </ModalFooter>
       </Modal>
@@ -1049,7 +1051,7 @@ const ModalSketch = ({
           handleSubmit={(e) => {
             handleRemoveFieldFormSubmit(e, customFields, deleteField.id);
           }}
-          modalText={`Are you sure you want to DELETE ${
+          modalText={`Are you sure you want to delete ${
             deleteField.title ? deleteField.title : ""
           } field`}
         />

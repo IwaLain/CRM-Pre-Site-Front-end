@@ -12,17 +12,17 @@ const Sidebar = ({ isMobile }) => {
 
   const initialState = {
     modal: false,
-    activeTab: null
+    activeTab: null,
   };
+
+  const history = useHistory();
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const { modal } = state;
 
-  const history = useHistory()
-
   const handleLogout = () => {
-      setSubmitPreventer(true);
+    setSubmitPreventer(true);
     Profile.setlastCustomer(selectedCustomer.id);
     Profile.logoutRequest().then(() => {
       localStorage.removeItem("token");
@@ -35,6 +35,12 @@ const Sidebar = ({ isMobile }) => {
   const toggleModal = () => {
     dispatch({ modal: !modal });
   };
+
+  const changeActiveTab = (e) => {};
+
+  window.addEventListener("urlChange", () => {
+    console.log(window.location);
+  });
 
   return (
     <>
@@ -52,10 +58,10 @@ const Sidebar = ({ isMobile }) => {
             {!isMobile && <img src={logoText} alt="waites" />}
           </Link>
         </div>
-        <nav>
+        <nav className="sidebar-nav">
           <ul className="fa-ul">
             <li>
-              <Link to="/dashboard">
+              <Link to="/dashboard" onClick={changeActiveTab}>
                 <span className="fa-li">
                   <i className="fas fa-chart-bar"></i>
                 </span>
@@ -65,7 +71,7 @@ const Sidebar = ({ isMobile }) => {
               </Link>
             </li>
             <li>
-              <Link to="/customers">
+              <Link to="/customers" onClick={changeActiveTab}>
                 <span className="fa-li">
                   <i className="fas fa-user"></i>
                 </span>
