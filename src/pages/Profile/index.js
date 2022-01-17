@@ -13,7 +13,8 @@ import "./Profile.scss";
 import placeholder from "../../assets/img/profile_placeholder.png";
 
 const ProfilePage = () => {
-  const { userProfile, setUserProfile } = useContext(GlobalContext);
+  const { userProfile, setUserProfile, setCurrentPage } =
+    useContext(GlobalContext);
 
   const initialState = {
     profile: userProfile,
@@ -50,6 +51,8 @@ const ProfilePage = () => {
     Profile.getProfile().then((data) => {
       dispatch({ profile: data.user });
     });
+
+    setCurrentPage("profile");
   }, []);
 
   const setNewImage = (newImage) => {

@@ -1,41 +1,46 @@
-import React, { useEffect, useReducer } from 'react'
-import { button, Col, Row } from 'reactstrap'
-import User from '../../js/api/users'
+import React, { useContext, useEffect, useReducer } from "react";
+import { button, Col, Row } from "reactstrap";
+import User from "../../js/api/users";
 
-import UserTable from './table'
-import UserModal from './modal'
-import { reducer } from '../../reducer'
-import Loader from '../../js/helpers/loader'
+import UserTable from "./table";
+import UserModal from "./modal";
+import { reducer } from "../../reducer";
+import Loader from "../../js/helpers/loader";
 
-import './Users.scss'
+import "./Users.scss";
+import { GlobalContext } from "../../context";
 
 const UsersPage = () => {
+  const { setCurrentPage } = useContext(GlobalContext);
+
   const initialState = {
     users: [],
     modalAddUser: false,
-    isLoading: false
-  }
+    isLoading: false,
+  };
 
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const { users, modalAddUser, isLoading } = state
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { users, modalAddUser, isLoading } = state;
 
-  const toggleAddUser = () => dispatch({ modalAddUser: !modalAddUser })
+  const toggleAddUser = () => dispatch({ modalAddUser: !modalAddUser });
 
-  const changeTable = (usersList) => dispatch({ users: usersList })
+  const changeTable = (usersList) => dispatch({ users: usersList });
   const editeTable = (userId, data) =>
     dispatch({
       users: users.map((userData) =>
         userData.id === userId ? { ...data, userId: data } : userData
-      )
-    })
+      ),
+    });
 
   useEffect(() => {
-    dispatch({ isLoading: true })
+    dispatch({ isLoading: true });
     User.get().then((data) => {
-      dispatch({ users: data.user })
-      dispatch({ isLoading: false })
-    })
-  }, [])
+      dispatch({ users: data.user });
+      dispatch({ isLoading: false });
+    });
+
+    setCurrentPage("users");
+  }, []);
 
   return (
     <div className="users">
@@ -47,8 +52,8 @@ const UsersPage = () => {
           <button
             className="ui-btn ui-btn-success"
             onClick={(e) => {
-              e.preventDefault()
-              toggleAddUser()
+              e.preventDefault();
+              toggleAddUser();
             }}
           >
             <i className="fas fa-user-plus"></i> Add User
@@ -57,9 +62,13 @@ const UsersPage = () => {
       </div>
 
       {!isLoading ? (
-        <UserTable editeTable={editeTable} changeTable={changeTable} users={users} />
+        <UserTable
+          editeTable={editeTable}
+          changeTable={changeTable}
+          users={users}
+        />
       ) : (
-        <div className='users__loader'>
+        <div className="users__loader">
           <Loader />
         </div>
       )}
@@ -72,10 +81,10 @@ const UsersPage = () => {
           modal={modalAddUser}
         />
       ) : (
-        ''
+        ""
       )}
     </div>
-  )
-}
+  );
+};
 
-export default UsersPage
+export default UsersPage;

@@ -9,9 +9,17 @@ import UserModal from "./modal";
 
 import { alert } from "../../js/helpers/alert";
 
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
+
 const UserTable = ({ users, editeTable, changeTable }) => {
   const [currentUser, setCurrentUser] = useState([]);
   const [modalEditUser, setModalEditUser] = useState(false);
+  const [modalDataID, setModalDataID] = useState(null);
+  const [confirmModal, setConfirmModal] = useState(false);
+
+  const toggleConfirmModal = () => {
+      setConfirmModal(!confirmModal);
+  }
 
   const toggleEditUser = () => setModalEditUser(!modalEditUser);
   const current = (currentUser) => setCurrentUser(currentUser);
@@ -89,7 +97,8 @@ const UserTable = ({ users, editeTable, changeTable }) => {
           <button
             className="button-delete ui-btn ui-btn-danger"
             onClick={() => {
-              deleteUser(row.id);
+              setModalDataID(row.id)
+              toggleConfirmModal()
             }}
           >
             <i className="far fa-trash-alt users-table__img" alt="delete"></i>
@@ -101,7 +110,17 @@ const UserTable = ({ users, editeTable, changeTable }) => {
   ];
 
   return (
-    <Row className="mt-3">
+      <>
+          <ConfirmModal
+        modal={confirmModal}
+        toggleModal={toggleConfirmModal}
+        title='Delete user'
+        handleSubmit={() => {
+          deleteUser(modalDataID);
+        }}
+        modalText="Are you sure you want delete this user?"
+      />
+      <Row className="mt-3">
       <Col md={12} className="table-striped">
         <DataTable
           columns={columns}
@@ -123,6 +142,8 @@ const UserTable = ({ users, editeTable, changeTable }) => {
         />
       ) : null}
     </Row>
+      </>
+
   );
 };
 

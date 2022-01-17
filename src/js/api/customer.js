@@ -1,5 +1,5 @@
-import { getToken } from '../helpers/helpers'
-import { apiRequest, header, BASE_URL} from './api'
+import { getToken } from "../helpers/helpers";
+import { apiRequest, header, BASE_URL } from "./api";
 
 const customersApi = {
   getCustomers: async (limit, page, search) => {
@@ -10,13 +10,7 @@ const customersApi = {
     if (page) url += `&page=${page}`;
     if (search) url += `&search=${search}`;
 
-    if (token)
-      return apiRequest(
-        "GET",
-        BASE_URL + url,
-        {},
-        header
-      );
+    if (token) return apiRequest("GET", BASE_URL + url, {}, header);
   },
 
   getCustomer: async (customerId) => {
@@ -59,7 +53,7 @@ const customersApi = {
 
     if (token)
       return apiRequest(
-        "DELETE",
+        "delete",
         BASE_URL +
           `/api/customer/${customerId}/image/delete/${imageId}?access-token=${token}`
       );

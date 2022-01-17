@@ -124,9 +124,15 @@ ul {
     }
 
     nav {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: calc(100% - 60px);
+
       .fa-ul {
         list-style: none;
         margin-left: 30px;
+        margin-bottom: 0;
       }
 
       .fa-ul li {
@@ -160,6 +166,17 @@ ul {
 }
 
 .modal {
+  .form-label {
+    position: relative;
+  }
+  .form-label.required::after {
+    position: absolute;
+    content: "*";
+    top: 0;
+    right: -10px;
+    color: red;
+  }
+
   .modal-header {
     position: relative;
   }
@@ -255,7 +272,6 @@ ul {
   grid-auto-columns: minmax(15rem, auto);
   grid-template-columns: repeat(auto-fill, minmax(320px, auto));
   grid-gap: 1rem;
-  // padding: 0 15px 15px 15px;
 }
 
 .info-card {
@@ -300,7 +316,7 @@ ul {
 .info-card__info {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin: 0 10px;
   justify-content: center;
   width: 100%;
   > *:not(:last-child) {
@@ -308,22 +324,29 @@ ul {
   }
 }
 
+.info-card__entities {
+  display: flex;
+}
+
+.info-card__entities > div {
+  margin-right: 10px;
+}
+
 .info-card__btns {
   display: flex;
-  justify-content: center;
   gap: 10px;
   font-weight: bold;
 
   > button {
-    padding: 4px 15px;
-    // border-radius: 2px;
+    padding: 4px 0;
+    width: 50%;
   }
 
   > a {
-    padding: 4px 15px;
+    padding: 4px 0;
+    width: 50%;
     text-decoration: none;
     color: white;
-    // background-color: $primary;
     border: 1px solid transparent;
   }
 
@@ -535,12 +558,12 @@ ul {
   color: black;
 }
 
-.dashboard-page__block:hover {
+.dashboard-page .dashboard-page__block:hover {
   border: 1px solid black;
   color: black;
 }
 
-.dashboard-page__block:hover > h5 {
+.dashboard-page .dashboard-page__block:hover > h5 {
   color: $primary;
 }
 
@@ -602,6 +625,18 @@ h1 {
   border: 1px solid black;
 }
 
+.submit-btn {
+  width: 82px;
+
+  &.large {
+    width: 120px;
+  }
+
+  &:disabled {
+    background-color: rgba($color: $primary, $alpha: 0.5);
+  }
+}
+
 .ui-kit__badge {
   width: 70px;
   height: 25px;
@@ -646,7 +681,7 @@ h1 {
 }
 
 .ui-kit__textarea {
-  border: 1px solid #ced4da;
+  border: 1px solid black;
   border-radius: 4px;
   padding: 10px 15px;
 }
@@ -685,10 +720,64 @@ h1 {
 }
 
 /* Select */
-.css-b62m3t-container {
+header .css-b62m3t-container {
   width: 250px;
+}
+
+header .css-1s2u09g-control {
+  background-color: transparent;
+  border: none;
+  text-align: center;
+}
+
+header .css-tlfecz-indicatorContainer {
+  color: black;
+}
+
+header .css-1okebmr-indicatorSeparator {
+  display: none;
+}
+
+header .css-1pahdxg-control {
+  border: none;
+  text-align: center;
+}
+
+header .css-6j8wv5-Input > input {
+  caret-color: transparent;
 }
 
 .table-images {
   cursor: pointer;
+
+  &.disabled {
+    cursor: auto;
+  }
+}
+
+/* Progress */
+.list {
+  .progress-33 {
+    > .progress {
+      > .progress-bar {
+        background-color: $danger;
+      }
+    }
+  }
+
+  .progress-66 {
+    > .progress {
+      > .progress-bar {
+        background-color: $main-primary;
+      }
+    }
+  }
+
+  .progress-100 {
+    > .progress {
+      > .progress-bar {
+        background-color: $success;
+      }
+    }
+  }
 }

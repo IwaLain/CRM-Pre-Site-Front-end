@@ -1,5 +1,6 @@
-import React from "react";
-import { Modal, ModalHeader, ModalBody, ModalFooter, button } from "reactstrap";
+import React, { useContext } from "react";
+import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { GlobalContext } from "../../context";
 
 const ConfirmModal = ({
   modal,
@@ -8,11 +9,14 @@ const ConfirmModal = ({
   title,
   modalText,
 }) => {
+    const { submitPreventer } = useContext(GlobalContext)
+
   const handleConfirmModalFormSubmit = async (e) => {
     e.preventDefault();
     handleSubmit();
     toggleModal();
   };
+
   return (
     <>
       <Modal isOpen={modal} toggle={toggleModal}>
@@ -25,10 +29,11 @@ const ConfirmModal = ({
             Cancel
           </button>
           <button
-            className="ui-btn ui-btn-primary"
+          disabled={submitPreventer}
+            className="submit-btn ui-btn ui-btn-primary"
             onClick={handleConfirmModalFormSubmit}
           >
-            Submit
+            {submitPreventer ? '...' : 'Submit'}
           </button>
         </ModalFooter>
       </Modal>

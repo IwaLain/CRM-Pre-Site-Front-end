@@ -6,7 +6,8 @@ import Loader from "../../js/helpers/loader";
 import { reducer } from "../../reducer";
 
 const StatisticsDashboard = () => {
-  const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
+  const { selectedCustomer, updateTrigger, setCurrentPage } =
+    useContext(GlobalContext);
 
   const initialState = {
     customerNetwork: [],
@@ -43,6 +44,10 @@ const StatisticsDashboard = () => {
       alert("error", "You need to select customer first");
     }
   }, [history, selectedCustomer]);
+
+  useEffect(() => {
+    setCurrentPage("statistics");
+  }, []);
 
   return (
     <>

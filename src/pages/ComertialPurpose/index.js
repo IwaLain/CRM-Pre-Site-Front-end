@@ -16,9 +16,12 @@ import "./ComertialPurposePrint.scss";
 import logo from "../../assets/img/waites-block-logo-yellow-background.png";
 import customersApi from "../../js/api/customer";
 import { GlobalContext } from "../../context";
+import { useHistory } from "react-router-dom";
+import { alert } from "../../js/helpers/alert";
 
 const ComertialPurpouse = () => {
-  const { selectedCustomer, userProfile } = useContext(GlobalContext);
+  const { selectedCustomer, userProfile, submitPreventer, setCurrentPage } =
+    useContext(GlobalContext);
 
   const initialState = {
     quote: "Q" + Math.floor(Date.now() / 1000),
@@ -39,6 +42,8 @@ const ComertialPurpouse = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const { quote, currentData, modalPDF, customerNetwork, resetTable } = state;
+
+  const history = useHistory();
 
   const d = new Date();
   const date =
@@ -92,7 +97,27 @@ const ComertialPurpouse = () => {
       .then((data) => {
         dispatch({ customerNetwork: data.Network });
       });
+
+    setCurrentPage("cp");
   }, []);
+
+  useEffect(() => {
+    if (history && history.location && history.location.pathname) {
+      switch (history.location.pathname) {
+        case "/purpose":
+          if (
+            !selectedCustomer ||
+            !(Object.keys(selectedCustomer).length > 0)
+          ) {
+            history.push("/customers");
+            alert("error", "You need to select customer first");
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }, [history, selectedCustomer]);
 
   return (
     <div className="purpose" id="purpose">
@@ -148,8 +173,18 @@ const ComertialPurpouse = () => {
             </button>
           </Col>
           <Col lg={2} md={2}>
-            <button className="ui-btn ui-btn-success" id="purpose" form="form">
-              <i className="fas fa-file-pdf"></i> Create PDF
+            <button
+              className="submit-btn large ui-btn ui-btn-success"
+              id="purpose"
+              form="form"
+            >
+              {submitPreventer ? (
+                "..."
+              ) : (
+                <>
+                  <i className="fas fa-file-pdf"></i> Create PDF
+                </>
+              )}
             </button>
           </Col>
         </Row>

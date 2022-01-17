@@ -28,10 +28,21 @@ const TableView = ({
     {
       name: progressField,
       cell: (row) => (
-        <Progress
-          value={calculateProgress(row)}
-          style={!showProgress ? { visibility: "hidden" } : {}}
-        />
+        <div
+          style={{ width: "100%" }}
+          className={
+            calculateProgress(row) < 34
+              ? `progress-33`
+              : calculateProgress(row) < 67
+              ? "progress-66"
+              : "progress-100"
+          }
+        >
+          <Progress
+            value={calculateProgress(row)}
+            style={!showProgress ? { visibility: "hidden" } : {}}
+          />
+        </div>
       ),
     },
     {
@@ -57,7 +68,7 @@ const TableView = ({
           <button
             className="ui-btn ui-btn-danger"
             onClick={() => {
-              dispatch({ modalDataID: row.id });
+              dispatch({ recordToDelete: row.id });
               toggleConfirmModal();
             }}
           >
@@ -218,7 +229,11 @@ const TableView = ({
                 }}
               >
                 <i className="fas fa-images me-1"></i>
-                {value[singleAlias + "Images"].length}
+                {
+                  value[singleAlias + "Images"].filter(
+                    (el) => el.type_id === "1"
+                  ).length
+                }
               </div>
             ) : (
               "No images"

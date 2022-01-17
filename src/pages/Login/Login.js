@@ -21,7 +21,7 @@ import { useContext } from "react";
 import { getToken } from "../../js/helpers/helpers";
 
 const LoginPage = () => {
-  const { setUserProfile, setSelectedCustomer, setIsLogged } =
+  const { setUserProfile, submitPreventer, setSubmitPreventer } =
     useContext(GlobalContext);
 
   const {
@@ -38,6 +38,8 @@ const LoginPage = () => {
   };
 
   const onSubmit = (e) => {
+    setSubmitPreventer(true);
+
     const data = {
       username: e.username,
       password: e.password,
@@ -45,11 +47,15 @@ const LoginPage = () => {
 
     try {
       Profile.loginRequest(data).then((data) => {
-        if (data.errors) {
-          alert("error", data.errors);
+        if (data) {
+            if (data.errors) {
+                alert("error", data.errors);
+              } else {
+                localStorage.setItem("token", data.token);
+                alert("success", "Success Login");
+              }
         } else {
-          localStorage.setItem("token", data.token);
-          alert("success", "Success Login");
+            alert('error', 'Server is down.')
         }
 
         const token = getToken();
@@ -61,6 +67,8 @@ const LoginPage = () => {
             }
           });
         }
+
+        setSubmitPreventer(false);
       });
     } catch (e) {}
   };
@@ -97,8 +105,8 @@ const LoginPage = () => {
                 </Row>
                 <Row>
                   <FormGroup className="d-flex justify-content-end">
-                    <button className="login__btn ui-btn ui-btn-primary">
-                      Login
+                    <button disabled={submitPreventer} className="login__btn ui-btn-primary">
+                      {submitPreventer ? '...' : 'Login'}
                     </button>
                   </FormGroup>
                 </Row>

@@ -86,7 +86,7 @@ const ComertialTable = ({ setData, dataForm, customerNetwork }) => {
           type="text"
           id={`description-${row.item}`}
           name={`description-${row.item}`}
-          placeholder="Enter description"
+          placeholder="Description"
           className={`form-control ${
             "description-" + row.item === "" ? "is-invalid" : ""
           }`}

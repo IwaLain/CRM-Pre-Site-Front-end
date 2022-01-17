@@ -15,11 +15,16 @@
 }
 
 .login__btn {
-  padding: 5px 20px;
+  padding: 5px 0;
+  width: 80px;
   border: none;
   border-radius: 5px;
   color: #fff;
   background-color: $primary;
+
+  &:disabled {
+    background-color: rgba($color: $primary, $alpha: .5)
+  }
 
   @media (max-width: 500px) {
     & {

@@ -177,6 +177,12 @@
     }
   }
 
+  .list__add-btn {
+    > i {
+      margin-right: 10px;
+    }
+  }
+
   .list__options {
     display: flex;
     justify-content: space-between;
