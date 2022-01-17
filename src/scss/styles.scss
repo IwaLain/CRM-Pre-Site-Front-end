@@ -166,6 +166,10 @@ ul {
 }
 
 .modal {
+  .modal-content {
+    max-height: 90vh;
+  }
+
   .form-label {
     position: relative;
   }
@@ -352,6 +356,21 @@ ul {
 
   > a:hover {
     color: white;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .info-card__btns {
+    width: 95px;
+
+    > a {
+      width: 100%;
+    }
+
+    > button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
   }
 }
 

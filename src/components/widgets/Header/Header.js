@@ -1,6 +1,6 @@
 import { useContext, useEffect, useReducer } from "react";
 import { GlobalContext } from "../../../context";
-import Creatable from "react-select/creatable";
+import Select from "react-select";
 import { reducer } from "../../../reducer";
 import ModalSketch from "../../ModalComponent/ModalSketch";
 
@@ -124,7 +124,7 @@ const Header = () => {
       <header style={{ zIndex: 10 }}>
         <span></span>
         <span className="selected-customer">
-          <Creatable
+          <Select
             options={customerNames}
             onChange={(e) => {
               changeCustomer(e);
