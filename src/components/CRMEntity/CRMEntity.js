@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams, useHistory } from "react-router";
+import { useParams } from "react-router";
 import logo from "../../assets/img/company.png";
 import customersApi from "../../js/api/customer";
 import facilitiesApi from "../../js/api/facilities";
@@ -7,7 +7,7 @@ import locationApi from "../../js/api/locations";
 import equipmentApi from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
-
+import { useHistory } from "react-router-dom";
 import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import { GlobalContext } from "../../context";
@@ -16,17 +16,16 @@ import Loader from "../widgets/Loader/Loader";
 import PropTypes from "prop-types";
 import List from "../List/List";
 import NotFound from "../../pages/NotFound/NotFound";
+
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
-  const { setEntityID } = useContext(GlobalContext);
+  const { setEntityID, setCurrentPage } = useContext(GlobalContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
   let addEntityImageAPI;
   let setMainEntityImageAPI;
-
-  const history = useHistory();
 
   let subEntityName = "";
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +43,8 @@ const CRMEntity = ({ type }) => {
   const [attachedFiles, setAttachedFiles] = useState();
 
   const [entityImages, setEntityImages] = useState();
+
+  const history = useHistory();
 
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
@@ -278,63 +279,64 @@ const CRMEntity = ({ type }) => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 1500);
-  //   }
-  // }, [isLoading]);
+  useEffect(() => {
+    if (
+      history.location.pathname.includes("/customers") ||
+      history.location.pathname.includes("/facilities") ||
+      history.location.pathname.includes("/locations") ||
+      history.location.pathname.includes("/equipment")
+    ) {
+      setCurrentPage(entityPluralAlias);
+    }
+  }, [entityPluralAlias]);
+
   return (
     <>
       {!isLoading && entityObject !== undefined ? (
         <div className="entity-page">
           {entityObject && entityObject !== null ? (
             <>
-              <div className="d-flex align-items-center entity-page--header">
-                {entityObject && entityObject[`${type}Images`] && (
-                  <div className="main-img--container">
-                    <img
-                      src={
-                        mainImage && mainImage.img
-                          ? process.env.REACT_APP_SERVER_URL +
-                            "/" +
-                            mainImage.img
-                          : logo
-                      }
-                      alt="company img"
-                      className="entity-page--img"
-                    ></img>
-                    <DropdownImageEdit
-                      images={
-                        entityImages && entityImages.length > 0
-                          ? entityImages
-                          : []
-                      }
-                      setMainImage={setMainEntityImage}
-                    ></DropdownImageEdit>
-                  </div>
-                )}
-                <h1 className="page-title">
-                  {entityObject && entityObject.name}
-                </h1>
-                {entityObject && informationItems.length > 0 && (
-                  <div className="information__container">
-                    <InformationComponent
-                      items={informationItems}
-                      title={`${type} Information`}
-                    ></InformationComponent>
-                  </div>
-                )}
+              <div className="entity-page--header">
+                <div className="entity-information">
+                  {entityObject && entityObject[`${type}Images`] && (
+                    <div className="main-img--container">
+                      <img
+                        src={
+                          mainImage && mainImage.img
+                            ? process.env.REACT_APP_SERVER_URL +
+                              "/" +
+                              mainImage.img
+                            : logo
+                        }
+                        alt="company img"
+                        className="entity-page--img"
+                      ></img>
+                      <DropdownImageEdit
+                        images={
+                          entityImages && entityImages.length > 0
+                            ? entityImages
+                            : []
+                        }
+                        setMainImage={setMainEntityImage}
+                      ></DropdownImageEdit>
+                    </div>
+                  )}
+                  {entityObject && (
+                    <div className="entity-name__container">
+                      <h3 className="page-title ">{entityObject.name}</h3>
+                    </div>
+                  )}
+
+                  {entityObject && informationItems.length > 0 && (
+                    <div className="information__container">
+                      <InformationComponent
+                        items={informationItems}
+                        title={`${type} Information`}
+                      ></InformationComponent>
+                    </div>
+                  )}
+                </div>
               </div>
-
-              {/* <div className="entity-page--section">
-                <InformationComponent
-                  items={informationItems}
-                  title={`${type} Information`}
-                ></InformationComponent>
-              </div> */}
-
               {entityObject &&
                 subEntity.length > 0 &&
                 subEntity.map((subEnt) => (

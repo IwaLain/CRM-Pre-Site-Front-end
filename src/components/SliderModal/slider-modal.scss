@@ -1,4 +1,57 @@
 .carousel-item > img {
   width: 500px;
+  max-height: 350px;
+}
+.carousel-control-next--custom,
+.carousel-control-prev--custom {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15%;
+  padding: 0;
+  color: #dedede;
+  text-align: center;
+  background: 0 0;
+  border: 0;
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+}
+.carousel-control-next--custom {
+  right: 0;
+  & i {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+      1px 1px 0 #000;
+    font-size: 40px;
+    opacity: 0.6;
+  }
+}
+.carousel-control-prev--custom {
+  left: 0;
+  & i {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+      1px 1px 0 #000;
+    font-size: 40px;
+    opacity: 0.6;
+  }
+}
+.slider-modal {
+  max-height: 500px;
+}
+.slider-modal .modal-body {
   height: 400px;
+}
+.slider-modal {
+  & .carousel-indicators {
+    bottom: -10px;
+    [data-bs-target] {
+      background-color: black;
+    }
+  }
+}
+.hidden {
+  visibility: hidden;
 }
