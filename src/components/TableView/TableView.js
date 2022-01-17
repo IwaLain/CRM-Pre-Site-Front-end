@@ -28,10 +28,21 @@ const TableView = ({
     {
       name: progressField,
       cell: (row) => (
-        <Progress
-          value={calculateProgress(row)}
-          style={!showProgress ? { visibility: "hidden" } : {}}
-        />
+        <div
+          style={{ width: "100%" }}
+          className={
+            calculateProgress(row) < 34
+              ? `progress-33`
+              : calculateProgress(row) < 67
+              ? "progress-66"
+              : "progress-100"
+          }
+        >
+          <Progress
+            value={calculateProgress(row)}
+            style={!showProgress ? { visibility: "hidden" } : {}}
+          />
+        </div>
       ),
     },
     {

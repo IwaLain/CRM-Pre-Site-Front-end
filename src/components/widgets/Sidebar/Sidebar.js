@@ -1,6 +1,6 @@
-import { useContext, useEffect, useReducer } from "react";
+import { useContext, useReducer } from "react";
 import logo from "../../../assets/img/company.png";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logoText from "../../../assets/img/logo-text.svg";
 import Profile from "../../../js/api/profile";
 import { GlobalContext } from "../../../context";
@@ -8,14 +8,13 @@ import ConfirmModal from "../../ConfirmModal/ConfirmModal";
 import { reducer } from "../../../reducer";
 
 const Sidebar = ({ isMobile }) => {
-  const { selectedCustomer, setSubmitPreventer } = useContext(GlobalContext);
+  const { selectedCustomer, setSubmitPreventer, currentPage } =
+    useContext(GlobalContext);
 
   const initialState = {
     modal: false,
     activeTab: null,
   };
-
-  const history = useHistory();
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -36,12 +35,6 @@ const Sidebar = ({ isMobile }) => {
     dispatch({ modal: !modal });
   };
 
-  const changeActiveTab = (e) => {};
-
-  window.addEventListener("urlChange", () => {
-    console.log(window.location);
-  });
-
   return (
     <>
       <ConfirmModal
@@ -61,7 +54,10 @@ const Sidebar = ({ isMobile }) => {
         <nav className="sidebar-nav">
           <ul className="fa-ul">
             <li>
-              <Link to="/dashboard" onClick={changeActiveTab}>
+              <Link
+                to="/dashboard"
+                style={currentPage === "statistics" ? { color: "gold" } : {}}
+              >
                 <span className="fa-li">
                   <i className="fas fa-chart-bar"></i>
                 </span>
@@ -71,7 +67,10 @@ const Sidebar = ({ isMobile }) => {
               </Link>
             </li>
             <li>
-              <Link to="/customers" onClick={changeActiveTab}>
+              <Link
+                to="/customers"
+                style={currentPage === "customers" ? { color: "gold" } : {}}
+              >
                 <span className="fa-li">
                   <i className="fas fa-user"></i>
                 </span>
@@ -81,7 +80,10 @@ const Sidebar = ({ isMobile }) => {
               </Link>
             </li>
             <li>
-              <Link to="/facilities">
+              <Link
+                to="/facilities"
+                style={currentPage === "facilities" ? { color: "gold" } : {}}
+              >
                 <span className="fa-li">
                   <i className="fas fa-industry"></i>
                 </span>
@@ -91,7 +93,10 @@ const Sidebar = ({ isMobile }) => {
               </Link>
             </li>
             <li>
-              <Link to="/locations">
+              <Link
+                to="/locations"
+                style={currentPage === "locations" ? { color: "gold" } : {}}
+              >
                 <span className="fa-li">
                   <i className="fas fa-map-marker-alt"></i>
                 </span>
@@ -101,7 +106,10 @@ const Sidebar = ({ isMobile }) => {
               </Link>
             </li>
             <li>
-              <Link to="/equipment">
+              <Link
+                to="/equipment"
+                style={currentPage === "equipment" ? { color: "gold" } : {}}
+              >
                 <span className="fa-li">
                   <i className="fas fa-tools"></i>
                 </span>
@@ -111,7 +119,10 @@ const Sidebar = ({ isMobile }) => {
               </Link>
             </li>
             <li>
-              <Link to="/network">
+              <Link
+                to="/network"
+                style={currentPage === "network" ? { color: "gold" } : {}}
+              >
                 <span className="fa-li">
                   <i className="fas fa-network-wired"></i>
                 </span>
@@ -119,7 +130,10 @@ const Sidebar = ({ isMobile }) => {
               </Link>
             </li>
             <li>
-              <Link to="/purpose">
+              <Link
+                to="/purpose"
+                style={currentPage === "cp" ? { color: "gold" } : {}}
+              >
                 <span className="fa-li">
                   <i className="fas fa-file-alt"></i>
                 </span>
@@ -131,7 +145,10 @@ const Sidebar = ({ isMobile }) => {
           </ul>
           <ul className="fa-ul sidebar-bottom-nav">
             <li>
-              <Link to="/profile">
+              <Link
+                to="/profile"
+                style={currentPage === "profile" ? { color: "gold" } : {}}
+              >
                 <span className="fa-li">
                   <i className="fas fa-user"></i>
                 </span>
@@ -139,7 +156,10 @@ const Sidebar = ({ isMobile }) => {
               </Link>
             </li>
             <li>
-              <Link to="/users">
+              <Link
+                to="/users"
+                style={currentPage === "users" ? { color: "gold" } : {}}
+              >
                 <span className="fa-li">
                   <i className="fas fa-users"></i>
                 </span>

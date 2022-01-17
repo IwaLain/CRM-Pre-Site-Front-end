@@ -20,7 +20,8 @@ import { useHistory } from "react-router-dom";
 import { alert } from "../../js/helpers/alert";
 
 const ComertialPurpouse = () => {
-  const { selectedCustomer, userProfile, submitPreventer } = useContext(GlobalContext);
+  const { selectedCustomer, userProfile, submitPreventer, setCurrentPage } =
+    useContext(GlobalContext);
 
   const initialState = {
     quote: "Q" + Math.floor(Date.now() / 1000),
@@ -42,7 +43,7 @@ const ComertialPurpouse = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { quote, currentData, modalPDF, customerNetwork, resetTable } = state;
 
-  const history = useHistory()
+  const history = useHistory();
 
   const d = new Date();
   const date =
@@ -96,6 +97,8 @@ const ComertialPurpouse = () => {
       .then((data) => {
         dispatch({ customerNetwork: data.Network });
       });
+
+    setCurrentPage("cp");
   }, []);
 
   useEffect(() => {
@@ -170,8 +173,18 @@ const ComertialPurpouse = () => {
             </button>
           </Col>
           <Col lg={2} md={2}>
-            <button className="submit-btn large ui-btn ui-btn-success" id="purpose" form="form">
-              {submitPreventer ? '...' : <><i className="fas fa-file-pdf"></i> Create PDF</>}
+            <button
+              className="submit-btn large ui-btn ui-btn-success"
+              id="purpose"
+              form="form"
+            >
+              {submitPreventer ? (
+                "..."
+              ) : (
+                <>
+                  <i className="fas fa-file-pdf"></i> Create PDF
+                </>
+              )}
             </button>
           </Col>
         </Row>
