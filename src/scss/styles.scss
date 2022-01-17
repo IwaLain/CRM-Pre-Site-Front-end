@@ -359,6 +359,21 @@ ul {
   }
 }
 
+@media screen and (max-width: 1024px) {
+  .info-card__btns {
+    width: 95px;
+
+    > a {
+      width: 100%;
+    }
+
+    > button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+}
+
 .info-card__btns-one {
   justify-content: center;
 }
