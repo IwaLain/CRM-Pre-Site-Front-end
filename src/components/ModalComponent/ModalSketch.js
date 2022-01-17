@@ -86,6 +86,8 @@ const ModalSketch = ({
     setUpdateTrigger,
     entityID,
     customerStructure,
+    submitPreventer,
+    setSubmitPreventer,
   } = useContext(GlobalContext);
 
   const {
@@ -146,12 +148,10 @@ const ModalSketch = ({
   };
 
   const onSubmit = (data) => {
-    console.log(data);
-    const body = { ...data };
-    if (data["head name"]) body["head_name"] = data["head name"];
-    if (data["location info"]) body["location_info"] = data["location info"];
+    setSubmitPreventer(true);
 
-    console.log(body);
+    const body = { ...data };
+    if (data["location info"]) body["location_info"] = data["location info"];
 
     const jsonData = [];
 
@@ -214,6 +214,9 @@ const ModalSketch = ({
         .then((res) => res.json())
         .then((data) => {
           if (data) {
+            if (parentDispatch && entityName === "customer") {
+              parentDispatch({ createdRecord: data["customer"] });
+            }
             if (data["success"]) {
               resetToggle();
               alert(
@@ -227,6 +230,7 @@ const ModalSketch = ({
               alert("error", `Invalid ref object`);
             } else alert("error", data.errors);
           }
+          setSubmitPreventer(false);
         });
     } else if (mode === "edit") {
       try {
@@ -264,8 +268,11 @@ const ModalSketch = ({
                 }
               }
             }
+            setSubmitPreventer(false);
           });
-      } catch (e) {}
+      } catch (e) {
+        setSubmitPreventer(false);
+      }
     }
   };
 
@@ -327,7 +334,6 @@ const ModalSketch = ({
           dispatch({ defaultEntity: data[entity][dataID] });
           reset({
             ...data[entity][dataID],
-            ["head name"]: data[entity][dataID]["head_name"],
           });
           break;
         case "sensor":
@@ -377,9 +383,18 @@ const ModalSketch = ({
           }
           break;
         default:
-          formattedData = data[entity].find((el) => el.id === dataID);
-          dispatch({ defaultEntity: formattedData });
-          newFields = [];
+          let formattedData;
+          if (data) {
+            if (data[entity].length > 0) {
+              formattedData = data[entity].find((el) => el.id === dataID);
+              dispatch({ defaultEntity: formattedData });
+            } else if (Object.keys(data[entity]).length > 0) {
+              formattedData = data[entity][dataID];
+              dispatch({ defaultEntity: formattedData });
+            }
+          }
+
+          let newFields = [];
 
           if (
             formattedData["jsonData"] &&
@@ -627,7 +642,9 @@ const ModalSketch = ({
               field.fieldType === "form" ? (
                 field.inputType === "email" ? (
                   <FormGroup key={index} className="col-sm-6">
-                    <Label for={`${field.title}-field`}>{field.title}</Label>
+                    <Label className="required" for={`${field.title}-field`}>
+                      {field.title}
+                    </Label>
                     <input
                       className={`form-control ${
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
@@ -659,7 +676,9 @@ const ModalSketch = ({
                   </FormGroup>
                 ) : field.inputType === "phone" ? (
                   <FormGroup key={index} className="col-sm-6">
-                    <Label for={`${field.title}-field`}>{field.title}</Label>
+                    <Label className="required" for={`${field.title}-field`}>
+                      {field.title}
+                    </Label>
                     <input
                       className={`form-control ${
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
@@ -697,7 +716,9 @@ const ModalSketch = ({
                         : "col-sm-6"
                     }
                   >
-                    <Label for={`${field.title}-field`}>{field.title}</Label>
+                    <Label className="required" for={`${field.title}-field`}>
+                      {field.title}
+                    </Label>
                     {field.title === "Serial" ? (
                       <>
                         <input
@@ -763,7 +784,9 @@ const ModalSketch = ({
                   </FormGroup>
                 ) : (
                   <FormGroup key={index} className="col-sm-6">
-                    <Label for={`${field.title}-field`}>{field.title}</Label>
+                    <Label className="required" for={`${field.title}-field`}>
+                      {field.title}
+                    </Label>
                     <input
                       className={`form-control ${
                         errors[field.title.toLowerCase()] ? "is-invalid" : ""
@@ -812,7 +835,9 @@ const ModalSketch = ({
                   {customFields &&
                     customFields.map(({ id, title }) => (
                       <FormGroup key={id} className="col-sm-6">
-                        <Label for={`${id}-field`}>{title}</Label>
+                        <Label className="required" for={`${id}-field`}>
+                          {title}
+                        </Label>
                         <div className="custom-field__container">
                           <input
                             className={`form-control ${
@@ -971,8 +996,12 @@ const ModalSketch = ({
           >
             Cancel
           </button>
-          <button className="ui-btn ui-btn-primary" form="form">
-            Submit
+          <button
+            disabled={submitPreventer}
+            className="submit-btn ui-btn ui-btn-primary"
+            form="form"
+          >
+            {submitPreventer ? "..." : "Submit"}
           </button>
         </ModalFooter>
       </Modal>
@@ -1022,7 +1051,7 @@ const ModalSketch = ({
           handleSubmit={(e) => {
             handleRemoveFieldFormSubmit(e, customFields, deleteField.id);
           }}
-          modalText={`Are you sure you want to DELETE ${
+          modalText={`Are you sure you want to delete ${
             deleteField.title ? deleteField.title : ""
           } field`}
         />

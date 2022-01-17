@@ -1,5 +1,5 @@
-import { getToken } from '../helpers/helpers'
-import { apiRequest, header, BASE_URL} from './api'
+import { getToken } from "../helpers/helpers";
+import { apiRequest, header, BASE_URL } from "./api";
 
 const locationApi = {
   getLocations: async (limit, page, search) => {
@@ -52,7 +52,7 @@ const locationApi = {
 
     if (token)
       return apiRequest(
-        "DELETE",
+        "delete",
         BASE_URL + `/api/location/delete/${id}?access-token=${token}`
       );
   },
@@ -108,7 +108,7 @@ const locationApi = {
 
     if (token)
       return apiRequest(
-        "DELETE",
+        "delete",
         BASE_URL +
           `/api/location/${locationId}/image/delete/${imageId}?access-token=${token}`
       );

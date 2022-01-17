@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useReducer } from 'react'
-import { Col, Row } from 'reactstrap'
-import { useForm } from 'react-hook-form'
-import { ToastContainer } from 'react-toastify'
+import React, { useContext, useEffect, useReducer } from "react";
+import { Col, Row } from "reactstrap";
+import { useForm } from "react-hook-form";
+import { ToastContainer } from "react-toastify";
 
 import { reducer } from "../../reducer";
 
@@ -16,9 +16,11 @@ import "./ComertialPurposePrint.scss";
 import logo from "../../assets/img/waites-block-logo-yellow-background.png";
 import customersApi from "../../js/api/customer";
 import { GlobalContext } from "../../context";
+import { useHistory } from "react-router-dom";
+import { alert } from "../../js/helpers/alert";
 
 const ComertialPurpouse = () => {
-  const { selectedCustomer, userProfile } = useContext(GlobalContext)
+  const { selectedCustomer, userProfile, submitPreventer } = useContext(GlobalContext);
 
   const initialState = {
     quote: "Q" + Math.floor(Date.now() / 1000),
@@ -40,9 +42,15 @@ const ComertialPurpouse = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { quote, currentData, modalPDF, customerNetwork, resetTable } = state;
 
-  const d = new Date()
-  const date = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-  d.getFullYear();
+  const history = useHistory()
+
+  const d = new Date();
+  const date =
+    ("0" + d.getDate()).slice(-2) +
+    "-" +
+    ("0" + (d.getMonth() + 1)).slice(-2) +
+    "-" +
+    d.getFullYear();
 
   const togglePDF = () => dispatch({ modalPDF: !modalPDF });
   const newQuote = () => {
@@ -75,16 +83,38 @@ const ComertialPurpouse = () => {
   };
 
   const resetForm = () => {
-    reset({ ...register, quote: newQuote() })
-  }
+    reset({ ...register, quote: newQuote() });
+  };
 
   useEffect(() => {
-    customersApi.getNetwork(selectedCustomer.id === undefined ? userProfile.last_customer : selectedCustomer.id)
-    .then(data => {
-      dispatch({customerNetwork: data.Network})
-    })
-    console.log(customerNetwork)
-  }, [])
+    customersApi
+      .getNetwork(
+        selectedCustomer.id === undefined
+          ? userProfile.last_customer
+          : selectedCustomer.id
+      )
+      .then((data) => {
+        dispatch({ customerNetwork: data.Network });
+      });
+  }, []);
+
+  useEffect(() => {
+    if (history && history.location && history.location.pathname) {
+      switch (history.location.pathname) {
+        case "/purpose":
+          if (
+            !selectedCustomer ||
+            !(Object.keys(selectedCustomer).length > 0)
+          ) {
+            history.push("/customers");
+            alert("error", "You need to select customer first");
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }, [history, selectedCustomer]);
 
   return (
     <div className="purpose" id="purpose">
@@ -140,8 +170,8 @@ const ComertialPurpouse = () => {
             </button>
           </Col>
           <Col lg={2} md={2}>
-            <button className="ui-btn ui-btn-success" id="purpose" form="form">
-              <i className="fas fa-file-pdf"></i> Create PDF
+            <button className="submit-btn large ui-btn ui-btn-success" id="purpose" form="form">
+              {submitPreventer ? '...' : <><i className="fas fa-file-pdf"></i> Create PDF</>}
             </button>
           </Col>
         </Row>

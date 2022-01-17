@@ -57,7 +57,7 @@ const TableView = ({
           <button
             className="ui-btn ui-btn-danger"
             onClick={() => {
-              dispatch({ modalDataID: row.id });
+              dispatch({ recordToDelete: row.id });
               toggleConfirmModal();
             }}
           >
@@ -218,7 +218,11 @@ const TableView = ({
                 }}
               >
                 <i className="fas fa-images me-1"></i>
-                {value[singleAlias + "Images"].length}
+                {
+                  value[singleAlias + "Images"].filter(
+                    (el) => el.type_id === "1"
+                  ).length
+                }
               </div>
             ) : (
               "No images"

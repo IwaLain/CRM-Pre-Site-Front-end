@@ -53,6 +53,7 @@ const List = ({
     sliderModal: false,
     entityImages: [],
     confirmModal: false,
+    recordToDelete: null,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -74,6 +75,7 @@ const List = ({
     sliderModal,
     entityImages,
     confirmModal,
+    recordToDelete,
   } = state;
 
   const history = useHistory();
@@ -218,33 +220,6 @@ const List = ({
     } else dispatch({ prevSelectedAll: false });
   };
 
-  let singleAlias = "";
-
-  switch (type.entity) {
-    case "customers":
-      singleAlias = "customer";
-
-      break;
-    case "facilities":
-      singleAlias = "facility";
-
-      break;
-    case "locations":
-      singleAlias = "location";
-
-      break;
-    case "equipment":
-      singleAlias = "equipment";
-
-      break;
-    case "gateways":
-      singleAlias = "gateway";
-
-      break;
-    default:
-      break;
-  }
-
   const toggleModal = () => {
     dispatch({ modal: !modal });
   };
@@ -257,41 +232,45 @@ const List = ({
     dispatch({ confirmModal: !confirmModal });
   };
 
-  const changeCustomer = (id) => {
-    try {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/customer/" +
-          id +
-          "?access-token=" +
-          localStorage.getItem("token")
-      )
-        .then((res) => res.json())
-        .then((customer) => {
-          if (customer) {
-            setSelectedCustomer(customer.customer[id]);
-          }
-        });
-    } catch (e) {}
-    try {
-      fetch(
-        process.env.REACT_APP_SERVER_URL +
-          "/api/user/last-customer/" +
-          id +
-          "?access-token=" +
-          localStorage.getItem("token"),
-        {
-          method: "PUT",
-        }
-      );
-    } catch (e) {}
-  };
-
   useEffect(() => {
     if (initTableView) {
       dispatch({ view: true });
     }
   }, [initTableView]);
+
+  let singleAlias = "";
+
+  switch (type.entity) {
+    case "customers":
+      singleAlias = "customer";
+      break;
+    case "facilities":
+      singleAlias = "facility";
+      break;
+    case "locations":
+      singleAlias = "location";
+      break;
+    case "equipment":
+      singleAlias = "equipment";
+      break;
+    case "gateways":
+      singleAlias = "gateway";
+      break;
+    case "routers":
+      singleAlias = "router";
+      break;
+    case "nodes":
+      singleAlias = "node";
+      break;
+    case "motes":
+      singleAlias = "mote";
+      break;
+    case "sensors":
+      singleAlias = "sensor";
+      break;
+    default:
+      break;
+  }
 
   useEffect(() => {
     if (type) {
@@ -496,8 +475,14 @@ const List = ({
       deleteEntityId +
       "?access-token=" +
       localStorage.getItem("token");
-    fetch(url, { method: "DELETE" }).then(() => {
+    fetch(url, { method: "delete" }).then(() => {
       dispatch({ modalDataID: null });
+      if (selectedCustomer) {
+        if (deleteEntityId === selectedCustomer.id) {
+          setSelectedCustomer({});
+          localStorage.removeItem("selectedCustomer");
+        }
+      }
       setUpdateTrigger(!updateTrigger);
     });
   };
@@ -509,10 +494,9 @@ const List = ({
         toggleModal={toggleConfirmModal}
         title={`Delete ${singleAlias}`}
         handleSubmit={(e) => {
-          handleDeleteEntityObject(modalDataID);
-          // handleRemoveFieldFormSubmit(e, customFields, deleteField.id);
+          handleDeleteEntityObject(recordToDelete);
         }}
-        modalText={"Are you sure you want to delete this"}
+        modalText="Are you sure you want delete this?"
       />
       <SliderModal
         modal={sliderModal}
@@ -544,6 +528,17 @@ const List = ({
                   toggleModal();
                 }}
               >
+                {singleAlias === "customer" ? (
+                  <i class="fas fa-user" aria-hidden="true"></i>
+                ) : singleAlias === "facility" ? (
+                  <i class="fas fa-industry" aria-hidden="true"></i>
+                ) : singleAlias === "location" ? (
+                  <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                ) : singleAlias === "equipment" ? (
+                  <i class="fas fa-tools" aria-hidden="true"></i>
+                ) : (
+                  <i class="fas fa-network-wired" aria-hidden="true"></i>
+                )}
                 {`Add ${singleAlias}`}
               </button>
             )}
@@ -622,42 +617,43 @@ const List = ({
                   entityImages={entityImages}
                 />
               ) : (
-                <div
-                  className={
-                    screenSize > 1020
-                      ? "info-card_group"
-                      : "info-card_group dense"
-                  }
-                >
+                <>
                   {data &&
                   data[type.entity] &&
                   Object.keys(data[type.entity]).length > 0 ? (
-                    Object.entries(data[type.entity]).map((record) => (
-                      <InfoCard
-                        key={record[1].id}
-                        data={record[1]}
-                        type={type.entity}
-                        toggleModal={toggleModal}
-                        toggleConfirmModal={toggleConfirmModal}
-                        dispatch={dispatch}
-                        chooseMode={chooseMode}
-                        selected={record[1].id === selectedCustomer.id}
-                        hideRecordView={hideRecordView}
-                      />
-                    ))
+                    <div
+                      className={
+                        screenSize > 1020
+                          ? "info-card_group"
+                          : "info-card_group dense"
+                      }
+                    >
+                      {Object.entries(data[type.entity]).map((record) => (
+                        <InfoCard
+                          key={record[1].id}
+                          data={record[1]}
+                          type={type.entity}
+                          toggleModal={toggleModal}
+                          toggleConfirmModal={toggleConfirmModal}
+                          dispatch={dispatch}
+                          chooseMode={chooseMode}
+                          selected={record[1].id === selectedCustomer.id}
+                          hideRecordView={hideRecordView}
+                        />
+                      ))}
+                    </div>
                   ) : (
                     <p
                       style={{
                         display: "flex",
                         justifyContent: "center",
-                        padding: "24px",
                         margin: "0",
                       }}
                     >
                       There are no records to display
                     </p>
                   )}
-                </div>
+                </>
               )}
               {!view && totalPages > 1 && (
                 <CustomPagination

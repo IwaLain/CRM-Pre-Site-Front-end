@@ -9,21 +9,42 @@ const Header = () => {
     customerNames: {},
     modal: false,
     createName: "",
-    selectedOption: "",
+    selectedOption: null,
+    inputValue: "",
+    createdRecord: {},
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { customerNames, modal, createName, selectedOption } = state;
+  const {
+    customerNames,
+    modal,
+    createName,
+    selectedOption,
+    inputValue,
+    createdRecord,
+  } = state;
 
   const { selectedCustomer, setSelectedCustomer, updateTrigger } =
     useContext(GlobalContext);
 
   const toggleModal = () => {
+    if (modal) {
+      dispatch({ selectedOption: null });
+      dispatch({ inputValue: "" });
+    }
     dispatch({ modal: !modal });
   };
 
+  const inputChangeHandler = (e) => {
+    dispatch({ inputValue: e });
+  };
+
   const changeCustomer = ({ value, __isNew__ }) => {
+    dispatch({
+      selectedOption: customerNames.find((el) => el.value === value),
+    });
+
     if (__isNew__) {
       dispatch({ createName: value });
       toggleModal();
@@ -48,8 +69,6 @@ const Header = () => {
           });
       } catch (e) {}
     }
-
-    dispatch({ selectedOption: value });
   };
 
   useEffect(() => {
@@ -68,9 +87,29 @@ const Header = () => {
             formattedNames.push({ value: id, label: name });
           });
           dispatch({ customerNames: formattedNames });
+          if (selectedCustomer && Object.keys(selectedCustomer).length > 0) {
+            dispatch({
+              selectedOption: formattedNames.find(
+                (el) => el.value === selectedCustomer.id
+              ),
+            });
+          }
         });
     } catch (e) {}
+    if (createdRecord && Object.keys(createdRecord).length > 0) {
+      dispatch({
+        selectedOption: { label: createdRecord.name, value: createdRecord.id },
+      });
+      dispatch({ createdRecord: {} });
+    }
   }, [updateTrigger]);
+
+  useEffect(() => {
+    if (selectedCustomer && Object.keys(selectedCustomer).length < 1) {
+      dispatch({ selectedOption: null });
+      dispatch({ inputValue: "" });
+    }
+  }, [selectedCustomer]);
 
   return (
     <>
@@ -80,6 +119,7 @@ const Header = () => {
         toggle={toggleModal}
         mode="create"
         data={{ createName }}
+        parentDispatch={dispatch}
       />
       <header style={{ zIndex: 10 }}>
         <span></span>
@@ -89,6 +129,9 @@ const Header = () => {
             onChange={(e) => {
               changeCustomer(e);
             }}
+            value={selectedOption}
+            inputValue={inputValue}
+            onInputChange={inputChangeHandler}
             placeholder="Choose customer"
           />
         </span>

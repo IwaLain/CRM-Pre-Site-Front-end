@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { Col, Form, FormGroup, Label, Row } from "reactstrap";
 import Profile from "../../js/api/profile";
 import { validation } from "../../js/helpers/validation";
 import { alert } from "../../js/helpers/alert";
+import { GlobalContext } from "../../context";
 
 const ComertialForm = ({
   dataForm,
@@ -14,7 +15,10 @@ const ComertialForm = ({
 }) => {
   const { trigger, errors, register, quote, date, handleSubmit } = dataForm;
 
+  const { submitPreventer, setSubmitPreventer } = useContext(GlobalContext)
+
   const onSubmit = (e) => {
+    setSubmitPreventer(true);
     const data = {
       billTo: e.bill,
       shipTo: e.ship,
@@ -27,6 +31,7 @@ const ComertialForm = ({
 
     Profile.createPdf(data, date).then((data) => {
       alert("success", "PDF successful created!");
+      setSubmitPreventer(false);
     });
     resetForm();
   };
