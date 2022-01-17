@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import { Spinner } from "reactstrap";
 import PropTypes from "prop-types";
+import SliderModal from "../SliderModal/SliderModal";
 
 const AttachedFiles = ({
   type,
@@ -18,6 +19,11 @@ const AttachedFiles = ({
   const [files, setFiles] = useState([]);
   const [confirmModal, setConfirmModal] = useState(false);
   const [removeFile, setRemoveFile] = useState();
+  const [sliderModal, setSliderModal] = useState(false);
+  const [sliderModalImage, setSliderModalImage] = useState({});
+  const toggleSliderModal = () => {
+    setSliderModal(!sliderModal);
+  };
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: accepted,
     noClick: files.length > 0 ? true : false,
@@ -84,7 +90,15 @@ const AttachedFiles = ({
         ></span>
         <div className="thumbInner" title={file.fileName}>
           {file.isImage === true ? (
-            <img src={file.preview} className="attached--img" alt="..." />
+            <img
+              onClick={() => {
+                setSliderModalImage({ src: file.preview });
+                toggleSliderModal();
+              }}
+              src={file.preview}
+              className="attached--img"
+              alt="..."
+            />
           ) : (
             <i className="far fa-file  fa-4x"></i>
             // <div className="dropzone--filename">
@@ -98,6 +112,11 @@ const AttachedFiles = ({
 
   return (
     <>
+      <SliderModal
+        modal={sliderModal}
+        toggleModal={toggleSliderModal}
+        entityImages={sliderModalImage}
+      />
       <ConfirmModal
         modal={confirmModal}
         toggleModal={toggleConfirmModal}
