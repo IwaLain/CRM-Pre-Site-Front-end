@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { alert } from "../../js/helpers/alert";
 import User from "../../js/api/users";
 import PropTypes from "prop-types";
 import { Row } from "reactstrap";
 import Form from "./form";
+import { GlobalContext } from "../../context";
 
 const UserAdd = ({ changeTable, toggle }) => {
+  const { setSubmitPreventer } = useContext(GlobalContext)
+
   const onSubmit = (e) => {
+    setSubmitPreventer(true);
     const data = {
       first_name: e.firstname,
       last_name: e.lastname,
@@ -26,6 +30,7 @@ const UserAdd = ({ changeTable, toggle }) => {
         alert("success", "User added");
         toggle();
       }
+    setSubmitPreventer(false);
     });
   };
 

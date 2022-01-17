@@ -316,7 +316,7 @@ ul {
 .info-card__info {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin-left: 20px;
   justify-content: center;
   width: 100%;
   > *:not(:last-child) {
@@ -326,17 +326,16 @@ ul {
 
 .info-card__btns {
   display: flex;
-  justify-content: center;
   gap: 10px;
   font-weight: bold;
 
   > button {
-    padding: 4px 15px;
+    padding: 4px 30px;
     // border-radius: 2px;
   }
 
   > a {
-    padding: 4px 15px;
+    padding: 4px 30px;
     text-decoration: none;
     color: white;
     // background-color: $primary;
@@ -618,6 +617,18 @@ h1 {
   border: 1px solid black;
 }
 
+.submit-btn {
+  width: 82px;
+
+  &.large {
+    width: 120px;
+  }
+
+  &:disabled {
+    background-color: rgba($color: $primary, $alpha: .5)
+  }
+}
+
 .ui-kit__badge {
   width: 70px;
   height: 25px;
@@ -662,7 +673,7 @@ h1 {
 }
 
 .ui-kit__textarea {
-  border: 1px solid #ced4da;
+  border: 1px solid black;
   border-radius: 4px;
   padding: 10px 15px;
 }
@@ -701,8 +712,31 @@ h1 {
 }
 
 /* Select */
-.css-b62m3t-container {
+header .css-b62m3t-container {
   width: 250px;
+}
+
+header .css-1s2u09g-control {
+    background-color: transparent;
+    border: none;
+    text-align: center;
+}
+
+header .css-tlfecz-indicatorContainer {
+    color: black;
+}
+
+header .css-1okebmr-indicatorSeparator {
+    display: none;
+}
+
+header .css-1pahdxg-control {
+    border: none;
+    text-align: center;
+}
+
+header .css-6j8wv5-Input > input {
+    caret-color: transparent;
 }
 
 .table-images {

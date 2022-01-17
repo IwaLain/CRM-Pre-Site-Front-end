@@ -1,6 +1,6 @@
-import { useContext, useReducer } from "react";
+import { useContext, useEffect, useReducer } from "react";
 import logo from "../../../assets/img/company.png";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import logoText from "../../../assets/img/logo-text.svg";
 import Profile from "../../../js/api/profile";
 import { GlobalContext } from "../../../context";
@@ -8,22 +8,27 @@ import ConfirmModal from "../../ConfirmModal/ConfirmModal";
 import { reducer } from "../../../reducer";
 
 const Sidebar = ({ isMobile }) => {
-  const { selectedCustomer } = useContext(GlobalContext);
+  const { selectedCustomer, setSubmitPreventer } = useContext(GlobalContext);
 
   const initialState = {
     modal: false,
+    activeTab: null
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const { modal } = state;
 
+  const history = useHistory()
+
   const handleLogout = () => {
+      setSubmitPreventer(true);
     Profile.setlastCustomer(selectedCustomer.id);
     Profile.logoutRequest().then(() => {
       localStorage.removeItem("token");
       localStorage.removeItem("selectedCustomer");
       window.location.reload();
+      setSubmitPreventer(false);
     });
   };
 

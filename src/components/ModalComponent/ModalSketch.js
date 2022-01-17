@@ -86,6 +86,8 @@ const ModalSketch = ({
     setUpdateTrigger,
     entityID,
     customerStructure,
+    submitPreventer,
+    setSubmitPreventer
   } = useContext(GlobalContext);
 
   const {
@@ -146,6 +148,8 @@ const ModalSketch = ({
   };
 
   const onSubmit = (data) => {
+    setSubmitPreventer(true);
+
     const body = { ...data };
     if (data["head name"]) body["head_name"] = data["head name"];
     if (data["location info"]) body["location_info"] = data["location info"];
@@ -227,6 +231,7 @@ const ModalSketch = ({
               alert("error", `Invalid ref object`);
             } else alert("error", data.errors);
           }
+        setSubmitPreventer(false);
         });
     } else if (mode === "edit") {
       try {
@@ -264,8 +269,11 @@ const ModalSketch = ({
                 }
               }
             }
+            setSubmitPreventer(false);
           });
-      } catch (e) {}
+      } catch (e) {
+        setSubmitPreventer(false);
+      }
     }
   };
 
@@ -990,8 +998,8 @@ const ModalSketch = ({
           >
             Cancel
           </button>
-          <button className="ui-btn ui-btn-primary" form="form">
-            Submit
+          <button disabled={submitPreventer} className="submit-btn ui-btn ui-btn-primary" form="form">
+            {submitPreventer ? '...' : 'Submit'}
           </button>
         </ModalFooter>
       </Modal>

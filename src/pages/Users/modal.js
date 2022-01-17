@@ -1,14 +1,15 @@
-import React, { 
-    useEffect, 
+import React, {
+    useContext,
+    useEffect,
     useReducer} from 'react'
-import { 
-    button, 
-    Col, 
-    FormGroup, 
-    Modal, 
-    ModalBody, 
-    ModalFooter, 
-    ModalHeader, 
+import {
+    button,
+    Col,
+    FormGroup,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
     Row } from 'reactstrap'
 import PropTypes from "prop-types";
 
@@ -17,6 +18,7 @@ import { reducer } from '../../reducer'
 import UserAdd from './add'
 import UserEdit from './edit'
 import ProfileEdit from '../Profile/edit'
+import { GlobalContext } from '../../context';
 
 const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
     const initialState = {
@@ -26,6 +28,8 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
 
     const [state, dispatch] = useReducer(reducer, initialState)
     const {formComponent, formTitle} = state
+
+    const { submitPreventer } = useContext(GlobalContext)
 
     useEffect(() => {
         switch (type) {
@@ -45,7 +49,7 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                 break;
         }
     }, [type, currentUser])
-    
+
 
     return (
         <Modal
@@ -83,9 +87,10 @@ const UserModal = ({type, toggle, modal, method, currentUser = ''}) => {
                         </Col>
                         <Col md={6} className="d-flex justify-content-end">
                             <button
-                                className='formUser__submit ui-btn ui-btn-primary'
+                                disabled={submitPreventer}
+                                className='submit-btn ui-btn ui-btn-primary'
                                 form='form'>
-                                Submit
+                                {submitPreventer ? '...' : 'Submit'}
                             </button>
                         </Col>
                     </Row>

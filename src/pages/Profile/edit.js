@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import Profile from "../../js/api/profile";
 import PropTypes from "prop-types";
 import User from "../../js/api/users";
 import { alert } from "../../js/helpers/alert";
 import Forms from "../Users/form";
+import { GlobalContext } from "../../context";
 
 const ProfileEdit = ({ currentUser, editeMethod, toggle }) => {
+  const { setSubmitPreventer } = useContext(GlobalContext)
+
   const onSubmit = (e) => {
+    setSubmitPreventer(true);
+
     const data = {
       id: currentUser.id,
       first_name: e.firstname,
@@ -23,6 +28,7 @@ const ProfileEdit = ({ currentUser, editeMethod, toggle }) => {
       } else {
         alert("success", "Profile successfully edited");
       }
+      setSubmitPreventer(false);
     });
 
     if (currentUser.role !== "SuperAdmin") User.editRole(currentUser.id, data);

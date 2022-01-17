@@ -44,12 +44,15 @@ const LoginPage = () => {
 
     try {
       Profile.loginRequest(data).then((data) => {
-        if (data.errors) {
-          alert("error", data.errors);
-        } else {
-          localStorage.setItem("token", data.token);
-          alert("success", "Success Login");
-        }
+          if (data) {
+            if (data.errors) {
+                alert("error", data.errors);
+              } else {
+                localStorage.setItem("token", data.token);
+                alert("success", "Success Login");
+              }
+          }
+
 
         const token = getToken();
 

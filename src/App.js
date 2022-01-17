@@ -30,6 +30,7 @@ const App = () => {
 
   const [entityID, setEntityID] = useState();
   const [updateTrigger, setUpdateTrigger] = useState(false);
+  const [submitPreventer, setSubmitPreventer] = useState(false);
 
   useEffect(() => {
     Profile.getProfile().then((data) => {
@@ -84,6 +85,9 @@ const App = () => {
 
         updateTrigger,
         setUpdateTrigger,
+
+        submitPreventer,
+        setSubmitPreventer
       }}
     >
       {!isLoading ? (
