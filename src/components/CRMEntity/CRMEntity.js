@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams, useHistory } from "react-router";
+import { useParams } from "react-router";
 import logo from "../../assets/img/company.png";
 import customersApi from "../../js/api/customer";
 import facilitiesApi from "../../js/api/facilities";
@@ -7,7 +7,7 @@ import locationApi from "../../js/api/locations";
 import equipmentApi from "../../js/api/equipment";
 import InformationComponent from "../InformationComponent/InformationComponent";
 import DropdownImageEdit from "../widgets/DropdownImageEdit/DropdownImageEdit";
-
+import { useHistory } from "react-router-dom";
 import { alert } from "../../js/helpers/alert";
 import "../../scss/CRMEntity.scss";
 import { GlobalContext } from "../../context";
@@ -16,10 +16,11 @@ import Loader from "../widgets/Loader/Loader";
 import PropTypes from "prop-types";
 import List from "../List/List";
 import NotFound from "../../pages/NotFound/NotFound";
+
 const CRMEntity = ({ type }) => {
   type = type.entity;
   const { id } = useParams();
-  const { setEntityID } = useContext(GlobalContext);
+  const { setEntityID, setCurrentPage } = useContext(GlobalContext);
 
   let deleteEntityImageAPI;
   let getEntityAPI;
@@ -42,6 +43,8 @@ const CRMEntity = ({ type }) => {
   const [attachedFiles, setAttachedFiles] = useState();
 
   const [entityImages, setEntityImages] = useState();
+
+  const history = useHistory();
 
   const getMainImage = (images) => {
     let mainImage = images.find((x) => x.main_image === "1");
@@ -276,13 +279,17 @@ const CRMEntity = ({ type }) => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 1500);
-  //   }
-  // }, [isLoading]);
+  useEffect(() => {
+    if (
+      history.location.pathname.includes("/customers") ||
+      history.location.pathname.includes("/facilities") ||
+      history.location.pathname.includes("/locations") ||
+      history.location.pathname.includes("/equipment")
+    ) {
+      setCurrentPage(entityPluralAlias);
+    }
+  }, [entityPluralAlias]);
+
   return (
     <>
       {!isLoading && entityObject !== undefined ? (

@@ -209,7 +209,7 @@ const InfoCard = ({
                 to={`/${type}/${data && data.id}`}
                 style={data && hideRecordView ? { visibility: "hidden" } : {}}
               >
-                <i class="fas fa-eye"></i>
+                <i class="fas fa-eye me-1"></i>
                 View
               </Link>
               <button
@@ -232,7 +232,7 @@ const InfoCard = ({
                 }}
               >
                 <span>
-                  <i class="fas fa-pencil-alt"></i>Edit
+                  <i class="fas fa-pencil-alt me-1"></i>Edit
                 </span>
               </button>
             </div>

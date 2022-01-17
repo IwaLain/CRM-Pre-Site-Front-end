@@ -89,6 +89,7 @@ const List = ({
     updateTrigger,
     setSelectedCustomer,
     setUpdateTrigger,
+    setCurrentPage,
   } = useContext(GlobalContext);
 
   const formatNames = (data) => {
@@ -467,6 +468,15 @@ const List = ({
           dispatch({ singleAlias: type.entity });
           break;
       }
+    }
+
+    if (
+      history.location.pathname === "/customers" ||
+      history.location.pathname === "/facilities" ||
+      history.location.pathname === "/locations" ||
+      history.location.pathname === "/equipment"
+    ) {
+      setCurrentPage(type.entity);
     }
   }, [type]);
 

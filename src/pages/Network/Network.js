@@ -9,7 +9,8 @@ import { reducer } from "../../reducer";
 import Loader from "../../components/widgets/Loader/Loader";
 
 const Network = () => {
-  const { selectedCustomer, updateTrigger } = useContext(GlobalContext);
+  const { selectedCustomer, updateTrigger, setCurrentPage } =
+    useContext(GlobalContext);
   const [network, setNetwork] = useState([]);
 
   const initialState = {
@@ -44,6 +45,10 @@ const Network = () => {
       } catch (e) {}
     }
   }, [history, selectedCustomer, updateTrigger]);
+
+  useEffect(() => {
+    setCurrentPage("network");
+  }, []);
 
   return (
     <div className="network">
