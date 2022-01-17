@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
+import { GlobalContext } from "../../context";
 
 const paginationComponentOptions = {
   noRowsPerPage: true,
@@ -23,6 +24,18 @@ const TableView = ({
   const [cols, setCols] = useState([]);
   const [listData, setListData] = useState([]);
   const [progressField, SetProgressField] = useState("Progress");
+
+  const { selectedCustomer } = useContext(GlobalContext);
+
+  const conditionalStyles = [
+    {
+      when: (row) => row.id === selectedCustomer.id,
+      style: {
+        fontWeight: "bold",
+        border: "1px solid #e3bb31",
+      },
+    },
+  ];
 
   const staticColsEnd = [
     {
@@ -270,6 +283,7 @@ const TableView = ({
           onChangePage={handlePageChange}
           paginationDefaultPage={page}
           paginationPerPage={perPage}
+          conditionalRowStyles={conditionalStyles}
         />
       ) : (
         <p

@@ -49,7 +49,7 @@ const AttachedFiles = ({
 
   useEffect(() => {
     setIsLoading(false);
-    files.forEach((file) => URL.revokeObjectURL(file.preview));
+    // files.forEach((file) => URL.revokeObjectURL(file.preview));
 
     setFiles(
       attachedFiles.map((file) => {

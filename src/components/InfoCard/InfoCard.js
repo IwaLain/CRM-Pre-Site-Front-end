@@ -14,6 +14,7 @@ const InfoCard = ({
   currentSubEntityName,
   setCurrentSubEntityName,
   hideRecordView,
+  selected,
 }) => {
   const [toggleEntityModal, setToggleEntityModal] = useState(false);
   const [subEntity, setSubEntity] = useState("");
@@ -130,7 +131,15 @@ const InfoCard = ({
             />
           </div>
           <div className="info-card__info">
-            <h4 title={data && data.name} className="info-card__name">
+            <h4
+              title={data && data.name}
+              className="info-card__name"
+              style={
+                selected
+                  ? { fontWeight: "bold", textDecoration: "underline" }
+                  : {}
+              }
+            >
               {data && data.name}
             </h4>
             <div
