@@ -1,6 +1,6 @@
 .carousel-item > img {
   width: 500px;
-  max-height: 350px;
+  max-height: 450px;
 }
 .carousel-control-next--custom,
 .carousel-control-prev--custom {
@@ -38,14 +38,11 @@
     opacity: 0.6;
   }
 }
-.slider-modal {
-  max-height: 500px;
-}
-.slider-modal .modal-body {
-  height: 400px;
-}
+
 .slider-modal {
   & .carousel-indicators {
+    position: relative;
+    margin-bottom: 0;
     bottom: -10px;
     [data-bs-target] {
       background-color: black;

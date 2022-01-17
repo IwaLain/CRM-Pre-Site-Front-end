@@ -25,14 +25,16 @@
   }
 
   &--img {
-    width: 105px;
-    max-height: 95px;
+    width: 120px;
+    max-height: 100px;
   }
 
   .main-img--container {
     position: relative;
     z-index: 2;
     margin-right: 45px;
+    min-height: 80px;
+    max-height: 105px;
   }
 
   .page--information {
@@ -49,7 +51,7 @@
       position: absolute;
       background: black;
       width: 1px;
-      height: 100px;
+      height: 90px;
       left: -10px;
       top: 50%;
       transform: translateY(-50%);
