@@ -54,6 +54,7 @@ const List = ({
     entityImages: [],
     confirmModal: false,
     recordToDelete: null,
+    changeView: !hideChangeView,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -76,6 +77,7 @@ const List = ({
     entityImages,
     confirmModal,
     recordToDelete,
+    changeView,
   } = state;
 
   const history = useHistory();
@@ -126,8 +128,11 @@ const List = ({
   const debouncedResizeHandler = debounce(() => handleResize());
 
   const handleResize = () => {
-    if (window.innerWidth < 1343 && view) {
+    if (window.innerWidth < 1343) {
       dispatch({ view: false });
+      dispatch({ changeView: false });
+    } else {
+      dispatch({ changeView: true });
     }
     dispatch({ screenSize: window.innerWidth });
   };
@@ -593,7 +598,7 @@ const List = ({
                 />
               </div>
             )}
-            {!hideChangeView && (
+            {changeView && (
               <div className="list__options_btns">
                 <Button
                   type="list-view"
