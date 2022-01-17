@@ -15,9 +15,6 @@ const DropdownImageEdit = ({ images, setMainImage }) => {
         <button className="edit-img__btn" onClick={toggleDropdown}>
           <i className="fas fa-pencil-alt edit-img__icon"></i>
         </button>
-        {/* <DropdownToggle className="edit-img__btn">
-          <i class="fas fa-pencil-alt"></i>
-        </DropdownToggle> */}
 
         <DropdownMenu className="edit-img__menu">
           {images && images.length > 0 ? (

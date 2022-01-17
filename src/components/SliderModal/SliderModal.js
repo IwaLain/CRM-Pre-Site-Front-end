@@ -3,14 +3,10 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
-  button,
   Carousel,
   CarouselIndicators,
   CarouselItem,
-  CarouselCaption,
   CarouselControl,
-  UncontrolledCarousel,
 } from "reactstrap";
 import "./slider-modal.scss";
 
@@ -22,66 +18,67 @@ const SliderModal = ({
 
   entityImages,
 }) => {
-  const [itemLength, setItemLength] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [items, setItems] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   useEffect(() => {
     if (modal) {
+      setActiveIndex(0);
       const imageArr = entityImages;
-      if (imageArr) {
-        setItemLength(imageArr.filter((el) => el.type_id === "1").length);
+      if (imageArr && Array.isArray(imageArr)) {
         setItems(
           imageArr
             .filter((el) => el.type_id === "1")
             .map((item, i) => {
               return {
-                altText: `Slide 1 ${i + 1}`,
+                altText: `Slide ${i + 1}`,
 
                 key: i + 1,
                 src: process.env.REACT_APP_SERVER_URL + "/" + item.img,
               };
             })
         );
+      } else if (imageArr) {
+        setItems([
+          {
+            altText: `Slide 1`,
+
+            key: 1,
+            src: imageArr.src,
+          },
+        ]);
       }
     }
   }, [modal]);
-  // const items = [
-  //   {
-  //     altText: "Slide 1",
-  //     caption: "Slide 1",
-  //     key: 1,
-  //     src: "https://picsum.photos/id/123/1200/600",
-  //   },
-  //   {
-  //     altText: "Slide 2",
-  //     caption: "Slide 2",
-  //     key: 2,
-  //     src: "https://picsum.photos/id/456/1200/600",
-  //   },
-  //   {
-  //     altText: "Slide 3",
-  //     caption: "Slide 3",
-  //     key: 3,
-  //     src: "https://picsum.photos/id/678/1200/600",
-  //   },
-  // ];
-  const previousButton = () => {
+
+  const onExiting = () => {
+    setAnimating(true);
+  };
+
+  const onExited = () => {
+    setAnimating(false);
+  };
+
+  const next = () => {
     if (animating) return;
-    const nextIndex = activeIndex === 0 ? itemLength : activeIndex - 1;
+    const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
     setActiveIndex(nextIndex);
   };
 
-  // Next button for Carousel
-  const nextButton = () => {
+  const previous = () => {
     if (animating) return;
-    const nextIndex = activeIndex === itemLength ? 0 : activeIndex + 1;
+    const nextIndex = activeIndex === 0 ? items.length - 1 : activeIndex - 1;
     setActiveIndex(nextIndex);
+  };
+
+  const goToIndex = (newIndex) => {
+    if (animating) return;
+    setActiveIndex(newIndex);
   };
 
   const slides = items.map((item) => {
     return (
-      <CarouselItem key={item.src}>
+      <CarouselItem key={item.src} onExiting={onExiting} onExited={onExited}>
         <img src={item.src} alt={item.altText} />
       </CarouselItem>
     );
@@ -89,47 +86,53 @@ const SliderModal = ({
 
   return (
     <>
-      <Modal isOpen={modal} toggle={toggleModal}>
-        <ModalHeader>{title && title}</ModalHeader>
+      <Modal isOpen={modal} toggle={toggleModal} className="slider-modal">
+        <ModalHeader>
+          {"Images"}
+          <button class="modal-close" onClick={toggleModal}>
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </ModalHeader>
         <ModalBody>
-          {/* <Carousel
-            interval={false}
-            previous={previousButton}
-            next={nextButton}
+          <Carousel
             activeIndex={activeIndex}
+            next={next}
+            previous={previous}
+            interval={false}
           >
-            <CarouselIndicators
-              items={items}
-              activeIndex={activeIndex}
-              onClickHandler={(newIndex) => {
-                if (animating) return;
-                setActiveIndex(newIndex);
-              }}
-            />
             {slides}
-            {itemLength > 0 && (
-              <>
-                <CarouselControl
-                  directionText="Prev"
-                  direction="prev"
-                  onClickHandler={previousButton}
-                />
-                <CarouselControl
-                  directionText="Next"
-                  direction="next"
-                  onClickHandler={nextButton}
-                />
-              </>
-            )}
-          </Carousel> */}
-          <UncontrolledCarousel items={items} interval={false} />
+            {
+              <div className={items.length > 1 ? "" : "hidden"}>
+                <div
+                  className="carousel-control-prev--custom"
+                  role="button"
+                  tabindex="0"
+                  style={{ cursor: "pointer" }}
+                  onClick={previous}
+                >
+                  <i class="fas fa-chevron-left"></i>
+                  <span class="visually-hidden">Previous</span>
+                </div>
+                <div
+                  className="carousel-control-next--custom"
+                  role="button"
+                  tabindex="0"
+                  style={{ cursor: "pointer" }}
+                  onClick={next}
+                >
+                  <i class="fas fa-chevron-right"></i>
+                  <span class="visually-hidden">Previous</span>
+                </div>
+              </div>
+            }
+          </Carousel>
+          <CarouselIndicators
+            className={items.length > 1 ? "" : "hidden"}
+            items={items}
+            activeIndex={activeIndex}
+            onClickHandler={goToIndex}
+          />
         </ModalBody>
-        <ModalFooter>
-          {/* <button className="ui-btn ui-btn-secondary" onClick={toggleModal}>Cancel</button>
-          <button className="ui-btn ui-btn-primary" onClick={handleConfirmModalFormSubmit}>
-            Submit
-          </button> */}
-        </ModalFooter>
       </Modal>
     </>
   );
