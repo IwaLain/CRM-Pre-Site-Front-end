@@ -125,6 +125,9 @@ const List = ({
   const debouncedResizeHandler = debounce(() => handleResize());
 
   const handleResize = () => {
+    if (window.innerWidth < 1343 && view) {
+      dispatch({ view: false });
+    }
     dispatch({ screenSize: window.innerWidth });
   };
 
